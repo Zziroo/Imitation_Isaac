@@ -16,7 +16,7 @@ void MainGame::Init()
 	GETSINGLETON_SCENE->AddScene("Title", new TitleScene());		// Title
 	GETSINGLETON_SCENE->AddScene("InGame", new InGameScene());		// InGame
 
-	GETSINGLETON_SCENE->ChangeScene("Title");
+	GETSINGLETON_SCENE->ChangeScene("InGame");
 
 	srand((unsigned int)time(nullptr));
 	//타이머 셋팅

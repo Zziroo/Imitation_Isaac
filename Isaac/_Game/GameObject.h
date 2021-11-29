@@ -5,11 +5,11 @@ class GameObject
 private:
 
 protected:
-	POINTFLOAT pos = { 0 };			//위치
-	RECT shape = { 0 };				//모양
-	float bodySize = 0.0f;			//크기
-	float moveSpeed = 0.0f;			//속도
-	int elapsedAnime = 0;			//애니메이션 지연
+	POINTFLOAT	pos = { 0 };			//위치
+	RECT		shape = { 0 };			//모양
+	float		objectSize = 0.0f;		//크기
+	float		moveSpeed = 0.0f;		//속도
+	int			elapsedAnime = 0;		//애니메이션 지연
 
 public:
 	virtual void Init() = 0;

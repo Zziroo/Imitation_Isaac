@@ -9,7 +9,7 @@ Name		Width	Height	Column	Row
 Body		900	225	10	3
 Head		1200	125	8	1
 Hurt		540	165	3	1
-ItemPickUp	140	155	1	1
+ItemPickUp	140	165	1	1
 Jump		600	165	4	1
 Stat		340	330	2	2
 Weapon_Tear	45	45	1	1

@@ -8,15 +8,16 @@ void ImageManager::Init()
 	GETSINGLETON_IMAGE->AddImage("Image/BackGround/BackGround_Black.bmp", 1920, 1080);
 	GETSINGLETON_IMAGE->AddImage("Image/BackGround/Title.bmp", 1280, 6400, 1, 8);
 
-	// Issac
-	GETSINGLETON_IMAGE->AddImage("Image/Character/Body.bmp", 900, 225, 10, 3, true, MAGENTA);
-	GETSINGLETON_IMAGE->AddImage("Image/Character/Head.bmp", 1200, 125, 8, 1, true, MAGENTA);
-	GETSINGLETON_IMAGE->AddImage("Image/Character/Hurt.bmp", 540, 165, 3, 1, true, MAGENTA);
-	GETSINGLETON_IMAGE->AddImage("Image/Character/ItemPickUp.bmp", 140, 155, 1, 1, true, MAGENTA);
-	GETSINGLETON_IMAGE->AddImage("Image/Character/Jump.bmp", 600, 165, 4, 1, true, MAGENTA);
-	GETSINGLETON_IMAGE->AddImage("Image/Character/Stat.bmp", 340, 330, 2, 2, true, MAGENTA);
+	// Isaac
+	GETSINGLETON_IMAGE->AddImage("Image/Character/Body.bmp", 540, 99, 10, 3, true, MAGENTA);
+	GETSINGLETON_IMAGE->AddImage("Image/Character/Head.bmp", 720, 75, 8, 1, true, MAGENTA);
+	GETSINGLETON_IMAGE->AddImage("Image/Character/Hurt.bmp", 324, 99, 3, 1, true, MAGENTA);
+	GETSINGLETON_IMAGE->AddImage("Image/Character/ItemPickUp.bmp", 74, 99, 1, 1, true, MAGENTA);
+	GETSINGLETON_IMAGE->AddImage("Image/Character/Jump.bmp", 360, 99, 4, 1, true, MAGENTA);
+	GETSINGLETON_IMAGE->AddImage("Image/Character/Stat.bmp", 204, 198, 2, 2, true, MAGENTA);
+
 	// Weapon(Tear)
-	GETSINGLETON_IMAGE->AddImage("Image/Character/Weapon_Tear.bmp", 45, 45, 1, 1, true, MAGENTA);
+	GETSINGLETON_IMAGE->AddImage("Image/Character/Weapon_Tear.bmp", 30, 30, 1, 1, true, MAGENTA);
 
 }
 
