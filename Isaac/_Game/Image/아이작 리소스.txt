@@ -1,0 +1,39 @@
+아이작 리소스 SIZE
+
+BackGround
+Name		Width	Height	Column	Row
+Title		1280	6400	1	8
+
+Character
+Name		Width	Height	Column	Row
+Body		900	225	10	3
+Head		1200	125	8	1
+Hurt		540	165	3	1
+ItemPickUp	140	155	1	1
+Jump		600	165	4	1
+Stat		340	330	2	2
+Weapon_Tear	45	45	1	1
+
+Enemy
+Name		Width	Height	Column	Row
+
+
+Map
+Name		Width	Height	Column	Row
+
+
+Object
+Name		Width	Height	Column	Row
+BonFire		588	645	7	4
+Boom		792	78	12	1
+DDong		336	168	4	2
+Donation		123	135	1	1
+Donation_Broken	492	135	4	1
+Donation_Number	15	180	1	10
+Fire		2000	255	8	1
+Sell_Penny	312	84	4	2
+
+UI
+Name		Width	Height	Column	Row
+UI_Num		210	27	10	1
+UI_Own		39	105	1	1
