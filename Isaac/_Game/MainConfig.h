@@ -59,6 +59,8 @@ inline void SetWindowSize(int sizeX, int sizeY)
 #define GETSINGLETON_SCENE	SceneManager::GetSingleton()
 #define GETSINGLETON_TIME	TimeManager::GetSingleton()
 
-enum class ObjectStates { DEATH, HAMMERHIT, IDLE, JETPACK, JUMP, PARACHUTE, PRONE, ROLL, SLIDE, SWIMP, WALK };
+#define MAGENTA				RGB(255, 0, 255)
+
+enum class ObjectStates { IDLE, WALK, HURT, ITEMPICKUP, JUMP, STAT };
 
 #define PLAYER_IMAGE_SCALE	3

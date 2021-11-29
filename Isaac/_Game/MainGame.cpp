@@ -2,6 +2,8 @@
 #include "MainGame.h"
 
 #include "Image.h"
+#include "InGameScene.h"
+#include "TitleScene.h"
 
 void MainGame::Init()
 {
@@ -11,9 +13,10 @@ void MainGame::Init()
 	GETSINGLETON_SCENE->Init();
 	GETSINGLETON_TIME->Init();
 
-	//GETSINGLETON_SCENE->AddScene("TestScene", new TestScene());
+	GETSINGLETON_SCENE->AddScene("Title", new TitleScene());		// Title
+	GETSINGLETON_SCENE->AddScene("InGame", new InGameScene());		// InGame
 
-	//GETSINGLETON_SCENE->ChangeScene("TestScene");
+	GETSINGLETON_SCENE->ChangeScene("Title");
 
 	srand((unsigned int)time(nullptr));
 	//타이머 셋팅

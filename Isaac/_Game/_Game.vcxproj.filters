@@ -84,6 +84,15 @@
     <ClCompile Include="Monster.cpp">
       <Filter>FrameWork\GameObject\Monster</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>MainGame\GameObject\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleScene.cpp">
+      <Filter>MainGame\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="InGameScene.cpp">
+      <Filter>MainGame\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainConfig.h">
@@ -121,6 +130,15 @@
     </ClInclude>
     <ClInclude Include="Monster.h">
       <Filter>FrameWork\GameObject\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>MainGame\GameObject\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleScene.h">
+      <Filter>MainGame\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="InGameScene.h">
+      <Filter>MainGame\Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
