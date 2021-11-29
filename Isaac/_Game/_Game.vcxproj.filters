@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="MainGame">
+      <UniqueIdentifier>{38d3a7ac-1709-427f-94a9-39068be1d2db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork">
+      <UniqueIdentifier>{010e887a-f5e6-440b-bfdb-175ca77fffa0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\Image">
+      <UniqueIdentifier>{37b57899-2369-4952-b768-e73f854104b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\Timer">
+      <UniqueIdentifier>{20766423-5514-40fb-8b96-572caba16d81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\Scene">
+      <UniqueIdentifier>{e5ea7047-2680-4d25-9376-47d0f219b5bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\_Singleton">
+      <UniqueIdentifier>{663bedd2-f814-4f63-8d58-bfc698a48956}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\GameObject">
+      <UniqueIdentifier>{04dab7eb-cac7-4ef2-b8a3-461383a510a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\GameObject\Monster">
+      <UniqueIdentifier>{ddb39bb7-a984-4216-86a8-ff705e65d112}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\GameObject">
+      <UniqueIdentifier>{4f32c7c6-9be9-4854-beda-4ffb5b3470ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\GameObject\Player">
+      <UniqueIdentifier>{f8a09fee-90f5-4f73-8ee7-f354f6cee0b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\GameObject\Monster">
+      <UniqueIdentifier>{30cbc23a-613f-4eed-b23b-5531fd2f4fdd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\Scene">
+      <UniqueIdentifier>{4258ccba-f5ff-4f61-ac68-ca0d6cdfe272}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame.cpp">
+      <Filter>MainGame</Filter>
+    </ClCompile>
+    <ClCompile Include="Image.cpp">
+      <Filter>FrameWork\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>FrameWork\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageManager.cpp">
+      <Filter>FrameWork\_Singleton</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyManager.cpp">
+      <Filter>FrameWork\_Singleton</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>FrameWork\_Singleton</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeManager.cpp">
+      <Filter>FrameWork\_Singleton</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>FrameWork\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>FrameWork\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Monster.cpp">
+      <Filter>FrameWork\GameObject\Monster</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MainConfig.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGame.h">
+      <Filter>MainGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Singleton.h">
+      <Filter>FrameWork\_Singleton</Filter>
+    </ClInclude>
+    <ClInclude Include="Image.h">
+      <Filter>FrameWork\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>FrameWork\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageManager.h">
+      <Filter>FrameWork\_Singleton</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyManager.h">
+      <Filter>FrameWork\_Singleton</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>FrameWork\_Singleton</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeManager.h">
+      <Filter>FrameWork\_Singleton</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>FrameWork\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>FrameWork\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Monster.h">
+      <Filter>FrameWork\GameObject\Monster</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
