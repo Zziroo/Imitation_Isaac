@@ -3,19 +3,16 @@
 
 #include "Image.h"
 #include "Player.h"
+#include "WeaponManager.h"
 
 HRESULT InGameScene::Init()
 {
-	// Black BackGround
-	//sampleImg = GETSINGLETON_IMAGE->FindImage("Image/BackGround/BackGround_Black.bmp");
-	//if (sampleImg == nullptr)
-	//{
-	//	cout << "Not Found : Image/BackGround/BackGround_Black.bmp\n";
-	//	return E_FAIL;
-	//}
 	// Player
 	playerIsaac = new Player;
 	playerIsaac->Init();
+	// Weapon
+	weaponTear = new WeaponManager;
+	weaponTear->Init();
 
 	return S_OK;
 }
@@ -23,15 +20,17 @@ HRESULT InGameScene::Init()
 void InGameScene::Release()
 {
 	SAFE_RELEASE(playerIsaac);
+	SAFE_RELEASE(weaponTear);
 }
 
 void InGameScene::Update()
 {
+	weaponTear->Update();
 	playerIsaac->Update();
 }
 
 void InGameScene::Render(HDC hdc)
 {
-	//sampleImg->Render(hdc);
 	playerIsaac->Render(hdc);
+	weaponTear->Render(hdc);
 }

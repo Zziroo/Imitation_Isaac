@@ -7,7 +7,7 @@
 #define PLAYER_BODY_POS_X	PLAYER_HEAD_POS_X
 #define PLAYER_BODY_POS_Y	PLAYER_HEAD_POS_Y + 42.5f
 
-struct PlayerIsaac
+struct PlayerInfo
 {
 	// Body
 	POINTFLOAT		bodyPos = {
@@ -43,12 +43,11 @@ private:
 	Image*			headImg = nullptr;
 	Image*			bodyImg = nullptr;
 	Image*			otherStateImg = nullptr;
-	enum class		PlayerMoveDir { UP, DOWN ,LEFT, RIGHT };
 
-	PlayerIsaac		player;
+	PlayerInfo		player;
 
 	ObjectStates	playerState = ObjectStates::IDLE;
-	PlayerMoveDir	playerDir = PlayerMoveDir::DOWN;
+	MoveDir			playerDir = MoveDir::DOWN;
 
 protected:
 
@@ -60,7 +59,7 @@ public:
 	virtual void Render(HDC hdc) override;
 
 	void PressInputKey();			// 입력키
-	void ChangeAnimation();
+	void ChangeAnimation();			// 애니메이션 변화
 
 	virtual ~Player() = default;
 };

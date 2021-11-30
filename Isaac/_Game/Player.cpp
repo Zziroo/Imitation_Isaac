@@ -92,9 +92,9 @@ void Player::Render(HDC hdc)
 {
     // playerRectangle
     Rectangle(hdc, (INT)(player.bodyShape.left), (INT)(player.bodyShape.top), (INT)(player.bodyShape.right), (INT)(player.bodyShape.bottom));
-    Rectangle(hdc, (INT)(player.headShape.left), (INT)(player.headShape.top), (INT)(player.headShape.right), (INT)(player.headShape.bottom));
+    Ellipse(hdc, (INT)(player.headShape.left), (INT)(player.headShape.top), (INT)(player.headShape.right), (INT)(player.headShape.bottom));
 
-    // playerImg
+    // playerImage
     switch (playerState)
     {
     case ObjectStates::IDLE:    case ObjectStates::WALK:
@@ -123,7 +123,7 @@ void Player::PressInputKey()
     if (GETSINGLETON_KEY->IsStayKeyDown('W'))                               // ╩С
     {
         playerState = ObjectStates::WALK;
-        playerDir = PlayerMoveDir::UP;
+        playerDir = MoveDir::UP;
         player.bodyPos.y -= moveSpeed * GETSINGLETON_TIME->GetDeltaTime();
         player.headPos.y -= moveSpeed * GETSINGLETON_TIME->GetDeltaTime();
 
@@ -132,7 +132,7 @@ void Player::PressInputKey()
     else if (GETSINGLETON_KEY->IsStayKeyDown('S'))                          // го
     {
         playerState = ObjectStates::WALK;
-        playerDir = PlayerMoveDir::DOWN;
+        playerDir = MoveDir::DOWN;
         player.bodyPos.y += moveSpeed * GETSINGLETON_TIME->GetDeltaTime();
         player.headPos.y += moveSpeed * GETSINGLETON_TIME->GetDeltaTime();
 
@@ -141,7 +141,7 @@ void Player::PressInputKey()
     if (GETSINGLETON_KEY->IsStayKeyDown('D'))                               // ©Л
     {
         playerState = ObjectStates::WALK;
-        playerDir = PlayerMoveDir::RIGHT;
+        playerDir = MoveDir::RIGHT;
         player.bodyPos.x += moveSpeed * GETSINGLETON_TIME->GetDeltaTime();
         player.headPos.x += moveSpeed * GETSINGLETON_TIME->GetDeltaTime();
 
@@ -150,7 +150,7 @@ void Player::PressInputKey()
     else if (GETSINGLETON_KEY->IsStayKeyDown('A'))                           // аб
     {
         playerState = ObjectStates::WALK;
-        playerDir = PlayerMoveDir::LEFT;
+        playerDir = MoveDir::LEFT;
         player.bodyPos.x -= moveSpeed * GETSINGLETON_TIME->GetDeltaTime();
         player.headPos.x -= moveSpeed * GETSINGLETON_TIME->GetDeltaTime();
         
@@ -180,22 +180,22 @@ void Player::PressInputKey()
 #define MAX_BODY_FRAME 9
 void Player::ChangeAnimation()
 {
-    if (playerDir == PlayerMoveDir::UP)
+    if (playerDir == MoveDir::UP)
     {
         bodyImg->SetCurrFrameY(0);
         headImg->SetCurrFrameX(4);
     }
-    if (playerDir == PlayerMoveDir::DOWN)
+    if (playerDir == MoveDir::DOWN)
     {
         bodyImg->SetCurrFrameY(0);
         headImg->SetCurrFrameX(0);
     }
-    if (playerDir == PlayerMoveDir::LEFT)
+    if (playerDir == MoveDir::LEFT)
     {
         bodyImg->SetCurrFrameY(2);
         headImg->SetCurrFrameX(6);
     }
-    if (playerDir == PlayerMoveDir::RIGHT)
+    if (playerDir == MoveDir::RIGHT)
     {
         bodyImg->SetCurrFrameY(1);
         headImg->SetCurrFrameX(2);
