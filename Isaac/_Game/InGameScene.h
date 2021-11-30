@@ -4,13 +4,11 @@
 
 class Image;
 class Player;
-class WeaponManager;
 class InGameScene : public Scene
 {
 private:
 	Image*	sampleImg = nullptr;
 	Player*	playerIsaac = nullptr;
-	WeaponManager* weaponTear = nullptr;
 
 protected:
 
