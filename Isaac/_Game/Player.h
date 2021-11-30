@@ -2,45 +2,44 @@
 
 #include "GameObject.h"
 
-struct PlayerInfo
-{
-	// Body
-	POINTFLOAT		bodyPos = {
-		(FLOAT)PLAYER_BODY_POS_X,										// Pos.x
-		(FLOAT)PLAYER_BODY_POS_Y										// Pos.Y
-	};
-	float			bodySize = PLAYER_BODYSIZE;
-	RECT			bodyShape = {
-		(LONG)(bodyPos.x - (bodySize * DEVIDE_HALF) - ADJUST_SIZE_14),	// Left
-		(LONG)(bodyPos.y - (bodySize * DEVIDE_HALF)),					// Top
-		(LONG)(bodyPos.x + (bodySize * DEVIDE_HALF) + ADJUST_SIZE_14),	// Right
-		(LONG)(bodyPos.y + (bodySize * DEVIDE_HALF))					// Bottom
-	};
-	// Head
-	POINTFLOAT		headPos = { 
-		(FLOAT)PLAYER_HEAD_POS_X,										// Pos.x
-		(FLOAT)PLAYER_HEAD_POS_Y										// Pos.Y
-	};
-	float			headSize = PLAYER_HEADSIZE;
-	RECT			headShape = {
-		(LONG)(headPos.x - (headSize * DEVIDE_HALF) - ADJUST_SIZE_05),	// Left
-		(LONG)(headPos.y - (headSize * DEVIDE_HALF)),					// Top
-		(LONG)(headPos.x + (headSize * DEVIDE_HALF) + ADJUST_SIZE_05),	// Right
-		(LONG)(headPos.y + (headSize * DEVIDE_HALF))					// Bottom
-	};
-
-};
-
 class Image;
 class WeaponManager;
 class Player : public GameObject
 {
 private:
+	struct PlayerInfo
+	{
+		// Body
+		POINTFLOAT		bodyPos = {
+			(FLOAT)PLAYER_BODY_POS_X,										// Pos.x
+			(FLOAT)PLAYER_BODY_POS_Y										// Pos.Y
+		};
+		float			bodySize = PLAYER_BODYSIZE;
+		RECT			bodyShape = {
+			(LONG)(bodyPos.x - (bodySize * DEVIDE_HALF) - ADJUST_SIZE_14),	// Left
+			(LONG)(bodyPos.y - (bodySize * DEVIDE_HALF)),					// Top
+			(LONG)(bodyPos.x + (bodySize * DEVIDE_HALF) + ADJUST_SIZE_14),	// Right
+			(LONG)(bodyPos.y + (bodySize * DEVIDE_HALF))					// Bottom
+		};
+		// Head
+		POINTFLOAT		headPos = { 
+			(FLOAT)PLAYER_HEAD_POS_X,										// Pos.x
+			(FLOAT)PLAYER_HEAD_POS_Y										// Pos.Y
+		};
+		float			headSize = PLAYER_HEADSIZE;
+		RECT			headShape = {
+			(LONG)(headPos.x - (headSize * DEVIDE_HALF) - ADJUST_SIZE_05),	// Left
+			(LONG)(headPos.y - (headSize * DEVIDE_HALF)),					// Top
+			(LONG)(headPos.x + (headSize * DEVIDE_HALF) + ADJUST_SIZE_05),	// Right
+			(LONG)(headPos.y + (headSize * DEVIDE_HALF))					// Bottom
+		};
+
+	} player;
+
+private:
 	Image*			headImg = nullptr;
 	Image*			bodyImg = nullptr;
 	Image*			otherStateImg = nullptr;
-
-	PlayerInfo		player;
 
 	ObjectStates	playerState = ObjectStates::IDLE;		// 상태
 	MoveDir			playerDir = MoveDir::DOWN;				// 이동 방향
