@@ -97,9 +97,8 @@ void Player::Update()
         GameObject::OnDebuging();   
     }
 
-    Player::PressInputKey();    // 입력키
+    Player::TakeAction();       // 입력키
     weaponTear->Update();       // weapon
-
 }
 
 void Player::Render(HDC hdc)
@@ -136,6 +135,7 @@ void Player::Render(HDC hdc)
         // playerRectangle
         Rectangle(hdc, (INT)(player.bodyShape.left), (INT)(player.bodyShape.top), (INT)(player.bodyShape.right), (INT)(player.bodyShape.bottom));
         Ellipse(hdc, (INT)(player.headShape.left), (INT)(player.headShape.top), (INT)(player.headShape.right), (INT)(player.headShape.bottom));
+
         // player.headPos
         wsprintf(text, "player.headPos.x : %d", (INT)(player.headPos.x));
         TextOut(hdc, (INT)((WIN_SIZE_X * 0.5f) + 250), INT((WIN_SIZE_Y * 0.5f) - 40), text, (INT)(strlen(text)));
@@ -161,8 +161,17 @@ void Player::Render(HDC hdc)
     }
 }
 
-void Player::PressInputKey()
+void Player::TakeAction()
 {
+    // 이동키 땠을 때
+    if (GETSINGLETON_KEY->IsOnceKeyUp('W') || GETSINGLETON_KEY->IsOnceKeyUp('S') || GETSINGLETON_KEY->IsOnceKeyUp('D') || GETSINGLETON_KEY->IsOnceKeyUp('A'))
+    {
+        playerState = ObjectStates::IDLE;
+        bodyImg->SetCurrFrameX(0);
+        bodyImg->SetCurrFrameY(0);
+
+        headImg->SetCurrFrameX(0);
+    }
     // 이동키
     if (GETSINGLETON_KEY->IsStayKeyDown('W'))                               // 상
     {
@@ -202,15 +211,6 @@ void Player::PressInputKey()
     }
     // 공격키
     if (GETSINGLETON_KEY->IsStayKeyDown(VK_LBUTTON)) { Player::FireWeapon(g_ptMouse.x, g_ptMouse.y); }
-    // 이동키 땠을 때
-    if (GETSINGLETON_KEY->IsOnceKeyUp('W') || GETSINGLETON_KEY->IsOnceKeyUp('S') || GETSINGLETON_KEY->IsOnceKeyUp('D') || GETSINGLETON_KEY->IsOnceKeyUp('A'))
-    {
-        playerState = ObjectStates::IDLE;
-        bodyImg->SetCurrFrameX(0);
-        bodyImg->SetCurrFrameY(0);
-
-        headImg->SetCurrFrameX(0);
-    }
     // 공격키 땠을 때
     if (GETSINGLETON_KEY->IsOnceKeyUp(VK_LBUTTON))
     {
@@ -258,8 +258,13 @@ void Player::ChangeAnimation()
         headImg->SetCurrFrameX(6);
     }
 
-    bodyImg->SetCurrFrameX(bodyImg->GetCurrFrameX() + 1);
-    if (bodyImg->GetCurrFrameX() >= MAX_BODY_FRAME_X) { bodyImg->SetCurrFrameX(0); }
+    ++elapsedAnime;
+    if (elapsedAnime > 5)
+    {
+        bodyImg->SetCurrFrameX(bodyImg->GetCurrFrameX() + 1);
+        if (bodyImg->GetCurrFrameX() >= MAX_BODY_FRAME_X) { bodyImg->SetCurrFrameX(0); }
+        elapsedAnime = 0;
+    }
 }
 
 void Player::FireWeapon(int x, int y)

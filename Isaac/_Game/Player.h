@@ -46,7 +46,7 @@ private:
 	MoveDir			playerDir = MoveDir::DOWN;			// 이동 방향
 
 	int				loadWeapon = 0;						// 무기 장전
-	int				takeLoadWeapon = 20;				// 장전 걸리는 시간
+	int				takeLoadWeapon = 10;				// 장전 걸리는 시간
 	char			text[64] = {};						// MousePointer
 
 	WeaponManager*	weaponTear = nullptr;
@@ -60,7 +60,7 @@ public:
 	virtual void Update() override;
 	virtual void Render(HDC hdc) override;
 
-	void PressInputKey();			// 입력키
+	void TakeAction();				// 입력키
 	void ChangeAnimation();			// 애니메이션 변화
 	void FireWeapon(int x, int y);	// weapon 발사
 
