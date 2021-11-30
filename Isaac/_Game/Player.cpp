@@ -92,7 +92,7 @@ void Player::Update()
 {
     {
         // 콘솔
-        if (loadWeapon > 0) { cout << "loadWeapon : " << loadWeapon << "\n"; }  // 무기 장전
+        if (loadWeapon < 20) { cout << "loadWeapon : " << loadWeapon << "\n"; }  // 무기 장전
         // debug
         GameObject::OnDebuging();   
     }
@@ -138,14 +138,14 @@ void Player::Render(HDC hdc)
 
         // player.headPos
         wsprintf(text, "player.headPos.x : %d", (INT)(player.headPos.x));
-        TextOut(hdc, (INT)((WIN_SIZE_X * 0.5f) + 250), INT((WIN_SIZE_Y * 0.5f) - 40), text, (INT)(strlen(text)));
+        TextOut(hdc, (INT)((WIN_SIZE_X * 0.5f) + 250), (INT)((WIN_SIZE_Y * 0.5f) - 40), text, (INT)(strlen(text)));
         wsprintf(text, "player.headPos.y : %d", (INT)(player.headPos.y));
-        TextOut(hdc, (INT)((WIN_SIZE_X * 0.5f) + 250), INT((WIN_SIZE_Y * 0.5f) - 20), text, (INT)(strlen(text)));
+        TextOut(hdc, (INT)((WIN_SIZE_X * 0.5f) + 250), (INT)((WIN_SIZE_Y * 0.5f) - 20), text, (INT)(strlen(text)));
         // MousePointer
         wsprintf(text, "Mouse.PosX : %d", g_ptMouse.x);
-        TextOut(hdc, (INT)((WIN_SIZE_X * 0.5f) + 250), INT((WIN_SIZE_Y * 0.5f) + 20), text, (INT)(strlen(text)));
+        TextOut(hdc, (INT)((WIN_SIZE_X * 0.5f) + 250), (INT)((WIN_SIZE_Y * 0.5f) + 20), text, (INT)(strlen(text)));
         wsprintf(text, "Mouse.PosY : %d", g_ptMouse.y);
-        TextOut(hdc, (INT)((WIN_SIZE_X * 0.5f) + 250), INT((WIN_SIZE_Y * 0.5f) + 40), text, (INT)(strlen(text)));
+        TextOut(hdc, (INT)((WIN_SIZE_X * 0.5f) + 250), (INT)((WIN_SIZE_Y * 0.5f) + 40), text, (INT)(strlen(text)));
         // 기울기
         float slope = (FLOAT)((player.headShape.bottom - player.headShape.top)) / (FLOAT)((player.headShape.right - player.headShape.left));
         // section01
@@ -171,6 +171,14 @@ void Player::TakeAction()
         bodyImg->SetCurrFrameY(0);
 
         headImg->SetCurrFrameX(0);
+    }
+    // 공격키 땠을 때
+    if (GETSINGLETON_KEY->IsOnceKeyUp(VK_LBUTTON))
+    {
+        playerState = ObjectStates::IDLE;
+        isFire = false;
+
+        loadWeapon = takeLoadWeapon;
     }
     // 이동키
     if (GETSINGLETON_KEY->IsStayKeyDown('W'))                               // 상
@@ -210,17 +218,10 @@ void Player::TakeAction()
         Player::ChangeAnimation();
     }
     // 공격키
-    if (GETSINGLETON_KEY->IsStayKeyDown(VK_LBUTTON)) { Player::FireWeapon(g_ptMouse.x, g_ptMouse.y); }
-    // 공격키 땠을 때
-    if (GETSINGLETON_KEY->IsOnceKeyUp(VK_LBUTTON))
-    {
-        playerState = ObjectStates::IDLE;
-        bodyImg->SetCurrFrameX(0);
-        bodyImg->SetCurrFrameY(0);
-
-        headImg->SetCurrFrameX(0);
-
-        loadWeapon = 0;
+    if (GETSINGLETON_KEY->IsStayKeyDown(VK_LBUTTON)) 
+    { 
+        isFire = true;
+        Player::FireWeapon(g_ptMouse.x, g_ptMouse.y);
     }
     
     // bodyShape
@@ -240,22 +241,22 @@ void Player::ChangeAnimation()
     if (playerDir == MoveDir::UP)
     {
         bodyImg->SetCurrFrameY(0);
-        headImg->SetCurrFrameX(4);
+        if (!isFire) { headImg->SetCurrFrameX(4); }
     }
     if (playerDir == MoveDir::DOWN)
     {
         bodyImg->SetCurrFrameY(0);
-        headImg->SetCurrFrameX(0);
+        if (!isFire) { headImg->SetCurrFrameX(0); }
     }
     if (playerDir == MoveDir::RIGHT)
     {
         bodyImg->SetCurrFrameY(1);
-        headImg->SetCurrFrameX(2);
+        if (!isFire) { headImg->SetCurrFrameX(2); }
     }
     if (playerDir == MoveDir::LEFT)
     {
         bodyImg->SetCurrFrameY(2);
-        headImg->SetCurrFrameX(6);
+        if (!isFire) { headImg->SetCurrFrameX(6); }
     }
 
     ++elapsedAnime;

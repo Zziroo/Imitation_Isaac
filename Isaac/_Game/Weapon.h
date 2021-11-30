@@ -8,9 +8,9 @@ class Weapon : public GameObject
 private:
 	Image*	tear = nullptr;
 
-	MoveDir	weaponDir = MoveDir::DOWN;
+	MoveDir	weaponDir = MoveDir::DOWN;	// 무기의 방향
 
-	bool	isFire = false;
+	bool	isFire = false;				// 발사 됐는지
 
 protected:
 

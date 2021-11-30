@@ -59,8 +59,7 @@ void Weapon::Update()
     shape.right = (LONG)(pos.x + (objectSize * 0.5f));
     shape.bottom = (LONG)(pos.y + (objectSize * 0.5f));
 
-    // 무기 초기화
-    Weapon::InitializeWeapon();
+    Weapon::InitializeWeapon();     // 무기 초기화
 
     //GameObject::OnDebuging();     이 함수를 사용하고 싶은데 안됨.
 }

@@ -45,8 +45,9 @@ private:
 	ObjectStates	playerState = ObjectStates::IDLE;	// 상태
 	MoveDir			playerDir = MoveDir::DOWN;			// 이동 방향
 
-	int				loadWeapon = 0;						// 무기 장전
-	int				takeLoadWeapon = 10;				// 장전 걸리는 시간
+	int				takeLoadWeapon = 20;				// 장전 걸리는 시간
+	int				loadWeapon = takeLoadWeapon;		// 무기 장전
+	bool			isFire = false;						// 무기 발사
 	char			text[64] = {};						// MousePointer
 
 	WeaponManager*	weaponTear = nullptr;
