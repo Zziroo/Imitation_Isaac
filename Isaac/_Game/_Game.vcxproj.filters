@@ -102,6 +102,9 @@
     <ClCompile Include="WeaponManager.cpp">
       <Filter>MainGame\GameObject\Weapon</Filter>
     </ClCompile>
+    <ClCompile Include="TilemapToolScene.cpp">
+      <Filter>MainGame\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainConfig.h">
@@ -154,6 +157,9 @@
     </ClInclude>
     <ClInclude Include="WeaponManager.h">
       <Filter>MainGame\GameObject\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="TilemapToolScene.h">
+      <Filter>MainGame\Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

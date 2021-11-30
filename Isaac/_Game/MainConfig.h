@@ -17,6 +17,8 @@ using namespace std;
 #define WIN_START_POS_Y		0
 #define WIN_SIZE_X			1280
 #define WIN_SIZE_Y			800
+#define TILEMAP_SIZE_X		1440
+#define TILEMAP_SIZE_Y		900
 
 extern HINSTANCE			g_hInstance;
 extern HWND					g_hWnd;
