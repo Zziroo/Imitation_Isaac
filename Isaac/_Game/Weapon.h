@@ -21,6 +21,8 @@ public:
 	virtual void Update() override;
 	virtual void Render(HDC hdc) override;
 
+	void InitializeWeapon();
+
 	inline void SetIsFire(bool isFire) { this->isFire = isFire; }
 	inline void SetMoveDir(MoveDir weaponDir) { this->weaponDir = weaponDir; }
 
