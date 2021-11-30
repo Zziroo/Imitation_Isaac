@@ -4,10 +4,13 @@
 #include "GameObject.h"
 
 class Weapon;
+class Player;
 class WeaponManager : public GameObject
 {
 private:
 	vector<Weapon*> vecWeapon;
+
+	Player* owner = nullptr;
 
 	int maxWeaponCount = 100;		// 최대 무기 수량
 
@@ -20,7 +23,9 @@ public:
 	virtual void Update() override;
 	virtual void Render(HDC hdc) override;
 
-	void WeaponFire(POINTFLOAT pos, MoveDir moveDir);
+	void WeaponFire(MoveDir moveDir);
+
+	inline void SetOwner(Player* owner) { this->owner = owner;}
 
 	virtual ~WeaponManager() = default;
 };

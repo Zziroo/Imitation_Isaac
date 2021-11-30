@@ -58,12 +58,13 @@ void Weapon::Update()
     shape.top = (LONG)(pos.y - (objectSize * 0.5f));
     shape.right = (LONG)(pos.x + (objectSize * 0.5f));
     shape.bottom = (LONG)(pos.y + (objectSize * 0.5f));
+
+    //GameObject::OnDebuging();     이 함수를 사용하고 싶은데 안됨.
 }
 
 void Weapon::Render(HDC hdc)
 {
-    // Rectangle
-    Ellipse(hdc, shape.left, shape.top, shape.right, shape.bottom);
-    // Image
-    tear->Render(hdc, (INT)(pos.x), (INT)(pos.y), tear->GetCurrFrameX(), tear->GetCurrFrameY());
+    if (isFire) { tear->Render(hdc, (INT)(pos.x), (INT)(pos.y), tear->GetCurrFrameX(), tear->GetCurrFrameY()); }    // Image
+
+    if (debugMode) { Ellipse(hdc, shape.left, shape.top, shape.right, shape.bottom); }                              // Rectangle
 }

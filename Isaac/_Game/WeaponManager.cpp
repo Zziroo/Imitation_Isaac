@@ -1,6 +1,7 @@
 #include "MainConfig.h"
 #include "WeaponManager.h"
 
+#include "Player.h"
 #include "Weapon.h"
 
 void WeaponManager::Init()
@@ -35,14 +36,15 @@ void WeaponManager::Render(HDC hdc)
 	for (size_t i = 0; i < vecWeapon.size(); ++i) { vecWeapon[i]->Render(hdc); }
 }
 
-void WeaponManager::WeaponFire(POINTFLOAT pos, MoveDir moveDir)
+void WeaponManager::WeaponFire(MoveDir moveDir)
 {
 	for (size_t i = 0; i < vecWeapon.size(); ++i) 
 	{ 
 		if (vecWeapon[i]->GetIsFire())
 			continue;
 		vecWeapon[i]->SetIsFire(true);
-		vecWeapon[i]->SetPos(pos);
-		vecWeapon[i]->SetMoveDir(moveDir); 
+		vecWeapon[i]->SetPos(owner->GetPlayerHeadPos());
+		vecWeapon[i]->SetMoveDir(moveDir);
+		break;
 	}
 }
