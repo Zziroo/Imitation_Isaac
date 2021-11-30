@@ -2,6 +2,7 @@
 #include "Player.h"
 
 #include "Image.h"
+#include "WeaponManager.h"
 
 void Player::Init()
 {
@@ -13,6 +14,10 @@ void Player::Init()
     moveSpeed = 100.0f;
 
     elapsedAnime = 0;
+
+    // Weapon
+    weaponTear = new WeaponManager;
+    weaponTear->Init();
 }
 
 HRESULT Player::FindIamge()
@@ -81,19 +86,19 @@ HRESULT Player::FindIamge()
 
 void Player::Release()
 {
+    SAFE_RELEASE(weaponTear);
 }
 
 void Player::Update()
 {
-    Player::PressInputKey();
+    Player::PressInputKey();    // 입력키
+    weaponTear->Update();       // weapon
+
+    if (GETSINGLETON_KEY->IsStayKeyDown(VK_LCONTROL) && GETSINGLETON_KEY->IsOnceKeyDown('E')) { debugMode = !debugMode; }   // debug
 }
 
 void Player::Render(HDC hdc)
 {
-    // playerRectangle
-    Rectangle(hdc, (INT)(player.bodyShape.left), (INT)(player.bodyShape.top), (INT)(player.bodyShape.right), (INT)(player.bodyShape.bottom));
-    Ellipse(hdc, (INT)(player.headShape.left), (INT)(player.headShape.top), (INT)(player.headShape.right), (INT)(player.headShape.bottom));
-
     // playerImage
     switch (playerState)
     {
@@ -116,10 +121,44 @@ void Player::Render(HDC hdc)
     default:
         break;
     }
+
+    // weapon
+    weaponTear->Render(hdc);
+
+    // debug
+    if(debugMode)
+    {
+        // playerRectangle
+        Rectangle(hdc, (INT)(player.bodyShape.left), (INT)(player.bodyShape.top), (INT)(player.bodyShape.right), (INT)(player.bodyShape.bottom));
+        Ellipse(hdc, (INT)(player.headShape.left), (INT)(player.headShape.top), (INT)(player.headShape.right), (INT)(player.headShape.bottom));
+        // player.headPos
+        wsprintf(text, "player.headPos.x : %d", (INT)(player.headPos.x));
+        TextOut(hdc, (INT)((WIN_SIZE_X * 0.5f) + 250), INT((WIN_SIZE_Y * 0.5f) - 40), text, (INT)(strlen(text)));
+        wsprintf(text, "player.headPos.y : %d", (INT)(player.headPos.y));
+        TextOut(hdc, (INT)((WIN_SIZE_X * 0.5f) + 250), INT((WIN_SIZE_Y * 0.5f) - 20), text, (INT)(strlen(text)));
+        // MousePointer
+        wsprintf(text, "MousePosX : %d", g_ptMouse.x);
+        TextOut(hdc, (INT)((WIN_SIZE_X * 0.5f) + 250), INT((WIN_SIZE_Y * 0.5f) + 20), text, (INT)(strlen(text)));
+        wsprintf(text, "MousePosY : %d", g_ptMouse.y);
+        TextOut(hdc, (INT)((WIN_SIZE_X * 0.5f) + 250), INT((WIN_SIZE_Y * 0.5f) + 40), text, (INT)(strlen(text)));
+        // 기울기
+        float slope = (FLOAT)((player.headShape.bottom - player.headShape.top)) / (FLOAT)((player.headShape.right - player.headShape.left));
+        // section01
+        float section01 = player.headShape.bottom - (FLOAT)(player.headShape.right * slope);
+        float section02 = slope * WIN_SIZE_X + section01;
+        MoveToEx(hdc, 0, section01, NULL);
+        LineTo(hdc, WIN_SIZE_X, section02);
+        // section02
+        section01 = player.headShape.top + (FLOAT)(player.headShape.right * slope);
+        section02 = -(slope * WIN_SIZE_X) + section01;
+        MoveToEx(hdc, 0, section01, NULL);
+        LineTo(hdc, WIN_SIZE_X, section02);
+    }
 }
 
 void Player::PressInputKey()
 {
+    // 이동키
     if (GETSINGLETON_KEY->IsStayKeyDown('W'))                               // 상
     {
         playerState = ObjectStates::WALK;
@@ -166,7 +205,7 @@ void Player::PressInputKey()
     player.headShape.top = (LONG)(player.headPos.y - (player.headSize * 0.5f));			    // Top
     player.headShape.right = (LONG)(player.headPos.x + (player.headSize * 0.5f) + 5);		// Right
     player.headShape.bottom = (LONG)(player.headPos.y + (player.headSize * 0.5f));			// Bottom
-
+    // 이동키 땠을 때
     if (GETSINGLETON_KEY->IsOnceKeyUp('W') || GETSINGLETON_KEY->IsOnceKeyUp('S') || GETSINGLETON_KEY->IsOnceKeyUp('D') || GETSINGLETON_KEY->IsOnceKeyUp('A'))
     {
         playerState = ObjectStates::IDLE;
@@ -175,6 +214,8 @@ void Player::PressInputKey()
 
         headImg->SetCurrFrameX(0);
     }
+    // 공격키
+    if (GETSINGLETON_KEY->IsStayKeyDown(VK_LBUTTON)) { Player::FireWeapon(g_ptMouse.x, g_ptMouse.y); }
 }
 
 #define MAX_BODY_FRAME 9
@@ -190,17 +231,44 @@ void Player::ChangeAnimation()
         bodyImg->SetCurrFrameY(0);
         headImg->SetCurrFrameX(0);
     }
-    if (playerDir == MoveDir::LEFT)
-    {
-        bodyImg->SetCurrFrameY(2);
-        headImg->SetCurrFrameX(6);
-    }
     if (playerDir == MoveDir::RIGHT)
     {
         bodyImg->SetCurrFrameY(1);
         headImg->SetCurrFrameX(2);
     }
+    if (playerDir == MoveDir::LEFT)
+    {
+        bodyImg->SetCurrFrameY(2);
+        headImg->SetCurrFrameX(6);
+    }
 
     bodyImg->SetCurrFrameX(bodyImg->GetCurrFrameX() + 1);
     if (bodyImg->GetCurrFrameX() >= MAX_BODY_FRAME) { bodyImg->SetCurrFrameX(0); }
+}
+
+void Player::FireWeapon(int x, int y)
+{
+    float slope = (FLOAT)((player.headShape.bottom - player.headShape.top)) / (FLOAT)((player.headShape.right - player.headShape.left));
+
+    float section01 = slope * x + (player.headShape.bottom - player.headShape.right * slope);
+    float section02 = -slope * x + (player.headShape.top + player.headShape.right * slope);
+
+    // 정 중앙을 찍었을 때
+    if (x == player.headPos.x && y == player.headPos.y) { weaponTear->WeaponFire(player.headPos, MoveDir::DOWN); }
+    // section01 보다 클 때 (하, 좌)
+    if (y >= section01)
+    {
+        // 하
+        if (y >= section02) { weaponTear->WeaponFire(player.headPos, MoveDir::DOWN); }
+        // 좌
+        else { weaponTear->WeaponFire(player.headPos, MoveDir::LEFT); }
+    }
+    // section01 보다 작을 때 (상, 우)
+    else
+    {
+        // 상
+        if(y <= section02) { weaponTear->WeaponFire(player.headPos, MoveDir::UP); }
+        // 우
+        else { weaponTear->WeaponFire(player.headPos, MoveDir::RIGHT); }
+    }
 }

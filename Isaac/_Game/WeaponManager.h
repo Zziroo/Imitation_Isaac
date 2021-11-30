@@ -20,6 +20,8 @@ public:
 	virtual void Update() override;
 	virtual void Render(HDC hdc) override;
 
+	void WeaponFire(POINTFLOAT pos, MoveDir moveDir);
+
 	virtual ~WeaponManager() = default;
 };
 

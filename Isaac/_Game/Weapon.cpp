@@ -10,7 +10,7 @@ void Weapon::Init()
     pos.x = WIN_SIZE_X * 0.5f;
     pos.y = (WIN_SIZE_Y * 0.5f) - 150;
     objectSize = 30.0f;
-    moveSpeed = 250.0f;
+    moveSpeed = 500.0f;
     shape.left = (LONG)(pos.x - (objectSize * 0.5f));
     shape.top = (LONG)(pos.y - (objectSize * 0.5f));
     shape.right = (LONG)(pos.x + (objectSize * 0.5f));

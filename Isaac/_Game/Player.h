@@ -37,6 +37,7 @@ struct PlayerInfo
 };
 
 class Image;
+class WeaponManager;
 class Player : public GameObject
 {
 private:
@@ -46,8 +47,14 @@ private:
 
 	PlayerInfo		player;
 
-	ObjectStates	playerState = ObjectStates::IDLE;
-	MoveDir			playerDir = MoveDir::DOWN;
+	ObjectStates	playerState = ObjectStates::IDLE;	// 상태
+	MoveDir			playerDir = MoveDir::DOWN;			// 이동 방향
+
+	char			text[64] = {};						// MousePointer
+
+	WeaponManager* weaponTear = nullptr;
+
+	bool			debugMode = false;
 
 protected:
 
@@ -60,6 +67,7 @@ public:
 
 	void PressInputKey();			// 입력키
 	void ChangeAnimation();			// 애니메이션 변화
+	void FireWeapon(int x, int y);	// weapon 발사
 
 	virtual ~Player() = default;
 };

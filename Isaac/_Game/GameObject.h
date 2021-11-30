@@ -21,8 +21,7 @@ public:
 	virtual void Render(HDC hdc) = 0;
 
 	inline POINTFLOAT GetPos() { return pos; }
-	inline void SetPosX(float posX) { this->pos.x = posX; }
-	inline void SetPosY(float posY) { this->pos.y = posY; }
+	inline void SetPos(POINTFLOAT pos) { this->pos = pos; }
 	inline float GetMoveSpeed() { return moveSpeed; }
 
 	virtual ~GameObject() = default;
