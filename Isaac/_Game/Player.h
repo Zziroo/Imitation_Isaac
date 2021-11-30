@@ -6,27 +6,27 @@ struct PlayerInfo
 {
 	// Body
 	POINTFLOAT		bodyPos = {
-		(FLOAT)PLAYER_BODY_POS_X,						// Pos.x
-		(FLOAT)PLAYER_BODY_POS_Y						// Pos.Y
+		(FLOAT)PLAYER_BODY_POS_X,										// Pos.x
+		(FLOAT)PLAYER_BODY_POS_Y										// Pos.Y
 	};
-	float			bodySize = 25.0f;
+	float			bodySize = PLAYER_BODYSIZE;
 	RECT			bodyShape = {
-		(LONG)(bodyPos.x - (bodySize * 0.5f) - 14),		// Left
-		(LONG)(bodyPos.y - (bodySize * 0.5f)),			// Top
-		(LONG)(bodyPos.x + (bodySize * 0.5f) + 14),		// Right
-		(LONG)(bodyPos.y + (bodySize * 0.5f))			// Bottom
+		(LONG)(bodyPos.x - (bodySize * DEVIDE_HALF) - ADJUST_SIZE_14),	// Left
+		(LONG)(bodyPos.y - (bodySize * DEVIDE_HALF)),					// Top
+		(LONG)(bodyPos.x + (bodySize * DEVIDE_HALF) + ADJUST_SIZE_14),	// Right
+		(LONG)(bodyPos.y + (bodySize * DEVIDE_HALF))					// Bottom
 	};
 	// Head
 	POINTFLOAT		headPos = { 
-		(FLOAT)PLAYER_HEAD_POS_X,						// Pos.x
-		(FLOAT)PLAYER_HEAD_POS_Y						// Pos.Y
+		(FLOAT)PLAYER_HEAD_POS_X,										// Pos.x
+		(FLOAT)PLAYER_HEAD_POS_Y										// Pos.Y
 	};
-	float			headSize = 70.0f;
+	float			headSize = PLAYER_HEADSIZE;
 	RECT			headShape = {
-		(LONG)(headPos.x - (headSize * 0.5f) - 5),		// Left
-		(LONG)(headPos.y - (headSize * 0.5f)),			// Top
-		(LONG)(headPos.x + (headSize * 0.5f) + 5),		// Right
-		(LONG)(headPos.y + (headSize * 0.5f))			// Bottom
+		(LONG)(headPos.x - (headSize * DEVIDE_HALF) - ADJUST_SIZE_05),	// Left
+		(LONG)(headPos.y - (headSize * DEVIDE_HALF)),					// Top
+		(LONG)(headPos.x + (headSize * DEVIDE_HALF) + ADJUST_SIZE_05),	// Right
+		(LONG)(headPos.y + (headSize * DEVIDE_HALF))					// Bottom
 	};
 
 };
@@ -42,13 +42,13 @@ private:
 
 	PlayerInfo		player;
 
-	ObjectStates	playerState = ObjectStates::IDLE;	// 상태
-	MoveDir			playerDir = MoveDir::DOWN;			// 이동 방향
+	ObjectStates	playerState = ObjectStates::IDLE;		// 상태
+	MoveDir			playerDir = MoveDir::DOWN;				// 이동 방향
 
-	int				takeLoadWeapon = 20;				// 장전 걸리는 시간
-	int				loadWeapon = takeLoadWeapon;		// 무기 장전
-	bool			isFire = false;						// 무기 발사
-	char			text[64] = {};						// MousePointer
+	int				takeLoadWeapon = TAKE_WEAPONLOADTIME;	// 장전 걸리는 시간
+	int				loadWeapon = takeLoadWeapon;			// 무기 장전
+	bool			isFire = false;							// 무기 발사
+	char			text[64] = {};							// MousePointer
 
 	WeaponManager*	weaponTear = nullptr;
 
@@ -61,9 +61,9 @@ public:
 	virtual void Update() override;
 	virtual void Render(HDC hdc) override;
 
-	void TakeAction();				// 입력키
-	void ChangeAnimation();			// 애니메이션 변화
-	void FireWeapon(int x, int y);	// weapon 발사
+	void TakeAction();										// 입력키
+	void ChangeAnimation();									// 애니메이션 변화
+	void FireWeapon(int x, int y);							// weapon 발사
 
 	inline void SetPlayerHeadPos(POINTFLOAT pos) { this->player.headPos = pos; }
 	inline POINTFLOAT GetPlayerHeadPos() { return this->player.headPos; }

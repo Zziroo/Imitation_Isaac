@@ -64,13 +64,41 @@ inline void SetWindowSize(int sizeX, int sizeY)
 // GameObject
 enum class ObjectStates { IDLE, WALK, HURT, ITEMPICKUP, JUMP, STAT };
 
+#define ADVANCE_FRAME		1
+
+#define DEVIDE_HALF			0.5f
+
+#define ZERO				0
+
 // Player
-#define PLAYER_HEAD_POS_X	WIN_SIZE_X * 0.5f
-#define PLAYER_HEAD_POS_Y	WIN_SIZE_Y * 0.5f
+#define ADJUST_SIZE_05		5
+#define ADJUST_SIZE_09		9
+#define ADJUST_SIZE_14		14
+#define ADJUST_SIZE_30		30
+
 #define PLAYER_BODY_POS_X	PLAYER_HEAD_POS_X
 #define PLAYER_BODY_POS_Y	PLAYER_HEAD_POS_Y + 42.5f
-
+#define PLAYER_BODYSIZE		25.0f
+#define START_BODY_FRAME_X	0
 #define MAX_BODY_FRAME_X	9
+#define BODY_DEFAULT_DIR	0
+#define BODY_RIGHT_DIR		1
+#define BODY_LEFT_DIR		2
+
+#define PLAYER_HEAD_POS_X	WIN_SIZE_X * 0.5f
+#define PLAYER_HEAD_POS_Y	WIN_SIZE_Y * 0.5f
+#define PLAYER_HEADSIZE		70.0f
+#define PLAYER_MOVESPEED	100.0f
+#define HEAD_LOOK_DOWN		0
+#define ATTACKINGSIDE_DOWN	1
+#define HEAD_LOOK_RIGHT		2
+#define ATTACKINGSIDE_RIGHT	3
+#define HEAD_LOOK_UP		4
+#define ATTACKINGSIDE_UP	5
+#define HEAD_LOOK_LEFT		6
+#define ATTACKINGSIDE_LEFT	7
+
+#define TAKE_WEAPONLOADTIME	20
 
 // Weapon
 #define WEAPON_MAX_COUNT	100

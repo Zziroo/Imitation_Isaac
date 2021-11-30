@@ -7,14 +7,14 @@ void Weapon::Init()
 {
     Weapon::FindIamge();
 
-    pos.x = WIN_SIZE_X * 0.5f;
-    pos.y = (WIN_SIZE_Y * 0.5f) - 150;
+    pos.x = WIN_SIZE_X * DEVIDE_HALF;
+    pos.y = (WIN_SIZE_Y * DEVIDE_HALF) - 150;
     objectSize = 30.0f;
     moveSpeed = 500.0f;
-    shape.left = (LONG)(pos.x - (objectSize * 0.5f));
-    shape.top = (LONG)(pos.y - (objectSize * 0.5f));
-    shape.right = (LONG)(pos.x + (objectSize * 0.5f));
-    shape.bottom = (LONG)(pos.y + (objectSize * 0.5f));
+    shape.left = (LONG)(pos.x - (objectSize * DEVIDE_HALF));
+    shape.top = (LONG)(pos.y - (objectSize * DEVIDE_HALF));
+    shape.right = (LONG)(pos.x + (objectSize * DEVIDE_HALF));
+    shape.bottom = (LONG)(pos.y + (objectSize * DEVIDE_HALF));
 }
 
 HRESULT Weapon::FindIamge()
@@ -54,10 +54,10 @@ void Weapon::Update()
             break;
         }
     }
-    shape.left = (LONG)(pos.x - (objectSize * 0.5f));
-    shape.top = (LONG)(pos.y - (objectSize * 0.5f));
-    shape.right = (LONG)(pos.x + (objectSize * 0.5f));
-    shape.bottom = (LONG)(pos.y + (objectSize * 0.5f));
+    shape.left = (LONG)(pos.x - (objectSize * DEVIDE_HALF));
+    shape.top = (LONG)(pos.y - (objectSize * DEVIDE_HALF));
+    shape.right = (LONG)(pos.x + (objectSize * DEVIDE_HALF));
+    shape.bottom = (LONG)(pos.y + (objectSize * DEVIDE_HALF));
 
     Weapon::InitializeWeapon();     // 무기 초기화
 
