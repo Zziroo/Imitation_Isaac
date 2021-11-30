@@ -235,7 +235,6 @@ void Player::PressInputKey()
     player.headShape.bottom = (LONG)(player.headPos.y + (player.headSize * 0.5f));			// Bottom
 }
 
-#define MAX_BODY_FRAME 9
 void Player::ChangeAnimation()
 {
     if (playerDir == MoveDir::UP)
@@ -260,7 +259,7 @@ void Player::ChangeAnimation()
     }
 
     bodyImg->SetCurrFrameX(bodyImg->GetCurrFrameX() + 1);
-    if (bodyImg->GetCurrFrameX() >= MAX_BODY_FRAME) { bodyImg->SetCurrFrameX(0); }
+    if (bodyImg->GetCurrFrameX() >= MAX_BODY_FRAME_X) { bodyImg->SetCurrFrameX(0); }
 }
 
 void Player::FireWeapon(int x, int y)
@@ -274,9 +273,6 @@ void Player::FireWeapon(int x, int y)
 
     if (loadWeapon > takeLoadWeapon)
     {
-        
-        // Á¤ Áß¾ÓÀ» Âï¾úÀ» ¶§
-        if (x == player.headPos.x && y == player.headPos.y) { weaponTear->WeaponFire(MoveDir::DOWN); }
         // section01 º¸´Ù Å¬ ¶§ (ÇÏ, ÁÂ)
         if (y >= section01)
         {

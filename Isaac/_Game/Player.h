@@ -2,11 +2,6 @@
 
 #include "GameObject.h"
 
-#define PLAYER_HEAD_POS_X	WIN_SIZE_X * 0.5f
-#define PLAYER_HEAD_POS_Y	WIN_SIZE_Y * 0.5f
-#define PLAYER_BODY_POS_X	PLAYER_HEAD_POS_X
-#define PLAYER_BODY_POS_Y	PLAYER_HEAD_POS_Y + 42.5f
-
 struct PlayerInfo
 {
 	// Body

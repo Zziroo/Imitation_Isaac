@@ -13,14 +13,14 @@ using namespace std;
 
 #pragma comment(lib, "winmm.lib")
 
-#define WIN_START_POS_X 0
-#define WIN_START_POS_Y 0
-#define WIN_SIZE_X		1280
-#define WIN_SIZE_Y		800
+#define WIN_START_POS_X		0
+#define WIN_START_POS_Y		0
+#define WIN_SIZE_X			1280
+#define WIN_SIZE_Y			800
 
-extern HINSTANCE	g_hInstance;
-extern HWND			g_hWnd;
-extern POINT		g_ptMouse;
+extern HINSTANCE			g_hInstance;
+extern HWND					g_hWnd;
+extern POINT				g_ptMouse;
 
 inline void SetWindowSize(int sizeX, int sizeY)
 {
@@ -61,6 +61,16 @@ inline void SetWindowSize(int sizeX, int sizeY)
 
 #define MAGENTA				RGB(255, 0, 255)
 
+// GameObject
 enum class ObjectStates { IDLE, WALK, HURT, ITEMPICKUP, JUMP, STAT };
 
-#define PLAYER_IMAGE_SCALE	3
+// Player
+#define PLAYER_HEAD_POS_X	WIN_SIZE_X * 0.5f
+#define PLAYER_HEAD_POS_Y	WIN_SIZE_Y * 0.5f
+#define PLAYER_BODY_POS_X	PLAYER_HEAD_POS_X
+#define PLAYER_BODY_POS_Y	PLAYER_HEAD_POS_Y + 42.5f
+
+#define MAX_BODY_FRAME_X	9
+
+// Weapon
+#define WEAPON_MAX_COUNT	100

@@ -42,9 +42,9 @@ void WeaponManager::WeaponFire(MoveDir moveDir)
 	{ 
 		if (vecWeapon[i]->GetIsFire())
 			continue;
-		vecWeapon[i]->SetIsFire(true);
 		vecWeapon[i]->SetPos(owner->GetPlayerHeadPos());
 		vecWeapon[i]->SetMoveDir(moveDir);
+		vecWeapon[i]->SetIsFire(true);
 		break;
 	}
 }

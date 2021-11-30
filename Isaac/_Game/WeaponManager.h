@@ -1,6 +1,5 @@
 #pragma once
 
-#include <vector>
 #include "GameObject.h"
 
 class Weapon;
@@ -12,7 +11,7 @@ private:
 
 	Player* owner = nullptr;
 
-	int maxWeaponCount = 100;		// 최대 무기 수량
+	int maxWeaponCount = WEAPON_MAX_COUNT;	// 최대 무기 수량
 
 protected:
 
