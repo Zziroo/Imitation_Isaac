@@ -107,8 +107,8 @@ HRESULT SceneManager::ChangeScene(string sceneName, string loadingSceneName)
 		DWORD loadThread;
 		HANDLE hThread = CreateThread(NULL,
 			0,
-			LoadingThread,							//실행 시킬 함수포인터(함수이름)
-			NULL,									//실행 시킬 함수에 들어갈 매개변수
+			LoadingThread,							// 실행 시킬 함수포인터(함수이름)
+			NULL,									// 실행 시킬 함수에 들어갈 매개변수
 			0,
 			&loadThread);
 

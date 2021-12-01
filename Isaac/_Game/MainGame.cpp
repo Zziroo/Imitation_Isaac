@@ -8,7 +8,7 @@
 
 void MainGame::Init()
 {
-	//Singleton
+	// Singleton
 	GETSINGLETON_KEY->Init();
 	GETSINGLETON_IMAGE->Init();
 	GETSINGLETON_SCENE->Init();
@@ -21,31 +21,34 @@ void MainGame::Init()
 	GETSINGLETON_SCENE->ChangeScene("TilemapTool");
 
 	srand((unsigned int)time(nullptr));
-	//타이머 셋팅
+	// 타이머 셋팅
 	hTimer = (HANDLE)SetTimer(g_hWnd, 0, 10, NULL);
-	//백버퍼
+	// 백버퍼
 	backBuffer = new Image;
-	maxSizeX = WIN_SIZE_X;
-	maxSizeY = WIN_SIZE_Y;
+	//maxSizeX = WIN_SIZE_X;
+	//maxSizeY = WIN_SIZE_Y;
+	maxSizeX = TILEMAP_SIZE_X;
+	maxSizeY = TILEMAP_SIZE_Y;
+
 	backBuffer->Init(maxSizeX, maxSizeY);
 }
 
 void MainGame::Release()
 {
-	SAFE_RELEASE(backBuffer);			//백버퍼 삭제
-	KillTimer(g_hWnd, 0);				//타이머 객체 삭제
+	SAFE_RELEASE(backBuffer);			// 백버퍼 삭제
+	KillTimer(g_hWnd, 0);				// 타이머 객체 삭제
 
-	//Singleton 삭제
-	//Timer
+	// Singleton 삭제
+	// Timer
 	GETSINGLETON_TIME->Release();
 	GETSINGLETON_TIME->ReleaseSingleton();
-	//Scene
+	// Scene
 	GETSINGLETON_SCENE->Release();
 	GETSINGLETON_SCENE->ReleaseSingleton();
-	//Key
+	// Key
 	GETSINGLETON_KEY->Release();
 	GETSINGLETON_KEY->ReleaseSingleton();
-	//Image
+	// Image
 	GETSINGLETON_IMAGE->Release();
 	GETSINGLETON_IMAGE->ReleaseSingleton();
 }

@@ -21,6 +21,7 @@ Name		Width	Height	Column	Row
 Tilemap
 // UI
 Name		Width	Height	Column	Row
+Exit		412	120	1	1
 Index_00		121	120	1	1
 Index_01		412	120	1	1
 Left		55	80	1	1
