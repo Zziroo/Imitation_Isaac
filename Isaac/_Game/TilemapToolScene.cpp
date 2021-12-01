@@ -22,6 +22,7 @@ HRESULT TilemapToolScene::Init()
 void TilemapToolScene::Release()
 {
 	SAFE_RELEASE(exitBtn);
+	SAFE_DELETE(quitFunc);
 }
 
 void TilemapToolScene::Update()

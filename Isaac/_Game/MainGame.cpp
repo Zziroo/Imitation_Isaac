@@ -14,9 +14,9 @@ void MainGame::Init()
 	GETSINGLETON_SCENE->Init();
 	GETSINGLETON_TIME->Init();
 
+	GETSINGLETON_SCENE->AddScene("InGame", new InGameScene());				// InGame
 	GETSINGLETON_SCENE->AddScene("Title", new TitleScene());				// Title
 	GETSINGLETON_SCENE->AddScene("TilemapTool", new TilemapToolScene());	// TilemapTool
-	GETSINGLETON_SCENE->AddScene("InGame", new InGameScene());				// InGame
 
 	GETSINGLETON_SCENE->ChangeScene("TilemapTool");
 

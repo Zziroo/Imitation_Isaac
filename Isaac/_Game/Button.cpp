@@ -34,10 +34,11 @@ void Button::Release()
 
 void Button::Update()
 {
+	GameObject::OnDebuging();	// 디버깅
+
 	// 마우스로 클릭했을 때 기능 실행.
 	if (PtInRect(&exitBtn.shape, g_ptMouse))
 	{
-		cout << "Exit.bmp 실행 준비 완료.\n";
 		if (GETSINGLETON_KEY->IsOnceKeyDown(VK_LBUTTON)) { buttonState = Button_State::DOWN; }
 		else if (GETSINGLETON_KEY->IsOnceKeyUp(VK_LBUTTON) && buttonState == Button_State::DOWN)
 		{
@@ -47,6 +48,7 @@ void Button::Update()
 		}
 	}
 	else { buttonState = Button_State::NONE; }
+
 }
 
 void Button::Render(HDC hdc)

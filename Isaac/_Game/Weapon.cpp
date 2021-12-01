@@ -61,7 +61,7 @@ void Weapon::Update()
 
     Weapon::InitializeWeapon();     // 무기 초기화
 
-    //GameObject::OnDebuging();     이 함수를 사용하고 싶은데 안됨.
+    GameObject::OnDebuging();       // 이 함수를 사용하고 싶은데 안됨.
 }
 
 void Weapon::Render(HDC hdc)
