@@ -4,31 +4,30 @@ BackGround
 Name		Width	Height	Column	Row
 Title		1280	6400	1	8
 
-Character
+Isaac
 Name		Width	Height	Column	Row
-Body		900	225	10	3
-Head		1200	125	8	1
-Hurt		540	165	3	1
-ItemPickUp	140	165	1	1
-Jump		600	165	4	1
-Stat		340	330	2	2
-Weapon_Tear	45	45	1	1
+Body		540	99	10	3
+Head		720	75	8	1
+Hurt		324	99	3	1
+ItemPickUp	74	99	1	1
+Jump		360	99	4	1
+Stat		204	198	2	2
+Weapon_Tear	30	30	1	1
 
 Enemy
 Name		Width	Height	Column	Row
 
 
 Tilemap
-GUI
+// UI
 Name		Width	Height	Column	Row
-Down		72	72	1	1
-Exit		204	112	1	2
-Left		72	72	1	1
-MultiSelect	72	72	1	1
-Right		72	72	1	1
-Save		204	112	1	2
-Select		72	72	1	1
-Up		72	72	1	1
+Index_00		121	120	1	1
+Index_01		412	120	1	1
+Left		55	80	1	1
+List		157	80	2	1
+Load		202	100	2	1
+Right		55	80	1	1
+Save		202	100	2	1
 
 Object
 Name		Width	Height	Column	Row

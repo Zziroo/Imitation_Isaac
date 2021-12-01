@@ -21,14 +21,13 @@ void ImageManager::Init()
 	GETSINGLETON_IMAGE->AddImage("Image/Character/Weapon_Tear.bmp", 30, 30, 1, 1, true, MAGENTA);
 
 	// Tilemap/GUI
-	GETSINGLETON_IMAGE->AddImage("Image/Tilemap/GUI/Down.bmp", 72, 72, 1, 1, true, MAGENTA);
-	GETSINGLETON_IMAGE->AddImage("Image/Tilemap/GUI/Exit.bmp", 204, 112, 1, 2, true, MAGENTA);
-	GETSINGLETON_IMAGE->AddImage("Image/Tilemap/GUI/Left.bmp", 72, 72, 1, 1, true, MAGENTA);
-	GETSINGLETON_IMAGE->AddImage("Image/Tilemap/GUI/MultiSelect.bmp", 72, 72, 1, 1, true, MAGENTA);
-	GETSINGLETON_IMAGE->AddImage("Image/Tilemap/GUI/Right.bmp", 72, 72, 1, 1, true, MAGENTA);
-	GETSINGLETON_IMAGE->AddImage("Image/Tilemap/GUI/Save.bmp", 204, 112, 1, 2, true, MAGENTA);
-	GETSINGLETON_IMAGE->AddImage("Image/Tilemap/GUI/Select.bmp", 72, 72, 1, 1, true, MAGENTA);
-	GETSINGLETON_IMAGE->AddImage("Image/Tilemap/GUI/Up.bmp", 72, 72, 1, 1, true, MAGENTA);
+	GETSINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Index_00.bmp", 121, 120, 1, 1, true, MAGENTA);
+	GETSINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Index_01.bmp", 412, 120, 1, 1, true, MAGENTA);
+	GETSINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Left.bmp", 55, 80, 1, 1, true, MAGENTA);
+	GETSINGLETON_IMAGE->AddImage("Image/Tilemap/UI/List.bmp", 157, 80, 2, 1, true, MAGENTA);
+	GETSINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Load.bmp", 202, 100, 2, 1, true, MAGENTA);
+	GETSINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Right.bmp", 55, 80, 1, 1, true, MAGENTA);
+	GETSINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Save.bmp", 204, 112, 2, 1, true, MAGENTA);
 
 }
 
