@@ -1,5 +1,6 @@
 #include "MainConfig.h"
 #include "ImageManager.h"
+
 #include "Image.h"
 
 void ImageManager::Init()
@@ -18,6 +19,16 @@ void ImageManager::Init()
 
 	// Weapon(Tear)
 	GETSINGLETON_IMAGE->AddImage("Image/Character/Weapon_Tear.bmp", 30, 30, 1, 1, true, MAGENTA);
+
+	// Tilemap/GUI
+	GETSINGLETON_IMAGE->AddImage("Image/Tilemap/GUI/Down.bmp", 72, 72, 1, 1, true, MAGENTA);
+	GETSINGLETON_IMAGE->AddImage("Image/Tilemap/GUI/Exit.bmp", 204, 112, 1, 2, true, MAGENTA);
+	GETSINGLETON_IMAGE->AddImage("Image/Tilemap/GUI/Left.bmp", 72, 72, 1, 1, true, MAGENTA);
+	GETSINGLETON_IMAGE->AddImage("Image/Tilemap/GUI/MultiSelect.bmp", 72, 72, 1, 1, true, MAGENTA);
+	GETSINGLETON_IMAGE->AddImage("Image/Tilemap/GUI/Right.bmp", 72, 72, 1, 1, true, MAGENTA);
+	GETSINGLETON_IMAGE->AddImage("Image/Tilemap/GUI/Save.bmp", 204, 112, 1, 2, true, MAGENTA);
+	GETSINGLETON_IMAGE->AddImage("Image/Tilemap/GUI/Select.bmp", 72, 72, 1, 1, true, MAGENTA);
+	GETSINGLETON_IMAGE->AddImage("Image/Tilemap/GUI/Up.bmp", 72, 72, 1, 1, true, MAGENTA);
 
 }
 

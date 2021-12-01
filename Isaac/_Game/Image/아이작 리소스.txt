@@ -18,9 +18,17 @@ Enemy
 Name		Width	Height	Column	Row
 
 
-Map
+Tilemap
+GUI
 Name		Width	Height	Column	Row
-
+Down		72	72	1	1
+Exit		204	112	1	2
+Left		72	72	1	1
+MultiSelect	72	72	1	1
+Right		72	72	1	1
+Save		204	112	1	2
+Select		72	72	1	1
+Up		72	72	1	1
 
 Object
 Name		Width	Height	Column	Row
