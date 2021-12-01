@@ -51,8 +51,6 @@ private:
 
 	WeaponManager*	weaponTear = nullptr;
 
-protected:
-
 public:
 	virtual void Init() override;
 	virtual HRESULT FindIamge() override;

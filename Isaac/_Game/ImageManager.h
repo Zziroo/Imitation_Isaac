@@ -8,8 +8,6 @@ private:
 	map<string, Image*>::iterator it;
 	Image* img = nullptr;
 
-protected:
-
 public:
 	void Init();
 	void Release();

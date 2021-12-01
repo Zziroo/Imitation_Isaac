@@ -13,8 +13,6 @@ private:
 
 	int maxWeaponCount = WEAPON_MAX_COUNT;	// 최대 무기 수량
 
-protected:
-
 public:
 	virtual void Init() override;
 	virtual HRESULT FindIamge() override;

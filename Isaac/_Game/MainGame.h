@@ -9,8 +9,6 @@ private:
 	int		maxSizeY = 0;				//SIZE_X
 	Image*	backBuffer = nullptr;		//¹é¹öÆÛ
 
-protected:
-
 public:
 	void Init();
 	void Release();

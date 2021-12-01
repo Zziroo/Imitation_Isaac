@@ -10,8 +10,6 @@ private:
 	POINTFLOAT	pos = { WIN_SIZE_X * 0.5f, WIN_SIZE_Y * 0.5f };
 	int			elapsedScene = 0;
 
-protected:
-
 public:
 	virtual HRESULT Init() override;
 	virtual void Release() override;

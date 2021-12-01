@@ -7,8 +7,6 @@ private:
 	map<string, Scene*>	mapScenes;
 	map<string, Scene*>	mapLoadingScenes;
 
-protected:
-
 public:
 	static Scene* currScene;			// 현재 출력 중인 씬
 	static Scene* readyScene;			// 준비 중인 씬

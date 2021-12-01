@@ -4,8 +4,6 @@ class Scene
 {
 private:
 
-protected:
-
 public:
 	virtual HRESULT Init() = 0;
 	virtual void Release() = 0;

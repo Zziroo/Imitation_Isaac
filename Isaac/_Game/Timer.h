@@ -14,8 +14,6 @@ private:
 	unsigned long	fpsFrameCount;	
 	unsigned long	fps;					// 초당 프레임 수
 
-protected:
-
 public:
 	void Init();
 	void Tick();

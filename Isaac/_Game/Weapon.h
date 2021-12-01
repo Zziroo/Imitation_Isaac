@@ -12,8 +12,6 @@ private:
 
 	bool	isFire = false;				// 발사 됐는지
 
-protected:
-
 public:
 	virtual void Init() override;
 	virtual HRESULT FindIamge() override;

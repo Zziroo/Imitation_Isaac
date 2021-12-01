@@ -10,8 +10,6 @@ private:
 	Image*	sampleImg = nullptr;
 	Player*	playerIsaac = nullptr;
 
-protected:
-
 public:
 	virtual HRESULT Init() override;
 	virtual void Release() override;

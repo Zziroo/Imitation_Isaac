@@ -6,8 +6,6 @@ class TilemapToolScene : public Scene
 {
 private:
 
-protected:
-
 public:
 	virtual HRESULT Init() override;
 	virtual void Release() override;

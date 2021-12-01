@@ -6,8 +6,6 @@ class Monster : public GameObject
 {
 private:
 
-protected:
-
 public:
 	virtual void Init() override;
 	virtual HRESULT FindIamge() override;

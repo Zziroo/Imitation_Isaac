@@ -7,8 +7,6 @@ private:
 	Timer*	timer = nullptr;
 	char	szText[256] = {};
 
-protected:
-
 public:
 	void Init();
 	void Release();
