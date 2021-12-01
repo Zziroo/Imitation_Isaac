@@ -21,8 +21,9 @@ void ImageManager::Init()
 	GETSINGLETON_IMAGE->AddImage("Image/Character/Weapon_Tear.bmp", 30, 30, 1, 1, true, MAGENTA);
 
 	// Tilemap/GUI
-	GETSINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Index_00.bmp", 121, 120, 1, 1, true, MAGENTA);
-	GETSINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Index_01.bmp", 412, 120, 1, 1, true, MAGENTA);
+	GETSINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Exit.bmp", 206, 60, 1, 1, true, MAGENTA);
+	GETSINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Index_00.bmp", 61, 60, 1, 1, true, MAGENTA);
+	GETSINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Index_01.bmp", 206, 60, 1, 1, true, MAGENTA);
 	GETSINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Left.bmp", 55, 80, 1, 1, true, MAGENTA);
 	GETSINGLETON_IMAGE->AddImage("Image/Tilemap/UI/List.bmp", 157, 80, 2, 1, true, MAGENTA);
 	GETSINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Load.bmp", 202, 100, 2, 1, true, MAGENTA);
@@ -80,8 +81,8 @@ void ImageManager::DeleteImage(const char* fileName)
 {
 	it = mapImages.find(fileName);
 	if (it == mapImages.end()) { return; }
-	//Image 동적할당 해제
+	// Image 동적할당 해제
 	SAFE_RELEASE(it->second);
-	//맵에서 노드 삭제
+	// 맵에서 노드 삭제
 	mapImages.erase(it);
 }

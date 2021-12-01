@@ -2,9 +2,16 @@
 
 #include "Scene.h"
 
+class Button;
+class ButtonFunction;
+class Image;
 class TilemapToolScene : public Scene
 {
 private:
+	Button*			exitBtn = nullptr;
+	ButtonFunction* quitFunc = nullptr;
+
+	Image*			backGround = nullptr;
 
 public:
 	virtual HRESULT Init() override;

@@ -72,6 +72,12 @@ enum class ObjectStates { IDLE, WALK, HURT, ITEMPICKUP, JUMP, STAT };
 
 #define ZERO				0
 
+// Button
+typedef struct ArgumentFuncPtr
+{
+
+} ARGUMENT_PTR, *LPARGUMENT_PTR;
+
 // Player
 #define ADJUST_SIZE_05		5
 #define ADJUST_SIZE_09		9
