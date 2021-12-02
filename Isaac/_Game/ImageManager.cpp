@@ -6,29 +6,29 @@
 void ImageManager::Init()
 {
 	// Title BackGround
-	GETSINGLETON_IMAGE->AddImage("Image/BackGround/BackGround_Black.bmp", 1920, 1080);
-	GETSINGLETON_IMAGE->AddImage("Image/BackGround/Title.bmp", 1280, 6400, 1, 8);
+	GET_SINGLETON_IMAGE->AddImage("Image/BackGround/BackGround_Black.bmp", 1920, 1080);
+	GET_SINGLETON_IMAGE->AddImage("Image/BackGround/Title.bmp", 1280, 6400, 1, 8);
 
 	// Isaac
-	GETSINGLETON_IMAGE->AddImage("Image/Character/Body.bmp", 540, 99, 10, 3, true, MAGENTA);
-	GETSINGLETON_IMAGE->AddImage("Image/Character/Head.bmp", 720, 75, 8, 1, true, MAGENTA);
-	GETSINGLETON_IMAGE->AddImage("Image/Character/Hurt.bmp", 324, 99, 3, 1, true, MAGENTA);
-	GETSINGLETON_IMAGE->AddImage("Image/Character/ItemPickUp.bmp", 74, 99, 1, 1, true, MAGENTA);
-	GETSINGLETON_IMAGE->AddImage("Image/Character/Jump.bmp", 360, 99, 4, 1, true, MAGENTA);
-	GETSINGLETON_IMAGE->AddImage("Image/Character/Stat.bmp", 204, 198, 2, 2, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Character/Body.bmp", 540, 99, 10, 3, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Character/Head.bmp", 720, 75, 8, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Character/Hurt.bmp", 324, 99, 3, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Character/ItemPickUp.bmp", 74, 99, 1, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Character/Jump.bmp", 360, 99, 4, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Character/Stat.bmp", 204, 198, 2, 2, true, MAGENTA);
 
 	// Weapon(Tear)
-	GETSINGLETON_IMAGE->AddImage("Image/Character/Weapon_Tear.bmp", 30, 30, 1, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Character/Weapon_Tear.bmp", 30, 30, 1, 1, true, MAGENTA);
 
 	// Tilemap/GUI
-	GETSINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Exit.bmp", 206, 60, 1, 1, true, MAGENTA);
-	GETSINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Index_00.bmp", 61, 60, 1, 1, true, MAGENTA);
-	GETSINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Index_01.bmp", 206, 60, 1, 1, true, MAGENTA);
-	GETSINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Left.bmp", 55, 80, 1, 1, true, MAGENTA);
-	GETSINGLETON_IMAGE->AddImage("Image/Tilemap/UI/List.bmp", 157, 80, 2, 1, true, MAGENTA);
-	GETSINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Load.bmp", 202, 100, 2, 1, true, MAGENTA);
-	GETSINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Right.bmp", 55, 80, 1, 1, true, MAGENTA);
-	GETSINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Save.bmp", 204, 112, 2, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Exit.bmp", 206, 60, 1, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Index_00.bmp", 61, 60, 1, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Index_01.bmp", 206, 60, 1, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Left.bmp", 55, 80, 1, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/UI/List.bmp", 157, 80, 2, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Load.bmp", 162, 80, 2, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Right.bmp", 55, 80, 1, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Save.bmp", 162, 80, 2, 1, true, MAGENTA);
 
 }
 
