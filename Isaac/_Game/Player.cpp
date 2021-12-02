@@ -10,8 +10,8 @@ void Player::Init()
     switch (playerState)
     {
     case ObjectStates::IDLE:    case ObjectStates::WALK:
-        bodyImg = GET_SINGLETON_IMAGE->FindImage("Image/Character/Body.bmp");
-        headImg = GET_SINGLETON_IMAGE->FindImage("Image/Character/Head.bmp");
+        bodyInfo.image = GET_SINGLETON_IMAGE->FindImage("Image/Character/Body.bmp");
+        headInfo.image = GET_SINGLETON_IMAGE->FindImage("Image/Character/Head.bmp");
         break;
     case ObjectStates::HURT:
         otherStateImg = GET_SINGLETON_IMAGE->FindImage("Image/Character/Hurt.bmp");
@@ -54,7 +54,6 @@ void Player::Update()
     { 
         cout << "loadWeapon : " << loadWeapon << "\n";  // 무기 장전
     }
-
 #endif
 
     Player::TakeAction();       // 입력키
@@ -67,8 +66,8 @@ void Player::Render(HDC hdc)
     switch (playerState)
     {
     case ObjectStates::IDLE:    case ObjectStates::WALK:
-        bodyImg->Render(hdc, (INT)(player.bodyPos.x), (INT)(player.bodyPos.y), bodyImg->GetCurrFrameX(), bodyImg->GetCurrFrameY());
-        headImg->Render(hdc, (INT)(player.headPos.x), (INT)(player.headPos.y), headImg->GetCurrFrameX(), headImg->GetCurrFrameY());
+        bodyInfo.image->Render(hdc, (INT)(bodyInfo.pos.x), (INT)(bodyInfo.pos.y), bodyInfo.image->GetCurrFrameX(), bodyInfo.image->GetCurrFrameY());
+        headInfo.image->Render(hdc, (INT)(headInfo.pos.x), (INT)(headInfo.pos.y), headInfo.image->GetCurrFrameX(), headInfo.image->GetCurrFrameY());
         break;
     case ObjectStates::HURT:
         otherStateImg->Render(hdc, (INT)(pos.x), (INT)(pos.y), otherStateImg->GetCurrFrameX(), otherStateImg->GetCurrFrameY());
@@ -98,13 +97,13 @@ void Player::OnDebug(HDC hdc)
     if (debugMode)
     {
         // playerRectangle
-        Rectangle(hdc, (INT)(player.bodyShape.left), (INT)(player.bodyShape.top), (INT)(player.bodyShape.right), (INT)(player.bodyShape.bottom));
-        Ellipse(hdc, (INT)(player.headShape.left), (INT)(player.headShape.top), (INT)(player.headShape.right), (INT)(player.headShape.bottom));
+        Rectangle(hdc, (INT)(bodyInfo.shape.left), (INT)(bodyInfo.shape.top), (INT)(bodyInfo.shape.right), (INT)(bodyInfo.shape.bottom));
+        Ellipse(hdc, (INT)(headInfo.shape.left), (INT)(headInfo.shape.top), (INT)(headInfo.shape.right), (INT)(headInfo.shape.bottom));
 
-        // player.headPos
-        wsprintf(text, "player.headPos.x : %d", (INT)(player.headPos.x));
+        // player.pos
+        wsprintf(text, "player.pos.x : %d", (INT)(headInfo.pos.x));
         TextOut(hdc, (INT)((WIN_SIZE_X * DEVIDE_HALF) + 250), (INT)((WIN_SIZE_Y * DEVIDE_HALF) - 40), text, (INT)(strlen(text)));
-        wsprintf(text, "player.headPos.y : %d", (INT)(player.headPos.y));
+        wsprintf(text, "player.pos.y : %d", (INT)(headInfo.pos.y));
         TextOut(hdc, (INT)((WIN_SIZE_X * DEVIDE_HALF) + 250), (INT)((WIN_SIZE_Y * DEVIDE_HALF) - 20), text, (INT)(strlen(text)));
         // MousePointer
         wsprintf(text, "Mouse.PosX : %d", g_ptMouse.x);
@@ -112,14 +111,14 @@ void Player::OnDebug(HDC hdc)
         wsprintf(text, "Mouse.PosY : %d", g_ptMouse.y);
         TextOut(hdc, (INT)((WIN_SIZE_X * DEVIDE_HALF) + 250), (INT)((WIN_SIZE_Y * DEVIDE_HALF) + 40), text, (INT)(strlen(text)));
         // 기울기
-        float slope = (FLOAT)((player.headShape.bottom - player.headShape.top)) / (FLOAT)((player.headShape.right - player.headShape.left));
+        float slope = (FLOAT)((headInfo.shape.bottom - headInfo.shape.top)) / (FLOAT)((headInfo.shape.right - headInfo.shape.left));
         // section01
-        float section01 = player.headShape.bottom - (FLOAT)(player.headShape.right * slope);
+        float section01 = headInfo.shape.bottom - (FLOAT)(headInfo.shape.right * slope);
         float section02 = slope * WIN_SIZE_X + section01;
         MoveToEx(hdc, 0, (INT)section01, NULL);
         LineTo(hdc, WIN_SIZE_X, (INT)section02);
         // section02
-        section01 = player.headShape.top + (FLOAT)(player.headShape.right * slope);
+        section01 = headInfo.shape.top + (FLOAT)(headInfo.shape.right * slope);
         section02 = -(slope * WIN_SIZE_X) + section01;
         MoveToEx(hdc, 0, (INT)section01, NULL);
         LineTo(hdc, WIN_SIZE_X, (INT)section02);
@@ -130,44 +129,44 @@ void Player::ChangeAnimation()
 {
     if (playerDir == MoveDir::UP)
     {
-        bodyImg->SetCurrFrameY(BODY_DEFAULT_DIR);
+        bodyInfo.image->SetCurrFrameY(BODY_DEFAULT_DIR);
         if (!isFire) 
         { 
-            headImg->SetCurrFrameX(HEAD_LOOK_UP);
+            headInfo.image->SetCurrFrameX(HEAD_LOOK_UP);
         }
     }
     if (playerDir == MoveDir::DOWN)
     {
-        bodyImg->SetCurrFrameY(BODY_DEFAULT_DIR);
+        bodyInfo.image->SetCurrFrameY(BODY_DEFAULT_DIR);
         if (!isFire) 
         { 
-            headImg->SetCurrFrameX(HEAD_LOOK_DOWN);
+            headInfo.image->SetCurrFrameX(HEAD_LOOK_DOWN);
         }
     }
     if (playerDir == MoveDir::RIGHT)
     {
-        bodyImg->SetCurrFrameY(BODY_RIGHT_DIR);
+        bodyInfo.image->SetCurrFrameY(BODY_RIGHT_DIR);
         if (!isFire) 
         { 
-            headImg->SetCurrFrameX(HEAD_LOOK_RIGHT);
+            headInfo.image->SetCurrFrameX(HEAD_LOOK_RIGHT);
         }
     }
     if (playerDir == MoveDir::LEFT)
     {
-        bodyImg->SetCurrFrameY(BODY_LEFT_DIR);
+        bodyInfo.image->SetCurrFrameY(BODY_LEFT_DIR);
         if (!isFire) 
         { 
-            headImg->SetCurrFrameX(HEAD_LOOK_LEFT);
+            headInfo.image->SetCurrFrameX(HEAD_LOOK_LEFT);
         }
     }
 
     ++elapsedAnime;
     if (elapsedAnime > 5)
     {
-        bodyImg->SetCurrFrameX(bodyImg->GetCurrFrameX() + ADVANCE_FRAME);
-        if (bodyImg->GetCurrFrameX() >= MAX_BODY_FRAME_X) 
+        bodyInfo.image->SetCurrFrameX(bodyInfo.image->GetCurrFrameX() + ADVANCE_FRAME);
+        if (bodyInfo.image->GetCurrFrameX() >= MAX_BODY_FRAME_X)
         { 
-            bodyImg->SetCurrFrameX(START_BODY_FRAME_X);
+            bodyInfo.image->SetCurrFrameX(START_BODY_FRAME_X);
         }
 
         elapsedAnime = ZERO;
@@ -178,10 +177,10 @@ void Player::FireWeapon(int x, int y)
 {
     ++loadWeapon;
 
-    float slope = (FLOAT)((player.headShape.bottom - player.headShape.top)) / (FLOAT)((player.headShape.right - player.headShape.left));
+    float slope = (FLOAT)((headInfo.shape.bottom - headInfo.shape.top)) / (FLOAT)((headInfo.shape.right - headInfo.shape.left));
 
-    float section01 = (FLOAT)(slope * x) + (player.headShape.bottom - (FLOAT)(player.headShape.right * slope));
-    float section02 = (FLOAT)((-slope) * x) + (player.headShape.top + (FLOAT)(player.headShape.right * slope));
+    float section01 = (FLOAT)(slope * x) + (headInfo.shape.bottom - (FLOAT)(headInfo.shape.right * slope));
+    float section02 = (FLOAT)((-slope) * x) + (headInfo.shape.top + (FLOAT)(headInfo.shape.right * slope));
 
     if (loadWeapon > takeLoadWeapon)
     {
@@ -191,13 +190,13 @@ void Player::FireWeapon(int x, int y)
             // 하
             if (y >= section02)
             {
-                headImg->SetCurrFrameX(ATTACKINGSIDE_DOWN);
+                headInfo.image->SetCurrFrameX(ATTACKINGSIDE_DOWN);
                 weaponTear->WeaponFire(MoveDir::DOWN);
             }
             // 좌
             else
             {
-                headImg->SetCurrFrameX(ATTACKINGSIDE_LEFT);
+                headInfo.image->SetCurrFrameX(ATTACKINGSIDE_LEFT);
                 weaponTear->WeaponFire(MoveDir::LEFT);
             }
         }
@@ -207,13 +206,13 @@ void Player::FireWeapon(int x, int y)
             // 상
             if (y <= section02)
             {
-                headImg->SetCurrFrameX(ATTACKINGSIDE_UP);
+                headInfo.image->SetCurrFrameX(ATTACKINGSIDE_UP);
                 weaponTear->WeaponFire(MoveDir::UP);
             }
             // 우
             else
             {
-                headImg->SetCurrFrameX(ATTACKINGSIDE_RIGHT);
+                headInfo.image->SetCurrFrameX(ATTACKINGSIDE_RIGHT);
                 weaponTear->WeaponFire(MoveDir::RIGHT);
             }
         }
@@ -228,10 +227,10 @@ void Player::TakeAction()
     if (GET_SINGLETON_KEY->IsOnceKeyUp('W') || GET_SINGLETON_KEY->IsOnceKeyUp('S') || GET_SINGLETON_KEY->IsOnceKeyUp('D') || GET_SINGLETON_KEY->IsOnceKeyUp('A'))
     {
         playerState = ObjectStates::IDLE;
-        bodyImg->SetCurrFrameX(START_BODY_FRAME_X);
-        bodyImg->SetCurrFrameY(BODY_DEFAULT_DIR);
+        bodyInfo.image->SetCurrFrameX(START_BODY_FRAME_X);
+        bodyInfo.image->SetCurrFrameY(BODY_DEFAULT_DIR);
 
-        headImg->SetCurrFrameX(HEAD_LOOK_DOWN);
+        headInfo.image->SetCurrFrameX(HEAD_LOOK_DOWN);
     }
     // 공격키 땠을 때
     if (GET_SINGLETON_KEY->IsOnceKeyUp(VK_LBUTTON))
@@ -244,8 +243,8 @@ void Player::TakeAction()
     {
         playerState = ObjectStates::WALK;
         playerDir = MoveDir::UP;
-        player.bodyPos.y -= moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
-        player.headPos.y -= moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
+        bodyInfo.pos.y -= moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
+        headInfo.pos.y -= moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
 
         Player::ChangeAnimation();
     }
@@ -253,8 +252,8 @@ void Player::TakeAction()
     {
         playerState = ObjectStates::WALK;
         playerDir = MoveDir::DOWN;
-        player.bodyPos.y += moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
-        player.headPos.y += moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
+        bodyInfo.pos.y += moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
+        headInfo.pos.y += moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
 
         Player::ChangeAnimation();
     }
@@ -262,8 +261,8 @@ void Player::TakeAction()
     {
         playerState = ObjectStates::WALK;
         playerDir = MoveDir::RIGHT;
-        player.bodyPos.x += moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
-        player.headPos.x += moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
+        bodyInfo.pos.x += moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
+        headInfo.pos.x += moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
 
         Player::ChangeAnimation();
     }
@@ -271,8 +270,8 @@ void Player::TakeAction()
     {
         playerState = ObjectStates::WALK;
         playerDir = MoveDir::LEFT;
-        player.bodyPos.x -= moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
-        player.headPos.x -= moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
+        bodyInfo.pos.x -= moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
+        headInfo.pos.x -= moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
 
         Player::ChangeAnimation();
     }
@@ -284,13 +283,13 @@ void Player::TakeAction()
     }
 
     // bodyShape
-    player.bodyShape.left = (LONG)(player.bodyPos.x - (player.bodySize * DEVIDE_HALF) - ADJUST_SIZE_14);	// Left
-    player.bodyShape.top = (LONG)(player.bodyPos.y - (player.bodySize * DEVIDE_HALF));			            // Top
-    player.bodyShape.right = (LONG)(player.bodyPos.x + (player.bodySize * DEVIDE_HALF) + ADJUST_SIZE_14);	// Right
-    player.bodyShape.bottom = (LONG)(player.bodyPos.y + (player.bodySize * DEVIDE_HALF));			        // Bottom
+    bodyInfo.shape.left = (LONG)(bodyInfo.pos.x - (bodyInfo.size * DEVIDE_HALF) - ADJUST_SIZE_14);	    // Left
+    bodyInfo.shape.top = (LONG)(bodyInfo.pos.y - (bodyInfo.size * DEVIDE_HALF));			            // Top
+    bodyInfo.shape.right = (LONG)(bodyInfo.pos.x + (bodyInfo.size * DEVIDE_HALF) + ADJUST_SIZE_14);	    // Right
+    bodyInfo.shape.bottom = (LONG)(bodyInfo.pos.y + (bodyInfo.size * DEVIDE_HALF));			            // Bottom
     // headShape
-    player.headShape.left = (LONG)(player.headPos.x - (player.headSize * DEVIDE_HALF) - ADJUST_SIZE_05);    // Left
-    player.headShape.top = (LONG)(player.headPos.y - (player.headSize * DEVIDE_HALF));			            // Top
-    player.headShape.right = (LONG)(player.headPos.x + (player.headSize * DEVIDE_HALF) + ADJUST_SIZE_05);	// Right
-    player.headShape.bottom = (LONG)(player.headPos.y + (player.headSize * DEVIDE_HALF));			        // Bottom
+    headInfo.shape.left = (LONG)(headInfo.pos.x - (headInfo.size * DEVIDE_HALF) - ADJUST_SIZE_05);      // Left
+    headInfo.shape.top = (LONG)(headInfo.pos.y - (headInfo.size * DEVIDE_HALF));			            // Top
+    headInfo.shape.right = (LONG)(headInfo.pos.x + (headInfo.size * DEVIDE_HALF) + ADJUST_SIZE_05);	    // Right
+    headInfo.shape.bottom = (LONG)(headInfo.pos.y + (headInfo.size * DEVIDE_HALF));			            // Bottom
 }

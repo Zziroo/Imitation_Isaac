@@ -12,26 +12,26 @@ HRESULT TilemapToolScene::Init()
 	backGround = GET_SINGLETON_IMAGE->FindImage("Image/BackGround/BackGround_Black.bmp");
 
 	quitFunc = new ButtonFunction;
-	exitBtn = new Button;
-	exitBtn->Init();
-	exitBtn->SetFunction(&ButtonFunction::QuitProgram, quitFunc);
+	button = new Button;
+	button->Init();
+	button->SetFunction(&ButtonFunction::QuitProgram, quitFunc);
 
 	return S_OK;
 }
 
 void TilemapToolScene::Release()
 {
-	SAFE_RELEASE(exitBtn);
+	SAFE_RELEASE(button);
 	SAFE_DELETE(quitFunc);
 }
 
 void TilemapToolScene::Update()
 {
-	exitBtn->Update();
+	button->Update();
 }
 
 void TilemapToolScene::Render(HDC hdc)
 {
 	backGround->Render(hdc);
-	exitBtn->Render(hdc);
+	button->Render(hdc);
 }
