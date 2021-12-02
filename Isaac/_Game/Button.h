@@ -19,7 +19,9 @@ private:
 	};
 
 private:
-	ButtonInfo			exitBtn = {};
+	ButtonInfo			exitBtn = {};		// Exit
+	ButtonInfo			saveBtn = {};		// Save
+	ButtonInfo			loadBtn = {};		// Load
 	Button_State		buttonState = Button_State::NONE;
 
 	FuncPtr				pFunc = nullptr;
@@ -28,11 +30,12 @@ private:
 
 public:
 	virtual void Init() override;
-	virtual HRESULT FindIamge() override;
 	virtual void Release() override;
 	virtual void Update() override;
 	virtual void Render(HDC hdc) override;
+	virtual void OnDebug(HDC hdc) override;
 
+	void DeclareButtonInfo(ButtonInfo* btnInfo, int width, int height);
 	void SetFunction(FuncPtr pFunc, ButtonFunction* btnFunc, ArgumentFuncPtr* argFunc = nullptr) { this->pFunc = pFunc; this->btnFunc = btnFunc; this->argFunc = argFunc; }
 
 	virtual ~Button() = default;
