@@ -106,8 +106,5 @@ typedef struct ArgumentFuncPtr
 #define HEAD_LOOK_LEFT			6
 #define ATTACKING_LEFTSIDE		7
 
-#define TAKE_LOAD_WEAPON_TIME	35
-#define LOADING_CONPLETE_TIME	0
-
 // Weapon
 #define WEAPON_MAX_COUNT		100

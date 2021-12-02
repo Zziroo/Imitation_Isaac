@@ -43,11 +43,9 @@ void Player::Update()
 {
 #ifdef _DEBUG
     GameObject::Update();
-    //if (headInfo.blinkEye > 0) { cout << "headInfo.blinkEye : " << headInfo.blinkEye << "\n"; }
     cout << boolalpha << "isFire : " << isFire << "\n";
-    if (loadWeapon < TAKE_LOAD_WEAPON_TIME) { cout << "loadWeapon : " << loadWeapon << "\n"; }
+    //if (headInfo.blinkEye > 0) { cout << "headInfo.blinkEye : " << headInfo.blinkEye << "\n"; }
 #endif
-
     TakeAction();
     Move();
     BlinkEye();
@@ -156,15 +154,7 @@ void Player::BlinkEye()
 {
     ChangeAttackFrame();
     
-    if (isFire)
-    {
-       --loadWeapon;
-       if (loadWeapon < LOADING_CONPLETE_TIME)
-       {
-           isFire = false;
-           loadWeapon = TAKE_LOAD_WEAPON_TIME;
-       }
-    }
+    isFire = false;
 }
 
 void Player::ChangeAnimation()

@@ -45,8 +45,6 @@ private:
 
 	ObjectStates	playerState = ObjectStates::IDLE;					// 상태
 
-	int				loadWeapon = TAKE_LOAD_WEAPON_TIME;					// 무기 장전에 걸리는 시간
-	int				takeLoadWeapon = LOADING_CONPLETE_TIME;				// 무기 장전 완료
 	bool			isFire = false;										// 무기 발사
 	char			text[64] = {};										// MousePointer
 
@@ -75,8 +73,13 @@ public:
 
 	float CalculateSlope(RECT rc);										// 기울기
 
+	inline void SetIsFire(bool isFire) { this->isFire = isFire; }
 	inline void SetPlayerHeadPos(POINTFLOAT pos) { this->headInfo.pos = pos; }
+	inline void SetPlayerHeadMoveDir(MoveDir moveDir) { this->headInfo.moveDir = moveDir; }
+
+	inline bool GetIsFire() { return this->isFire; }
 	inline POINTFLOAT GetPlayerHeadPos() { return this->headInfo.pos; }
+	inline MoveDir GetPlayerHeadMoveDir() { return this->headInfo.moveDir; }
 
 	virtual ~Player() = default;
 };

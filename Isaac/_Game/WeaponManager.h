@@ -19,7 +19,7 @@ public:
 	virtual void Update() override;
 	virtual void Render(HDC hdc) override;
 
-	void WeaponFire(MoveDir moveDir);
+	void WeaponFire();
 
 	inline void SetOwner(Player* owner) { this->owner = owner;}
 

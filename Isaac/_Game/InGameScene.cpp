@@ -13,6 +13,7 @@ HRESULT InGameScene::Init()
 	// WeaponManager
 	playerWeapon = new WeaponManager;
 	playerWeapon->Init();
+	playerWeapon->SetOwner(playerIsaac);
 
 	return S_OK;
 }
@@ -25,8 +26,14 @@ void InGameScene::Release()
 
 void InGameScene::Update()
 {
+	cout << boolalpha << playerIsaac->GetIsFire() << endl;
 	playerIsaac->Update();
 	playerWeapon->Update();
+
+	if (playerIsaac->GetIsFire())
+	{
+		playerWeapon->WeaponFire();
+	}
 }
 
 void InGameScene::Render(HDC hdc)

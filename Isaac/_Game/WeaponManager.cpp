@@ -43,15 +43,15 @@ void WeaponManager::Render(HDC hdc)
 	}
 }
 
-void WeaponManager::WeaponFire(MoveDir moveDir)
+void WeaponManager::WeaponFire()
 {
 	for (size_t i = 0; i < vecWeapon.size(); ++i) 
 	{ 
 		if (vecWeapon[i]->GetIsFire())
 			continue;
-		vecWeapon[i]->SetPos(owner->GetPlayerHeadPos());
-		vecWeapon[i]->SetMoveDir(moveDir);
 		vecWeapon[i]->SetIsFire(true);
+		vecWeapon[i]->SetPos(owner->GetPlayerHeadPos());
+		vecWeapon[i]->SetMoveDir(owner->GetPlayerHeadMoveDir());
 		break;
 	}
 }
