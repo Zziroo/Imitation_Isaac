@@ -12,6 +12,8 @@ void WeaponManager::Init()
 	{
 		vecWeapon[i] = new Weapon;		// vecWeapon.push_back(new Weapon); ¶ûÀÇ Â÷ÀÌÁ¡
 		vecWeapon[i]->Init();
+		POINTFLOAT pos{ 100.0f + (i % 25) * 45.0f, 100.0f + (i / 25) * 45.0f };
+		vecWeapon[i]->SetPos(pos);
 	}
 }
 

@@ -3,7 +3,7 @@
 
 #include "Image.h"
 
-#define TILETOOL
+//#define TILETOOL
 
 void MainGame::Init()
 {

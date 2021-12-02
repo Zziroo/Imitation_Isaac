@@ -4,11 +4,13 @@
 
 class Image;
 class Player;
+class WeaponManager;
 class InGameScene : public Scene
 {
 private:
-	Image*	sampleImg = nullptr;
-	Player*	playerIsaac = nullptr;
+	Image*			sampleImg = nullptr;
+	Player*			playerIsaac = nullptr;
+	WeaponManager*	playerWeapon = nullptr;
 
 public:
 	virtual HRESULT Init() override;

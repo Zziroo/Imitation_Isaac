@@ -24,7 +24,10 @@ bool KeyManager::IsOnceKeyDown(int key)
 			return true;
 		}
 	}
-	else { keyDown[key] = false; }
+	else 
+	{ 
+		keyDown[key] = false;
+	}
 
 	return false;
 }
@@ -39,7 +42,10 @@ bool KeyManager::IsOnceKeyDown(char key)
 			return true;
 		}
 	}
-	else { keyDown[key] = false; }
+	else 
+	{ 
+		keyDown[key] = false;
+	}
 
 	return false;
 }

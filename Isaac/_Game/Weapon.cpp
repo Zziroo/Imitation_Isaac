@@ -56,12 +56,12 @@ void Weapon::Update()
 
 void Weapon::Render(HDC hdc)
 {
-    GameObject::Render(hdc);
-
-    if (isFire) 
+    //if (isFire) 
     { 
         tear->Render(hdc, (INT)(pos.x), (INT)(pos.y), tear->GetCurrFrameX(), tear->GetCurrFrameY());     // Image
-    }                          
+    }
+
+    GameObject::Render(hdc);                          
 }
 
 void Weapon::OnDebug(HDC hdc)
