@@ -44,7 +44,10 @@ void ImageManager::Release()
 
 void ImageManager::AddImage(const char* fileName, int width, int height, bool isTrans, COLORREF transColor)
 {
-	if (FindImage(fileName)) { return; }
+	if (FindImage(fileName)) 
+	{ 
+		return; 
+	}
 
 	img = new Image;
 	if (FAILED(img->Init(fileName, width, height, isTrans, transColor))) 
@@ -58,7 +61,10 @@ void ImageManager::AddImage(const char* fileName, int width, int height, bool is
 
 void ImageManager::AddImage(const char* fileName, int width, int height, int maxFrameX, int maxFrameY, bool isTrans, COLORREF transColor)
 {
-	if (FindImage(fileName)) { return; }
+	if (FindImage(fileName)) 
+	{ 
+		return;
+	}
 
 	img = new Image;
 	if (FAILED(img->Init(fileName, width, height, maxFrameX, maxFrameY, isTrans, transColor))) 
@@ -73,14 +79,22 @@ void ImageManager::AddImage(const char* fileName, int width, int height, int max
 Image* ImageManager::FindImage(const char* fileName)
 {
 	it = mapImages.find(fileName);
-	if (it == mapImages.end()) { return nullptr; }
+	if (it == mapImages.end()) 
+	{ 
+		return nullptr;
+	}
+
 	return it->second;
 }
 
 void ImageManager::DeleteImage(const char* fileName)
 {
 	it = mapImages.find(fileName);
-	if (it == mapImages.end()) { return; }
+	if (it == mapImages.end()) 
+	{ 
+		return;
+	}
+
 	// Image 동적할당 해제
 	SAFE_RELEASE(it->second);
 	// 맵에서 노드 삭제

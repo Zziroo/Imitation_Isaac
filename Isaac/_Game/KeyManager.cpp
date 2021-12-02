@@ -46,7 +46,10 @@ bool KeyManager::IsOnceKeyDown(char key)
 
 bool KeyManager::IsOnceKeyUp(int key)
 {
-	if (GetAsyncKeyState(key) & 0x8000) { keyUp[key] = false; }
+	if (GetAsyncKeyState(key) & 0x8000) 
+	{ 
+		keyUp[key] = false;
+	}
 	else 
 	{
 		if (keyUp[key] == false) 
@@ -60,7 +63,10 @@ bool KeyManager::IsOnceKeyUp(int key)
 
 bool KeyManager::IsOnceKeyUp(char key)
 {
-	if (GetAsyncKeyState(key) & 0x8000) { keyUp[key] = false; }
+	if (GetAsyncKeyState(key) & 0x8000) 
+	{ 
+		keyUp[key] = false;
+	}
 	else 
 	{
 		if (keyUp[key] == false) 
@@ -74,14 +80,20 @@ bool KeyManager::IsOnceKeyUp(char key)
 
 bool KeyManager::IsStayKeyDown(int key)
 {
-	if (GetAsyncKeyState(key) & 0x8001) { return true; }
+	if (GetAsyncKeyState(key) & 0x8001) 
+	{ 
+		return true;
+	}
 
 	return false;
 }
 
 bool KeyManager::IsStayKeyDown(char key)
 {
-	if (GetAsyncKeyState(key) & 0x8001) { return true; }
+	if (GetAsyncKeyState(key) & 0x8001) 
+	{ 
+		return true;
+	}
 
 	return false;
 }

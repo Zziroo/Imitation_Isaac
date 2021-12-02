@@ -6,11 +6,6 @@
 HRESULT TitleScene::Init()
 {
 	titleImg = GET_SINGLETON_IMAGE->FindImage("Image/BackGround/Title.bmp");
-	if (titleImg == nullptr)
-	{
-		cout << "Not Found : Image/BackGround/Title.bmp\n";
-		return E_FAIL;
-	}
 
 	return S_OK;
 }

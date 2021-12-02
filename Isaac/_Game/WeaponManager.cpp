@@ -17,18 +17,28 @@ void WeaponManager::Init()
 
 void WeaponManager::Release()
 {
-	for (size_t i = 0; i < vecWeapon.size(); ++i) { SAFE_RELEASE(vecWeapon[i]); }
+	for (size_t i = 0; i < vecWeapon.size(); ++i) 
+	{
+		SAFE_RELEASE(vecWeapon[i]);
+	}
+
 	vecWeapon.clear();
 }
 
 void WeaponManager::Update()
 {
-	for (size_t i = 0; i < vecWeapon.size(); ++i) { vecWeapon[i]->Update(); }
+	for (size_t i = 0; i < vecWeapon.size(); ++i) 
+	{ 
+		vecWeapon[i]->Update();
+	}
 }
 
 void WeaponManager::Render(HDC hdc)
 {
-	for (size_t i = 0; i < vecWeapon.size(); ++i) { vecWeapon[i]->Render(hdc); }
+	for (size_t i = 0; i < vecWeapon.size(); ++i) 
+	{ 
+		vecWeapon[i]->Render(hdc);
+	}
 }
 
 void WeaponManager::WeaponFire(MoveDir moveDir)

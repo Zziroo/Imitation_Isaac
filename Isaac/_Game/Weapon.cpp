@@ -72,5 +72,8 @@ void Weapon::OnDebug(HDC hdc)
 void Weapon::InitializeWeapon()
 {
     // 화면을 벗어나면 무기 초기화
-    if (shape.left > WIN_SIZE_X || shape.right < 0 || shape.top > WIN_SIZE_Y || shape.bottom < 0) { isFire = false; }
+    if (shape.left > WIN_SIZE_X || shape.right < 0 || shape.top > WIN_SIZE_Y || shape.bottom < 0) 
+    { 
+        isFire = false;
+    }
 }

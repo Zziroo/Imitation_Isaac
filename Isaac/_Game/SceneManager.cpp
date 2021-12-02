@@ -48,28 +48,46 @@ void SceneManager::Release()
 
 void SceneManager::Update()
 {
-	if (currScene) { currScene->Update(); }
+	if (currScene) 
+	{ 
+		currScene->Update();
+	}
 }
 
 void SceneManager::Render(HDC hdc)
 {
-	if (currScene) { currScene->Render(hdc); }
+	if (currScene) 
+	{ 
+		currScene->Render(hdc);
+	}
 }
 
 void SceneManager::AddScene(string key, Scene* scene)
 {
-	if (scene == nullptr) { return; }
+	if (scene == nullptr) 
+	{ 
+		return;
+	}
 
-	if (mapScenes.find(key) != mapScenes.end()) { return; }
+	if (mapScenes.find(key) != mapScenes.end()) 
+	{ 
+		return;
+	}
 
 	mapScenes.insert(pair<string, Scene*>(key, scene));
 }
 
 void SceneManager::AddLoadingScene(string key, Scene* scene)
 {
-	if (scene == nullptr) { return; }
+	if (scene == nullptr) 
+	{ 
+		return;
+	}
 
-	if (mapLoadingScenes.find(key) != mapLoadingScenes.end()) { return; }
+	if (mapLoadingScenes.find(key) != mapLoadingScenes.end()) 
+	{ 
+		return;
+	}
 
 	mapLoadingScenes.insert(pair<string, Scene*>(key, scene));
 }
@@ -78,11 +96,17 @@ HRESULT SceneManager::ChangeScene(string sceneName)
 {
 	map<string, Scene*>::iterator it = mapScenes.find(sceneName);
 
-	if (it == mapScenes.end()) { return E_FAIL; }
+	if (it == mapScenes.end()) 
+	{ 
+		return E_FAIL;
+	}
 
 	if (SUCCEEDED((it->second)->Init()))
 	{
-		if (currScene) { currScene->Release(); }
+		if (currScene) 
+		{ 
+			currScene->Release();
+		}
 
 		currScene = it->second;
 		return S_OK;
@@ -94,16 +118,25 @@ HRESULT SceneManager::ChangeScene(string sceneName, string loadingSceneName)
 {
 	map<string, Scene*>::iterator it = mapScenes.find(sceneName);
 
-	if (it == mapScenes.end()) { return E_FAIL; }
+	if (it == mapScenes.end()) 
+	{ 
+		return E_FAIL;
+	}
 
 	// 로딩씬 확인
 	map<string, Scene*>::iterator itLoading = mapLoadingScenes.find(loadingSceneName);
-	if (itLoading == mapLoadingScenes.end()) { return ChangeScene(sceneName); }
+	if (itLoading == mapLoadingScenes.end()) 
+	{ 
+		return ChangeScene(sceneName);
+	}
 
 	// 로딩씬 있을 때
 	if (SUCCEEDED((itLoading->second)->Init()))
 	{
-		if (currScene) { currScene->Release(); }
+		if (currScene) 
+		{ 
+			currScene->Release();
+		}
 
 		readyScene = it->second;
 		loadingScene = itLoading->second;

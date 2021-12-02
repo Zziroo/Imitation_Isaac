@@ -50,7 +50,11 @@ void Player::Update()
 {
 #ifdef _DEBUG
     GameObject::Update();
-    if (loadWeapon < takeLoadWeapon) { cout << "loadWeapon : " << loadWeapon << "\n"; }  // 무기 장전
+    if (loadWeapon < takeLoadWeapon) 
+    { 
+        cout << "loadWeapon : " << loadWeapon << "\n";  // 무기 장전
+    }
+
 #endif
 
     Player::TakeAction();       // 입력키
@@ -127,29 +131,45 @@ void Player::ChangeAnimation()
     if (playerDir == MoveDir::UP)
     {
         bodyImg->SetCurrFrameY(BODY_DEFAULT_DIR);
-        if (!isFire) { headImg->SetCurrFrameX(HEAD_LOOK_UP); }
+        if (!isFire) 
+        { 
+            headImg->SetCurrFrameX(HEAD_LOOK_UP);
+        }
     }
     if (playerDir == MoveDir::DOWN)
     {
         bodyImg->SetCurrFrameY(BODY_DEFAULT_DIR);
-        if (!isFire) { headImg->SetCurrFrameX(HEAD_LOOK_DOWN); }
+        if (!isFire) 
+        { 
+            headImg->SetCurrFrameX(HEAD_LOOK_DOWN);
+        }
     }
     if (playerDir == MoveDir::RIGHT)
     {
         bodyImg->SetCurrFrameY(BODY_RIGHT_DIR);
-        if (!isFire) { headImg->SetCurrFrameX(HEAD_LOOK_RIGHT); }
+        if (!isFire) 
+        { 
+            headImg->SetCurrFrameX(HEAD_LOOK_RIGHT);
+        }
     }
     if (playerDir == MoveDir::LEFT)
     {
         bodyImg->SetCurrFrameY(BODY_LEFT_DIR);
-        if (!isFire) { headImg->SetCurrFrameX(HEAD_LOOK_LEFT); }
+        if (!isFire) 
+        { 
+            headImg->SetCurrFrameX(HEAD_LOOK_LEFT);
+        }
     }
 
     ++elapsedAnime;
     if (elapsedAnime > 5)
     {
         bodyImg->SetCurrFrameX(bodyImg->GetCurrFrameX() + ADVANCE_FRAME);
-        if (bodyImg->GetCurrFrameX() >= MAX_BODY_FRAME_X) { bodyImg->SetCurrFrameX(START_BODY_FRAME_X); }
+        if (bodyImg->GetCurrFrameX() >= MAX_BODY_FRAME_X) 
+        { 
+            bodyImg->SetCurrFrameX(START_BODY_FRAME_X);
+        }
+
         elapsedAnime = ZERO;
     }
 }

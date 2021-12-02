@@ -27,6 +27,10 @@ void TimeManager::Render(HDC hdc)
 
 float TimeManager::GetDeltaTime()
 {
-	if (timer) { return timer->GetDeltaTime(); }
+	if (timer) 
+	{ 
+		return timer->GetDeltaTime();
+	}
+
 	return 0.0f;
 }

@@ -34,8 +34,14 @@ void Timer::Init()
 
 void Timer::Tick()
 {
-	if (isHardware) { QueryPerformanceCounter((LARGE_INTEGER*)&currTime); }
-	else { currTime = timeGetTime(); }
+	if (isHardware) 
+	{ 
+		QueryPerformanceCounter((LARGE_INTEGER*)&currTime);
+	}
+	else 
+	{ 
+		currTime = timeGetTime();
+	}
 
 	deltaTime = (currTime - lastTime) * timeScale;
 
