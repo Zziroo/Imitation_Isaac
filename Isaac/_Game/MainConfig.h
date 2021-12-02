@@ -64,7 +64,7 @@ inline void SetWindowSize(int sizeX, int sizeY)
 #define MAGENTA				RGB(255, 0, 255)
 
 // GameObject
-enum class ObjectStates { IDLE, WALK, HURT, ITEMPICKUP, JUMP, STAT };
+enum class ObjectStates { IDLE, WALK, ATTACK, HURT, ITEMPICKUP, JUMP, STAT };
 
 #define ADVANCE_FRAME		1
 
@@ -105,8 +105,6 @@ typedef struct ArgumentFuncPtr
 #define ATTACKINGSIDE_UP		5
 #define HEAD_LOOK_LEFT			6
 #define ATTACKINGSIDE_LEFT		7
-
-#define TAKE_WEAPON_LOAD_TIME	20
 
 // Weapon
 #define WEAPON_MAX_COUNT		100

@@ -2,14 +2,13 @@
 #include "Player.h"
 
 #include "Image.h"
-#include "WeaponManager.h"
 
 void Player::Init()
 {
     // playerImg
     switch (playerState)
     {
-    case ObjectStates::IDLE:    case ObjectStates::WALK:
+    case ObjectStates::IDLE:    case ObjectStates::WALK:    case ObjectStates::ATTACK:
         bodyInfo.image = GET_SINGLETON_IMAGE->FindImage("Image/Character/Body.bmp");
         headInfo.image = GET_SINGLETON_IMAGE->FindImage("Image/Character/Head.bmp");
         break;
@@ -34,30 +33,20 @@ void Player::Init()
     pos.y = (FLOAT)((PLAYER_HEAD_POS_Y + PLAYER_BODY_POS_Y - ADJUST_SIZE_30) * DEVIDE_HALF);
     moveSpeed = PLAYER_MOVESPEED;
     elapsedAnime = ZERO;
-
-    // Weapon
-    weaponTear = new WeaponManager;
-    weaponTear->Init();
-    weaponTear->SetOwner(this);
 }
 
 void Player::Release()
 {
-    SAFE_RELEASE(weaponTear);
 }
 
 void Player::Update()
 {
 #ifdef _DEBUG
     GameObject::Update();
-    if (loadWeapon < takeLoadWeapon) 
-    { 
-        cout << "loadWeapon : " << loadWeapon << "\n";  // 무기 장전
-    }
+
 #endif
 
-    Player::TakeAction();       // 입력키
-    weaponTear->Update();       // weapon
+    TakeAction();       // 입력키
 }
 
 void Player::Render(HDC hdc)
@@ -65,7 +54,7 @@ void Player::Render(HDC hdc)
     // playerImage
     switch (playerState)
     {
-    case ObjectStates::IDLE:    case ObjectStates::WALK:
+    case ObjectStates::IDLE:    case ObjectStates::WALK:    case ObjectStates::ATTACK:
         bodyInfo.image->Render(hdc, (INT)(bodyInfo.pos.x), (INT)(bodyInfo.pos.y), bodyInfo.image->GetCurrFrameX(), bodyInfo.image->GetCurrFrameY());
         headInfo.image->Render(hdc, (INT)(headInfo.pos.x), (INT)(headInfo.pos.y), headInfo.image->GetCurrFrameX(), headInfo.image->GetCurrFrameY());
         break;
@@ -84,9 +73,6 @@ void Player::Render(HDC hdc)
     default:
         break;
     }
-
-    // weapon
-    weaponTear->Render(hdc);
 
     // Debug
     GameObject::Render(hdc);
@@ -125,40 +111,24 @@ void Player::OnDebug(HDC hdc)
     }
 }
 
+void Player::ApplyFrame(MoveDir moveDir, int bodyFrameY, int headFrameX)
+{
+    if (bodyInfo.moveDir == moveDir)
+    {
+        bodyInfo.image->SetCurrFrameY(bodyFrameY);
+        if (!isFire)
+        {
+            headInfo.image->SetCurrFrameX(headFrameX);
+        }
+    }
+}
+
 void Player::ChangeAnimation()
 {
-    if (playerDir == MoveDir::UP)
-    {
-        bodyInfo.image->SetCurrFrameY(BODY_DEFAULT_DIR);
-        if (!isFire) 
-        { 
-            headInfo.image->SetCurrFrameX(HEAD_LOOK_UP);
-        }
-    }
-    if (playerDir == MoveDir::DOWN)
-    {
-        bodyInfo.image->SetCurrFrameY(BODY_DEFAULT_DIR);
-        if (!isFire) 
-        { 
-            headInfo.image->SetCurrFrameX(HEAD_LOOK_DOWN);
-        }
-    }
-    if (playerDir == MoveDir::RIGHT)
-    {
-        bodyInfo.image->SetCurrFrameY(BODY_RIGHT_DIR);
-        if (!isFire) 
-        { 
-            headInfo.image->SetCurrFrameX(HEAD_LOOK_RIGHT);
-        }
-    }
-    if (playerDir == MoveDir::LEFT)
-    {
-        bodyInfo.image->SetCurrFrameY(BODY_LEFT_DIR);
-        if (!isFire) 
-        { 
-            headInfo.image->SetCurrFrameX(HEAD_LOOK_LEFT);
-        }
-    }
+    ApplyFrame(MoveDir::UP, BODY_DEFAULT_DIR, HEAD_LOOK_UP);
+    ApplyFrame(MoveDir::DOWN, BODY_DEFAULT_DIR, HEAD_LOOK_DOWN);
+    ApplyFrame(MoveDir::LEFT, BODY_LEFT_DIR, HEAD_LOOK_LEFT);
+    ApplyFrame(MoveDir::RIGHT, BODY_RIGHT_DIR, HEAD_LOOK_RIGHT);
 
     ++elapsedAnime;
     if (elapsedAnime > 5)
@@ -175,50 +145,36 @@ void Player::ChangeAnimation()
 
 void Player::FireWeapon(int x, int y)
 {
-    ++loadWeapon;
-
     float slope = (FLOAT)((headInfo.shape.bottom - headInfo.shape.top)) / (FLOAT)((headInfo.shape.right - headInfo.shape.left));
-
     float section01 = (FLOAT)(slope * x) + (headInfo.shape.bottom - (FLOAT)(headInfo.shape.right * slope));
     float section02 = (FLOAT)((-slope) * x) + (headInfo.shape.top + (FLOAT)(headInfo.shape.right * slope));
 
-    if (loadWeapon > takeLoadWeapon)
+    // section01 보다 클 때 (하, 좌)
+    if (y >= section01)
     {
-        // section01 보다 클 때 (하, 좌)
-        if (y >= section01)
+        if (y >= section02)
         {
-            // 하
-            if (y >= section02)
-            {
-                headInfo.image->SetCurrFrameX(ATTACKINGSIDE_DOWN);
-                weaponTear->WeaponFire(MoveDir::DOWN);
-            }
-            // 좌
-            else
-            {
-                headInfo.image->SetCurrFrameX(ATTACKINGSIDE_LEFT);
-                weaponTear->WeaponFire(MoveDir::LEFT);
-            }
+            headInfo.image->SetCurrFrameX(ATTACKINGSIDE_DOWN);      // 하
         }
-        // section01 보다 작을 때 (상, 우)
         else
         {
-            // 상
-            if (y <= section02)
-            {
-                headInfo.image->SetCurrFrameX(ATTACKINGSIDE_UP);
-                weaponTear->WeaponFire(MoveDir::UP);
-            }
-            // 우
-            else
-            {
-                headInfo.image->SetCurrFrameX(ATTACKINGSIDE_RIGHT);
-                weaponTear->WeaponFire(MoveDir::RIGHT);
-            }
+            headInfo.image->SetCurrFrameX(ATTACKINGSIDE_LEFT);      // 좌
         }
-
-        loadWeapon = ZERO;
     }
+    // section01 보다 작을 때 (상, 우)
+    else
+    {
+        if (y <= section02)
+        {
+            headInfo.image->SetCurrFrameX(ATTACKINGSIDE_UP);        // 상
+        }
+        else
+        {
+            headInfo.image->SetCurrFrameX(ATTACKINGSIDE_RIGHT);     // 우
+        }
+    }
+
+    isFire = true;
 }
 
 void Player::TakeAction()
@@ -242,44 +198,40 @@ void Player::TakeAction()
     if (GET_SINGLETON_KEY->IsStayKeyDown('W'))                               // 상
     {
         playerState = ObjectStates::WALK;
-        playerDir = MoveDir::UP;
+        bodyInfo.moveDir = MoveDir::UP;
         bodyInfo.pos.y -= moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
         headInfo.pos.y -= moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
-
-        Player::ChangeAnimation();
+        ChangeAnimation();
     }
     else if (GET_SINGLETON_KEY->IsStayKeyDown('S'))                          // 하
     {
         playerState = ObjectStates::WALK;
-        playerDir = MoveDir::DOWN;
+        bodyInfo.moveDir = MoveDir::DOWN;
         bodyInfo.pos.y += moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
         headInfo.pos.y += moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
-
-        Player::ChangeAnimation();
+        ChangeAnimation();
     }
     if (GET_SINGLETON_KEY->IsStayKeyDown('D'))                               // 우
     {
         playerState = ObjectStates::WALK;
-        playerDir = MoveDir::RIGHT;
+        bodyInfo.moveDir = MoveDir::RIGHT;
         bodyInfo.pos.x += moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
         headInfo.pos.x += moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
-
-        Player::ChangeAnimation();
+        ChangeAnimation();
     }
     else if (GET_SINGLETON_KEY->IsStayKeyDown('A'))                           // 좌
     {
         playerState = ObjectStates::WALK;
-        playerDir = MoveDir::LEFT;
+        bodyInfo.moveDir = MoveDir::LEFT;
         bodyInfo.pos.x -= moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
         headInfo.pos.x -= moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
-
-        Player::ChangeAnimation();
+        ChangeAnimation();
     }
     // 공격키
-    if (GET_SINGLETON_KEY->IsStayKeyDown(VK_LBUTTON))
+    if (GET_SINGLETON_KEY->IsOnceKeyDown(VK_LBUTTON))
     {
-        isFire = true;
-        Player::FireWeapon(g_ptMouse.x, g_ptMouse.y);
+        playerState = ObjectStates::ATTACK;
+        FireWeapon(g_ptMouse.x, g_ptMouse.y);
     }
 
     // bodyShape
