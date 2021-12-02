@@ -37,6 +37,7 @@ private:
 		};
 		Image*		image = nullptr;
 		MoveDir		moveDir = MoveDir::DOWN;							// 이동 방향
+		int			blinkEye = 0;										// 눈 깜빡임
 	} headInfo;
 
 private:
@@ -44,6 +45,8 @@ private:
 
 	ObjectStates	playerState = ObjectStates::IDLE;					// 상태
 
+	int				loadWeapon = TAKE_LOAD_WEAPON_TIME;					// 무기 장전에 걸리는 시간
+	int				takeLoadWeapon = LOADING_CONPLETE_TIME;				// 무기 장전 완료
 	bool			isFire = false;										// 무기 발사
 	char			text[64] = {};										// MousePointer
 
@@ -54,10 +57,23 @@ public:
 	virtual void Render(HDC hdc) override;
 	virtual void OnDebug(HDC hdc) override;
 
-	void ApplyFrame(MoveDir moveDir, int bodyFrameY, int headFrameX);
+	void ApplyAttackFrame(int attackFrame, int usuallyFrame);
+	void ApplyBodyFrame(MoveDir moveDir, int bodyFrameY);				// Body 프레임 변화
+	void ApplyHeadFrame(MoveDir moveDir, int headFrameX);				// Head 프레임 변화
+	void ApplyHeadDir(MoveDir moveDir, int attckFrame);					// Head 방향 변화
+	void BlinkEye();													// 눈 깜빡임
 	void ChangeAnimation();												// 애니메이션 변화
+	void ChangeAttackFrame();
+	void ChangeBodyFrame();												
+	void ChangeHeadFrame();												
+	void ChangeHeadDir();												
+	bool ClosedEye();													// 눈이 감긴 상태
+	void DevideHeadDir(int pointY, int section, int dir1, int dir2);	// 입력한 위치 바라보기
 	void FireWeapon(int x, int y);										// weapon 발사
+	void Move();														// 움직임
 	void TakeAction();													// 입력키
+
+	float CalculateSlope(RECT rc);										// 기울기
 
 	inline void SetPlayerHeadPos(POINTFLOAT pos) { this->headInfo.pos = pos; }
 	inline POINTFLOAT GetPlayerHeadPos() { return this->headInfo.pos; }
