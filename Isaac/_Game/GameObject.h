@@ -16,13 +16,11 @@ protected:
 	enum class	MoveDir { UP, DOWN, LEFT, RIGHT };	// 이동 방향
 
 public:
-	virtual void Init() = 0;
-	virtual HRESULT FindIamge() = 0;
-	virtual void Release() = 0;
-	virtual void Update() = 0;
-	virtual void Render(HDC hdc) = 0;
-
-	void OnDebuging() { if (GETSINGLETON_KEY->IsStayKeyDown(VK_LCONTROL) && GETSINGLETON_KEY->IsOnceKeyDown('E')) { debugMode = !debugMode; } }
+	virtual void Init();
+	virtual void Release();
+	virtual void Update();
+	virtual void Render(HDC hdc);
+	virtual void OnDebug(HDC hdc);
 
 	inline void GetMoveSpeed(float moveSpeed) { this->moveSpeed = moveSpeed; }
 	inline void SetPos(POINTFLOAT pos) { this->pos = pos; }

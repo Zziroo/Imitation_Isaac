@@ -2,6 +2,10 @@
 #include "SceneManager.h"
 #include "Scene.h"
 
+#include "InGameScene.h"
+#include "TilemapToolScene.h"
+#include "TitleScene.h"
+
 Scene* SceneManager::currScene = nullptr;
 Scene* SceneManager::readyScene = nullptr;
 Scene* SceneManager::loadingScene = nullptr;
@@ -21,6 +25,9 @@ DWORD CALLBACK LoadingThread(LPVOID pvParam)
 
 void SceneManager::Init()
 {
+	GET_SINGLETON_SCENE->AddScene("InGame", new InGameScene);			// InGame
+	GET_SINGLETON_SCENE->AddScene("Title", new TitleScene);				// Title
+	GET_SINGLETON_SCENE->AddScene("TilemapTool", new TilemapToolScene);	// TilemapTool
 }
 
 void SceneManager::Release()

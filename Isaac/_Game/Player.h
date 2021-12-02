@@ -44,7 +44,7 @@ private:
 	ObjectStates	playerState = ObjectStates::IDLE;		// 상태
 	MoveDir			playerDir = MoveDir::DOWN;				// 이동 방향
 
-	int				takeLoadWeapon = TAKE_WEAPONLOADTIME;	// 장전 걸리는 시간
+	int				takeLoadWeapon = TAKE_WEAPON_LOAD_TIME;	// 장전 걸리는 시간
 	int				loadWeapon = takeLoadWeapon;			// 무기 장전
 	bool			isFire = false;							// 무기 발사
 	char			text[64] = {};							// MousePointer
@@ -53,14 +53,14 @@ private:
 
 public:
 	virtual void Init() override;
-	virtual HRESULT FindIamge() override;
 	virtual void Release() override;
 	virtual void Update() override;
 	virtual void Render(HDC hdc) override;
+	virtual void OnDebug(HDC hdc) override;
 
-	void TakeAction();										// 입력키
 	void ChangeAnimation();									// 애니메이션 변화
 	void FireWeapon(int x, int y);							// weapon 발사
+	void TakeAction();										// 입력키
 
 	inline void SetPlayerHeadPos(POINTFLOAT pos) { this->player.headPos = pos; }
 	inline POINTFLOAT GetPlayerHeadPos() { return this->player.headPos; }

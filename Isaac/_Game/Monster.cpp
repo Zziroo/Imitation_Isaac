@@ -5,11 +5,6 @@ void Monster::Init()
 {
 }
 
-HRESULT Monster::FindIamge()
-{
-	return E_NOTIMPL;
-}
-
 void Monster::Release()
 {
 }

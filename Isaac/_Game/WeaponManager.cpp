@@ -15,11 +15,6 @@ void WeaponManager::Init()
 	}
 }
 
-HRESULT WeaponManager::FindIamge()
-{
-	return E_NOTIMPL;
-}
-
 void WeaponManager::Release()
 {
 	for (size_t i = 0; i < vecWeapon.size(); ++i) { SAFE_RELEASE(vecWeapon[i]); }

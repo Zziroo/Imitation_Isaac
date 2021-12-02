@@ -9,10 +9,10 @@ HRESULT TilemapToolScene::Init()
 {
 	SetWindowSize(TILEMAP_SIZE_X, TILEMAP_SIZE_Y);
 
-	backGround = GETSINGLETON_IMAGE->FindImage("Image/BackGround/BackGround_Black.bmp");
+	backGround = GET_SINGLETON_IMAGE->FindImage("Image/BackGround/BackGround_Black.bmp");
 
-	quitFunc = new ButtonFunction();
-	exitBtn = new Button();
+	quitFunc = new ButtonFunction;
+	exitBtn = new Button;
 	exitBtn->Init();
 	exitBtn->SetFunction(&ButtonFunction::QuitProgram, quitFunc);
 

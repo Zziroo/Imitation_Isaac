@@ -5,7 +5,7 @@
 
 void Weapon::Init()
 {
-    Weapon::FindIamge();
+    tear = GET_SINGLETON_IMAGE->FindImage("Image/Character/Weapon_Tear.bmp");
 
     pos.x = WIN_SIZE_X * DEVIDE_HALF;
     pos.y = (WIN_SIZE_Y * DEVIDE_HALF) - 150;
@@ -17,38 +17,29 @@ void Weapon::Init()
     shape.bottom = (LONG)(pos.y + (objectSize * DEVIDE_HALF));
 }
 
-HRESULT Weapon::FindIamge()
-{
-	tear = GETSINGLETON_IMAGE->FindImage("Image/Character/Weapon_Tear.bmp");
-	if (tear == nullptr)
-    {
-        cout << "Not Found : Image/Character/Weapon_Tear.bmp\n";
-        return E_FAIL;
-    }
-	return S_OK;
-}
-
 void Weapon::Release()
 {
 }
 
 void Weapon::Update()
 {
+    GameObject::Update();
+
     if (isFire)
     {
         switch (weaponDir)
         {
         case MoveDir::UP:
-            pos.y -= moveSpeed * GETSINGLETON_TIME->GetDeltaTime();
+            pos.y -= moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
             break;
         case MoveDir::DOWN:
-            pos.y += moveSpeed * GETSINGLETON_TIME->GetDeltaTime();
+            pos.y += moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
             break;
         case MoveDir::LEFT:
-            pos.x -= moveSpeed * GETSINGLETON_TIME->GetDeltaTime();
+            pos.x -= moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
             break;
         case MoveDir::RIGHT:
-            pos.x += moveSpeed * GETSINGLETON_TIME->GetDeltaTime();
+            pos.x += moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
             break;
         default:
             break;
@@ -61,14 +52,21 @@ void Weapon::Update()
 
     Weapon::InitializeWeapon();     // 무기 초기화
 
-    GameObject::OnDebuging();       // 이 함수를 사용하고 싶은데 안됨.
 }
 
 void Weapon::Render(HDC hdc)
 {
-    if (isFire) { tear->Render(hdc, (INT)(pos.x), (INT)(pos.y), tear->GetCurrFrameX(), tear->GetCurrFrameY()); }    // Image
+    GameObject::Render(hdc);
 
-    if (debugMode) { Ellipse(hdc, shape.left, shape.top, shape.right, shape.bottom); }                              // Rectangle
+    if (isFire) 
+    { 
+        tear->Render(hdc, (INT)(pos.x), (INT)(pos.y), tear->GetCurrFrameX(), tear->GetCurrFrameY());     // Image
+    }                          
+}
+
+void Weapon::OnDebug(HDC hdc)
+{
+    Ellipse(hdc, shape.left, shape.top, shape.right, shape.bottom);
 }
 
 void Weapon::InitializeWeapon()

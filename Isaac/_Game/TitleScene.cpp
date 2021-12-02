@@ -5,7 +5,7 @@
 
 HRESULT TitleScene::Init()
 {
-	titleImg = GETSINGLETON_IMAGE->FindImage("Image/BackGround/Title.bmp");
+	titleImg = GET_SINGLETON_IMAGE->FindImage("Image/BackGround/Title.bmp");
 	if (titleImg == nullptr)
 	{
 		cout << "Not Found : Image/BackGround/Title.bmp\n";
@@ -22,9 +22,9 @@ void TitleScene::Release()
 void TitleScene::Update()
 {
 	// InGame Scene ÀüÈ¯
-	if (GETSINGLETON_KEY->IsOnceKeyDown(VK_SPACE))
+	if (GET_SINGLETON_KEY->IsOnceKeyDown(VK_SPACE))
 	{
-		GETSINGLETON_SCENE->ChangeScene("InGame");
+		GET_SINGLETON_SCENE->ChangeScene("InGame");
 		return;
 	}
 
