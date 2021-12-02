@@ -2,33 +2,32 @@
 #include "MainGame.h"
 
 #include "Image.h"
-#include "InGameScene.h"
-#include "TilemapToolScene.h"
-#include "TitleScene.h"
+
+#define TILETOOL
 
 void MainGame::Init()
 {
 	// Singleton
-	GETSINGLETON_KEY->Init();
-	GETSINGLETON_IMAGE->Init();
-	GETSINGLETON_SCENE->Init();
-	GETSINGLETON_TIME->Init();
-
-	GETSINGLETON_SCENE->AddScene("InGame", new InGameScene());				// InGame
-	GETSINGLETON_SCENE->AddScene("Title", new TitleScene());				// Title
-	GETSINGLETON_SCENE->AddScene("TilemapTool", new TilemapToolScene());	// TilemapTool
-
-	GETSINGLETON_SCENE->ChangeScene("TilemapTool");
+	GET_SINGLETON_KEY->Init();
+	GET_SINGLETON_IMAGE->Init();
+	GET_SINGLETON_SCENE->Init();
+	GET_SINGLETON_TIME->Init();
 
 	srand((unsigned int)time(nullptr));
 	// 타이머 셋팅
 	hTimer = (HANDLE)SetTimer(g_hWnd, 0, 10, NULL);
 	// 백버퍼
 	backBuffer = new Image;
-	//maxSizeX = WIN_SIZE_X;
-	//maxSizeY = WIN_SIZE_Y;
+
+#ifdef TILETOOL
+	GET_SINGLETON_SCENE->ChangeScene("TilemapTool");
 	maxSizeX = TILEMAP_SIZE_X;
 	maxSizeY = TILEMAP_SIZE_Y;
+#else
+	GET_SINGLETON_SCENE->ChangeScene("InGame");
+	maxSizeX = WIN_SIZE_X;
+	maxSizeY = WIN_SIZE_Y;
+#endif
 
 	backBuffer->Init(maxSizeX, maxSizeY);
 }
@@ -40,23 +39,23 @@ void MainGame::Release()
 
 	// Singleton 삭제
 	// Timer
-	GETSINGLETON_TIME->Release();
-	GETSINGLETON_TIME->ReleaseSingleton();
+	GET_SINGLETON_TIME->Release();
+	GET_SINGLETON_TIME->ReleaseSingleton();
 	// Scene
-	GETSINGLETON_SCENE->Release();
-	GETSINGLETON_SCENE->ReleaseSingleton();
+	GET_SINGLETON_SCENE->Release();
+	GET_SINGLETON_SCENE->ReleaseSingleton();
 	// Key
-	GETSINGLETON_KEY->Release();
-	GETSINGLETON_KEY->ReleaseSingleton();
+	GET_SINGLETON_KEY->Release();
+	GET_SINGLETON_KEY->ReleaseSingleton();
 	// Image
-	GETSINGLETON_IMAGE->Release();
-	GETSINGLETON_IMAGE->ReleaseSingleton();
+	GET_SINGLETON_IMAGE->Release();
+	GET_SINGLETON_IMAGE->ReleaseSingleton();
 }
 
 void MainGame::Update()
 {
-	GETSINGLETON_TIME->Update();
-	GETSINGLETON_SCENE->Update();
+	GET_SINGLETON_TIME->Update();
+	GET_SINGLETON_SCENE->Update();
 
 	InvalidateRect(g_hWnd, NULL, false);
 }
@@ -66,8 +65,8 @@ void MainGame::Render(HDC hdc)
 	HDC hBackBufferDC = backBuffer->GetMemDC();
 	PatBlt(hBackBufferDC, 0, 0, backBuffer->GetWidth(), backBuffer->GetHeight(), WHITENESS);
 
-	GETSINGLETON_SCENE->Render(hBackBufferDC);
-	GETSINGLETON_TIME->Render(hBackBufferDC);
+	GET_SINGLETON_SCENE->Render(hBackBufferDC);
+	GET_SINGLETON_TIME->Render(hBackBufferDC);
 
 	backBuffer->Render(hdc);
 }
