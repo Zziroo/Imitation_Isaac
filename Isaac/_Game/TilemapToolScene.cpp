@@ -24,10 +24,10 @@ HRESULT TilemapToolScene::Init()
 	}
 
 	// Button
-	quitFunc = new ButtonFunction;
+	buttonFunc = new ButtonFunction;
 	button = new Button;
 	button->Init();
-	button->SetFunction(&ButtonFunction::QuitProgram, quitFunc);
+	button->SetFunction(&ButtonFunction::QuitProgram, buttonFunc);
 
 	return S_OK;
 }
@@ -35,13 +35,12 @@ HRESULT TilemapToolScene::Init()
 void TilemapToolScene::Release()
 {
 	SAFE_RELEASE(button);
-	SAFE_DELETE(quitFunc);
+	SAFE_DELETE(buttonFunc);
 }
 
 void TilemapToolScene::Update()
 {
 	// Tile
-
 
 	button->Update();
 }
@@ -55,7 +54,7 @@ void TilemapToolScene::Render(HDC hdc)
 	{
 		for (int c = 0; c < TILE_COLUMN; ++c)
 		{
-			Rectangle(hdc, tileInfo[r][c].rc.left, tileInfo[r][c].rc.top, tileInfo[r][c].rc.right, tileInfo[r][c].rc.bottom);
+			//Rectangle(hdc, tileInfo[r][c].rc.left, tileInfo[r][c].rc.top, tileInfo[r][c].rc.right, tileInfo[r][c].rc.bottom);
 		}
 	}
 

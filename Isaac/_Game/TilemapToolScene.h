@@ -9,7 +9,7 @@ class TilemapToolScene : public Scene
 {
 private:
 	Button*				button = nullptr;
-	ButtonFunction*		quitFunc = nullptr;
+	ButtonFunction*		buttonFunc = nullptr;
 
 	Image*				backGround = nullptr;
 

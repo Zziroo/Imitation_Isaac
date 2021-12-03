@@ -13,9 +13,10 @@ class Button : public GameObject
 private:
 	struct ButtonInfo
 	{
-		Image*			button = nullptr;
+		Image*			image = nullptr;
 		POINTFLOAT		pos = {};
 		RECT			shape = {};
+		Button_State	buttonState = Button_State::NONE;
 	};
 
 private:
@@ -26,7 +27,6 @@ private:
 	ButtonInfo			revertBtn = {};			// Revert
 	ButtonInfo			saveBtn = {};			// Save
 	ButtonInfo			sampleTileBtn = {};		// SampleTile
-	Button_State		buttonState = Button_State::NONE;
 
 	Image*				letter_Enemy;				// Enemy
 	Image*				letter_Exit;				// Exit
@@ -45,6 +45,10 @@ public:
 	virtual void OnDebug(HDC hdc) override;
 
 	void DeclareButtonInfo(ButtonInfo* btnInfo, int width, int height);
+	void ClikedButton(ButtonInfo btnInfo, HDC hdc);
+	void RenderUpButtonImage(ButtonInfo btnInfo, HDC hdc);
+	void RenderDownButtonImage(ButtonInfo btnInfo, HDC hdc);
+
 	void SetFunction(FuncPtr pFunc, ButtonFunction* btnFunc, ArgumentFuncPtr* argFunc = nullptr) { this->pFunc = pFunc; this->btnFunc = btnFunc; this->argFunc = argFunc; }
 
 	virtual ~Button() = default;

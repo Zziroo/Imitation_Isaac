@@ -22,8 +22,8 @@ void ImageManager::Init()
 
 	// Tilemap/UI
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Index.bmp", 206, 120, 1, 2, true, MAGENTA);
-	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Load.bmp", 121, 60, 2, 1, true, MAGENTA);
-	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Save.bmp", 121, 60, 2, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Load.bmp", 60, 120, 1, 2, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Save.bmp", 60, 120, 1, 2, true, MAGENTA);
 	// Tilemap/Letter
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Letter/Enemy.bmp", 133, 30, 1, 1, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Letter/Exit.bmp", 82, 30, 1, 1, true, MAGENTA);
