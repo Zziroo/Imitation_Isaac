@@ -108,3 +108,28 @@ typedef struct ArgumentFuncPtr
 
 // Weapon
 #define WEAPON_MAX_COUNT		100
+
+// Tilemap
+enum class TileType { CLIFF, DOOR, ROAD, WALL };
+
+typedef struct tagSampleTile
+{
+	RECT	rc;
+	int		frameX = 0;
+	int		frameY = 0;
+} SAMPLE_TILE_INFO;
+
+typedef struct tagTile
+{
+	TileType	terrain = TileType::ROAD;
+	RECT		rc;
+	int			frameX = 0;
+	int			frameY = 0;
+} TILE_INFO;
+
+#define SAMPLE_TILE_COLUMN		8
+#define	SAMPLE_TILE_ROW			8
+
+#define TILE_SIZE				40
+#define	TILE_COLUMN				1280 / TILE_SIZE
+#define TILE_ROW				800 / TILE_SIZE

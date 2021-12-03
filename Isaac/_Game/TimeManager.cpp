@@ -21,7 +21,7 @@ void TimeManager::Update()
 void TimeManager::Render(HDC hdc)
 {
 	wsprintf(szText, "FPS : %d", timer->GetFPS());
-	TextOut(hdc, WIN_SIZE_X - 100, 0, szText, (INT)strlen(szText));
+	TextOut(hdc, WIN_SIZE_X - 70, 0, szText, (INT)strlen(szText));
 }
 
 

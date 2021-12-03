@@ -43,8 +43,6 @@ void Player::Update()
 {
 #ifdef _DEBUG
     GameObject::Update();
-    cout << boolalpha << "isFire : " << isFire << "\n";
-    //if (headInfo.blinkEye > 0) { cout << "headInfo.blinkEye : " << headInfo.blinkEye << "\n"; }
 #endif
     TakeAction();
     Move();
@@ -268,6 +266,12 @@ void Player::TakeAction()
         bodyInfo.image->SetCurrFrameX(START_BODY_FRAME_X);
         bodyInfo.image->SetCurrFrameY(BODY_DEFAULT_DIR);
         
+        headInfo.image->SetCurrFrameX(HEAD_LOOK_DOWN);
+    }
+    // 공격키 땠을 때
+    if (GET_SINGLETON_KEY->IsOnceKeyUp(VK_LBUTTON))
+    {
+        headInfo.moveDir = MoveDir::DOWN;
         headInfo.image->SetCurrFrameX(HEAD_LOOK_DOWN);
     }
     // 이동키

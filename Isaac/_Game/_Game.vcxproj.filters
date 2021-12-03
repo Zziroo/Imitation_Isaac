@@ -25,9 +25,6 @@
     <Filter Include="FrameWork\Timer">
       <UniqueIdentifier>{20766423-5514-40fb-8b96-572caba16d81}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FrameWork\Scene">
-      <UniqueIdentifier>{e5ea7047-2680-4d25-9376-47d0f219b5bc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="FrameWork\_Singleton">
       <UniqueIdentifier>{663bedd2-f814-4f63-8d58-bfc698a48956}</UniqueIdentifier>
     </Filter>
@@ -54,6 +51,9 @@
     </Filter>
     <Filter Include="MainGame\GameObject\Button">
       <UniqueIdentifier>{526ea7c7-cb42-4367-a5c4-9e6c6b932e14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\Scene">
+      <UniqueIdentifier>{e5ea7047-2680-4d25-9376-47d0f219b5bc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

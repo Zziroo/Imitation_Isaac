@@ -13,15 +13,20 @@ class Button : public GameObject
 private:
 	struct ButtonInfo
 	{
-		Image*		button = nullptr;
-		POINTFLOAT	pos = {};
-		RECT		shape = {};
+		Image*			button = nullptr;
+		POINTFLOAT		pos = {};
+		RECT			shape = {};
 	};
 
 private:
-	ButtonInfo			exitBtn = {};		// Exit
-	ButtonInfo			saveBtn = {};		// Save
-	ButtonInfo			loadBtn = {};		// Load
+	ButtonInfo			exitBtn = {};			// Exit
+	ButtonInfo			saveBtn = {};			// Save
+	ButtonInfo			loadBtn = {};			// Load
+	ButtonInfo			sampleTileBtn = {};		// SampleTile
+	ButtonInfo			objectBtn = {};			// Object
+	ButtonInfo			enemyBtn = {};			// Enemy
+	ButtonInfo			revertBtn = {};			// Revert
+	ButtonInfo			multiSelectBtn = {};	// multiSelectBtn
 	Button_State		buttonState = Button_State::NONE;
 
 	FuncPtr				pFunc = nullptr;

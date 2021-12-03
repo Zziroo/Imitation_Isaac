@@ -26,7 +26,6 @@ void InGameScene::Release()
 
 void InGameScene::Update()
 {
-	cout << boolalpha << playerIsaac->GetIsFire() << endl;
 	playerIsaac->Update();
 	playerWeapon->Update();
 
