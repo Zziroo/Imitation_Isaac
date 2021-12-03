@@ -2,6 +2,7 @@
 
 BackGround
 Name		Width	Height	Column	Row
+BackGround_Black	1920	1080	1	1
 Title		1280	6400	1	8
 
 Isaac
@@ -21,14 +22,16 @@ Name		Width	Height	Column	Row
 Tilemap
 // UI
 Name		Width	Height	Column	Row
-Exit		412	120	1	1
-Index_00		121	120	1	1
-Index_01		412	120	1	1
-Left		55	80	1	1
-List		157	80	2	1
+Index		206	120	1	1
 Load		202	100	2	1
-Right		55	80	1	1
-Save		202	100	2	1
+On_Off		60	60	1	2
+Revert		61	60	1	1
+Save		121	60	2	1
+// Letter
+Enemy		133	30	1	1
+Exit		82	30	1	1
+Object		150	30	1	1
+Tile		30	30	1	1
 
 Object
 Name		Width	Height	Column	Row

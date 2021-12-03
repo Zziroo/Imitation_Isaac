@@ -5,7 +5,7 @@
 
 void ImageManager::Init()
 {
-	// Title BackGround
+	// BackGround
 	GET_SINGLETON_IMAGE->AddImage("Image/BackGround/BackGround_Black.bmp", 1920, 1080);
 	GET_SINGLETON_IMAGE->AddImage("Image/BackGround/Title.bmp", 1280, 6400, 1, 8);
 
@@ -21,17 +21,19 @@ void ImageManager::Init()
 	GET_SINGLETON_IMAGE->AddImage("Image/Character/Weapon_Tear.bmp", 30, 30, 1, 1, true, MAGENTA);
 
 	// Tilemap/UI
-	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Exit.bmp", 206, 60, 1, 1, true, MAGENTA);
-	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Index_00.bmp", 61, 60, 1, 1, true, MAGENTA);
-	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Index_01.bmp", 206, 60, 1, 1, true, MAGENTA);
-	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/UI/List.bmp", 157, 80, 2, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Index.bmp", 206, 120, 1, 2, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Load.bmp", 121, 60, 2, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Save.bmp", 121, 60, 2, 1, true, MAGENTA);
+	// Tilemap/Letter
+	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Letter/Enemy.bmp", 133, 30, 1, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Letter/Exit.bmp", 82, 30, 1, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Letter/Object.bmp", 150, 30, 1, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Letter/Tile.bmp", 80, 30, 1, 1, true, MAGENTA);
+
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Next.bmp", 55, 80, 1, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/UI/On_Off.bmp", 60, 60, 1, 2, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Prev.bmp", 55, 80, 1, 1, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Revert.bmp", 61, 60, 1, 1, true, MAGENTA);
-	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Save.bmp", 121, 60, 2, 1, true, MAGENTA);
-	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/UI/On_Off.bmp", 60, 60, 1, 2, true, MAGENTA);
-
 }
 
 void ImageManager::Release()

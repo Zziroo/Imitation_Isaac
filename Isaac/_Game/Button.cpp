@@ -5,24 +5,24 @@
 
 void Button::Init()
 {
-	exitBtn.button = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Exit.bmp");
-	saveBtn.button = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Save.bmp");
+	enemyBtn.button = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index.bmp");
+	exitBtn.button = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index.bmp");
 	loadBtn.button = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Load.bmp");
-	sampleTileBtn.button = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index_01.bmp");
-	objectBtn.button = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index_01.bmp");
-	enemyBtn.button = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index_01.bmp");
-	revertBtn.button = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Revert.bmp");
-	multiSelectBtn.button = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/On_Off.bmp");
+	objectBtn.button = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index.bmp");
+	sampleTileBtn.button = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index.bmp");
+	saveBtn.button = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Save.bmp");
 
-	DeclareButtonInfo(&exitBtn, 150,  40);
-	DeclareButtonInfo(&saveBtn, 413,  40);
-	DeclareButtonInfo(&loadBtn, 313,  40);
-	DeclareButtonInfo(&sampleTileBtn, 1287, 40);
-	DeclareButtonInfo(&objectBtn, 1061, 40);
+	letter_Enemy = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Letter/Enemy.bmp");
+	letter_Exit = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Letter/Exit.bmp");
+	letter_Object = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Letter/Object.bmp");
+	letter_Tile = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Letter/Tile.bmp");
+
 	DeclareButtonInfo(&enemyBtn, 835, 40);
-	DeclareButtonInfo(&revertBtn, 600, 40);
-	DeclareButtonInfo(&multiSelectBtn, 500, 40);
-
+	DeclareButtonInfo(&exitBtn, 153, 40);
+	DeclareButtonInfo(&loadBtn, 306, 40);
+	DeclareButtonInfo(&objectBtn, 1061, 40);
+	DeclareButtonInfo(&sampleTileBtn, 1287, 40);
+	DeclareButtonInfo(&saveBtn, 386, 40);
 }
 
 void Button::Release()
@@ -57,26 +57,32 @@ void Button::Update()
 
 void Button::Render(HDC hdc)
 {
-	exitBtn.button->Render(hdc, (INT)(exitBtn.pos.x), (INT)(exitBtn.pos.y));								// Exit.img 
-	sampleTileBtn.button->Render(hdc, (INT)(sampleTileBtn.pos.x), (INT)(sampleTileBtn.pos.y));				// Exit.img 
-	objectBtn.button->Render(hdc, (INT)(objectBtn.pos.x), (INT)(objectBtn.pos.y));							// Exit.img 
-	enemyBtn.button->Render(hdc, (INT)(enemyBtn.pos.x), (INT)(enemyBtn.pos.y));								// Exit.img 
-	revertBtn.button->Render(hdc, (INT)(revertBtn.pos.x), (INT)(revertBtn.pos.y));							// Revert.img 
 	switch (buttonState)
 	{
 	case Button_State::NONE:	case Button_State::UP:
-		saveBtn.button->Render(hdc, (INT)(saveBtn.pos.x), (INT)(saveBtn.pos.y), 0, 0);						// Save.img
+		enemyBtn.button->Render(hdc, (INT)(enemyBtn.pos.x), (INT)(enemyBtn.pos.y), 0, 0);					// Enemy.img
+		exitBtn.button->Render(hdc, (INT)(exitBtn.pos.x), (INT)(exitBtn.pos.y), 0, 0);						// Exit.img
 		loadBtn.button->Render(hdc, (INT)(loadBtn.pos.x), (INT)(loadBtn.pos.y), 0, 0);						// Load.img
-		multiSelectBtn.button->Render(hdc, (INT)(multiSelectBtn.pos.x), (INT)(multiSelectBtn.pos.y), 0, 1);	// ultiSelect.img
+		objectBtn.button->Render(hdc, (INT)(objectBtn.pos.x), (INT)(objectBtn.pos.y), 0, 0);				// Object.img
+		sampleTileBtn.button->Render(hdc, (INT)(sampleTileBtn.pos.x), (INT)(sampleTileBtn.pos.y), 0, 0);	// SampleTile.img
+		saveBtn.button->Render(hdc, (INT)(saveBtn.pos.x), (INT)(saveBtn.pos.y), 0, 0);						// Save.img
 		break;
 	case Button_State::DOWN:
-		saveBtn.button->Render(hdc, (INT)(saveBtn.pos.x), (INT)(saveBtn.pos.y), 1, 0);						// Save.img
+		enemyBtn.button->Render(hdc, (INT)(enemyBtn.pos.x), (INT)(enemyBtn.pos.y), 0, 1);					// Enemy.img
+		exitBtn.button->Render(hdc, (INT)(exitBtn.pos.x), (INT)(exitBtn.pos.y), 0, 1);						// Exit.img
 		loadBtn.button->Render(hdc, (INT)(loadBtn.pos.x), (INT)(loadBtn.pos.y), 1, 0);						// Load.img
-		multiSelectBtn.button->Render(hdc, (INT)(multiSelectBtn.pos.x), (INT)(multiSelectBtn.pos.y), 0, 0);	// ultiSelect.img
+		objectBtn.button->Render(hdc, (INT)(objectBtn.pos.x), (INT)(objectBtn.pos.y), 0, 1);				// Object.img
+		sampleTileBtn.button->Render(hdc, (INT)(sampleTileBtn.pos.x), (INT)(sampleTileBtn.pos.y), 0, 1);	// SampleTile.img
+		saveBtn.button->Render(hdc, (INT)(saveBtn.pos.x), (INT)(saveBtn.pos.y), 1, 0);						// Save.img
 		break;
 	default:
 		break;
 	}
+
+	letter_Enemy->Render(hdc, (INT)(enemyBtn.pos.x), (INT)(enemyBtn.pos.y));
+	letter_Exit->Render(hdc, (INT)(exitBtn.pos.x), (INT)(exitBtn.pos.y));
+	letter_Object->Render(hdc, (INT)(objectBtn.pos.x), (INT)(objectBtn.pos.y));
+	letter_Tile->Render(hdc, (INT)(sampleTileBtn.pos.x), (INT)(sampleTileBtn.pos.y));
 
 	GameObject::Render(hdc);
 }
@@ -85,9 +91,12 @@ void Button::OnDebug(HDC hdc)
 {
 	if (debugMode)
 	{
+		Rectangle(hdc, enemyBtn.shape.left, enemyBtn.shape.top, enemyBtn.shape.right, enemyBtn.shape.bottom);
 		Rectangle(hdc, exitBtn.shape.left, exitBtn.shape.top, exitBtn.shape.right, exitBtn.shape.bottom);
-		Rectangle(hdc, saveBtn.shape.left, saveBtn.shape.top, saveBtn.shape.right, saveBtn.shape.bottom);
 		Rectangle(hdc, loadBtn.shape.left, loadBtn.shape.top, loadBtn.shape.right, loadBtn.shape.bottom);
+		Rectangle(hdc, objectBtn.shape.left, objectBtn.shape.top, objectBtn.shape.right, objectBtn.shape.bottom);
+		Rectangle(hdc, sampleTileBtn.shape.left, sampleTileBtn.shape.top, sampleTileBtn.shape.right, sampleTileBtn.shape.bottom);
+		Rectangle(hdc, saveBtn.shape.left, saveBtn.shape.top, saveBtn.shape.right, saveBtn.shape.bottom);
 	}
 }
 

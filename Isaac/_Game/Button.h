@@ -19,15 +19,19 @@ private:
 	};
 
 private:
-	ButtonInfo			exitBtn = {};			// Exit
-	ButtonInfo			saveBtn = {};			// Save
-	ButtonInfo			loadBtn = {};			// Load
-	ButtonInfo			sampleTileBtn = {};		// SampleTile
-	ButtonInfo			objectBtn = {};			// Object
 	ButtonInfo			enemyBtn = {};			// Enemy
+	ButtonInfo			exitBtn = {};			// Exit
+	ButtonInfo			loadBtn = {};			// Load
+	ButtonInfo			objectBtn = {};			// Object
 	ButtonInfo			revertBtn = {};			// Revert
-	ButtonInfo			multiSelectBtn = {};	// multiSelectBtn
+	ButtonInfo			saveBtn = {};			// Save
+	ButtonInfo			sampleTileBtn = {};		// SampleTile
 	Button_State		buttonState = Button_State::NONE;
+
+	Image*				letter_Enemy;				// Enemy
+	Image*				letter_Exit;				// Exit
+	Image*				letter_Object;				// Object
+	Image*				letter_Tile;				// letter_Tile
 
 	FuncPtr				pFunc = nullptr;
 	ButtonFunction*		btnFunc = nullptr;
