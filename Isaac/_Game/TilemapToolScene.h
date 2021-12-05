@@ -16,6 +16,7 @@ private:
 	SAMPLE_TILE_INFO			singleSelectedSampleTile;
 	vector<SAMPLE_TILE_INFO>	multiSelectedSampleTile;
 	bool						isMultiSelect = false;
+	bool						finishDrawing = false;
 
 	Button*						button = nullptr;
 	ButtonFunction*				buttonFunc = nullptr;

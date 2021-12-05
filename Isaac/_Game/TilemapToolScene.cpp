@@ -66,7 +66,7 @@ void TilemapToolScene::Release()
 void TilemapToolScene::Update()
 {	
 	// Debug
-	if (GET_SINGLETON_KEY->IsStayKeyDown(VK_LCONTROL) && GET_SINGLETON_KEY->IsOnceKeyDown('D'))
+	if (GET_SINGLETON_KEY->IsStayKeyDown(VK_LCONTROL) && GET_SINGLETON_KEY->IsOnceKeyDown('R'))
 	{
 		debugMode = !debugMode;
 	}
@@ -125,7 +125,7 @@ void TilemapToolScene::Update()
 	// 샘플 영역의 끝
 	if (PtInRect(&(sampleArea), g_ptMouse))
 	{
-		if (GET_SINGLETON_KEY->IsOnceKeyUp('A'))
+		if (GET_SINGLETON_KEY->IsOnceKeyDown('S'))
 		{
 			int posX = g_ptMouse.x - sampleArea.left;
 			int selectedIdX = posX / SAMPLE_TILE_SIZE;
@@ -140,16 +140,17 @@ void TilemapToolScene::Update()
 			cout << "multiSelectedSampleTile[1].frameX : " << multiSelectedSampleTile[1].frameX << "\t" << "multiSelectedSampleTile[1].frameY : " << multiSelectedSampleTile[1].frameY << "\n";
 		}
 	}
-	// 문제!! => 타일을 하나 받으면 min, max 적용 안됨
-	int startX = min(multiSelectedSampleTile[0].frameX, multiSelectedSampleTile[1].frameX);
-	int endX = max(multiSelectedSampleTile[0].frameX, multiSelectedSampleTile[1].frameX);
-	int startY = min(multiSelectedSampleTile[0].frameY, multiSelectedSampleTile[1].frameY);
-	int endY = max(multiSelectedSampleTile[0].frameY, multiSelectedSampleTile[1].frameY);
-	int multiSelectedSampleCloumnCount = endX - startX + 1;
-	int multiSelectedSampleRowCount = endY - startY + 1;
-	int multiSelectedSampleTotalCount = multiSelectedSampleCloumnCount * multiSelectedSampleRowCount;
 	if (isMultiSelect)
 	{
+		// 문제!! => 타일을 하나 받으면 min, max 적용 안됨	
+		int startX = min(multiSelectedSampleTile[0].frameX, multiSelectedSampleTile[1].frameX);
+		int endX = max(multiSelectedSampleTile[0].frameX, multiSelectedSampleTile[1].frameX);
+		int startY = min(multiSelectedSampleTile[0].frameY, multiSelectedSampleTile[1].frameY);
+		int endY = max(multiSelectedSampleTile[0].frameY, multiSelectedSampleTile[1].frameY);
+		int multiSelectedSampleCloumnCount = endX - startX + 1;
+		int multiSelectedSampleRowCount = endY - startY + 1;
+		int multiSelectedSampleTotalCount = multiSelectedSampleCloumnCount * multiSelectedSampleRowCount;
+
 		multiSelectedSampleTile.resize(multiSelectedSampleTotalCount);
 
 		int index = 0;
@@ -162,23 +163,47 @@ void TilemapToolScene::Update()
 				++index;
 			}
 		}
-	}
-	// 메인 영역에서 선택된 샘플 정보로 수정
-	for (int r = 0; r < TILE_ROW; ++r)
-	{
-		for (int c = 0; c < TILE_COLUMN; ++c)
+		// 메인 영역에서 선택된 샘플 정보로 수정
+		for (int r = 0; r < TILE_ROW; ++r)
 		{
-			if (PtInRect(&(tileInfo[r][c].rc), g_ptMouse))
+			for (int c = 0; c < TILE_COLUMN; ++c)
 			{
-				if (GET_SINGLETON_KEY->IsOnceKeyDown('S'))
+				if (PtInRect(&(tileInfo[r][c].rc), g_ptMouse))
 				{
-					tileInfo[r][c].frameX = multiSelectedSampleTile[0].frameX;
-					tileInfo[r][c].frameY = multiSelectedSampleTile[0].frameY;
+					int plusColumn = 0;
+					int plusRow = 0;
+					if (GET_SINGLETON_KEY->IsOnceKeyDown('D'))
+					{
+						for (int i = 0; i < multiSelectedSampleTile.size(); ++i)
+						{
+							tileInfo[r + plusRow][c + plusColumn].frameX = multiSelectedSampleTile[i].frameX;
+							tileInfo[r + plusRow][c + plusColumn].frameY = multiSelectedSampleTile[i].frameY;
+							++plusColumn;
+							if (plusColumn > endX - startX)
+							{
+								++plusRow;
+								plusColumn = 0;
+							}
+						}
+						finishDrawing = true;
+					}
 				}
 			}
 		}
 	}
+	// 전부 그렸으면 MultiSelectedSampleTileInfo 초기화
+	if (finishDrawing)
+	{
+		multiSelectedSampleTile.resize(2);
+		for (int i = 0; i < multiSelectedSampleTile.size(); ++i)
+		{
+			multiSelectedSampleTile[i].frameX = 32;
+			multiSelectedSampleTile[i].frameY = 0;
+		}
 
+		isMultiSelect = false;
+		finishDrawing = false;
+	}
 
 	// Button
 	button->Update();
