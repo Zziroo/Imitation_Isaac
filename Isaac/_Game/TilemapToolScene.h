@@ -8,19 +8,24 @@ class Image;
 class TilemapToolScene : public Scene
 {
 private:
-	Button*				button = nullptr;
-	ButtonFunction*		buttonFunc = nullptr;
-
 	Image*				backGround = nullptr;
+	Image*				sampleTileImg = nullptr;
 
-	SAMPLE_TILE_INFO	sampleTileInfo[SAMPLE_TILE_ROW][SAMPLE_TILE_COLUMN];
 	TILE_INFO			tileInfo[TILE_ROW][TILE_COLUMN];
+	SAMPLE_TILE_INFO	sampleTileInfo[SAMPLE_TILE_ROW][SAMPLE_TILE_COLUMN];
+	SAMPLE_TILE_INFO	selectedSampleTile;
+
+	Button* button = nullptr;
+	ButtonFunction* buttonFunc = nullptr;
+
+	bool debugMode = false;
 
 public:
 	virtual HRESULT Init() override;
 	virtual void Release() override;
 	virtual void Update() override;
 	virtual void Render(HDC hdc) override;
+	void OnDebug(HDC hdc);
 
 	virtual ~TilemapToolScene() = default;
 };

@@ -6,7 +6,8 @@
 void ImageManager::Init()
 {
 	// BackGround
-	GET_SINGLETON_IMAGE->AddImage("Image/BackGround/BackGround_Black.bmp", 1920, 1080);
+	GET_SINGLETON_IMAGE->AddImage("Image/BackGround/BackGround00.bmp", 1920, 1080);
+	GET_SINGLETON_IMAGE->AddImage("Image/BackGround/BackGround01.bmp", 1920, 1080);
 	GET_SINGLETON_IMAGE->AddImage("Image/BackGround/Title.bmp", 1280, 6400, 1, 8);
 
 	// Isaac
@@ -29,7 +30,14 @@ void ImageManager::Init()
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Letter/Exit.bmp", 82, 30, 1, 1, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Letter/Object.bmp", 150, 30, 1, 1, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Letter/Tile.bmp", 80, 30, 1, 1, true, MAGENTA);
+	// Tilemap/Tile
+	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Tile/Basement00.bmp", 462, 280, 33, 20, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Tile/Basement01.bmp", 462, 280, 33, 20, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Tile/Basement02.bmp", 462, 280, 33, 20, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Tile/Basement03.bmp", 462, 280, 33, 20, true, MAGENTA);
 
+	// Unused
+	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Sample_Image.bmp", 1280, 800);
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Next.bmp", 55, 80, 1, 1, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/UI/On_Off.bmp", 60, 60, 1, 2, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Prev.bmp", 55, 80, 1, 1, true, MAGENTA);

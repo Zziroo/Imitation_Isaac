@@ -114,7 +114,7 @@ enum class TileType { CLIFF, DOOR, ROAD, WALL };
 
 typedef struct tagSampleTile
 {
-	RECT	rc;
+	RECT	rc = {};
 	int		frameX = 0;
 	int		frameY = 0;
 } SAMPLE_TILE_INFO;
@@ -122,7 +122,7 @@ typedef struct tagSampleTile
 typedef struct tagTile
 {
 	TileType	terrain = TileType::ROAD;
-	RECT		rc;
+	RECT		rc = {};
 	int			frameX = 0;
 	int			frameY = 0;
 } TILE_INFO;
@@ -133,3 +133,6 @@ typedef struct tagTile
 #define TILE_SIZE				40
 #define	TILE_COLUMN				1280 / TILE_SIZE
 #define TILE_ROW				800 / TILE_SIZE
+#define SAMPLE_TILE_SIZE		14
+#define SAMPLE_TILE_COLUMN		TILE_COLUMN + 1
+#define SAMPLE_TILE_ROW			TILE_ROW

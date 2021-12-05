@@ -55,27 +55,29 @@ public:
 	HRESULT Init(const char* fileName, int width, int height, bool isTrans = false, COLORREF transColor = NULL);								// File 프레임이 없는 이미지
 	HRESULT Init(const char* fileName, int width, int height, int maxFrameX, int maxFrameY, bool isTrans = false, COLORREF transColor = NULL);	// File 프레임이 있는 이미지
 
-	void Release();			// 메모리 해제
+	void Release();
 
 	void Render(HDC hdc);
-	void Render(HDC hdc, int destX, int destY);													// 이미지 데이터를 화면에 복사
-	void Render(HDC hdc, int destX, int destY, int frameX, int frameY, float scale = 1.0f);		// 이미지 데이터를 화면에 복사
+	void Render(HDC hdc, int destX, int destY);															// 이미지 데이터를 화면에 복사
+	void Render(HDC hdc, int destX, int destY, int frameX, int frameY);									// 프레임을 지정해서 이미지 데이터를 화면에 복사
 
-	HDC GetMemDC() { if (imageInfo) return imageInfo->hMemDc; return NULL; }
+	void EnlargeSampleTile(HDC hdc, int destX, int destY, int frameX, int frameY, float scale = 1.0f);	// 크기를 확대하여 이미지 데이터를 화면에 복사
 
-	int GetCurrFrameX() { return imageInfo->currFrameX; }
-	void SetCurrFrameX(int frame) { imageInfo->currFrameX = frame; }
+	inline HDC GetMemDC() { if (imageInfo) return imageInfo->hMemDc; return NULL; }
 
-	int GetCurrFrameY() { return imageInfo->currFrameY; }
-	void SetCurrFrameY(int frame) { imageInfo->currFrameY = frame; }
+	inline int GetCurrFrameX() { return imageInfo->currFrameX; }
+	inline void SetCurrFrameX(int frame) { imageInfo->currFrameX = frame; }
 
-	int GetMaxFrameX() { return imageInfo->maxFrameX; }
-	int GetMaxFrameY() { return imageInfo->maxFrameY; }
+	inline int GetCurrFrameY() { return imageInfo->currFrameY; }
+	inline void SetCurrFrameY(int frame) { imageInfo->currFrameY = frame; }
 
-	int GetFrameWidth() { return imageInfo->frameWidth; }
-	int GetFrameHeight() { return imageInfo->frameHeight; }
+	inline int GetMaxFrameX() { return imageInfo->maxFrameX; }
+	inline int GetMaxFrameY() { return imageInfo->maxFrameY; }
 
-	int GetWidth() { return imageInfo->width; }
-	int GetHeight() { return imageInfo->height; }
+	inline int GetFrameWidth() { return imageInfo->frameWidth; }
+	inline int GetFrameHeight() { return imageInfo->frameHeight; }
+
+	inline int GetWidth() { return imageInfo->width; }
+	inline int GetHeight() { return imageInfo->height; }
 };
 
