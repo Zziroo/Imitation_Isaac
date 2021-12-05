@@ -36,9 +36,17 @@ HRESULT TilemapToolScene::Init()
 		}
 	}
 
-	// selectTile
-	selectedSampleTile.frameX = 0;
-	selectedSampleTile.frameY = 0;
+	// SingleSelectTile
+	singleSelectedSampleTile.frameX = 32;
+	singleSelectedSampleTile.frameY = 0;
+
+	// MultiSelectTile
+	multiSelectedSampleTile.resize(2);
+	for (int i = 0; i < multiSelectedSampleTile.size(); ++i)
+	{
+		multiSelectedSampleTile[i].frameX = 32;
+		multiSelectedSampleTile[i].frameY = 0;
+	}
 
 	// Button
 	buttonFunc = new ButtonFunction;
@@ -63,6 +71,7 @@ void TilemapToolScene::Update()
 		debugMode = !debugMode;
 	}
 	// Tile
+	// SingleSelectTile
 	// 샘플역역에서 샘플을 선택
 	RECT sampleArea = { 900, 380, 900 + sampleTileImg->GetWidth(), 380 + sampleTileImg->GetHeight() };
 
@@ -76,8 +85,9 @@ void TilemapToolScene::Update()
 			int posY = g_ptMouse.y - sampleArea.top;
 			int selectedIdY = posY / SAMPLE_TILE_SIZE;
 
-			selectedSampleTile.frameX = sampleTileInfo[selectedIdY][selectedIdX].frameX;
-			selectedSampleTile.frameY = sampleTileInfo[selectedIdY][selectedIdX].frameY;
+			singleSelectedSampleTile.frameX = sampleTileInfo[selectedIdY][selectedIdX].frameX;
+			singleSelectedSampleTile.frameY = sampleTileInfo[selectedIdY][selectedIdX].frameY;
+			cout << "singleSelectedSampleTile.frameX : " << singleSelectedSampleTile.frameX << "\t" << "singleSelectedSampleTile.frameY : " << singleSelectedSampleTile.frameY << "\n";
 		}
 	}
 	// 메인역역에서 선택된 샘플 정보로 수정
@@ -89,12 +99,86 @@ void TilemapToolScene::Update()
 			{
 				if (GET_SINGLETON_KEY->IsOnceKeyDown('W'))
 				{
-					tileInfo[r][c].frameX = selectedSampleTile.frameX;
-					tileInfo[r][c].frameY = selectedSampleTile.frameY;
+					tileInfo[r][c].frameX = singleSelectedSampleTile.frameX;
+					tileInfo[r][c].frameY = singleSelectedSampleTile.frameY;
 				}
 			}
 		}
 	}
+	// MutiSelectTile
+	// 샘플 영역의 시작
+	if (PtInRect(&(sampleArea), g_ptMouse))
+	{
+		if (GET_SINGLETON_KEY->IsOnceKeyDown('A'))
+		{
+			int posX = g_ptMouse.x - sampleArea.left;
+			int selectedIdX = posX / SAMPLE_TILE_SIZE;
+
+			int posY = g_ptMouse.y - sampleArea.top;
+			int selectedIdY = posY / SAMPLE_TILE_SIZE;
+
+			multiSelectedSampleTile[0].frameX = sampleTileInfo[selectedIdY][selectedIdX].frameX;
+			multiSelectedSampleTile[0].frameY = sampleTileInfo[selectedIdY][selectedIdX].frameY;
+			cout << "multiSelectedSampleTile[0].frameX : " << multiSelectedSampleTile[0].frameX << "\t" << "multiSelectedSampleTile[0].frameY : " << multiSelectedSampleTile[0].frameY << "\n";
+		}
+	}
+	// 샘플 영역의 끝
+	if (PtInRect(&(sampleArea), g_ptMouse))
+	{
+		if (GET_SINGLETON_KEY->IsOnceKeyUp('A'))
+		{
+			int posX = g_ptMouse.x - sampleArea.left;
+			int selectedIdX = posX / SAMPLE_TILE_SIZE;
+
+			int posY = g_ptMouse.y - sampleArea.top;
+			int selectedIdY = posY / SAMPLE_TILE_SIZE;
+
+			multiSelectedSampleTile[1].frameX = sampleTileInfo[selectedIdY][selectedIdX].frameX;
+			multiSelectedSampleTile[1].frameY = sampleTileInfo[selectedIdY][selectedIdX].frameY;
+
+			isMultiSelect = true;
+			cout << "multiSelectedSampleTile[1].frameX : " << multiSelectedSampleTile[1].frameX << "\t" << "multiSelectedSampleTile[1].frameY : " << multiSelectedSampleTile[1].frameY << "\n";
+		}
+	}
+	// 문제!! => 타일을 하나 받으면 min, max 적용 안됨
+	int startX = min(multiSelectedSampleTile[0].frameX, multiSelectedSampleTile[1].frameX);
+	int endX = max(multiSelectedSampleTile[0].frameX, multiSelectedSampleTile[1].frameX);
+	int startY = min(multiSelectedSampleTile[0].frameY, multiSelectedSampleTile[1].frameY);
+	int endY = max(multiSelectedSampleTile[0].frameY, multiSelectedSampleTile[1].frameY);
+	int multiSelectedSampleCloumnCount = endX - startX + 1;
+	int multiSelectedSampleRowCount = endY - startY + 1;
+	int multiSelectedSampleTotalCount = multiSelectedSampleCloumnCount * multiSelectedSampleRowCount;
+	if (isMultiSelect)
+	{
+		multiSelectedSampleTile.resize(multiSelectedSampleTotalCount);
+
+		int index = 0;
+		for (int r = startY; r <= endY; ++r)
+		{
+			for (int c = startX; c <= endX; ++c)
+			{
+				multiSelectedSampleTile[index].frameX = sampleTileInfo[r][c].frameX;
+				multiSelectedSampleTile[index].frameY = sampleTileInfo[r][c].frameY;
+				++index;
+			}
+		}
+	}
+	// 메인 영역에서 선택된 샘플 정보로 수정
+	for (int r = 0; r < TILE_ROW; ++r)
+	{
+		for (int c = 0; c < TILE_COLUMN; ++c)
+		{
+			if (PtInRect(&(tileInfo[r][c].rc), g_ptMouse))
+			{
+				if (GET_SINGLETON_KEY->IsOnceKeyDown('S'))
+				{
+					tileInfo[r][c].frameX = multiSelectedSampleTile[0].frameX;
+					tileInfo[r][c].frameY = multiSelectedSampleTile[0].frameY;
+				}
+			}
+		}
+	}
+
 
 	// Button
 	button->Update();
@@ -112,6 +196,7 @@ void TilemapToolScene::Render(HDC hdc)
 	{
 		for (int c = 0; c < TILE_COLUMN; ++c)
 		{
+			SetTerrain(&tileInfo[r][c]);
 			sampleTileImg->EnlargeSampleTile(hdc, tileInfo[r][c].rc.left, tileInfo[r][c].rc.top, tileInfo[r][c].frameX, tileInfo[r][c].frameY, scale);
 		}
 	}
@@ -129,7 +214,34 @@ void TilemapToolScene::Render(HDC hdc)
 
 void TilemapToolScene::OnDebug(HDC hdc)
 {
-	sampleTileImg->EnlargeSampleTile(hdc, 1320, 40, selectedSampleTile.frameX, selectedSampleTile.frameY, 3.0f);
+	sampleTileImg->EnlargeSampleTile(hdc, 1320, 40, singleSelectedSampleTile.frameX, singleSelectedSampleTile.frameY, 3.0f);
+
+	// TileType 출력
+	for (int r = 0; r < 20; ++r)
+	{
+		for (int c = 0; c < 33; ++c)
+		{
+			if (PtInRect(&(tileInfo[r][c].rc), g_ptMouse))
+			{
+				if (GET_SINGLETON_KEY->IsOnceKeyDown('E'))
+				{
+					cout << "frameX : " << tileInfo[r][c].frameX << "\t" << "frameY : " << tileInfo[r][c].frameY << "\n";
+					if (tileInfo[r][c].terrain == TileType::WALL)
+					{
+						cout << "TileType : WALL\n";
+					}
+					if (tileInfo[r][c].terrain == TileType::DOOR)
+					{
+						cout << "TileType : DOOR\n";
+					}
+					if (tileInfo[r][c].terrain == TileType::ROAD)
+					{
+						cout << "TileType : ROAD\n";
+					}
+				}
+			}
+		}
+	}
 
 	if (debugMode)
 	{

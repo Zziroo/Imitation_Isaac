@@ -8,17 +8,19 @@ class Image;
 class TilemapToolScene : public Scene
 {
 private:
-	Image*				backGround = nullptr;
-	Image*				sampleTileImg = nullptr;
+	Image*						backGround = nullptr;
+	Image*						sampleTileImg = nullptr;
 
-	TILE_INFO			tileInfo[TILE_ROW][TILE_COLUMN];
-	SAMPLE_TILE_INFO	sampleTileInfo[SAMPLE_TILE_ROW][SAMPLE_TILE_COLUMN];
-	SAMPLE_TILE_INFO	selectedSampleTile;
+	TILE_INFO					tileInfo[TILE_ROW][TILE_COLUMN];
+	SAMPLE_TILE_INFO			sampleTileInfo[SAMPLE_TILE_ROW][SAMPLE_TILE_COLUMN];
+	SAMPLE_TILE_INFO			singleSelectedSampleTile;
+	vector<SAMPLE_TILE_INFO>	multiSelectedSampleTile;
+	bool						isMultiSelect = false;
 
-	Button* button = nullptr;
-	ButtonFunction* buttonFunc = nullptr;
+	Button*						button = nullptr;
+	ButtonFunction*				buttonFunc = nullptr;
 
-	bool debugMode = false;
+	bool						debugMode = false;
 
 public:
 	virtual HRESULT Init() override;

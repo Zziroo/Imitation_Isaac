@@ -121,10 +121,10 @@ typedef struct tagSampleTile
 
 typedef struct tagTile
 {
-	TileType	terrain = TileType::ROAD;
 	RECT		rc = {};
 	int			frameX = 0;
 	int			frameY = 0;
+	TileType	terrain = TileType::WALL;
 } TILE_INFO;
 
 #define SAMPLE_TILE_COLUMN		8
@@ -136,3 +136,45 @@ typedef struct tagTile
 #define SAMPLE_TILE_SIZE		14
 #define SAMPLE_TILE_COLUMN		TILE_COLUMN + 1
 #define SAMPLE_TILE_ROW			TILE_ROW
+
+inline void SetTerrain(TILE_INFO* rc)
+{
+	// WALL로 설정
+	if (0 <= rc->frameX && rc->frameX < 32)
+	{
+		if (0 <= rc->frameY && rc->frameY < 20)
+		{
+			rc->terrain = TileType::WALL;
+		}
+	}
+	// DOOR로 설정/상/하
+	if (14 <= rc->frameX && rc->frameX < 18)
+	{
+		// 상
+		if (0 <= rc->frameY && rc->frameY < 3)
+		{
+			rc->terrain = TileType::DOOR;
+		}
+		// 하
+		if (17 <= rc->frameY && rc->frameY < 20)
+		{
+			rc->terrain = TileType::DOOR;
+		}
+	}
+	// DOOR로 설정/좌/우
+	if (0 <= rc->frameX && rc->frameX < 32)
+	{
+		if (8 <= rc->frameY && rc->frameY < 12)
+		{
+			rc->terrain = TileType::DOOR;
+		}
+	}
+	// ROAD로 설정
+	if (3 <= rc->frameX && rc->frameX < 29)
+	{
+		if (3 <= rc->frameY && rc->frameY < 17)
+		{
+			rc->terrain = TileType::ROAD;
+		}
+	}
+}

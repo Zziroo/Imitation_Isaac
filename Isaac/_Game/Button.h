@@ -28,10 +28,10 @@ private:
 	ButtonInfo			saveBtn = {};			// Save
 	ButtonInfo			sampleTileBtn = {};		// SampleTile
 
-	Image*				letter_Enemy;				// Enemy
-	Image*				letter_Exit;				// Exit
-	Image*				letter_Object;				// Object
-	Image*				letter_Tile;				// letter_Tile
+	Image*				letter_Enemy;			// Enemy
+	Image*				letter_Exit;			// Exit
+	Image*				letter_Object;			// Object
+	Image*				letter_Tile;			// letter_Tile
 
 	FuncPtr				pFunc = nullptr;
 	ButtonFunction*		btnFunc = nullptr;
