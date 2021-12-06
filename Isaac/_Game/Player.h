@@ -46,7 +46,7 @@ private:
 	ObjectStates		playerState = ObjectStates::IDLE;				// 상태
 
 	bool				isFire = false;									// 무기 발사
-	char				text[64] = {};									// MousePointer
+	char				text[64] = {};
 
 public:
 	virtual void		Init() override;

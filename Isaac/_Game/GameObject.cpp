@@ -11,8 +11,6 @@ void GameObject::Release()
 
 void GameObject::Update()
 {
-	Input::Update();
-
 	if (Input::GetButtonDown('P'))
 	{
 		debugMode = !debugMode;

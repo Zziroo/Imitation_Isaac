@@ -17,7 +17,7 @@ void TitleScene::Release()
 void TitleScene::Update()
 {
 	// InGame Scene ÀüÈ¯
-	if (GET_SINGLETON_KEY->IsOnceKeyDown(VK_SPACE))
+	if (Input::GetButtonDown(VK_SPACE))
 	{
 		GET_SINGLETON_SCENE->ChangeScene("InGame");
 		return;

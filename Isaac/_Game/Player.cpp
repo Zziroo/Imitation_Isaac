@@ -5,7 +5,6 @@
 
 void Player::Init()
 {
-    Input::Init(g_hWnd);
     // playerImg
     switch (playerState)
     {

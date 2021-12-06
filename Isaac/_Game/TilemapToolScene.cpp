@@ -125,22 +125,27 @@ void TilemapToolScene::OnDebug(HDC hdc)
 {
 	// MousePointer
 	wsprintf(text, "Mouse.PosX : %d", g_ptMouse.x);
-	TextOut(hdc, (TILEMAP_SIZE_X - 200), 20, text, (INT)(strlen(text)));
+	TextOut(hdc, (TILEMAP_SIZE_X - 300), 20, text, (INT)(strlen(text)));
 	wsprintf(text, "Mouse.PosY : %d", g_ptMouse.y);
-	TextOut(hdc, (TILEMAP_SIZE_X - 200), 40, text, (INT)(strlen(text)));
+	TextOut(hdc, (TILEMAP_SIZE_X - 300), 40, text, (INT)(strlen(text)));
 	// 선택한 샘플 타일들의 프레임값
 	wsprintf(text, "Single Sample.X : %d", singleSelectedSampleTile.frameX);
-	TextOut(hdc, (TILEMAP_SIZE_X - 200), 80, text, (INT)(strlen(text)));
+	TextOut(hdc, (TILEMAP_SIZE_X - 300), 80, text, (INT)(strlen(text)));
 	wsprintf(text, "Single Sample.Y : %d", singleSelectedSampleTile.frameY);
-	TextOut(hdc, (TILEMAP_SIZE_X - 200), 100, text, (INT)(strlen(text)));
+	TextOut(hdc, (TILEMAP_SIZE_X - 300), 100, text, (INT)(strlen(text)));
 	wsprintf(text, "Multi Sample[0].X : %d", multiSelectedSampleTile[0][0].frameX);
-	TextOut(hdc, (TILEMAP_SIZE_X - 200), 140, text, (INT)(strlen(text)));
+	TextOut(hdc, (TILEMAP_SIZE_X - 300), 140, text, (INT)(strlen(text)));
 	wsprintf(text, "Multi Sample[0].Y : %d", multiSelectedSampleTile[0][0].frameY);
-	TextOut(hdc, (TILEMAP_SIZE_X - 200), 160, text, (INT)(strlen(text)));
+	TextOut(hdc, (TILEMAP_SIZE_X - 300), 160, text, (INT)(strlen(text)));
 	wsprintf(text, "Multi Sample[1].X : %d", multiSelectedSampleTile[0][1].frameX);
-	TextOut(hdc, (TILEMAP_SIZE_X - 200), 180, text, (INT)(strlen(text)));
+	TextOut(hdc, (TILEMAP_SIZE_X - 300), 180, text, (INT)(strlen(text)));
 	wsprintf(text, "Multi Sample[1].Y : %d", multiSelectedSampleTile[0][1].frameY);
-	TextOut(hdc, (TILEMAP_SIZE_X - 200), 200, text, (INT)(strlen(text)));
+	TextOut(hdc, (TILEMAP_SIZE_X - 300), 200, text, (INT)(strlen(text)));
+	if (multiSelectedSampleTile[1].size() <= 0)
+	{
+		wsprintf(text, "! !복사할 샘플 영역이 존재하지 않음! !");
+		TextOut(hdc, (TILEMAP_SIZE_X - 300), 240, text, (INT)(strlen(text)));
+	}
 
 	// TileType 출력
 	for (int r = 0; r < SAMPLE_TILE_ROW; ++r)
@@ -149,7 +154,7 @@ void TilemapToolScene::OnDebug(HDC hdc)
 		{
 			if (PtInRect(&(tileInfo[r][c].rc), g_ptMouse))
 			{
-				if (GET_SINGLETON_KEY->IsOnceKeyDown('E'))
+				if (Input::GetButtonDown('T'))
 				{
 					cout << "frameX : " << tileInfo[r][c].frameX << "\t" << "frameY : " << tileInfo[r][c].frameY << "\n";
 					if (tileInfo[r][c].terrain == TileType::WALL)
@@ -196,7 +201,7 @@ void TilemapToolScene::OnDebug(HDC hdc)
 
 bool TilemapToolScene::ClickedButton()
 {
-	if (button->GetSelectBasementTile())
+	if (button->GetSelectSampleTile())
 	{
 		return true;
 	}
@@ -206,10 +211,14 @@ bool TilemapToolScene::ClickedButton()
 void TilemapToolScene::DrawMultiTile(RECT rc)
 {
 	// 샘플 영역 지정
-	SelectMultiTile(rc);
+	if (button->GetSelectSampleTile())
+	{
+		SelectMultiTile(rc);
+	}
+	// 샘플 영역 선택 했는가?
 	MarkMultiPoint();
-	// 메인 영역에 그리기
-	if (isMultiSelect)
+	// 메인 영역에 그리기(SampleTile 종료 && 샘플 영역을 선택 했을 때 실행)
+	if ((ClickedButton() == false) && isMultiSelect)
 	{
 		int startX = min(multiSelectedSampleTile[0][0].frameX, multiSelectedSampleTile[0][1].frameX);
 		int endX = max(multiSelectedSampleTile[0][0].frameX, multiSelectedSampleTile[0][1].frameX);
@@ -242,7 +251,7 @@ void TilemapToolScene::DrawMultiTile(RECT rc)
 					int plusColumn = 0;
 					int plusRow = 0;
 					int copyHorizontalLength = 0;
-					if (GET_SINGLETON_KEY->IsOnceKeyDown('D'))
+					if (Input::GetButtonDown(VK_LBUTTON))
 					{
 						for (int i = 0; i < multiSelectedSampleTile[1].size(); ++i)
 						{
@@ -283,18 +292,24 @@ void TilemapToolScene::DrawMultiTile(RECT rc)
 void TilemapToolScene::DrawSingleTile(RECT rc)
 {
 	// 샘플 영역 지정
-	SelectSingleTile(rc);
-	// 메인 역역에서 그리기
-	for (int r = 0; r < TILE_ROW; ++r)
+	if (button->GetSelectSampleTile())
 	{
-		for (int c = 0; c < TILE_COLUMN; ++c)
+		SelectSingleTile(rc);
+	}
+	// 메인 역역에서 그리기
+	else
+	{
+		for (int r = 0; r < TILE_ROW; ++r)
 		{
-			if (PtInRect(&(tileInfo[r][c].rc), g_ptMouse))
+			for (int c = 0; c < TILE_COLUMN; ++c)
 			{
-				if (GET_SINGLETON_KEY->IsOnceKeyDown('W'))
+				if (PtInRect(&(tileInfo[r][c].rc), g_ptMouse))
 				{
-					tileInfo[r][c].frameX = singleSelectedSampleTile.frameX;
-					tileInfo[r][c].frameY = singleSelectedSampleTile.frameY;
+					if (Input::GetButtonDown(VK_RBUTTON))
+					{
+						tileInfo[r][c].frameX = singleSelectedSampleTile.frameX;
+						tileInfo[r][c].frameY = singleSelectedSampleTile.frameY;
+					}
 				}
 			}
 		}
@@ -324,41 +339,38 @@ void TilemapToolScene::MarkMultiPoint()
 
 void TilemapToolScene::SelectMultiTile(RECT rc)
 {
-	if (ClickedButton())
+	// 샘플 영역의 Point01
+	if (PtInRect(&(rc), g_ptMouse))
 	{
-		// 샘플 영역의 Point01
-		if (PtInRect(&(rc), g_ptMouse))
+		if (Input::GetButtonDown(VK_LBUTTON))
 		{
-			if (GET_SINGLETON_KEY->IsOnceKeyDown('A'))
-			{
-				int posX = g_ptMouse.x - rc.left;
-				int selectedIdX = posX / SAMPLE_TILE_SIZE;
+			int posX = g_ptMouse.x - rc.left;
+			int selectedIdX = posX / SAMPLE_TILE_SIZE;
 
-				int posY = g_ptMouse.y - rc.top;
-				int selectedIdY = posY / SAMPLE_TILE_SIZE;
+			int posY = g_ptMouse.y - rc.top;
+			int selectedIdY = posY / SAMPLE_TILE_SIZE;
 
-				multiSelectPoint[0] = true;
+			multiSelectPoint[0] = true;
 
-				multiSelectedSampleTile[0][0].frameX = sampleTileInfo[selectedIdY][selectedIdX].frameX;
-				multiSelectedSampleTile[0][0].frameY = sampleTileInfo[selectedIdY][selectedIdX].frameY;
-			}
+			multiSelectedSampleTile[0][0].frameX = sampleTileInfo[selectedIdY][selectedIdX].frameX;
+			multiSelectedSampleTile[0][0].frameY = sampleTileInfo[selectedIdY][selectedIdX].frameY;
 		}
-		// 샘플 영역의 Point02
-		if (PtInRect(&(rc), g_ptMouse))
+	}
+	// 샘플 영역의 Point02
+	if (PtInRect(&(rc), g_ptMouse))
+	{
+		if (Input::GetButtonUp(VK_LBUTTON))
 		{
-			if (GET_SINGLETON_KEY->IsOnceKeyDown('S'))
-			{
-				int posX = g_ptMouse.x - rc.left;
-				int selectedIdX = posX / SAMPLE_TILE_SIZE;
+			int posX = g_ptMouse.x - rc.left;
+			int selectedIdX = posX / SAMPLE_TILE_SIZE;
 
-				int posY = g_ptMouse.y - rc.top;
-				int selectedIdY = posY / SAMPLE_TILE_SIZE;
+			int posY = g_ptMouse.y - rc.top;
+			int selectedIdY = posY / SAMPLE_TILE_SIZE;
 
-				multiSelectPoint[1] = true;
+			multiSelectPoint[1] = true;
 
-				multiSelectedSampleTile[0][1].frameX = sampleTileInfo[selectedIdY][selectedIdX].frameX;
-				multiSelectedSampleTile[0][1].frameY = sampleTileInfo[selectedIdY][selectedIdX].frameY;
-			}
+			multiSelectedSampleTile[0][1].frameX = sampleTileInfo[selectedIdY][selectedIdX].frameX;
+			multiSelectedSampleTile[0][1].frameY = sampleTileInfo[selectedIdY][selectedIdX].frameY;
 		}
 	}
 }
@@ -369,7 +381,7 @@ void TilemapToolScene::SelectSingleTile(RECT rc)
 	{
 		if (PtInRect(&(rc), g_ptMouse))
 		{
-			if (GET_SINGLETON_KEY->IsOnceKeyDown('Q'))
+			if (Input::GetButtonDown(VK_RBUTTON))
 			{
 				int posX = g_ptMouse.x - rc.left;
 				int selectedIdX = posX / SAMPLE_TILE_SIZE;

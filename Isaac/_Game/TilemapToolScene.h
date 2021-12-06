@@ -26,7 +26,7 @@ private:
 	bool						initialTileBtnState = true;								// SampleTile Button 초기 상태
 	bool						debugMode = false;
 
-	char						text[64] = {};											// MousePointer
+	char						text[64] = {};
 
 public:
 	virtual HRESULT				Init() override;

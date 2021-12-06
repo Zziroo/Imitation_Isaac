@@ -53,12 +53,10 @@ inline void SetWindowSize(int sizeX, int sizeY)
 
 #include "Input.h"
 #include "ImageManager.h"
-#include "KeyManager.h"
 #include "SceneManager.h"
 #include "TimeManager.h"
 
 #define GET_SINGLETON_IMAGE	ImageManager::GetSingleton()
-#define GET_SINGLETON_KEY	KeyManager::GetSingleton()
 #define GET_SINGLETON_SCENE	SceneManager::GetSingleton()
 #define GET_SINGLETON_TIME	TimeManager::GetSingleton()
 

@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Input.h"
-
 class GameObject
 {
 private:

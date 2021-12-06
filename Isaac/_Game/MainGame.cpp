@@ -7,8 +7,9 @@
 
 void MainGame::Init()
 {
-	// Singleton
-	GET_SINGLETON_KEY->Init();
+
+	// Manager
+	Input::Init(g_hWnd);
 	GET_SINGLETON_IMAGE->Init();
 	GET_SINGLETON_SCENE->Init();
 	GET_SINGLETON_TIME->Init();
@@ -44,9 +45,6 @@ void MainGame::Release()
 	// Scene
 	GET_SINGLETON_SCENE->Release();
 	GET_SINGLETON_SCENE->ReleaseSingleton();
-	// Key
-	GET_SINGLETON_KEY->Release();
-	GET_SINGLETON_KEY->ReleaseSingleton();
 	// Image
 	GET_SINGLETON_IMAGE->Release();
 	GET_SINGLETON_IMAGE->ReleaseSingleton();
@@ -54,6 +52,8 @@ void MainGame::Release()
 
 void MainGame::Update()
 {
+	Input::Update();
+
 	GET_SINGLETON_TIME->Update();
 	GET_SINGLETON_SCENE->Update();
 

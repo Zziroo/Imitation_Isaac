@@ -63,11 +63,11 @@ void Button::Update()
 	// Close
 	if (PtInRect(&closeBtn.shape, g_ptMouse))
 	{
-		if (GET_SINGLETON_KEY->IsOnceKeyDown(VK_LBUTTON))
+		if (Input::GetButtonDown(VK_LBUTTON))
 		{
 			closeBtn.buttonState = ButtonState::DOWN;
 		}
-		else if (GET_SINGLETON_KEY->IsOnceKeyUp(VK_LBUTTON) && closeBtn.buttonState == ButtonState::DOWN)
+		else if (Input::GetButtonUp(VK_LBUTTON) && closeBtn.buttonState == ButtonState::DOWN)
 		{
 			closeBtn.buttonState = ButtonState::UP;
 			if (sampleTileBtn.clicked)
@@ -83,11 +83,11 @@ void Button::Update()
 	// Exit
 	if (PtInRect(&exitBtn.shape, g_ptMouse))
 	{
-		if (GET_SINGLETON_KEY->IsOnceKeyDown(VK_LBUTTON)) 
+		if (Input::GetButtonDown(VK_LBUTTON))
 		{
 			exitBtn.buttonState = ButtonState::DOWN;
 		}
-		else if (GET_SINGLETON_KEY->IsOnceKeyUp(VK_LBUTTON) && exitBtn.buttonState == ButtonState::DOWN)
+		else if (Input::GetButtonUp(VK_LBUTTON) && exitBtn.buttonState == ButtonState::DOWN)
 		{
 			exitBtn.buttonState = ButtonState::UP;
 			if (btnFunc && pFunc) 
@@ -105,12 +105,12 @@ void Button::Update()
 	// Load
 	if (PtInRect(&loadBtn.shape, g_ptMouse))
 	{
-		if (GET_SINGLETON_KEY->IsOnceKeyDown(VK_LBUTTON)) 
+		if (Input::GetButtonDown(VK_LBUTTON))
 		{ 
 			loadBtn.buttonState = ButtonState::DOWN;
 
 		}
-		else if (GET_SINGLETON_KEY->IsOnceKeyUp(VK_LBUTTON) && loadBtn.buttonState == ButtonState::DOWN)
+		else if (Input::GetButtonUp(VK_LBUTTON) && loadBtn.buttonState == ButtonState::DOWN)
 		{
 			loadBtn.buttonState = ButtonState::UP;
 			//if (btnFunc && pFunc) 
@@ -126,12 +126,12 @@ void Button::Update()
 	// Save
 	if (PtInRect(&saveBtn.shape, g_ptMouse))
 	{
-		if (GET_SINGLETON_KEY->IsOnceKeyDown(VK_LBUTTON)) 
+		if (Input::GetButtonDown(VK_LBUTTON))
 		{ 
 			saveBtn.buttonState = ButtonState::DOWN;
 
 		}
-		else if (GET_SINGLETON_KEY->IsOnceKeyUp(VK_LBUTTON) && saveBtn.buttonState == ButtonState::DOWN)
+		else if (Input::GetButtonUp(VK_LBUTTON) && saveBtn.buttonState == ButtonState::DOWN)
 		{
 			saveBtn.buttonState = ButtonState::UP;
 			//if (btnFunc && pFunc) 
@@ -148,12 +148,12 @@ void Button::Update()
 	// 버튼을 끄고 키고 할 수 있음
 	if (PtInRect(&enemyBtn.shape, g_ptMouse))
 	{
-		if (GET_SINGLETON_KEY->IsOnceKeyDown(VK_LBUTTON))
+		if (Input::GetButtonDown(VK_LBUTTON))
 		{
 			enemyBtn.buttonState = ButtonState::DOWN;
 
 		}
-		else if (GET_SINGLETON_KEY->IsOnceKeyUp(VK_LBUTTON) && enemyBtn.buttonState == ButtonState::DOWN)
+		else if (Input::GetButtonUp(VK_LBUTTON) && enemyBtn.buttonState == ButtonState::DOWN)
 		{
 			enemyBtn.buttonState = ButtonState::UP;
 
@@ -166,12 +166,12 @@ void Button::Update()
 	}
 	if (PtInRect(&objectBtn.shape, g_ptMouse))
 	{
-		if (GET_SINGLETON_KEY->IsOnceKeyDown(VK_LBUTTON))
+		if (Input::GetButtonDown(VK_LBUTTON))
 		{
 			objectBtn.buttonState = ButtonState::DOWN;
 
 		}
-		else if (GET_SINGLETON_KEY->IsOnceKeyUp(VK_LBUTTON) && objectBtn.buttonState == ButtonState::DOWN)
+		else if (Input::GetButtonUp(VK_LBUTTON) && objectBtn.buttonState == ButtonState::DOWN)
 		{
 			objectBtn.buttonState = ButtonState::UP;
 
@@ -183,7 +183,7 @@ void Button::Update()
 		objectBtn.buttonState = ButtonState::NONE; 
 	}
 	// SampleTile
-	if (GET_SINGLETON_KEY->IsOnceKeyUp(VK_LBUTTON))
+	if (Input::GetButtonDown(VK_LBUTTON))
 	{	
 		if (PtInRect(&sampleTileBtn.shape, g_ptMouse))
 		{
@@ -196,69 +196,70 @@ void Button::Update()
 	}
 
 
-
-	// 기존의 버튼 중 하나는 무조건 눌려 있어야함.
-	// BasementTile
-	if (PtInRect(&basementTileBtn.shape, g_ptMouse) && basementTileBtn.buttonState != ButtonState::DOWN)
+	if (sampleTileBtn.clicked)
 	{
-		if (GET_SINGLETON_KEY->IsOnceKeyDown(VK_LBUTTON))
+		// 기존의 버튼 중 하나는 무조건 눌려 있어야함.
+		// BasementTile
+		if (PtInRect(&basementTileBtn.shape, g_ptMouse) && basementTileBtn.buttonState != ButtonState::DOWN)
 		{
-			basementTileBtn.clicked = true;
+			if (Input::GetButtonDown(VK_LBUTTON))
+			{
+				basementTileBtn.clicked = true;
+			}
+		}
+		else
+		{
+			basementTileBtn.buttonState = ButtonState::NONE;
+		}
+		// CaveTile
+		if (PtInRect(&caveTileBtn.shape, g_ptMouse) && caveTileBtn.buttonState != ButtonState::DOWN)
+		{
+			if (Input::GetButtonDown(VK_LBUTTON))
+			{
+				caveTileBtn.clicked = true;
+			}
+		}
+		else
+		{
+			caveTileBtn.buttonState = ButtonState::NONE;
+		}
+		// CellarTile
+		if (PtInRect(&cellarTileBtn.shape, g_ptMouse) && cellarTileBtn.buttonState != ButtonState::DOWN)
+		{
+			if (Input::GetButtonDown(VK_LBUTTON))
+			{
+				cellarTileBtn.clicked = true;
+			}
+		}
+		else
+		{
+			cellarTileBtn.buttonState = ButtonState::NONE;
+		}
+		// DepthTile
+		if (PtInRect(&depthTileBtn.shape, g_ptMouse) && depthTileBtn.buttonState != ButtonState::DOWN)
+		{
+			if (Input::GetButtonDown(VK_LBUTTON))
+			{
+				depthTileBtn.clicked = true;
+			}
+		}
+		else
+		{
+			depthTileBtn.buttonState = ButtonState::NONE;
+		}
+		// ShopTile
+		if (PtInRect(&shopTileBtn.shape, g_ptMouse) && shopTileBtn.buttonState != ButtonState::DOWN)
+		{
+			if (Input::GetButtonDown(VK_LBUTTON))
+			{
+				shopTileBtn.clicked = true;
+			}
+		}
+		else
+		{
+			shopTileBtn.buttonState = ButtonState::NONE;
 		}
 	}
-	else
-	{
-		basementTileBtn.buttonState = ButtonState::NONE;
-	}
-	// CaveTile
-	if (PtInRect(&caveTileBtn.shape, g_ptMouse) && caveTileBtn.buttonState != ButtonState::DOWN)
-	{
-		if (GET_SINGLETON_KEY->IsOnceKeyDown(VK_LBUTTON))
-		{
-			caveTileBtn.clicked = true;
-		}
-	}
-	else
-	{
-		caveTileBtn.buttonState = ButtonState::NONE;
-	}
-	// CellarTile
-	if (PtInRect(&cellarTileBtn.shape, g_ptMouse) && cellarTileBtn.buttonState != ButtonState::DOWN)
-	{
-		if (GET_SINGLETON_KEY->IsOnceKeyDown(VK_LBUTTON))
-		{
-			cellarTileBtn.clicked = true;
-		}
-	}
-	else
-	{
-		cellarTileBtn.buttonState = ButtonState::NONE;
-	}
-	// DepthTile
-	if (PtInRect(&depthTileBtn.shape, g_ptMouse) && depthTileBtn.buttonState != ButtonState::DOWN)
-	{
-		if (GET_SINGLETON_KEY->IsOnceKeyDown(VK_LBUTTON))
-		{
-			depthTileBtn.clicked = true;
-		}
-	}
-	else
-	{
-		depthTileBtn.buttonState = ButtonState::NONE;
-	}
-	// ShopTile
-	if (PtInRect(&shopTileBtn.shape, g_ptMouse) && shopTileBtn.buttonState != ButtonState::DOWN)
-	{
-		if (GET_SINGLETON_KEY->IsOnceKeyDown(VK_LBUTTON))
-		{
-			shopTileBtn.clicked = true;
-		}
-	}
-	else
-	{
-		shopTileBtn.buttonState = ButtonState::NONE;
-	}
-
 
 	// 버튼 하나를 클릭하면 나머지는 UP상태로 만듦.
 	if (basementTileBtn.clicked)
