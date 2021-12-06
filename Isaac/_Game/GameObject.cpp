@@ -11,7 +11,9 @@ void GameObject::Release()
 
 void GameObject::Update()
 {
-	if (GET_SINGLETON_KEY->IsOnceKeyDown(VK_RBUTTON))
+	Input::Update();
+
+	if (Input::GetButtonDown('P'))
 	{
 		debugMode = !debugMode;
 	}	
@@ -19,10 +21,7 @@ void GameObject::Update()
 
 void GameObject::Render(HDC hdc)
 {
-	if (debugMode)
-	{
-		OnDebug(hdc);
-	}
+	OnDebug(hdc);
 }
 
 void GameObject::OnDebug(HDC hdc)

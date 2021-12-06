@@ -55,6 +55,9 @@
     <Filter Include="FrameWork\Scene">
       <UniqueIdentifier>{e5ea7047-2680-4d25-9376-47d0f219b5bc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FrameWork\Input">
+      <UniqueIdentifier>{7fe31e98-97eb-4632-9477-902af3e47a3f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -113,6 +116,9 @@
     </ClCompile>
     <ClCompile Include="ButtonFunction.cpp">
       <Filter>MainGame\GameObject\Button</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>FrameWork\Input</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -175,6 +181,9 @@
     </ClInclude>
     <ClInclude Include="ButtonFunction.h">
       <Filter>MainGame\GameObject\Button</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>FrameWork\Input</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

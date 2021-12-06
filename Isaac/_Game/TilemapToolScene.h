@@ -29,19 +29,19 @@ private:
 	char						text[64] = {};											// MousePointer
 
 public:
-	virtual HRESULT Init() override;
-	virtual void Release() override;
-	virtual void Update() override;
-	virtual void Render(HDC hdc) override;
-	void OnDebug(HDC hdc);
+	virtual HRESULT				Init() override;
+	virtual void				Release() override;
+	virtual void				Update() override;
+	virtual void				Render(HDC hdc) override;
+	void						OnDebug(HDC hdc);
 
-	bool ClickedButton();
-	void DrawMultiTile(RECT rc);
-	void DrawSingleTile(RECT rc);
-	void InitializeMultiPoint();
-	void MarkMultiPoint();
-	void SelectMultiTile(RECT rc);
-	void SelectSingleTile(RECT rc);
+	bool						ClickedButton();
+	void						DrawMultiTile(RECT rc);
+	void						DrawSingleTile(RECT rc);
+	void						InitializeMultiPoint();
+	void						MarkMultiPoint();
+	void						SelectMultiTile(RECT rc);
+	void						SelectSingleTile(RECT rc);
 
 	virtual ~TilemapToolScene() = default;
 };

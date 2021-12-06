@@ -59,14 +59,33 @@ void Button::Update()
 {
 	GameObject::Update();
 
-	// 마우스로 클릭했을 때 기능 실행.
+	// 버튼을 눌렀을 때 명령 실행후 원상태로 돌아감.
+	// Close
+	if (PtInRect(&closeBtn.shape, g_ptMouse))
+	{
+		if (GET_SINGLETON_KEY->IsOnceKeyDown(VK_LBUTTON))
+		{
+			closeBtn.buttonState = ButtonState::DOWN;
+		}
+		else if (GET_SINGLETON_KEY->IsOnceKeyUp(VK_LBUTTON) && closeBtn.buttonState == ButtonState::DOWN)
+		{
+			closeBtn.buttonState = ButtonState::UP;
+			if (sampleTileBtn.clicked)
+			{
+				sampleTileBtn.clicked = false;
+			}
+		}
+	}
+	else
+	{
+		closeBtn.buttonState = ButtonState::NONE;
+	}
 	// Exit
 	if (PtInRect(&exitBtn.shape, g_ptMouse))
 	{
 		if (GET_SINGLETON_KEY->IsOnceKeyDown(VK_LBUTTON)) 
-		{ 
+		{
 			exitBtn.buttonState = ButtonState::DOWN;
-
 		}
 		else if (GET_SINGLETON_KEY->IsOnceKeyUp(VK_LBUTTON) && exitBtn.buttonState == ButtonState::DOWN)
 		{
@@ -126,7 +145,7 @@ void Button::Update()
 		saveBtn.buttonState = ButtonState::NONE;
 	}
 
-
+	// 버튼을 끄고 키고 할 수 있음
 	if (PtInRect(&enemyBtn.shape, g_ptMouse))
 	{
 		if (GET_SINGLETON_KEY->IsOnceKeyDown(VK_LBUTTON))
@@ -164,11 +183,11 @@ void Button::Update()
 		objectBtn.buttonState = ButtonState::NONE; 
 	}
 	// SampleTile
-	if (PtInRect(&sampleTileBtn.shape, g_ptMouse))
-	{
-		if (GET_SINGLETON_KEY->IsOnceKeyUp(VK_LBUTTON))
+	if (GET_SINGLETON_KEY->IsOnceKeyUp(VK_LBUTTON))
+	{	
+		if (PtInRect(&sampleTileBtn.shape, g_ptMouse))
 		{
-			selectSampleTile = !selectSampleTile;
+			sampleTileBtn.clicked = !sampleTileBtn.clicked;
 		}
 	}
 	else
@@ -176,34 +195,241 @@ void Button::Update()
 		sampleTileBtn.buttonState = ButtonState::NONE;
 	}
 
-	// Close
-	if (PtInRect(&closeBtn.shape, g_ptMouse))
+
+
+	// 기존의 버튼 중 하나는 무조건 눌려 있어야함.
+	// BasementTile
+	if (PtInRect(&basementTileBtn.shape, g_ptMouse) && basementTileBtn.buttonState != ButtonState::DOWN)
 	{
 		if (GET_SINGLETON_KEY->IsOnceKeyDown(VK_LBUTTON))
 		{
-			closeBtn.buttonState = ButtonState::DOWN;
-		}
-		else if (GET_SINGLETON_KEY->IsOnceKeyUp(VK_LBUTTON) && closeBtn.buttonState == ButtonState::DOWN)
-		{
-			closeBtn.buttonState = ButtonState::UP;
-			if (selectSampleTile)
-			{
-				selectSampleTile = false;
-			}
+			basementTileBtn.clicked = true;
 		}
 	}
 	else
 	{
-		closeBtn.buttonState = ButtonState::NONE;
+		basementTileBtn.buttonState = ButtonState::NONE;
+	}
+	// CaveTile
+	if (PtInRect(&caveTileBtn.shape, g_ptMouse) && caveTileBtn.buttonState != ButtonState::DOWN)
+	{
+		if (GET_SINGLETON_KEY->IsOnceKeyDown(VK_LBUTTON))
+		{
+			caveTileBtn.clicked = true;
+		}
+	}
+	else
+	{
+		caveTileBtn.buttonState = ButtonState::NONE;
+	}
+	// CellarTile
+	if (PtInRect(&cellarTileBtn.shape, g_ptMouse) && cellarTileBtn.buttonState != ButtonState::DOWN)
+	{
+		if (GET_SINGLETON_KEY->IsOnceKeyDown(VK_LBUTTON))
+		{
+			cellarTileBtn.clicked = true;
+		}
+	}
+	else
+	{
+		cellarTileBtn.buttonState = ButtonState::NONE;
+	}
+	// DepthTile
+	if (PtInRect(&depthTileBtn.shape, g_ptMouse) && depthTileBtn.buttonState != ButtonState::DOWN)
+	{
+		if (GET_SINGLETON_KEY->IsOnceKeyDown(VK_LBUTTON))
+		{
+			depthTileBtn.clicked = true;
+		}
+	}
+	else
+	{
+		depthTileBtn.buttonState = ButtonState::NONE;
+	}
+	// ShopTile
+	if (PtInRect(&shopTileBtn.shape, g_ptMouse) && shopTileBtn.buttonState != ButtonState::DOWN)
+	{
+		if (GET_SINGLETON_KEY->IsOnceKeyDown(VK_LBUTTON))
+		{
+			shopTileBtn.clicked = true;
+		}
+	}
+	else
+	{
+		shopTileBtn.buttonState = ButtonState::NONE;
 	}
 
-	if (selectSampleTile)
+
+	// 버튼 하나를 클릭하면 나머지는 UP상태로 만듦.
+	if (basementTileBtn.clicked)
+	{
+		if (caveTileBtn.clicked && caveTileBtn.buttonState != ButtonState::NONE)
+		{
+			basementTileBtn.clicked = false;
+			basementTileBtn.buttonState = ButtonState::UP;
+		}
+		if (cellarTileBtn.clicked && cellarTileBtn.buttonState != ButtonState::NONE)
+		{
+			basementTileBtn.clicked = false;
+			basementTileBtn.buttonState = ButtonState::UP;
+		}
+		if (depthTileBtn.clicked && depthTileBtn.buttonState != ButtonState::NONE)
+		{
+			basementTileBtn.clicked = false;
+			basementTileBtn.buttonState = ButtonState::UP;
+		}
+		if (shopTileBtn.clicked && shopTileBtn.buttonState != ButtonState::NONE)
+		{
+			basementTileBtn.clicked = false;
+			basementTileBtn.buttonState = ButtonState::UP;
+		}
+	}
+	if (caveTileBtn.clicked)
+	{
+		if (basementTileBtn.clicked&& basementTileBtn.buttonState != ButtonState::NONE)
+		{
+			caveTileBtn.clicked = false;
+			caveTileBtn.buttonState = ButtonState::UP;
+		}
+		if (cellarTileBtn.clicked && cellarTileBtn.buttonState != ButtonState::NONE)
+		{
+			caveTileBtn.clicked = false;
+			caveTileBtn.buttonState = ButtonState::UP;
+		}
+		if (depthTileBtn.clicked && depthTileBtn.buttonState != ButtonState::NONE)
+		{
+			caveTileBtn.clicked = false;
+			caveTileBtn.buttonState = ButtonState::UP;
+		}
+		if (shopTileBtn.clicked && shopTileBtn.buttonState != ButtonState::NONE)
+		{
+			caveTileBtn.clicked = false;
+			caveTileBtn.buttonState = ButtonState::UP;
+		}
+	}
+	if (cellarTileBtn.clicked)
+	{
+		if (basementTileBtn.clicked&& basementTileBtn.buttonState != ButtonState::NONE)
+		{
+			cellarTileBtn.clicked = false;
+			cellarTileBtn.buttonState = ButtonState::UP;
+		}
+		if (caveTileBtn.clicked && caveTileBtn.buttonState != ButtonState::NONE)
+		{
+			cellarTileBtn.clicked = false;
+			cellarTileBtn.buttonState = ButtonState::UP;
+		}
+		if (depthTileBtn.clicked && depthTileBtn.buttonState != ButtonState::NONE)
+		{
+			cellarTileBtn.clicked = false;
+			cellarTileBtn.buttonState = ButtonState::UP;
+		}
+		if (shopTileBtn.clicked && shopTileBtn.buttonState != ButtonState::NONE)
+		{
+			cellarTileBtn.clicked = false;
+			cellarTileBtn.buttonState = ButtonState::UP;
+		}
+	}
+	if (depthTileBtn.clicked)
+	{
+		if (basementTileBtn.clicked&& basementTileBtn.buttonState != ButtonState::NONE)
+		{
+			depthTileBtn.clicked = false;
+			depthTileBtn.buttonState = ButtonState::UP;
+		}
+		if (caveTileBtn.clicked && caveTileBtn.buttonState != ButtonState::NONE)
+		{
+			depthTileBtn.clicked = false;
+			depthTileBtn.buttonState = ButtonState::UP;
+		}
+		if (cellarTileBtn.clicked && cellarTileBtn.buttonState != ButtonState::NONE)
+		{
+			depthTileBtn.clicked = false;
+			depthTileBtn.buttonState = ButtonState::UP;
+		}
+		if (shopTileBtn.clicked && shopTileBtn.buttonState != ButtonState::NONE)
+		{
+			depthTileBtn.clicked = false;
+			depthTileBtn.buttonState = ButtonState::UP;
+		}
+	}
+	if (shopTileBtn.clicked)
+	{
+		if (basementTileBtn.clicked&& basementTileBtn.buttonState != ButtonState::NONE)
+		{
+			shopTileBtn.clicked = false;
+			shopTileBtn.buttonState = ButtonState::UP;
+		}
+		if (caveTileBtn.clicked && caveTileBtn.buttonState != ButtonState::NONE)
+		{
+			shopTileBtn.clicked = false;
+			shopTileBtn.buttonState = ButtonState::UP;
+		}
+		if (cellarTileBtn.clicked && cellarTileBtn.buttonState != ButtonState::NONE)
+		{
+			shopTileBtn.clicked = false;
+			shopTileBtn.buttonState = ButtonState::UP;
+		}
+		if (depthTileBtn.clicked && depthTileBtn.buttonState != ButtonState::NONE)
+		{
+			shopTileBtn.clicked = false;
+			shopTileBtn.buttonState = ButtonState::UP;
+		}
+	}
+
+	// SampleTile 버트 클릭 돼있으면 true, 클릭이 안돼있으면 false
+	if (sampleTileBtn.clicked)
 	{
 		sampleTileBtn.buttonState = ButtonState::DOWN;
 	}
 	else
 	{
 		sampleTileBtn.buttonState = ButtonState::UP;
+	}
+	// BasementTile 버튼 클릭 돼있으면 true, 클릭이 안돼있으면 false
+	if (basementTileBtn.clicked)
+	{
+		basementTileBtn.buttonState = ButtonState::DOWN;
+	}
+	else
+	{
+		basementTileBtn.buttonState = ButtonState::UP;
+	}
+	// CaveTile 버튼 클릭 돼있으면 true, 클릭이 안돼있으면 false
+	if (caveTileBtn.clicked)
+	{
+		caveTileBtn.buttonState = ButtonState::DOWN;
+	}
+	else
+	{
+		caveTileBtn.buttonState = ButtonState::UP;
+	}
+	// CellarTile 버튼 클릭 돼있으면 true, 클릭이 안돼있으면 false
+	if (cellarTileBtn.clicked)
+	{
+		cellarTileBtn.buttonState = ButtonState::DOWN;
+	}
+	else
+	{
+		cellarTileBtn.buttonState = ButtonState::UP;
+	}
+	// DepthTile 버튼 클릭 돼있으면 true, 클릭이 안돼있으면 false
+	if (depthTileBtn.clicked)
+	{
+		depthTileBtn.buttonState = ButtonState::DOWN;
+	}
+	else
+	{
+		depthTileBtn.buttonState = ButtonState::UP;
+	}
+	// ShopTile 버튼 클릭 돼있으면 true, 클릭이 안돼있으면 false
+	if (shopTileBtn.clicked)
+	{
+		shopTileBtn.buttonState = ButtonState::DOWN;
+	}
+	else
+	{
+		shopTileBtn.buttonState = ButtonState::UP;
 	}
 }
 
@@ -217,7 +443,7 @@ void Button::Render(HDC hdc)
 	ClikedButton(objectBtn, hdc);
 	ClikedButton(sampleTileBtn, hdc);
 
-	if (selectSampleTile)
+	if (sampleTileBtn.clicked)
 	{
 		ClikedButton(basementTileBtn, hdc);
 		ClikedButton(caveTileBtn, hdc);
@@ -225,7 +451,7 @@ void Button::Render(HDC hdc)
 		ClikedButton(depthTileBtn, hdc);
 		ClikedButton(shopTileBtn, hdc);
 
-		ClikedButton(closeBtn, hdc);
+		closeBtn.image->Render(hdc, (INT)(closeBtn.pos.x), (INT)(closeBtn.pos.y));
 		ClikedButton(prevBtn, hdc);
 		ClikedButton(nextBtn, hdc);
 
@@ -246,6 +472,31 @@ void Button::Render(HDC hdc)
 
 void Button::OnDebug(HDC hdc)
 {
+	wsprintf(text, "ExitBtn.clicked : %d", exitBtn.clicked);
+	TextOut(hdc, (TILEMAP_SIZE_X - 1390), (TILEMAP_SIZE_Y - 300), text, (INT)(strlen(text)));
+	wsprintf(text, "LoadBtn.clicked : %d", loadBtn.clicked);
+	TextOut(hdc, (TILEMAP_SIZE_X - 1390), (TILEMAP_SIZE_Y - 280), text, (INT)(strlen(text)));
+	wsprintf(text, "SaveBtnBtn.clicked : %d", saveBtn.clicked);
+	TextOut(hdc, (TILEMAP_SIZE_X - 1390), (TILEMAP_SIZE_Y - 260), text, (INT)(strlen(text)));
+
+	wsprintf(text, "SampleTileBtn.clicked : %d", sampleTileBtn.clicked);
+	TextOut(hdc, (TILEMAP_SIZE_X - 1390), (TILEMAP_SIZE_Y - 220), text, (INT)(strlen(text)));
+	wsprintf(text, "BasementTileBtn.clicked : %d", basementTileBtn.clicked);
+	TextOut(hdc, (TILEMAP_SIZE_X - 1390), (TILEMAP_SIZE_Y - 180), text, (INT)(strlen(text)));
+	wsprintf(text, "CaveTileBtn.clicked : %d", caveTileBtn.clicked);
+	TextOut(hdc, (TILEMAP_SIZE_X - 1390), (TILEMAP_SIZE_Y - 160), text, (INT)(strlen(text)));
+	wsprintf(text, "CellarTileBtn.clicked : %d", cellarTileBtn.clicked);
+	TextOut(hdc, (TILEMAP_SIZE_X - 1390), (TILEMAP_SIZE_Y - 140), text, (INT)(strlen(text)));
+	wsprintf(text, "DepthTileBtn.clicked : %d", depthTileBtn.clicked);
+	TextOut(hdc, (TILEMAP_SIZE_X - 1390), (TILEMAP_SIZE_Y - 120), text, (INT)(strlen(text)));
+	wsprintf(text, "ShopTileBtn.clicked : %d", shopTileBtn.clicked);
+	TextOut(hdc, (TILEMAP_SIZE_X - 1390), (TILEMAP_SIZE_Y - 100), text, (INT)(strlen(text)));
+
+	wsprintf(text, "EnemyBtn.clicked : %d", enemyBtn.clicked);
+	TextOut(hdc, (TILEMAP_SIZE_X - 1164), (TILEMAP_SIZE_Y - 220), text, (INT)(strlen(text)));
+	wsprintf(text, "ObjectBtn.clicked : %d", objectBtn.clicked);
+	TextOut(hdc, (TILEMAP_SIZE_X - 938), (TILEMAP_SIZE_Y - 220), text, (INT)(strlen(text)));
+
 	if (debugMode)
 	{
 		Rectangle(hdc, exitBtn.shape.left, exitBtn.shape.top, exitBtn.shape.right, exitBtn.shape.bottom);
@@ -256,15 +507,18 @@ void Button::OnDebug(HDC hdc)
 		Rectangle(hdc, objectBtn.shape.left, objectBtn.shape.top, objectBtn.shape.right, objectBtn.shape.bottom);
 		Rectangle(hdc, sampleTileBtn.shape.left, sampleTileBtn.shape.top, sampleTileBtn.shape.right, sampleTileBtn.shape.bottom);
 
-		Rectangle(hdc, basementTileBtn.shape.left, basementTileBtn.shape.top, basementTileBtn.shape.right, basementTileBtn.shape.bottom);
-		Rectangle(hdc, caveTileBtn.shape.left, caveTileBtn.shape.top, caveTileBtn.shape.right, caveTileBtn.shape.bottom);
-		Rectangle(hdc, cellarTileBtn.shape.left, cellarTileBtn.shape.top, cellarTileBtn.shape.right, cellarTileBtn.shape.bottom);
-		Rectangle(hdc, depthTileBtn.shape.left, depthTileBtn.shape.top, depthTileBtn.shape.right, depthTileBtn.shape.bottom);
-		Rectangle(hdc, shopTileBtn.shape.left, shopTileBtn.shape.top, shopTileBtn.shape.right, shopTileBtn.shape.bottom);
+		if (sampleTileBtn.clicked)
+		{
+			Rectangle(hdc, basementTileBtn.shape.left, basementTileBtn.shape.top, basementTileBtn.shape.right, basementTileBtn.shape.bottom);
+			Rectangle(hdc, caveTileBtn.shape.left, caveTileBtn.shape.top, caveTileBtn.shape.right, caveTileBtn.shape.bottom);
+			Rectangle(hdc, cellarTileBtn.shape.left, cellarTileBtn.shape.top, cellarTileBtn.shape.right, cellarTileBtn.shape.bottom);
+			Rectangle(hdc, depthTileBtn.shape.left, depthTileBtn.shape.top, depthTileBtn.shape.right, depthTileBtn.shape.bottom);
+			Rectangle(hdc, shopTileBtn.shape.left, shopTileBtn.shape.top, shopTileBtn.shape.right, shopTileBtn.shape.bottom);
 
-		Rectangle(hdc, closeBtn.shape.left, closeBtn.shape.top, closeBtn.shape.right, closeBtn.shape.bottom);
-		Rectangle(hdc, prevBtn.shape.left, prevBtn.shape.top, prevBtn.shape.right, prevBtn.shape.bottom);
-		Rectangle(hdc, nextBtn.shape.left, nextBtn.shape.top, nextBtn.shape.right, nextBtn.shape.bottom);
+			Rectangle(hdc, closeBtn.shape.left, closeBtn.shape.top, closeBtn.shape.right, closeBtn.shape.bottom);
+			Rectangle(hdc, prevBtn.shape.left, prevBtn.shape.top, prevBtn.shape.right, prevBtn.shape.bottom);
+			Rectangle(hdc, nextBtn.shape.left, nextBtn.shape.top, nextBtn.shape.right, nextBtn.shape.bottom);
+		}
 	}
 }
 

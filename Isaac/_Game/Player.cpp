@@ -5,6 +5,7 @@
 
 void Player::Init()
 {
+    Input::Init(g_hWnd);
     // playerImg
     switch (playerState)
     {
@@ -25,7 +26,6 @@ void Player::Init()
         otherStateImg = GET_SINGLETON_IMAGE->FindImage("Image/Character/Stat.bmp");
         break;
     default:
-        throw(out_of_range("범위를 벗어남"));
         break;
     }
 
@@ -258,7 +258,7 @@ void Player::Move()
 void Player::TakeAction()
 {
     // 이동키 땠을 때
-    if (GET_SINGLETON_KEY->IsOnceKeyUp('W') || GET_SINGLETON_KEY->IsOnceKeyUp('S') || GET_SINGLETON_KEY->IsOnceKeyUp('D') || GET_SINGLETON_KEY->IsOnceKeyUp('A'))
+    if (Input::GetButtonUp('W') || Input::GetButtonUp('S') || Input::GetButtonUp('D') || Input::GetButtonUp('A'))
     {
         playerState = ObjectStates::IDLE;
         bodyInfo.moveDir = MoveDir::DOWN;
@@ -269,13 +269,13 @@ void Player::TakeAction()
         headInfo.image->SetCurrFrameX(HEAD_LOOK_DOWN);
     }
     // 공격키 땠을 때
-    if (GET_SINGLETON_KEY->IsOnceKeyUp(VK_LBUTTON))
+    if (Input::GetButtonUp(VK_LBUTTON))
     {
         headInfo.moveDir = MoveDir::DOWN;
         headInfo.image->SetCurrFrameX(HEAD_LOOK_DOWN);
     }
     // 이동키
-    if (GET_SINGLETON_KEY->IsStayKeyDown('W'))                               // 상
+    if (Input::GetButton('W'))                               // 상
     {
         playerState = ObjectStates::WALK;
         bodyInfo.moveDir = MoveDir::UP;
@@ -283,7 +283,7 @@ void Player::TakeAction()
         bodyInfo.pos.y -= moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
         headInfo.pos.y -= moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
     }
-    else if (GET_SINGLETON_KEY->IsStayKeyDown('S'))                          // 하
+    else if (Input::GetButton('S'))                          // 하
     {
         playerState = ObjectStates::WALK;
         bodyInfo.moveDir = MoveDir::DOWN;
@@ -291,7 +291,7 @@ void Player::TakeAction()
         bodyInfo.pos.y += moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
         headInfo.pos.y += moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
     }
-    if (GET_SINGLETON_KEY->IsStayKeyDown('D'))                               // 우
+    if (Input::GetButton('D'))                               // 우
     {
         playerState = ObjectStates::WALK;
         bodyInfo.moveDir = MoveDir::RIGHT;
@@ -299,7 +299,7 @@ void Player::TakeAction()
         bodyInfo.pos.x += moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
         headInfo.pos.x += moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
     }
-    else if (GET_SINGLETON_KEY->IsStayKeyDown('A'))                           // 좌
+    else if (Input::GetButton('A'))                           // 좌
     {
         playerState = ObjectStates::WALK;
         bodyInfo.moveDir = MoveDir::LEFT;
@@ -308,7 +308,7 @@ void Player::TakeAction()
         headInfo.pos.x -= moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
     }
     // 공격키
-    if (GET_SINGLETON_KEY->IsStayKeyDown(VK_LBUTTON) && !isFire)
+    if (Input::GetButton(VK_LBUTTON) && !isFire)
     {
         //playerState = ObjectStates::ATTACK;
         FireWeapon(g_ptMouse.x, g_ptMouse.y);

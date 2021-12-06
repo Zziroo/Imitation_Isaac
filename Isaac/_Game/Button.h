@@ -17,6 +17,7 @@ private:
 		POINTFLOAT		pos = {};
 		RECT			shape = {};
 		ButtonState		buttonState = ButtonState::NONE;
+		bool			clicked = false;
 	};
 
 private:
@@ -52,23 +53,26 @@ private:
 	ButtonFunction*		btnFunc = nullptr;
 	ArgumentFuncPtr*	argFunc = nullptr;
 
-	bool				selectSampleTile = false;
+	char				text[64] = {};					// Debuging
 
 public:
-	virtual void Init() override;
-	virtual void Release() override;
-	virtual void Update() override;
-	virtual void Render(HDC hdc) override;
-	virtual void OnDebug(HDC hdc) override;
+	virtual void		Init() override;
+	virtual void		Release() override;
+	virtual void		Update() override;
+	virtual void		Render(HDC hdc) override;
+	virtual void		OnDebug(HDC hdc) override;
 
-	void DeclareButtonInfo(ButtonInfo* btnInfo, int width, int height);
-	void ClikedButton(ButtonInfo btnInfo, HDC hdc);
-	void RenderUpButtonImage(ButtonInfo btnInfo, HDC hdc);
-	void RenderDownButtonImage(ButtonInfo btnInfo, HDC hdc);
+	void				DeclareButtonInfo(ButtonInfo* btnInfo, int width, int height);
+	void				ClikedButton(ButtonInfo btnInfo, HDC hdc);
+	void				RenderUpButtonImage(ButtonInfo btnInfo, HDC hdc);
+	void				RenderDownButtonImage(ButtonInfo btnInfo, HDC hdc);
 
-	void SetFunction(FuncPtr pFunc, ButtonFunction* btnFunc, ArgumentFuncPtr* argFunc = nullptr) { this->pFunc = pFunc; this->btnFunc = btnFunc; this->argFunc = argFunc; }
+	void				SetFunction(FuncPtr pFunc, ButtonFunction* btnFunc, ArgumentFuncPtr* argFunc = nullptr) { this->pFunc = pFunc; this->btnFunc = btnFunc; this->argFunc = argFunc; }
 
-	inline bool GetSelectSampleTile() { return this->selectSampleTile; }
+	inline bool			GetSelectSampleTile() { return this->sampleTileBtn.clicked; }
+	inline bool			GetSelectBasementTile() { return this->basementTileBtn.clicked; }
+
+	inline void			SetSelecteBasementTile(bool clicked) { this->basementTileBtn.clicked = clicked; }
 
 	virtual ~Button() = default;
 };

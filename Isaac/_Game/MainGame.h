@@ -10,10 +10,10 @@ private:
 	Image*	backBuffer = nullptr;		// ¹é¹öÆÛ
 
 public:
-	void Init();
-	void Release();
-	void Update();
-	void Render(HDC hdc);
+	void	Init();
+	void	Release();
+	void	Update();
+	void	Render(HDC hdc);
 
 	LRESULT MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam);
 };

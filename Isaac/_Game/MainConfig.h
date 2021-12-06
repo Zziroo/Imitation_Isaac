@@ -51,6 +51,7 @@ inline void SetWindowSize(int sizeX, int sizeY)
 
 #define KEY_MAX_COUNT		256
 
+#include "Input.h"
 #include "ImageManager.h"
 #include "KeyManager.h"
 #include "SceneManager.h"

@@ -66,7 +66,10 @@ void Weapon::Render(HDC hdc)
 
 void Weapon::OnDebug(HDC hdc)
 {
-    Ellipse(hdc, shape.left, shape.top, shape.right, shape.bottom);
+    if (debugMode)
+    {
+        Ellipse(hdc, shape.left, shape.top, shape.right, shape.bottom);
+    }
 }
 
 void Weapon::InitializeWeapon()

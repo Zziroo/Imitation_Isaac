@@ -67,7 +67,7 @@ void TilemapToolScene::Release()
 void TilemapToolScene::Update()
 {
 	// Debug
-	if (GET_SINGLETON_KEY->IsOnceKeyDown('R'))
+	if (Input::GetButtonDown('M'))
 	{
 		debugMode = !debugMode;
 	}
@@ -78,10 +78,9 @@ void TilemapToolScene::Update()
 	DrawSingleTile(sampleTileArea);
 	// MutiSelectTile
 	DrawMultiTile(sampleTileArea);
-	
+
 	// Button
 	button->Update();
-
 }
 
 void TilemapToolScene::Render(HDC hdc)
@@ -129,6 +128,19 @@ void TilemapToolScene::OnDebug(HDC hdc)
 	TextOut(hdc, (TILEMAP_SIZE_X - 200), 20, text, (INT)(strlen(text)));
 	wsprintf(text, "Mouse.PosY : %d", g_ptMouse.y);
 	TextOut(hdc, (TILEMAP_SIZE_X - 200), 40, text, (INT)(strlen(text)));
+	// 선택한 샘플 타일들의 프레임값
+	wsprintf(text, "Single Sample.X : %d", singleSelectedSampleTile.frameX);
+	TextOut(hdc, (TILEMAP_SIZE_X - 200), 80, text, (INT)(strlen(text)));
+	wsprintf(text, "Single Sample.Y : %d", singleSelectedSampleTile.frameY);
+	TextOut(hdc, (TILEMAP_SIZE_X - 200), 100, text, (INT)(strlen(text)));
+	wsprintf(text, "Multi Sample[0].X : %d", multiSelectedSampleTile[0][0].frameX);
+	TextOut(hdc, (TILEMAP_SIZE_X - 200), 140, text, (INT)(strlen(text)));
+	wsprintf(text, "Multi Sample[0].Y : %d", multiSelectedSampleTile[0][0].frameY);
+	TextOut(hdc, (TILEMAP_SIZE_X - 200), 160, text, (INT)(strlen(text)));
+	wsprintf(text, "Multi Sample[1].X : %d", multiSelectedSampleTile[0][1].frameX);
+	TextOut(hdc, (TILEMAP_SIZE_X - 200), 180, text, (INT)(strlen(text)));
+	wsprintf(text, "Multi Sample[1].Y : %d", multiSelectedSampleTile[0][1].frameY);
+	TextOut(hdc, (TILEMAP_SIZE_X - 200), 200, text, (INT)(strlen(text)));
 
 	// TileType 출력
 	for (int r = 0; r < SAMPLE_TILE_ROW; ++r)
@@ -225,19 +237,37 @@ void TilemapToolScene::DrawMultiTile(RECT rc)
 			{
 				if (PtInRect(&(tileInfo[r][c].rc), g_ptMouse))
 				{
+					int originC = c;
+					int originR = r;
 					int plusColumn = 0;
 					int plusRow = 0;
+					int copyHorizontalLength = 0;
 					if (GET_SINGLETON_KEY->IsOnceKeyDown('D'))
 					{
 						for (int i = 0; i < multiSelectedSampleTile[1].size(); ++i)
 						{
 							tileInfo[r + plusRow][c + plusColumn].frameX = multiSelectedSampleTile[1][i].frameX;
 							tileInfo[r + plusRow][c + plusColumn].frameY = multiSelectedSampleTile[1][i].frameY;
-							++plusColumn;
-							if (plusColumn > endX - startX)
+							++plusColumn;								// 복사할 가로 길이 증가
+							++copyHorizontalLength;						// 복사할 가로 길이 증가
+							if ((c + plusColumn) > 31)					// 세로의 범위를 넘어설 때
 							{
-								++plusRow;
-								plusColumn = 0;
+								++r;									// 다음 세로 프레임으로 넘김.
+								c = 0;									// 가로 프레임은 0
+								plusColumn = 0;							// 가로 프레임은 0
+							}
+							if (copyHorizontalLength > endX - startX)	// 선택한 가로 길이를 다 복사하면 다음 줄 복사
+							{
+								r = originR;							// 원래 세로 프레임으로 돌림.(위의 상황에서 세로의 범위를 넘어서면 총 두줄이 띄어진다.)
+								++plusRow;								// 세로 프레임 증가
+								c = originC;							// 가로 프레임 초기화(시작 지점)
+								plusColumn = 0;							// 가로 프레임 초기화
+								copyHorizontalLength = 0;				// 복사할 가로 길이 초기화
+							}
+							if ((r + plusRow) > 19)						// 가로의 범위를 넘어설 때
+							{
+								r = 0;									// 가로 크기를 벗어나면 맨 첫줄로 복사
+								plusRow = 0;							// 가로 크기를 벗어나면 맨 첫줄로 복사
 							}
 						}
 						finishDrawing = true;

@@ -8,13 +8,13 @@ private:
 	char	szText[256] = {};
 
 public:
-	void Init();
-	void Release();
-	void Update();
-	void Render(HDC hdc);
+	void	Init();
+	void	Release();
+	void	Update();
+	void	Render(HDC hdc);
 
-	float GetDeltaTime();
+	float	GetDeltaTime();
 
-	virtual ~TimeManager() = default;
+	virtual	~TimeManager() = default;
 };
 
