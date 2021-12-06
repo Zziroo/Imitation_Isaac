@@ -127,9 +127,6 @@ typedef struct tagTile
 	TileType	terrain = TileType::WALL;
 } TILE_INFO;
 
-#define SAMPLE_TILE_COLUMN		8
-#define	SAMPLE_TILE_ROW			8
-
 #define TILE_SIZE				40
 #define	TILE_COLUMN				1280 / TILE_SIZE
 #define TILE_ROW				800 / TILE_SIZE
