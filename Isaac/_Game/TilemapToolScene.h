@@ -9,12 +9,13 @@ class TilemapToolScene : public Scene
 {
 private:
 	Image*						backGround = nullptr;
+	Image*						sampleBackGround = nullptr;
 	Image*						sampleTileImg = nullptr;
 
 	TILE_INFO					tileInfo[TILE_ROW][TILE_COLUMN];
 	SAMPLE_TILE_INFO			sampleTileInfo[SAMPLE_TILE_ROW][SAMPLE_TILE_COLUMN];
 	SAMPLE_TILE_INFO			singleSelectedSampleTile;
-	vector<SAMPLE_TILE_INFO>	multiSelectedSampleTile;
+	vector<SAMPLE_TILE_INFO>	multiSelectedSampleTile[2];
 	bool						isMultiSelect = false;
 	bool						finishDrawing = false;
 
@@ -22,6 +23,8 @@ private:
 	ButtonFunction*				buttonFunc = nullptr;
 
 	bool						debugMode = false;
+
+	char						text[64] = {};										// MousePointer
 
 public:
 	virtual HRESULT Init() override;
