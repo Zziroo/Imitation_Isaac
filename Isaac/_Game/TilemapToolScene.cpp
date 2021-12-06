@@ -14,15 +14,35 @@ HRESULT TilemapToolScene::Init()
 	// sampleTileImage
 	sampleTileImg = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Tile/Basement00.bmp");
 
-	// Tile
+	// MainTile
 	for (int r = 0; r < TILE_ROW; ++r)
 	{
 		for (int c = 0; c < TILE_COLUMN; ++c)
 		{
-			SetRect(&(tileInfo[r][c].rc), c * TILE_SIZE, r * TILE_SIZE, (c + 1) * TILE_SIZE, (r + 1) * TILE_SIZE);
-			tileInfo[r][c].frameX = 32;
-			tileInfo[r][c].frameY = 0;
-			tileInfo[r][c].terrain = TileType::ROAD;
+			SetRect(&(mainTileInfo[r][c].rc), c * TILE_SIZE, r * TILE_SIZE, (c + 1) * TILE_SIZE, (r + 1) * TILE_SIZE);
+			mainTileInfo[r][c].frameX = 32;
+			mainTileInfo[r][c].frameY = 0;
+			mainTileInfo[r][c].terrain = TileType::ROAD;
+		}
+	}
+
+	// Temporary Storage TileInfo
+	for (int r = 0; r < TILE_ROW; ++r)
+	{
+		for (int c = 0; c < TILE_COLUMN; ++c)
+		{
+			tempStorageTileInfo[r][c].resize(8);
+		}
+	}
+	// 처음 TempTile에 MainTile 저장
+	for (int r = 0; r < TILE_ROW; ++r)
+	{
+		for (int c = 0; c < TILE_COLUMN; ++c)
+		{
+			SetRect(&(tempStorageTileInfo[r][c][0].rc), c * TILE_SIZE, r * TILE_SIZE, (c + 1) * TILE_SIZE, (r + 1) * TILE_SIZE);
+			tempStorageTileInfo[r][c][0].frameX = mainTileInfo[r][c].frameX;
+			tempStorageTileInfo[r][c][0].frameY = mainTileInfo[r][c].frameY;
+			tempStorageTileInfo[r][c][0].terrain = mainTileInfo[r][c].terrain;
 		}
 	}
 
@@ -72,6 +92,9 @@ void TilemapToolScene::Update()
 		debugMode = !debugMode;
 	}
 
+	// Button
+	button->Update();
+
 	// 샘플역역에서 샘플을 선택
 	RECT sampleTileArea = { 900, 380, 900 + sampleTileImg->GetWidth(), 380 + sampleTileImg->GetHeight() };
 	// SingleSelectTile
@@ -79,8 +102,117 @@ void TilemapToolScene::Update()
 	// MutiSelectTile
 	DrawMultiTile(sampleTileArea);
 
-	// Button
-	button->Update();
+	// Tile 종류의 버튼을 누를 때마다 샘플 이미지 변화
+	char cha[128];
+	string str = "Image/Tilemap/Tile/";
+	if (button->GetSelectBasementTile())
+	{
+		str += "Basement";
+		sampleTileNum[0] = button->GetTileTileIndex();
+		if (sampleTileNum[0] > tileMaxIndex[0])
+		{
+			sampleTileNum[0] = tileMaxIndex[0];
+			button->SetTileIndex(sampleTileNum[0]);
+		}
+		else if (sampleTileNum[0] < 0)
+		{
+			sampleTileNum[0] = 0;
+			button->SetTileIndex(sampleTileNum[0]);
+		}
+		if (sampleTileNum[0] < 10)
+		{
+			str += "0";
+			str += to_string(sampleTileNum[0]);
+		}
+		else
+		{
+			str += to_string(sampleTileNum[0]);
+		}
+		str += ".bmp";
+		strcpy_s(cha, str.c_str());
+		sampleTileImg = GET_SINGLETON_IMAGE->FindImage(cha);
+	}
+	if (button->GetSelectCaveTile())
+	{
+		str += "Cave";
+		sampleTileNum[1] = button->GetTileTileIndex();
+		if (sampleTileNum[1] > tileMaxIndex[1])
+		{
+			sampleTileNum[1] = tileMaxIndex[1];
+			button->SetTileIndex(sampleTileNum[1]);
+		}
+		else if (sampleTileNum[1] < 0)
+		{
+			sampleTileNum[1] = 0;
+			button->SetTileIndex(sampleTileNum[1]);
+		}
+		if (sampleTileNum[1] < 10)
+		{
+			str += "0";
+			str += to_string(sampleTileNum[1]);
+		}
+		else
+		{
+			str += to_string(sampleTileNum[1]);
+		}
+		str += ".bmp";
+		strcpy_s(cha, str.c_str());
+		sampleTileImg = GET_SINGLETON_IMAGE->FindImage(cha);
+	}
+	if (button->GetSelectCellarTile())
+	{
+		str += "Cellar";
+		sampleTileNum[2] = button->GetTileTileIndex();
+		if (sampleTileNum[2] > tileMaxIndex[2])
+		{
+			sampleTileNum[2] = tileMaxIndex[2];
+			button->SetTileIndex(sampleTileNum[2]);
+		}
+		else if (sampleTileNum < 0)
+		{
+			sampleTileNum[2] = 0;
+			button->SetTileIndex(sampleTileNum[2]);
+		}
+		if (sampleTileNum[2] < 10)
+		{
+			str += "0";
+			str += to_string(sampleTileNum[2]);
+		}
+		else
+		{
+			str += to_string(sampleTileNum[2]);
+		}
+		str += ".bmp";
+		strcpy_s(cha, str.c_str());
+		sampleTileImg = GET_SINGLETON_IMAGE->FindImage(cha);
+	}
+	if (button->GetSelectDepthTile())
+	{
+		str += "Depth";
+		sampleTileNum[3] = button->GetTileTileIndex();
+		if (sampleTileNum[3] > tileMaxIndex[3])
+		{
+			sampleTileNum[3] = tileMaxIndex[3];
+			button->SetTileIndex(sampleTileNum[3]);
+		}
+		else if (sampleTileNum[3] < 0)
+		{
+			sampleTileNum[3] = 0;
+			button->SetTileIndex(sampleTileNum[3]);
+		}
+		if (sampleTileNum[3] < 10)
+		{
+			str += "0";
+			str += to_string(sampleTileNum[3]);
+		}
+		else
+		{
+			str += to_string(sampleTileNum[3]);
+		}
+		str += ".bmp";
+		strcpy_s(cha, str.c_str());
+		sampleTileImg = GET_SINGLETON_IMAGE->FindImage(cha);
+	}
 }
 
 void TilemapToolScene::Render(HDC hdc)
@@ -94,19 +226,16 @@ void TilemapToolScene::Render(HDC hdc)
 	{
 		for (int c = 0; c < TILE_COLUMN; ++c)
 		{
-			SetTerrain(&tileInfo[r][c]);
-			sampleTileImg->EnlargeSampleTile(hdc, tileInfo[r][c].rc.left, tileInfo[r][c].rc.top, tileInfo[r][c].frameX, tileInfo[r][c].frameY, scale);
+			SetTerrain(&mainTileInfo[r][c]);
+			sampleTileImg->EnlargeSampleTile(hdc, mainTileInfo[r][c].rc.left, mainTileInfo[r][c].rc.top, mainTileInfo[r][c].frameX, mainTileInfo[r][c].frameY, scale);
 		}
 	}
 
 	// SampleTileImage
 	if (button->GetSelectSampleTile())
 	{
-		sampleBackGround->Render(hdc, 963, 560);
-		if (button->GetSelectBasementTile())
-		{
-			sampleTileImg->Render(hdc, (INT)(900 + (sampleTileImg->GetWidth() * DEVIDE_HALF)), (INT)(380 + (sampleTileImg->GetHeight() * DEVIDE_HALF)));
-		}
+		sampleBackGround->Render(hdc, 963, 560);		
+		sampleTileImg->Render(hdc, (INT)(900 + (sampleTileImg->GetWidth() * DEVIDE_HALF)), (INT)(380 + (sampleTileImg->GetHeight() * DEVIDE_HALF)));
 	}
 
 	// Button
@@ -152,20 +281,20 @@ void TilemapToolScene::OnDebug(HDC hdc)
 	{
 		for (int c = 0; c < SAMPLE_TILE_COLUMN; ++c)
 		{
-			if (PtInRect(&(tileInfo[r][c].rc), g_ptMouse))
+			if (PtInRect(&(mainTileInfo[r][c].rc), g_ptMouse))
 			{
 				if (Input::GetButtonDown('T'))
 				{
-					cout << "frameX : " << tileInfo[r][c].frameX << "\t" << "frameY : " << tileInfo[r][c].frameY << "\n";
-					if (tileInfo[r][c].terrain == TileType::WALL)
+					cout << "frameX : " << mainTileInfo[r][c].frameX << "\t" << "frameY : " << mainTileInfo[r][c].frameY << "\n";
+					if (mainTileInfo[r][c].terrain == TileType::WALL)
 					{
 						cout << "TileType : WALL\n";
 					}
-					if (tileInfo[r][c].terrain == TileType::DOOR)
+					if (mainTileInfo[r][c].terrain == TileType::DOOR)
 					{
 						cout << "TileType : DOOR\n";
 					}
-					if (tileInfo[r][c].terrain == TileType::ROAD)
+					if (mainTileInfo[r][c].terrain == TileType::ROAD)
 					{
 						cout << "TileType : ROAD\n";
 					}
@@ -181,7 +310,7 @@ void TilemapToolScene::OnDebug(HDC hdc)
 		{
 			for (int c = 0; c < TILE_COLUMN; ++c)
 			{
-				Rectangle(hdc, tileInfo[r][c].rc.left, tileInfo[r][c].rc.top, tileInfo[r][c].rc.right, tileInfo[r][c].rc.bottom);
+				Rectangle(hdc, mainTileInfo[r][c].rc.left, mainTileInfo[r][c].rc.top, mainTileInfo[r][c].rc.right, mainTileInfo[r][c].rc.bottom);
 			}
 		}
 
@@ -244,7 +373,7 @@ void TilemapToolScene::DrawMultiTile(RECT rc)
 		{
 			for (int c = 0; c < TILE_COLUMN; ++c)
 			{
-				if (PtInRect(&(tileInfo[r][c].rc), g_ptMouse))
+				if (PtInRect(&(mainTileInfo[r][c].rc), g_ptMouse))
 				{
 					int originC = c;
 					int originR = r;
@@ -255,8 +384,8 @@ void TilemapToolScene::DrawMultiTile(RECT rc)
 					{
 						for (int i = 0; i < multiSelectedSampleTile[1].size(); ++i)
 						{
-							tileInfo[r + plusRow][c + plusColumn].frameX = multiSelectedSampleTile[1][i].frameX;
-							tileInfo[r + plusRow][c + plusColumn].frameY = multiSelectedSampleTile[1][i].frameY;
+							mainTileInfo[r + plusRow][c + plusColumn].frameX = multiSelectedSampleTile[1][i].frameX;
+							mainTileInfo[r + plusRow][c + plusColumn].frameY = multiSelectedSampleTile[1][i].frameY;
 							++plusColumn;								// 복사할 가로 길이 증가
 							++copyHorizontalLength;						// 복사할 가로 길이 증가
 							if ((c + plusColumn) > 31)					// 세로의 범위를 넘어설 때
@@ -303,12 +432,12 @@ void TilemapToolScene::DrawSingleTile(RECT rc)
 		{
 			for (int c = 0; c < TILE_COLUMN; ++c)
 			{
-				if (PtInRect(&(tileInfo[r][c].rc), g_ptMouse))
+				if (PtInRect(&(mainTileInfo[r][c].rc), g_ptMouse))
 				{
 					if (Input::GetButtonDown(VK_RBUTTON))
 					{
-						tileInfo[r][c].frameX = singleSelectedSampleTile.frameX;
-						tileInfo[r][c].frameY = singleSelectedSampleTile.frameY;
+						mainTileInfo[r][c].frameX = singleSelectedSampleTile.frameX;
+						mainTileInfo[r][c].frameY = singleSelectedSampleTile.frameY;
 					}
 				}
 			}

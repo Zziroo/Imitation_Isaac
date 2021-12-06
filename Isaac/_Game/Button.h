@@ -33,7 +33,6 @@ private:
 	ButtonInfo			caveTileBtn = {};				// Tile/CAVE
 	ButtonInfo			cellarTileBtn = {};				// Tile/CELLAR
 	ButtonInfo			depthTileBtn = {};				// Tile/DEPTH
-	ButtonInfo			shopTileBtn = {};				// Tile/SHOP
 
 	ButtonInfo			closeBtn = {};					// Close
 	ButtonInfo			nextBtn = {};					// Next
@@ -53,6 +52,7 @@ private:
 	ButtonFunction*		btnFunc = nullptr;
 	ArgumentFuncPtr*	argFunc = nullptr;
 
+	int					tileIndex = 0;
 	char				text[64] = {};					// Debuging
 
 public:
@@ -63,16 +63,25 @@ public:
 	virtual void		OnDebug(HDC hdc) override;
 
 	void				DeclareButtonInfo(ButtonInfo* btnInfo, int width, int height);
-	void				ClikedButton(ButtonInfo btnInfo, HDC hdc);
-	void				RenderUpButtonImage(ButtonInfo btnInfo, HDC hdc);
-	void				RenderDownButtonImage(ButtonInfo btnInfo, HDC hdc);
+	void				ClikedButton(HDC hdc, ButtonInfo* btnInfo);
+	void				RenderDownButton(HDC hdc, ButtonInfo* btnInfo);
+	void				RenderNormalButton(HDC hdc, ButtonInfo* btnInfo);
+	void				RenderUpButton(HDC hdc, ButtonInfo* btnInfo);
+	void				ShowLetter(HDC hdc, Image* img, ButtonInfo* btnInfo);
 
 	void				SetFunction(FuncPtr pFunc, ButtonFunction* btnFunc, ArgumentFuncPtr* argFunc = nullptr) { this->pFunc = pFunc; this->btnFunc = btnFunc; this->argFunc = argFunc; }
 
+	inline bool			GetPressPrevButton() { return this->prevBtn.clicked; }
+	inline bool			GetPressNextButton() { return this->nextBtn.clicked; }
 	inline bool			GetSelectSampleTile() { return this->sampleTileBtn.clicked; }
 	inline bool			GetSelectBasementTile() { return this->basementTileBtn.clicked; }
+	inline bool			GetSelectCaveTile() { return this->caveTileBtn.clicked; }
+	inline bool			GetSelectCellarTile() { return this->cellarTileBtn.clicked; }
+	inline bool			GetSelectDepthTile() { return this->depthTileBtn.clicked; }
+	inline int			GetTileTileIndex() { return this->tileIndex; }
 
 	inline void			SetSelecteBasementTile(bool clicked) { this->basementTileBtn.clicked = clicked; }
+	inline void			SetTileIndex(int tileIndex) { this->tileIndex = tileIndex; }
 
 	virtual ~Button() = default;
 };

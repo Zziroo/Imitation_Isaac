@@ -46,6 +46,22 @@ void ImageManager::Init()
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Tile/Basement01.bmp", 462, 280, 33, 20, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Tile/Basement02.bmp", 462, 280, 33, 20, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Tile/Basement03.bmp", 462, 280, 33, 20, true, MAGENTA);
+	// Cave
+	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Tile/Cave00.bmp", 462, 280, 33, 20, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Tile/Cave01.bmp", 462, 280, 33, 20, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Tile/Cave02.bmp", 462, 280, 33, 20, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Tile/Cave03.bmp", 462, 280, 33, 20, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Tile/Cave04.bmp", 462, 280, 33, 20, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Tile/Cave05.bmp", 462, 280, 33, 20, true, MAGENTA);
+	// Cellar
+	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Tile/Cellar00.bmp", 462, 280, 33, 20, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Tile/Cellar01.bmp", 462, 280, 33, 20, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Tile/Cellar02.bmp", 462, 280, 33, 20, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Tile/Cellar03.bmp", 462, 280, 33, 20, true, MAGENTA);
+	// Depth
+	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Tile/Depth00.bmp", 462, 280, 33, 20, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Tile/Depth01.bmp", 462, 280, 33, 20, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Tile/Depth02.bmp", 462, 280, 33, 20, true, MAGENTA);
 
 	// Unused
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Sample_Image.bmp", 1280, 800);

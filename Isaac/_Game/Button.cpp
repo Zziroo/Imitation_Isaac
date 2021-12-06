@@ -16,7 +16,6 @@ void Button::Init()
 	caveTileBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index.bmp");
 	cellarTileBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index.bmp");
 	depthTileBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index.bmp");
-	shopTileBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index.bmp");
 
 	closeBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Close.bmp");
 	nextBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Next.bmp");
@@ -41,10 +40,9 @@ void Button::Init()
 	DeclareButtonInfo(&sampleTileBtn, 1287, 40);
 
 	DeclareButtonInfo(&basementTileBtn, 722, 500);
-	DeclareButtonInfo(&caveTileBtn, 722, 420);
-	DeclareButtonInfo(&cellarTileBtn, 722, 340);
-	DeclareButtonInfo(&depthTileBtn, 722, 260);
-	DeclareButtonInfo(&shopTileBtn, 722, 180);
+	DeclareButtonInfo(&caveTileBtn, 722, 393);
+	DeclareButtonInfo(&cellarTileBtn, 722, 287);
+	DeclareButtonInfo(&depthTileBtn, 722, 180);
 
 	DeclareButtonInfo(&closeBtn, 98, 550);
 	DeclareButtonInfo(&nextBtn, 98, 180);
@@ -205,6 +203,7 @@ void Button::Update()
 			if (Input::GetButtonDown(VK_LBUTTON))
 			{
 				basementTileBtn.clicked = true;
+				tileIndex = 0;
 			}
 		}
 		else
@@ -217,6 +216,7 @@ void Button::Update()
 			if (Input::GetButtonDown(VK_LBUTTON))
 			{
 				caveTileBtn.clicked = true;
+				tileIndex = 0;
 			}
 		}
 		else
@@ -229,6 +229,7 @@ void Button::Update()
 			if (Input::GetButtonDown(VK_LBUTTON))
 			{
 				cellarTileBtn.clicked = true;
+				tileIndex = 0;
 			}
 		}
 		else
@@ -241,23 +242,12 @@ void Button::Update()
 			if (Input::GetButtonDown(VK_LBUTTON))
 			{
 				depthTileBtn.clicked = true;
+				tileIndex = 0;
 			}
 		}
 		else
 		{
 			depthTileBtn.buttonState = ButtonState::NONE;
-		}
-		// ShopTile
-		if (PtInRect(&shopTileBtn.shape, g_ptMouse) && shopTileBtn.buttonState != ButtonState::DOWN)
-		{
-			if (Input::GetButtonDown(VK_LBUTTON))
-			{
-				shopTileBtn.clicked = true;
-			}
-		}
-		else
-		{
-			shopTileBtn.buttonState = ButtonState::NONE;
 		}
 	}
 
@@ -275,11 +265,6 @@ void Button::Update()
 			basementTileBtn.buttonState = ButtonState::UP;
 		}
 		if (depthTileBtn.clicked && depthTileBtn.buttonState != ButtonState::NONE)
-		{
-			basementTileBtn.clicked = false;
-			basementTileBtn.buttonState = ButtonState::UP;
-		}
-		if (shopTileBtn.clicked && shopTileBtn.buttonState != ButtonState::NONE)
 		{
 			basementTileBtn.clicked = false;
 			basementTileBtn.buttonState = ButtonState::UP;
@@ -302,11 +287,6 @@ void Button::Update()
 			caveTileBtn.clicked = false;
 			caveTileBtn.buttonState = ButtonState::UP;
 		}
-		if (shopTileBtn.clicked && shopTileBtn.buttonState != ButtonState::NONE)
-		{
-			caveTileBtn.clicked = false;
-			caveTileBtn.buttonState = ButtonState::UP;
-		}
 	}
 	if (cellarTileBtn.clicked)
 	{
@@ -321,11 +301,6 @@ void Button::Update()
 			cellarTileBtn.buttonState = ButtonState::UP;
 		}
 		if (depthTileBtn.clicked && depthTileBtn.buttonState != ButtonState::NONE)
-		{
-			cellarTileBtn.clicked = false;
-			cellarTileBtn.buttonState = ButtonState::UP;
-		}
-		if (shopTileBtn.clicked && shopTileBtn.buttonState != ButtonState::NONE)
 		{
 			cellarTileBtn.clicked = false;
 			cellarTileBtn.buttonState = ButtonState::UP;
@@ -347,34 +322,6 @@ void Button::Update()
 		{
 			depthTileBtn.clicked = false;
 			depthTileBtn.buttonState = ButtonState::UP;
-		}
-		if (shopTileBtn.clicked && shopTileBtn.buttonState != ButtonState::NONE)
-		{
-			depthTileBtn.clicked = false;
-			depthTileBtn.buttonState = ButtonState::UP;
-		}
-	}
-	if (shopTileBtn.clicked)
-	{
-		if (basementTileBtn.clicked&& basementTileBtn.buttonState != ButtonState::NONE)
-		{
-			shopTileBtn.clicked = false;
-			shopTileBtn.buttonState = ButtonState::UP;
-		}
-		if (caveTileBtn.clicked && caveTileBtn.buttonState != ButtonState::NONE)
-		{
-			shopTileBtn.clicked = false;
-			shopTileBtn.buttonState = ButtonState::UP;
-		}
-		if (cellarTileBtn.clicked && cellarTileBtn.buttonState != ButtonState::NONE)
-		{
-			shopTileBtn.clicked = false;
-			shopTileBtn.buttonState = ButtonState::UP;
-		}
-		if (depthTileBtn.clicked && depthTileBtn.buttonState != ButtonState::NONE)
-		{
-			shopTileBtn.clicked = false;
-			shopTileBtn.buttonState = ButtonState::UP;
 		}
 	}
 
@@ -423,50 +370,81 @@ void Button::Update()
 	{
 		depthTileBtn.buttonState = ButtonState::UP;
 	}
-	// ShopTile 버튼 클릭 돼있으면 true, 클릭이 안돼있으면 false
-	if (shopTileBtn.clicked)
+
+	// NextButton,PrevButton
+	if (sampleTileBtn.clicked)
 	{
-		shopTileBtn.buttonState = ButtonState::DOWN;
-	}
-	else
-	{
-		shopTileBtn.buttonState = ButtonState::UP;
+		// Next Button
+		if (PtInRect(&nextBtn.shape, g_ptMouse))
+		{
+			if (Input::GetButtonDown(VK_LBUTTON))
+			{
+				nextBtn.buttonState = ButtonState::DOWN;
+				nextBtn.clicked = true;
+			}
+			else if (Input::GetButtonUp(VK_LBUTTON) && nextBtn.buttonState == ButtonState::DOWN)
+			{
+				++tileIndex;
+				nextBtn.buttonState = ButtonState::UP;
+				nextBtn.clicked = false;
+			}
+		}
+		else
+		{
+			nextBtn.buttonState = ButtonState::NONE;
+		}
+		// Prev Button
+		if (PtInRect(&prevBtn.shape, g_ptMouse))
+		{
+			if (Input::GetButtonDown(VK_LBUTTON))
+			{
+				prevBtn.buttonState = ButtonState::DOWN;
+				prevBtn.clicked = true;
+			}
+			else if (Input::GetButtonUp(VK_LBUTTON) && prevBtn.buttonState == ButtonState::DOWN)
+			{
+				--tileIndex;
+				prevBtn.buttonState = ButtonState::UP;
+				prevBtn.clicked = false;
+			}
+		}
+		else
+		{
+			prevBtn.buttonState = ButtonState::NONE;
+		}
 	}
 }
 
 void Button::Render(HDC hdc)
 {
-	ClikedButton(exitBtn, hdc);
-	ClikedButton(loadBtn, hdc);
-	ClikedButton(saveBtn, hdc);
+	ClikedButton(hdc, &exitBtn);
+	ClikedButton(hdc, &loadBtn);
+	ClikedButton(hdc, &saveBtn);
 
-	ClikedButton(enemyBtn, hdc);
-	ClikedButton(objectBtn, hdc);
-	ClikedButton(sampleTileBtn, hdc);
+	ClikedButton(hdc, &enemyBtn);
+	ClikedButton(hdc, &objectBtn);
+	ClikedButton(hdc, &sampleTileBtn);
 
 	if (sampleTileBtn.clicked)
 	{
-		ClikedButton(basementTileBtn, hdc);
-		ClikedButton(caveTileBtn, hdc);
-		ClikedButton(cellarTileBtn, hdc);
-		ClikedButton(depthTileBtn, hdc);
-		ClikedButton(shopTileBtn, hdc);
+		ClikedButton(hdc, &basementTileBtn);
+		ClikedButton(hdc, &caveTileBtn);
+		ClikedButton(hdc, &cellarTileBtn);
+		ClikedButton(hdc, &depthTileBtn);
 
-		closeBtn.image->Render(hdc, (INT)(closeBtn.pos.x), (INT)(closeBtn.pos.y));
-		ClikedButton(prevBtn, hdc);
-		ClikedButton(nextBtn, hdc);
+		RenderNormalButton(hdc, &closeBtn);
+		RenderNormalButton(hdc, &prevBtn);
+		RenderNormalButton(hdc, &nextBtn);
 
-		letter_Basement->Render(hdc, (INT)(basementTileBtn.pos.x), (INT)(basementTileBtn.pos.y));
-		letter_Cave->Render(hdc, (INT)(caveTileBtn.pos.x), (INT)(caveTileBtn.pos.y));
-		letter_Cellar->Render(hdc, (INT)(cellarTileBtn.pos.x), (INT)(cellarTileBtn.pos.y));
-		letter_Depth->Render(hdc, (INT)(depthTileBtn.pos.x), (INT)(depthTileBtn.pos.y));
-		letter_Shop->Render(hdc, (INT)(shopTileBtn.pos.x), (INT)(shopTileBtn.pos.y));
+		ShowLetter(hdc, letter_Basement, &basementTileBtn);
+		ShowLetter(hdc, letter_Cave, &caveTileBtn);
+		ShowLetter(hdc, letter_Cellar, &cellarTileBtn);
+		ShowLetter(hdc, letter_Depth, &depthTileBtn);
 	}
-
-	letter_Enemy->Render(hdc, (INT)(enemyBtn.pos.x), (INT)(enemyBtn.pos.y));
-	letter_Exit->Render(hdc, (INT)(exitBtn.pos.x), (INT)(exitBtn.pos.y));
-	letter_Object->Render(hdc, (INT)(objectBtn.pos.x), (INT)(objectBtn.pos.y));
-	letter_Tile->Render(hdc, (INT)(sampleTileBtn.pos.x), (INT)(sampleTileBtn.pos.y));
+	ShowLetter(hdc, letter_Enemy, &enemyBtn);
+	ShowLetter(hdc, letter_Exit, &exitBtn);
+	ShowLetter(hdc, letter_Object, &objectBtn);
+	ShowLetter(hdc, letter_Tile, &sampleTileBtn);
 
 	GameObject::Render(hdc);
 }
@@ -490,8 +468,6 @@ void Button::OnDebug(HDC hdc)
 	TextOut(hdc, (TILEMAP_SIZE_X - 1390), (TILEMAP_SIZE_Y - 140), text, (INT)(strlen(text)));
 	wsprintf(text, "DepthTileBtn.clicked : %d", depthTileBtn.clicked);
 	TextOut(hdc, (TILEMAP_SIZE_X - 1390), (TILEMAP_SIZE_Y - 120), text, (INT)(strlen(text)));
-	wsprintf(text, "ShopTileBtn.clicked : %d", shopTileBtn.clicked);
-	TextOut(hdc, (TILEMAP_SIZE_X - 1390), (TILEMAP_SIZE_Y - 100), text, (INT)(strlen(text)));
 
 	wsprintf(text, "EnemyBtn.clicked : %d", enemyBtn.clicked);
 	TextOut(hdc, (TILEMAP_SIZE_X - 1164), (TILEMAP_SIZE_Y - 220), text, (INT)(strlen(text)));
@@ -514,7 +490,6 @@ void Button::OnDebug(HDC hdc)
 			Rectangle(hdc, caveTileBtn.shape.left, caveTileBtn.shape.top, caveTileBtn.shape.right, caveTileBtn.shape.bottom);
 			Rectangle(hdc, cellarTileBtn.shape.left, cellarTileBtn.shape.top, cellarTileBtn.shape.right, cellarTileBtn.shape.bottom);
 			Rectangle(hdc, depthTileBtn.shape.left, depthTileBtn.shape.top, depthTileBtn.shape.right, depthTileBtn.shape.bottom);
-			Rectangle(hdc, shopTileBtn.shape.left, shopTileBtn.shape.top, shopTileBtn.shape.right, shopTileBtn.shape.bottom);
 
 			Rectangle(hdc, closeBtn.shape.left, closeBtn.shape.top, closeBtn.shape.right, closeBtn.shape.bottom);
 			Rectangle(hdc, prevBtn.shape.left, prevBtn.shape.top, prevBtn.shape.right, prevBtn.shape.bottom);
@@ -533,27 +508,37 @@ void Button::DeclareButtonInfo(ButtonInfo* btnInfo, int width, int height)
 	btnInfo->shape.bottom = (LONG)(btnInfo->pos.y + (btnInfo->image->GetFrameHeight() * DEVIDE_HALF));
 }
 
-void Button::ClikedButton(ButtonInfo btnInfo, HDC hdc)
+void Button::ClikedButton(HDC hdc, ButtonInfo* btnInfo)
 {
-	switch (btnInfo.buttonState)
+	switch (btnInfo->buttonState)
 	{
 	case ButtonState::NONE:	case ButtonState::UP:
-		RenderUpButtonImage(btnInfo, hdc);
+		RenderUpButton(hdc, btnInfo);
 		break;
 	case ButtonState::DOWN:
-		RenderDownButtonImage(btnInfo, hdc);
+		RenderDownButton(hdc, btnInfo);
 		break;
 	default:
 		break;
 	}
 }
 
-void Button::RenderUpButtonImage(ButtonInfo btnInfo, HDC hdc)
+void Button::RenderDownButton(HDC hdc, ButtonInfo* btnInfo)
 {
-	btnInfo.image->Render(hdc, (INT)(btnInfo.pos.x), (INT)(btnInfo.pos.y), 0, 0);
+	btnInfo->image->Render(hdc, (INT)(btnInfo->pos.x), (INT)(btnInfo->pos.y), 0, 1);
 }
 
-void Button::RenderDownButtonImage(ButtonInfo btnInfo, HDC hdc)
+void Button::RenderNormalButton(HDC hdc, ButtonInfo* btnInfo)
 {
-	btnInfo.image->Render(hdc, (INT)(btnInfo.pos.x), (INT)(btnInfo.pos.y), 0, 1);
+	btnInfo->image->Render(hdc, (INT)(btnInfo->pos.x), (INT)(btnInfo->pos.y));
+}
+
+void Button::RenderUpButton(HDC hdc, ButtonInfo* btnInfo)
+{
+	btnInfo->image->Render(hdc, (INT)(btnInfo->pos.x), (INT)(btnInfo->pos.y), 0, 0);
+}
+
+void Button::ShowLetter(HDC hdc, Image* img, ButtonInfo* btnInfo)
+{
+	img->Render(hdc, (INT)(btnInfo->pos.x), (INT)(btnInfo->pos.y));
 }
