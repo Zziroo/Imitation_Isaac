@@ -62,6 +62,9 @@ void ImageManager::Init()
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Tile/Depth00.bmp", 462, 280, 33, 20, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Tile/Depth01.bmp", 462, 280, 33, 20, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Tile/Depth02.bmp", 462, 280, 33, 20, true, MAGENTA);
+	// Nothingness
+	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Tile/Nothingness.bmp", 462, 280, 33, 20, true, MAGENTA);
+
 
 	// Unused
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Sample_Image.bmp", 1280, 800);

@@ -5,7 +5,7 @@
 class ButtonFunction;
 typedef void (ButtonFunction::* FuncPtr)(ArgumentFuncPtr*);
 
-enum class ButtonState { NONE, UP, DOWN };
+enum class ButtonStates { NONE, UP, DOWN };
 
 class Image;
 class Button : public GameObject
@@ -16,7 +16,7 @@ private:
 		Image*			image = nullptr;
 		POINTFLOAT		pos = {};
 		RECT			shape = {};
-		ButtonState		buttonState = ButtonState::NONE;
+		ButtonStates	buttonState = ButtonStates::NONE;
 		bool			clicked = false;
 	};
 
@@ -78,8 +78,10 @@ public:
 	inline bool			GetSelectCaveTile() { return this->caveTileBtn.clicked; }
 	inline bool			GetSelectCellarTile() { return this->cellarTileBtn.clicked; }
 	inline bool			GetSelectDepthTile() { return this->depthTileBtn.clicked; }
-	inline int			GetTileTileIndex() { return this->tileIndex; }
+	inline int			GetTileIndex() { return this->tileIndex; }
 
+	inline void			SetPressPrevButton(bool clicked) { this->prevBtn.clicked = clicked; }
+	inline void			SetPressNextButton(bool clicked) { this->nextBtn.clicked = clicked; }
 	inline void			SetSelecteBasementTile(bool clicked) { this->basementTileBtn.clicked = clicked; }
 	inline void			SetTileIndex(int tileIndex) { this->tileIndex = tileIndex; }
 

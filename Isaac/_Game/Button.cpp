@@ -63,11 +63,11 @@ void Button::Update()
 	{
 		if (Input::GetButtonDown(VK_LBUTTON))
 		{
-			closeBtn.buttonState = ButtonState::DOWN;
+			closeBtn.buttonState = ButtonStates::DOWN;
 		}
-		else if (Input::GetButtonUp(VK_LBUTTON) && closeBtn.buttonState == ButtonState::DOWN)
+		else if (Input::GetButtonUp(VK_LBUTTON) && closeBtn.buttonState == ButtonStates::DOWN)
 		{
-			closeBtn.buttonState = ButtonState::UP;
+			closeBtn.buttonState = ButtonStates::UP;
 			if (sampleTileBtn.clicked)
 			{
 				sampleTileBtn.clicked = false;
@@ -76,18 +76,18 @@ void Button::Update()
 	}
 	else
 	{
-		closeBtn.buttonState = ButtonState::NONE;
+		closeBtn.buttonState = ButtonStates::NONE;
 	}
 	// Exit
 	if (PtInRect(&exitBtn.shape, g_ptMouse))
 	{
 		if (Input::GetButtonDown(VK_LBUTTON))
 		{
-			exitBtn.buttonState = ButtonState::DOWN;
+			exitBtn.buttonState = ButtonStates::DOWN;
 		}
-		else if (Input::GetButtonUp(VK_LBUTTON) && exitBtn.buttonState == ButtonState::DOWN)
+		else if (Input::GetButtonUp(VK_LBUTTON) && exitBtn.buttonState == ButtonStates::DOWN)
 		{
-			exitBtn.buttonState = ButtonState::UP;
+			exitBtn.buttonState = ButtonStates::UP;
 			if (btnFunc && pFunc) 
 			{ 
 				(btnFunc->*pFunc)(argFunc);
@@ -98,19 +98,19 @@ void Button::Update()
 	}
 	else
 	{
-		exitBtn.buttonState = ButtonState::NONE;
+		exitBtn.buttonState = ButtonStates::NONE;
 	}
 	// Load
 	if (PtInRect(&loadBtn.shape, g_ptMouse))
 	{
 		if (Input::GetButtonDown(VK_LBUTTON))
 		{ 
-			loadBtn.buttonState = ButtonState::DOWN;
+			loadBtn.buttonState = ButtonStates::DOWN;
 
 		}
-		else if (Input::GetButtonUp(VK_LBUTTON) && loadBtn.buttonState == ButtonState::DOWN)
+		else if (Input::GetButtonUp(VK_LBUTTON) && loadBtn.buttonState == ButtonStates::DOWN)
 		{
-			loadBtn.buttonState = ButtonState::UP;
+			loadBtn.buttonState = ButtonStates::UP;
 			//if (btnFunc && pFunc) 
 			//{ 
 			//	(btnFunc->*pFunc)(argFunc);
@@ -119,19 +119,19 @@ void Button::Update()
 	}
 	else
 	{
-		loadBtn.buttonState = ButtonState::NONE;
+		loadBtn.buttonState = ButtonStates::NONE;
 	}
 	// Save
 	if (PtInRect(&saveBtn.shape, g_ptMouse))
 	{
 		if (Input::GetButtonDown(VK_LBUTTON))
 		{ 
-			saveBtn.buttonState = ButtonState::DOWN;
+			saveBtn.buttonState = ButtonStates::DOWN;
 
 		}
-		else if (Input::GetButtonUp(VK_LBUTTON) && saveBtn.buttonState == ButtonState::DOWN)
+		else if (Input::GetButtonUp(VK_LBUTTON) && saveBtn.buttonState == ButtonStates::DOWN)
 		{
-			saveBtn.buttonState = ButtonState::UP;
+			saveBtn.buttonState = ButtonStates::UP;
 			//if (btnFunc && pFunc) 
 			//{ 
 			//	(btnFunc->*pFunc)(argFunc);
@@ -140,7 +140,7 @@ void Button::Update()
 	}
 	else
 	{
-		saveBtn.buttonState = ButtonState::NONE;
+		saveBtn.buttonState = ButtonStates::NONE;
 	}
 
 	// 버튼을 끄고 키고 할 수 있음
@@ -148,37 +148,37 @@ void Button::Update()
 	{
 		if (Input::GetButtonDown(VK_LBUTTON))
 		{
-			enemyBtn.buttonState = ButtonState::DOWN;
+			enemyBtn.buttonState = ButtonStates::DOWN;
 
 		}
-		else if (Input::GetButtonUp(VK_LBUTTON) && enemyBtn.buttonState == ButtonState::DOWN)
+		else if (Input::GetButtonUp(VK_LBUTTON) && enemyBtn.buttonState == ButtonStates::DOWN)
 		{
-			enemyBtn.buttonState = ButtonState::UP;
+			enemyBtn.buttonState = ButtonStates::UP;
 
 			return;
 		}
 	}
 	else 
 	{
-		enemyBtn.buttonState = ButtonState::NONE;
+		enemyBtn.buttonState = ButtonStates::NONE;
 	}
 	if (PtInRect(&objectBtn.shape, g_ptMouse))
 	{
 		if (Input::GetButtonDown(VK_LBUTTON))
 		{
-			objectBtn.buttonState = ButtonState::DOWN;
+			objectBtn.buttonState = ButtonStates::DOWN;
 
 		}
-		else if (Input::GetButtonUp(VK_LBUTTON) && objectBtn.buttonState == ButtonState::DOWN)
+		else if (Input::GetButtonUp(VK_LBUTTON) && objectBtn.buttonState == ButtonStates::DOWN)
 		{
-			objectBtn.buttonState = ButtonState::UP;
+			objectBtn.buttonState = ButtonStates::UP;
 
 			return;
 		}
 	}
 	else 
 	{
-		objectBtn.buttonState = ButtonState::NONE; 
+		objectBtn.buttonState = ButtonStates::NONE; 
 	}
 	// SampleTile
 	if (Input::GetButtonDown(VK_LBUTTON))
@@ -190,7 +190,7 @@ void Button::Update()
 	}
 	else
 	{
-		sampleTileBtn.buttonState = ButtonState::NONE;
+		sampleTileBtn.buttonState = ButtonStates::NONE;
 	}
 
 
@@ -198,7 +198,7 @@ void Button::Update()
 	{
 		// 기존의 버튼 중 하나는 무조건 눌려 있어야함.
 		// BasementTile
-		if (PtInRect(&basementTileBtn.shape, g_ptMouse) && basementTileBtn.buttonState != ButtonState::DOWN)
+		if (PtInRect(&basementTileBtn.shape, g_ptMouse) && basementTileBtn.buttonState != ButtonStates::DOWN)
 		{
 			if (Input::GetButtonDown(VK_LBUTTON))
 			{
@@ -208,10 +208,10 @@ void Button::Update()
 		}
 		else
 		{
-			basementTileBtn.buttonState = ButtonState::NONE;
+			basementTileBtn.buttonState = ButtonStates::NONE;
 		}
 		// CaveTile
-		if (PtInRect(&caveTileBtn.shape, g_ptMouse) && caveTileBtn.buttonState != ButtonState::DOWN)
+		if (PtInRect(&caveTileBtn.shape, g_ptMouse) && caveTileBtn.buttonState != ButtonStates::DOWN)
 		{
 			if (Input::GetButtonDown(VK_LBUTTON))
 			{
@@ -221,10 +221,10 @@ void Button::Update()
 		}
 		else
 		{
-			caveTileBtn.buttonState = ButtonState::NONE;
+			caveTileBtn.buttonState = ButtonStates::NONE;
 		}
 		// CellarTile
-		if (PtInRect(&cellarTileBtn.shape, g_ptMouse) && cellarTileBtn.buttonState != ButtonState::DOWN)
+		if (PtInRect(&cellarTileBtn.shape, g_ptMouse) && cellarTileBtn.buttonState != ButtonStates::DOWN)
 		{
 			if (Input::GetButtonDown(VK_LBUTTON))
 			{
@@ -234,10 +234,10 @@ void Button::Update()
 		}
 		else
 		{
-			cellarTileBtn.buttonState = ButtonState::NONE;
+			cellarTileBtn.buttonState = ButtonStates::NONE;
 		}
 		// DepthTile
-		if (PtInRect(&depthTileBtn.shape, g_ptMouse) && depthTileBtn.buttonState != ButtonState::DOWN)
+		if (PtInRect(&depthTileBtn.shape, g_ptMouse) && depthTileBtn.buttonState != ButtonStates::DOWN)
 		{
 			if (Input::GetButtonDown(VK_LBUTTON))
 			{
@@ -247,128 +247,128 @@ void Button::Update()
 		}
 		else
 		{
-			depthTileBtn.buttonState = ButtonState::NONE;
+			depthTileBtn.buttonState = ButtonStates::NONE;
 		}
 	}
 
 	// 버튼 하나를 클릭하면 나머지는 UP상태로 만듦.
 	if (basementTileBtn.clicked)
 	{
-		if (caveTileBtn.clicked && caveTileBtn.buttonState != ButtonState::NONE)
+		if (caveTileBtn.clicked && caveTileBtn.buttonState != ButtonStates::NONE)
 		{
 			basementTileBtn.clicked = false;
-			basementTileBtn.buttonState = ButtonState::UP;
+			basementTileBtn.buttonState = ButtonStates::UP;
 		}
-		if (cellarTileBtn.clicked && cellarTileBtn.buttonState != ButtonState::NONE)
+		if (cellarTileBtn.clicked && cellarTileBtn.buttonState != ButtonStates::NONE)
 		{
 			basementTileBtn.clicked = false;
-			basementTileBtn.buttonState = ButtonState::UP;
+			basementTileBtn.buttonState = ButtonStates::UP;
 		}
-		if (depthTileBtn.clicked && depthTileBtn.buttonState != ButtonState::NONE)
+		if (depthTileBtn.clicked && depthTileBtn.buttonState != ButtonStates::NONE)
 		{
 			basementTileBtn.clicked = false;
-			basementTileBtn.buttonState = ButtonState::UP;
+			basementTileBtn.buttonState = ButtonStates::UP;
 		}
 	}
 	if (caveTileBtn.clicked)
 	{
-		if (basementTileBtn.clicked&& basementTileBtn.buttonState != ButtonState::NONE)
+		if (basementTileBtn.clicked&& basementTileBtn.buttonState != ButtonStates::NONE)
 		{
 			caveTileBtn.clicked = false;
-			caveTileBtn.buttonState = ButtonState::UP;
+			caveTileBtn.buttonState = ButtonStates::UP;
 		}
-		if (cellarTileBtn.clicked && cellarTileBtn.buttonState != ButtonState::NONE)
+		if (cellarTileBtn.clicked && cellarTileBtn.buttonState != ButtonStates::NONE)
 		{
 			caveTileBtn.clicked = false;
-			caveTileBtn.buttonState = ButtonState::UP;
+			caveTileBtn.buttonState = ButtonStates::UP;
 		}
-		if (depthTileBtn.clicked && depthTileBtn.buttonState != ButtonState::NONE)
+		if (depthTileBtn.clicked && depthTileBtn.buttonState != ButtonStates::NONE)
 		{
 			caveTileBtn.clicked = false;
-			caveTileBtn.buttonState = ButtonState::UP;
+			caveTileBtn.buttonState = ButtonStates::UP;
 		}
 	}
 	if (cellarTileBtn.clicked)
 	{
-		if (basementTileBtn.clicked&& basementTileBtn.buttonState != ButtonState::NONE)
+		if (basementTileBtn.clicked&& basementTileBtn.buttonState != ButtonStates::NONE)
 		{
 			cellarTileBtn.clicked = false;
-			cellarTileBtn.buttonState = ButtonState::UP;
+			cellarTileBtn.buttonState = ButtonStates::UP;
 		}
-		if (caveTileBtn.clicked && caveTileBtn.buttonState != ButtonState::NONE)
+		if (caveTileBtn.clicked && caveTileBtn.buttonState != ButtonStates::NONE)
 		{
 			cellarTileBtn.clicked = false;
-			cellarTileBtn.buttonState = ButtonState::UP;
+			cellarTileBtn.buttonState = ButtonStates::UP;
 		}
-		if (depthTileBtn.clicked && depthTileBtn.buttonState != ButtonState::NONE)
+		if (depthTileBtn.clicked && depthTileBtn.buttonState != ButtonStates::NONE)
 		{
 			cellarTileBtn.clicked = false;
-			cellarTileBtn.buttonState = ButtonState::UP;
+			cellarTileBtn.buttonState = ButtonStates::UP;
 		}
 	}
 	if (depthTileBtn.clicked)
 	{
-		if (basementTileBtn.clicked&& basementTileBtn.buttonState != ButtonState::NONE)
+		if (basementTileBtn.clicked&& basementTileBtn.buttonState != ButtonStates::NONE)
 		{
 			depthTileBtn.clicked = false;
-			depthTileBtn.buttonState = ButtonState::UP;
+			depthTileBtn.buttonState = ButtonStates::UP;
 		}
-		if (caveTileBtn.clicked && caveTileBtn.buttonState != ButtonState::NONE)
+		if (caveTileBtn.clicked && caveTileBtn.buttonState != ButtonStates::NONE)
 		{
 			depthTileBtn.clicked = false;
-			depthTileBtn.buttonState = ButtonState::UP;
+			depthTileBtn.buttonState = ButtonStates::UP;
 		}
-		if (cellarTileBtn.clicked && cellarTileBtn.buttonState != ButtonState::NONE)
+		if (cellarTileBtn.clicked && cellarTileBtn.buttonState != ButtonStates::NONE)
 		{
 			depthTileBtn.clicked = false;
-			depthTileBtn.buttonState = ButtonState::UP;
+			depthTileBtn.buttonState = ButtonStates::UP;
 		}
 	}
 
 	// SampleTile 버트 클릭 돼있으면 true, 클릭이 안돼있으면 false
 	if (sampleTileBtn.clicked)
 	{
-		sampleTileBtn.buttonState = ButtonState::DOWN;
+		sampleTileBtn.buttonState = ButtonStates::DOWN;
 	}
 	else
 	{
-		sampleTileBtn.buttonState = ButtonState::UP;
+		sampleTileBtn.buttonState = ButtonStates::UP;
 	}
 	// BasementTile 버튼 클릭 돼있으면 true, 클릭이 안돼있으면 false
 	if (basementTileBtn.clicked)
 	{
-		basementTileBtn.buttonState = ButtonState::DOWN;
+		basementTileBtn.buttonState = ButtonStates::DOWN;
 	}
 	else
 	{
-		basementTileBtn.buttonState = ButtonState::UP;
+		basementTileBtn.buttonState = ButtonStates::UP;
 	}
 	// CaveTile 버튼 클릭 돼있으면 true, 클릭이 안돼있으면 false
 	if (caveTileBtn.clicked)
 	{
-		caveTileBtn.buttonState = ButtonState::DOWN;
+		caveTileBtn.buttonState = ButtonStates::DOWN;
 	}
 	else
 	{
-		caveTileBtn.buttonState = ButtonState::UP;
+		caveTileBtn.buttonState = ButtonStates::UP;
 	}
 	// CellarTile 버튼 클릭 돼있으면 true, 클릭이 안돼있으면 false
 	if (cellarTileBtn.clicked)
 	{
-		cellarTileBtn.buttonState = ButtonState::DOWN;
+		cellarTileBtn.buttonState = ButtonStates::DOWN;
 	}
 	else
 	{
-		cellarTileBtn.buttonState = ButtonState::UP;
+		cellarTileBtn.buttonState = ButtonStates::UP;
 	}
 	// DepthTile 버튼 클릭 돼있으면 true, 클릭이 안돼있으면 false
 	if (depthTileBtn.clicked)
 	{
-		depthTileBtn.buttonState = ButtonState::DOWN;
+		depthTileBtn.buttonState = ButtonStates::DOWN;
 	}
 	else
 	{
-		depthTileBtn.buttonState = ButtonState::UP;
+		depthTileBtn.buttonState = ButtonStates::UP;
 	}
 
 	// NextButton,PrevButton
@@ -379,38 +379,38 @@ void Button::Update()
 		{
 			if (Input::GetButtonDown(VK_LBUTTON))
 			{
-				nextBtn.buttonState = ButtonState::DOWN;
+				nextBtn.buttonState = ButtonStates::DOWN;
 				nextBtn.clicked = true;
-			}
-			else if (Input::GetButtonUp(VK_LBUTTON) && nextBtn.buttonState == ButtonState::DOWN)
-			{
 				++tileIndex;
-				nextBtn.buttonState = ButtonState::UP;
+			}
+			else if (Input::GetButtonUp(VK_LBUTTON) && nextBtn.buttonState == ButtonStates::DOWN)
+			{
+				nextBtn.buttonState = ButtonStates::UP;
 				nextBtn.clicked = false;
 			}
 		}
 		else
 		{
-			nextBtn.buttonState = ButtonState::NONE;
+			nextBtn.buttonState = ButtonStates::NONE;
 		}
 		// Prev Button
 		if (PtInRect(&prevBtn.shape, g_ptMouse))
 		{
 			if (Input::GetButtonDown(VK_LBUTTON))
 			{
-				prevBtn.buttonState = ButtonState::DOWN;
+				prevBtn.buttonState = ButtonStates::DOWN;
 				prevBtn.clicked = true;
-			}
-			else if (Input::GetButtonUp(VK_LBUTTON) && prevBtn.buttonState == ButtonState::DOWN)
-			{
 				--tileIndex;
-				prevBtn.buttonState = ButtonState::UP;
+			}
+			else if (Input::GetButtonUp(VK_LBUTTON) && prevBtn.buttonState == ButtonStates::DOWN)
+			{
+				prevBtn.buttonState = ButtonStates::UP;
 				prevBtn.clicked = false;
 			}
 		}
 		else
 		{
-			prevBtn.buttonState = ButtonState::NONE;
+			prevBtn.buttonState = ButtonStates::NONE;
 		}
 	}
 }
@@ -512,10 +512,10 @@ void Button::ClikedButton(HDC hdc, ButtonInfo* btnInfo)
 {
 	switch (btnInfo->buttonState)
 	{
-	case ButtonState::NONE:	case ButtonState::UP:
+	case ButtonStates::NONE:	case ButtonStates::UP:
 		RenderUpButton(hdc, btnInfo);
 		break;
-	case ButtonState::DOWN:
+	case ButtonStates::DOWN:
 		RenderDownButton(hdc, btnInfo);
 		break;
 	default:

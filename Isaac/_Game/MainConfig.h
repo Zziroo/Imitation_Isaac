@@ -109,13 +109,14 @@ typedef struct ArgumentFuncPtr
 #define WEAPON_MAX_COUNT		100
 
 // Tilemap
-enum class TileType { CLIFF, DOOR, ROAD, WALL };
+enum class TileTypes { CLIFF, DOOR, ROAD, WALL, NOTHINGNESS };
+enum class SampleTileTypes { BASEMENT, CAVE, CELLAR, DEPTH, NONE };
 
 typedef struct tagSampleTile
 {
-	RECT	rc = {};
-	int		frameX = 0;
-	int		frameY = 0;
+	RECT		rc = {};
+	int			frameX = 0;
+	int			frameY = 0;
 } SAMPLE_TILE_INFO;
 
 typedef struct tagTile
@@ -123,14 +124,14 @@ typedef struct tagTile
 	RECT		rc = {};
 	int			frameX = 0;
 	int			frameY = 0;
-	TileType	terrain = TileType::WALL;
+	TileTypes	terrain = TileTypes::WALL;
 } TILE_INFO;
 
 #define TILE_SIZE				40
 #define	TILE_COLUMN				1280 / TILE_SIZE
 #define TILE_ROW				800 / TILE_SIZE
 #define SAMPLE_TILE_SIZE		14
-#define SAMPLE_TILE_COLUMN		TILE_COLUMN + 1
+#define SAMPLE_TILE_COLUMN		(TILE_COLUMN + 1)
 #define SAMPLE_TILE_ROW			TILE_ROW
 
 inline void SetTerrain(TILE_INFO* rc)
@@ -140,7 +141,7 @@ inline void SetTerrain(TILE_INFO* rc)
 	{
 		if (0 <= rc->frameY && rc->frameY < 20)
 		{
-			rc->terrain = TileType::WALL;
+			rc->terrain = TileTypes::WALL;
 		}
 	}
 	// DOOR로 설정/상/하
@@ -149,12 +150,12 @@ inline void SetTerrain(TILE_INFO* rc)
 		// 상
 		if (0 <= rc->frameY && rc->frameY < 3)
 		{
-			rc->terrain = TileType::DOOR;
+			rc->terrain = TileTypes::DOOR;
 		}
 		// 하
 		if (17 <= rc->frameY && rc->frameY < 20)
 		{
-			rc->terrain = TileType::DOOR;
+			rc->terrain = TileTypes::DOOR;
 		}
 	}
 	// DOOR로 설정/좌/우
@@ -162,7 +163,7 @@ inline void SetTerrain(TILE_INFO* rc)
 	{
 		if (8 <= rc->frameY && rc->frameY < 12)
 		{
-			rc->terrain = TileType::DOOR;
+			rc->terrain = TileTypes::DOOR;
 		}
 	}
 	// ROAD로 설정
@@ -170,7 +171,19 @@ inline void SetTerrain(TILE_INFO* rc)
 	{
 		if (3 <= rc->frameY && rc->frameY < 17)
 		{
-			rc->terrain = TileType::ROAD;
+			rc->terrain = TileTypes::ROAD;
+		}
+	}
+	if (rc->frameX == 32 && rc->frameY == 0)
+	{
+		rc->terrain = TileTypes::ROAD;
+	}
+	// 빈 공간
+	if (rc->frameX == 32)
+	{
+		if (0 < rc->frameY && rc->frameY < 20)
+		{
+			rc->terrain = TileTypes::NOTHINGNESS;
 		}
 	}
 }

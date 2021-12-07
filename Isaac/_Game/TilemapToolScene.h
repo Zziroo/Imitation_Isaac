@@ -10,13 +10,16 @@ class TilemapToolScene : public Scene
 private:
 	Image*						backGround = nullptr;
 	Image*						sampleBackGround = nullptr;
-	Image*						sampleTileImg = nullptr;
+	Image*						drawingAreaImg = nullptr;
+	vector<Image*>				sampleImg;
 
-	TILE_INFO					mainTileInfo[TILE_ROW][TILE_COLUMN];					// 메인 영역
-	vector<TILE_INFO>			tempStorageTileInfo[TILE_ROW][TILE_COLUMN];				// 임시 저장 장소
-	SAMPLE_TILE_INFO			sampleTileInfo[SAMPLE_TILE_ROW][SAMPLE_TILE_COLUMN];	// 샘플 영역
 	SAMPLE_TILE_INFO			singleSelectedSampleTile;								// Single SampleTile
+	SampleTileTypes				sampleTileType = SampleTileTypes::NONE;					// 샘플 타일의 종류
+	TILE_INFO					mainTileInfo[TILE_ROW][TILE_COLUMN];					// 메인 영역
+
 	vector<SAMPLE_TILE_INFO>	multiSelectedSampleTile[2];								// Multi SampleTile
+	vector<SAMPLE_TILE_INFO>	sampleTileInfo[SAMPLE_TILE_ROW][SAMPLE_TILE_COLUMN];	// 그림을 가져오는 샘플 영역
+	vector<TILE_INFO>			tempStorageTileInfo[TILE_ROW][TILE_COLUMN];
 
 	Button*						button = nullptr;
 	ButtonFunction*				buttonFunc = nullptr;
@@ -27,9 +30,9 @@ private:
 	bool						initialTileBtnState = true;								// SampleTile Button 초기 상태
 	bool						debugMode = false;
 
-	int							tempStorageIndex = 1;									// 임시 저장 장소 Index
-	int							sampleTileNum[4] = { 0 };
-	int							tileMaxIndex[4] = { 3, 4, 3, 2 };
+	int							currShowIndex;
+	int							sampleTileCurrIndex[4] = {};
+	int							sampleTileMaxIndex[4] = { 4, 5, 4, 3 };
 
 	char						text[64] = {};
 
