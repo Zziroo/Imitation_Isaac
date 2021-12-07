@@ -11,15 +11,18 @@ private:
 	Image*						backGround = nullptr;
 	Image*						sampleBackGround = nullptr;
 	Image*						drawingAreaImg = nullptr;
-	vector<Image*>				sampleImg;
+	vector<Image*>				sampleTileImg;
 
+	SAMPLE_TILE_INFO			sampleTileInfo[BASEMENT_TILE_ROW][SAMPLE_TILE_COLUMN];	// 그림을 가져오는 샘플 영역
 	SAMPLE_TILE_INFO			singleSelectedSampleTile;								// Single SampleTile
 	SampleTileTypes				sampleTileType = SampleTileTypes::NONE;					// 샘플 타일의 종류
-	TILE_INFO					mainTileInfo[TILE_ROW][TILE_COLUMN];					// 메인 영역
+	TILE_INFO					tempTileInfo[TILE_ROW][TILE_COLUMN];					// 메인 영역(임시)
+	TILE_INFO					mainBasementTileInfo[BASEMENT_TILE_ROW][TILE_COLUMN];	// 메인 영역(Basement)
+	TILE_INFO					mainCaveTileInfo[CAVE_TILE_ROW][TILE_COLUMN];			// 메인 영역(Cave)
+	TILE_INFO					mainCellarTileInfo[CELLAR_TILE_ROW][TILE_COLUMN];		// 메인 영역(Cellar)
+	TILE_INFO					mainDepthTileInfo[DEPTH_TILE_ROW][TILE_COLUMN];			// 메인 영역(Depth)
 
 	vector<SAMPLE_TILE_INFO>	multiSelectedSampleTile[2];								// Multi SampleTile
-	vector<SAMPLE_TILE_INFO>	sampleTileInfo[SAMPLE_TILE_ROW][SAMPLE_TILE_COLUMN];	// 그림을 가져오는 샘플 영역
-	vector<TILE_INFO>			tempStorageTileInfo[TILE_ROW][TILE_COLUMN];
 
 	Button*						button = nullptr;
 	ButtonFunction*				buttonFunc = nullptr;

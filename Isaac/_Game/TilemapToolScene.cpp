@@ -8,10 +8,11 @@
 HRESULT TilemapToolScene::Init()
 {
 	SetWindowSize(TILEMAP_SIZE_X, TILEMAP_SIZE_Y);
-	// BackGround
+	// Main BackGround
 	backGround = GET_SINGLETON_IMAGE->FindImage("Image/BackGround/BackGround01.bmp");
+	// Sample BackGround
 	sampleBackGround = GET_SINGLETON_IMAGE->FindImage("Image/BackGround/BackGround02.bmp");
-	// sampleTileImage
+	// Drawing Area
 	drawingAreaImg = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Tile/Nothingness.bmp");
 
 	// MainTile
@@ -19,9 +20,9 @@ HRESULT TilemapToolScene::Init()
 	{
 		for (int c = 0; c < TILE_COLUMN; ++c)
 		{
-			SetRect(&(mainTileInfo[r][c].rc), c * TILE_SIZE, r * TILE_SIZE, (c + 1) * TILE_SIZE, (r + 1) * TILE_SIZE);
-			mainTileInfo[r][c].frameX = c;
-			mainTileInfo[r][c].frameY = r;
+			SetRect(&(tempTileInfo[r][c].rc), c * TILE_SIZE, r * TILE_SIZE, (c + 1) * TILE_SIZE, (r + 1) * TILE_SIZE);
+			tempTileInfo[r][c].frameX = 32;
+			tempTileInfo[r][c].frameY = 0;
 		}
 	}
 
@@ -68,23 +69,30 @@ void TilemapToolScene::Update()
 	string str = "Image/Tilemap/Tile/";
 	if (button->GetSelectBasementTile() && sampleTileType != SampleTileTypes::BASEMENT)
 	{
-		// SampleImg의 size보다 크거나 작을 때 크기를 조정
-		if (sampleTileMaxIndex[0] != sampleImg.size())
-		{
-			//SampleImg
-			sampleImg.resize(sampleTileMaxIndex[0]);
+		// 이미지
+		drawingAreaImg = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Tile/Basement.bmp");
 
-			// SampleTile
-			for (int r = 0; r < SAMPLE_TILE_ROW; ++r)
+		// Main 영역
+		for (int r = 0; r < TILE_ROW; ++r)
+		{
+			for (int c = 0; c < TILE_COLUMN; ++c)
 			{
-				for (int c = 0; c < SAMPLE_TILE_COLUMN; ++c)
-				{
-					sampleTileInfo[r][c].resize(sampleTileMaxIndex[0]);
-				}
+				SetRect(&(mainBasementTileInfo[r][c].rc), c * TILE_SIZE, r * TILE_SIZE, (c + 1) * TILE_SIZE, (r + 1) * TILE_SIZE);
+				mainBasementTileInfo[r][c].frameX = 32;
+				mainBasementTileInfo[r][c].frameY = 0;
 			}
 		}
+
+		// SampleImg의 size보다 크거나 작을 때 크기를 조정
+		if (sampleTileMaxIndex[0] != sampleTileImg.size())
+		{
+			//SampleImg
+			sampleTileImg.resize(sampleTileMaxIndex[0]);
+		}
+
 		str += "Basement";
-		for (size_t i = 0; i < sampleImg.size(); ++i)
+
+		for (size_t i = 0; i < sampleTileImg.size(); ++i)
 		{
 			// Numbering
 			if (i < 10)
@@ -99,20 +107,17 @@ void TilemapToolScene::Update()
 			str += ".bmp";
 			strcpy_s(cha, str.c_str());
 
-			sampleImg[i] = GET_SINGLETON_IMAGE->FindImage(cha);
+			sampleTileImg[i] = GET_SINGLETON_IMAGE->FindImage(cha);
 
 			str = "Image/Tilemap/Tile/Basement";
-		}
 
-		for (int r = 0; r < SAMPLE_TILE_ROW; ++r)
-		{
-			for (int c = 0; c < SAMPLE_TILE_COLUMN; ++c)
+			for (int r = 0; r < SAMPLE_TILE_ROW; ++r)
 			{
-				for (size_t i = 0; i < sampleTileInfo[r][c].size(); ++i)
+				for (int c = 0; c < SAMPLE_TILE_COLUMN; ++c)
 				{
-					SetRect(&(sampleTileInfo[r][c][i].rc), 900 + (c * SAMPLE_TILE_SIZE), 380 + (r * SAMPLE_TILE_SIZE), 900 + (c + 1) * SAMPLE_TILE_SIZE, 380 + (r + 1) * SAMPLE_TILE_SIZE);
-					sampleTileInfo[r][c][i].frameX = c;
-					sampleTileInfo[r][c][i].frameY = r;
+					SetRect(&(sampleTileInfo[r + (i * TILE_ROW)][c].rc), 900 + (c * SAMPLE_TILE_SIZE), 380 + (r * SAMPLE_TILE_SIZE), 900 + (c + 1) * SAMPLE_TILE_SIZE, 380 + (r + 1) * SAMPLE_TILE_SIZE);
+					sampleTileInfo[r + (i * TILE_ROW)][c].frameX = c;
+					sampleTileInfo[r + (i * TILE_ROW)][c].frameY = r + (INT)(i * TILE_ROW);
 				}
 			}
 		}
@@ -124,23 +129,30 @@ void TilemapToolScene::Update()
 	}
 	if (button->GetSelectCaveTile() && sampleTileType != SampleTileTypes::CAVE)
 	{
-		// SampleImg의 size보다 크거나 작을 때 크기를 조정
-		if (sampleTileMaxIndex[1] != sampleImg.size())
-		{
-			//SampleImg
-			sampleImg.resize(sampleTileMaxIndex[1]);
+		// 이미지
+		drawingAreaImg = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Tile/Cave.bmp");
 
-			// SampleTile
-			for (int r = 0; r < SAMPLE_TILE_ROW; ++r)
+		// Main 영역
+		for (int r = 0; r < TILE_ROW; ++r)
+		{
+			for (int c = 0; c < TILE_COLUMN; ++c)
 			{
-				for (int c = 0; c < SAMPLE_TILE_COLUMN; ++c)
-				{
-					sampleTileInfo[r][c].resize(sampleTileMaxIndex[1]);
-				}
+				SetRect(&(mainCaveTileInfo[r][c].rc), c * TILE_SIZE, r * TILE_SIZE, (c + 1) * TILE_SIZE, (r + 1) * TILE_SIZE);
+				mainCaveTileInfo[r][c].frameX = 32;
+				mainCaveTileInfo[r][c].frameY = 0;
 			}
 		}
+
+		// SampleImg의 size보다 크거나 작을 때 크기를 조정
+		if (sampleTileMaxIndex[1] != sampleTileImg.size())
+		{
+			//SampleImg
+			sampleTileImg.resize(sampleTileMaxIndex[1]);
+		}
+
 		str += "Cave";
-		for (size_t i = 0; i < sampleImg.size(); ++i)
+
+		for (size_t i = 0; i < sampleTileImg.size(); ++i)
 		{
 			// Numbering
 			if (i < 10)
@@ -155,23 +167,21 @@ void TilemapToolScene::Update()
 			str += ".bmp";
 			strcpy_s(cha, str.c_str());
 
-			sampleImg[i] = GET_SINGLETON_IMAGE->FindImage(cha);
+			sampleTileImg[i] = GET_SINGLETON_IMAGE->FindImage(cha);
 
 			str = "Image/Tilemap/Tile/Cave";
-		}
 
-		for (int r = 0; r < SAMPLE_TILE_ROW; ++r)
-		{
-			for (int c = 0; c < SAMPLE_TILE_COLUMN; ++c)
+			for (int r = 0; r < SAMPLE_TILE_ROW; ++r)
 			{
-				for (size_t i = 0; i < sampleTileInfo[r][c].size(); ++i)
+				for (int c = 0; c < SAMPLE_TILE_COLUMN; ++c)
 				{
-					SetRect(&(sampleTileInfo[r][c][i].rc), 900 + (c * SAMPLE_TILE_SIZE), 380 + (r * SAMPLE_TILE_SIZE), 900 + (c + 1) * SAMPLE_TILE_SIZE, 380 + (r + 1) * SAMPLE_TILE_SIZE);
-					sampleTileInfo[r][c][i].frameX = c;
-					sampleTileInfo[r][c][i].frameY = r;
+					SetRect(&(sampleTileInfo[r + (i * TILE_ROW)][c].rc), 900 + (c * SAMPLE_TILE_SIZE), 380 + (r * SAMPLE_TILE_SIZE), 900 + (c + 1) * SAMPLE_TILE_SIZE, 380 + (r + 1) * SAMPLE_TILE_SIZE);
+					sampleTileInfo[r + (i * TILE_ROW)][c].frameX = c;
+					sampleTileInfo[r + (i * TILE_ROW)][c].frameY = r + (INT)(i * TILE_ROW);
 				}
 			}
 		}
+
 
 		sampleTileType = SampleTileTypes::CAVE;
 		currShowIndex = 0;
@@ -180,23 +190,30 @@ void TilemapToolScene::Update()
 	}
 	if (button->GetSelectCellarTile() && sampleTileType != SampleTileTypes::CELLAR)
 	{
-		// SampleImg의 size보다 크거나 작을 때 크기를 조정
-		if (sampleTileMaxIndex[2] != sampleImg.size())
-		{
-			//SampleImg
-			sampleImg.resize(sampleTileMaxIndex[2]);
+		// 이미지
+		drawingAreaImg = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Tile/Cellar.bmp");
 
-			// SampleTile
-			for (int r = 0; r < SAMPLE_TILE_ROW; ++r)
+		// Main 영역
+		for (int r = 0; r < TILE_ROW; ++r)
+		{
+			for (int c = 0; c < TILE_COLUMN; ++c)
 			{
-				for (int c = 0; c < SAMPLE_TILE_COLUMN; ++c)
-				{
-					sampleTileInfo[r][c].resize(sampleTileMaxIndex[2]);
-				}
+				SetRect(&(mainCellarTileInfo[r][c].rc), c * TILE_SIZE, r * TILE_SIZE, (c + 1) * TILE_SIZE, (r + 1) * TILE_SIZE);
+				mainCellarTileInfo[r][c].frameX = 32;
+				mainCellarTileInfo[r][c].frameY = 0;
 			}
 		}
+
+		// SampleImg의 size보다 크거나 작을 때 크기를 조정
+		if (sampleTileMaxIndex[2] != sampleTileImg.size())
+		{
+			//SampleImg
+			sampleTileImg.resize(sampleTileMaxIndex[2]);
+		}
+
 		str += "Cellar";
-		for (size_t i = 0; i < sampleImg.size(); ++i)
+
+		for (size_t i = 0; i < sampleTileImg.size(); ++i)
 		{
 			// Numbering
 			if (i < 10)
@@ -211,20 +228,17 @@ void TilemapToolScene::Update()
 			str += ".bmp";
 			strcpy_s(cha, str.c_str());
 
-			sampleImg[i] = GET_SINGLETON_IMAGE->FindImage(cha);
+			sampleTileImg[i] = GET_SINGLETON_IMAGE->FindImage(cha);
 
 			str = "Image/Tilemap/Tile/Cellar";
-		}
 
-		for (int r = 0; r < SAMPLE_TILE_ROW; ++r)
-		{
-			for (int c = 0; c < SAMPLE_TILE_COLUMN; ++c)
+			for (int r = 0; r < SAMPLE_TILE_ROW; ++r)
 			{
-				for (size_t i = 0; i < sampleTileInfo[r][c].size(); ++i)
+				for (int c = 0; c < SAMPLE_TILE_COLUMN; ++c)
 				{
-					SetRect(&(sampleTileInfo[r][c][i].rc), 900 + (c * SAMPLE_TILE_SIZE), 380 + (r * SAMPLE_TILE_SIZE), 900 + (c + 1) * SAMPLE_TILE_SIZE, 380 + (r + 1) * SAMPLE_TILE_SIZE);
-					sampleTileInfo[r][c][i].frameX = c;
-					sampleTileInfo[r][c][i].frameY = r;
+					SetRect(&(sampleTileInfo[r + (i * TILE_ROW)][c].rc), 900 + (c * SAMPLE_TILE_SIZE), 380 + (r * SAMPLE_TILE_SIZE), 900 + (c + 1) * SAMPLE_TILE_SIZE, 380 + (r + 1) * SAMPLE_TILE_SIZE);
+					sampleTileInfo[r + (i * TILE_ROW)][c].frameX = c;
+					sampleTileInfo[r + (i * TILE_ROW)][c].frameY = r + (INT)(i * TILE_ROW);
 				}
 			}
 		}
@@ -236,23 +250,30 @@ void TilemapToolScene::Update()
 	}
 	if (button->GetSelectDepthTile() && sampleTileType != SampleTileTypes::DEPTH)
 	{
-		// SampleImg의 size보다 크거나 작을 때 크기를 조정
-		if (sampleTileMaxIndex[3] != sampleImg.size())
-		{
-			//SampleImg
-			sampleImg.resize(sampleTileMaxIndex[3]);
+		// 이미지
+		drawingAreaImg = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Tile/Depth.bmp");
 
-			// SampleTile
-			for (int r = 0; r < SAMPLE_TILE_ROW; ++r)
+		// Main 영역
+		for (int r = 0; r < TILE_ROW; ++r)
+		{
+			for (int c = 0; c < TILE_COLUMN; ++c)
 			{
-				for (int c = 0; c < SAMPLE_TILE_COLUMN; ++c)
-				{
-					sampleTileInfo[r][c].resize(sampleTileMaxIndex[3]);
-				}
+				SetRect(&(mainDepthTileInfo[r][c].rc), c * TILE_SIZE, r * TILE_SIZE, (c + 1) * TILE_SIZE, (r + 1) * TILE_SIZE);
+				mainDepthTileInfo[r][c].frameX = 32;
+				mainDepthTileInfo[r][c].frameY = 0;
 			}
 		}
+
+		// SampleImg의 size보다 크거나 작을 때 크기를 조정
+		if (sampleTileMaxIndex[3] != sampleTileImg.size())
+		{
+			//SampleImg
+			sampleTileImg.resize(sampleTileMaxIndex[3]);
+		}
+
 		str += "Depth";
-		for (size_t i = 0; i < sampleImg.size(); ++i)
+
+		for (size_t i = 0; i < sampleTileImg.size(); ++i)
 		{
 			// Numbering
 			if (i < 10)
@@ -267,20 +288,17 @@ void TilemapToolScene::Update()
 			str += ".bmp";
 			strcpy_s(cha, str.c_str());
 
-			sampleImg[i] = GET_SINGLETON_IMAGE->FindImage(cha);
+			sampleTileImg[i] = GET_SINGLETON_IMAGE->FindImage(cha);
 
 			str = "Image/Tilemap/Tile/Depth";
-		}
 
-		for (int r = 0; r < SAMPLE_TILE_ROW; ++r)
-		{
-			for (int c = 0; c < SAMPLE_TILE_COLUMN; ++c)
+			for (int r = 0; r < SAMPLE_TILE_ROW; ++r)
 			{
-				for (size_t i = 0; i < sampleTileInfo[r][c].size(); ++i)
+				for (int c = 0; c < SAMPLE_TILE_COLUMN; ++c)
 				{
-					SetRect(&(sampleTileInfo[r][c][i].rc), 900 + (c * SAMPLE_TILE_SIZE), 380 + (r * SAMPLE_TILE_SIZE), 900 + (c + 1) * SAMPLE_TILE_SIZE, 380 + (r + 1) * SAMPLE_TILE_SIZE);
-					sampleTileInfo[r][c][i].frameX = c;
-					sampleTileInfo[r][c][i].frameY = r;
+					SetRect(&(sampleTileInfo[r + (i * TILE_ROW)][c].rc), 900 + (c * SAMPLE_TILE_SIZE), 380 + (r * SAMPLE_TILE_SIZE), 900 + (c + 1) * SAMPLE_TILE_SIZE, 380 + (r + 1) * SAMPLE_TILE_SIZE);
+					sampleTileInfo[r + (i * TILE_ROW)][c].frameX = c;
+					sampleTileInfo[r + (i * TILE_ROW)][c].frameY = r + (INT)(i * TILE_ROW);
 				}
 			}
 		}
@@ -299,9 +317,9 @@ void TilemapToolScene::Update()
 		{
 			sampleTileCurrIndex[0] = button->GetTileIndex();
 			// SampleIndex 초과시 => MaxSize로
-			if (sampleTileCurrIndex[0] > ((INT)sampleImg.size() - 1))
+			if (sampleTileCurrIndex[0] > ((INT)sampleTileImg.size() - 1))
 			{
-				sampleTileCurrIndex[0] = ((INT)sampleImg.size() - 1);
+				sampleTileCurrIndex[0] = ((INT)sampleTileImg.size() - 1);
 				button->SetTileIndex(sampleTileCurrIndex[0]);
 			}
 			currShowIndex = sampleTileCurrIndex[0];
@@ -325,9 +343,9 @@ void TilemapToolScene::Update()
 		{
 			sampleTileCurrIndex[1] = button->GetTileIndex();
 			// SampleIndex 초과시 => MaxSize로
-			if (sampleTileCurrIndex[1] > ((INT)sampleImg.size() - 1))
+			if (sampleTileCurrIndex[1] > ((INT)sampleTileImg.size() - 1))
 			{
-				sampleTileCurrIndex[1] = ((INT)sampleImg.size() - 1);
+				sampleTileCurrIndex[1] = ((INT)sampleTileImg.size() - 1);
 				button->SetTileIndex(sampleTileCurrIndex[1]);
 			}
 			currShowIndex = sampleTileCurrIndex[1];
@@ -351,9 +369,9 @@ void TilemapToolScene::Update()
 		{
 			sampleTileCurrIndex[2] = button->GetTileIndex();
 			// SampleIndex 초과시 => MaxSize로
-			if (sampleTileCurrIndex[2] > ((INT)sampleImg.size() - 1))
+			if (sampleTileCurrIndex[2] > ((INT)sampleTileImg.size() - 1))
 			{
-				sampleTileCurrIndex[2] = ((INT)sampleImg.size() - 1);
+				sampleTileCurrIndex[2] = ((INT)sampleTileImg.size() - 1);
 				button->SetTileIndex(sampleTileCurrIndex[2]);
 			}
 			currShowIndex = sampleTileCurrIndex[2];
@@ -377,9 +395,9 @@ void TilemapToolScene::Update()
 		{
 			sampleTileCurrIndex[3] = button->GetTileIndex();
 			// SampleIndex 초과시 => MaxSize로
-			if (sampleTileCurrIndex[3] > ((INT)sampleImg.size() - 1))
+			if (sampleTileCurrIndex[3] > ((INT)sampleTileImg.size() - 1))
 			{
-				sampleTileCurrIndex[3] = ((INT)sampleImg.size() - 1);
+				sampleTileCurrIndex[3] = ((INT)sampleTileImg.size() - 1);
 				button->SetTileIndex(sampleTileCurrIndex[3]);
 			}
 			currShowIndex = sampleTileCurrIndex[3];
@@ -412,13 +430,59 @@ void TilemapToolScene::Render(HDC hdc)
 
 	// Tile
 	float scale = (FLOAT)TILE_SIZE / SAMPLE_TILE_SIZE;
-	for (int r = 0; r < TILE_ROW; ++r)
+	switch (sampleTileType)
 	{
-		for (int c = 0; c < TILE_COLUMN; ++c)
+	case SampleTileTypes::BASEMENT:
+		for (int r = 0; r < BASEMENT_TILE_ROW; ++r)
 		{
-			SetTerrain(&mainTileInfo[r][c]);
-			drawingAreaImg->EnlargeSampleTile(hdc, mainTileInfo[r][c].rc.left, mainTileInfo[r][c].rc.top, mainTileInfo[r][c].frameX, mainTileInfo[r][c].frameY, scale);
+			for (int c = 0; c < TILE_COLUMN; ++c)
+			{
+				SetTerrain(&mainBasementTileInfo[r][c], sampleTileMaxIndex[0]);
+				drawingAreaImg->EnlargeSampleTile(hdc, mainBasementTileInfo[r][c].rc.left, mainBasementTileInfo[r][c].rc.top, mainBasementTileInfo[r][c].frameX, mainBasementTileInfo[r][c].frameY, scale);
+			}
 		}
+		break;
+	case SampleTileTypes::CAVE:
+		for (int r = 0; r < CAVE_TILE_ROW; ++r)
+		{
+			for (int c = 0; c < TILE_COLUMN; ++c)
+			{
+				SetTerrain(&mainCaveTileInfo[r][c], sampleTileMaxIndex[1]);
+				drawingAreaImg->EnlargeSampleTile(hdc, mainCaveTileInfo[r][c].rc.left, mainCaveTileInfo[r][c].rc.top, mainCaveTileInfo[r][c].frameX, mainCaveTileInfo[r][c].frameY, scale);
+			}
+		}
+		break;
+	case SampleTileTypes::CELLAR:
+		for (int r = 0; r < CELLAR_TILE_ROW; ++r)
+		{
+			for (int c = 0; c < TILE_COLUMN; ++c)
+			{
+				SetTerrain(&mainCellarTileInfo[r][c], sampleTileMaxIndex[2]);
+				drawingAreaImg->EnlargeSampleTile(hdc, mainCellarTileInfo[r][c].rc.left, mainCellarTileInfo[r][c].rc.top, mainCellarTileInfo[r][c].frameX, mainCellarTileInfo[r][c].frameY, scale);
+			}
+		}
+		break;
+	case SampleTileTypes::DEPTH:
+		for (int r = 0; r < DEPTH_TILE_ROW; ++r)
+		{
+			for (int c = 0; c < TILE_COLUMN; ++c)
+			{
+				SetTerrain(&mainDepthTileInfo[r][c], sampleTileMaxIndex[3]);
+				drawingAreaImg->EnlargeSampleTile(hdc, mainDepthTileInfo[r][c].rc.left, mainDepthTileInfo[r][c].rc.top, mainDepthTileInfo[r][c].frameX, mainDepthTileInfo[r][c].frameY, scale);
+			}
+		}
+		break;
+	case SampleTileTypes::NONE:
+		for (int r = 0; r < TILE_ROW; ++r)
+		{
+			for (int c = 0; c < TILE_COLUMN; ++c)
+			{
+				drawingAreaImg->EnlargeSampleTile(hdc, tempTileInfo[r][c].rc.left, tempTileInfo[r][c].rc.top, tempTileInfo[r][c].frameX, tempTileInfo[r][c].frameY, scale);
+			}
+		}
+		break;
+	default:
+		break;
 	}
 
 	// SampleTileImage
@@ -432,9 +496,9 @@ void TilemapToolScene::Render(HDC hdc)
 			initialTileBtnState = false;
 		}
 
-		if (sampleImg.size() != 0)
+		if (sampleTileImg.size() != 0)
 		{
-			sampleImg[currShowIndex]->Render(hdc, (INT)(900 + (sampleImg[currShowIndex]->GetWidth() * DEVIDE_HALF)), (INT)(380 + (sampleImg[currShowIndex]->GetHeight() * DEVIDE_HALF)));
+			sampleTileImg[currShowIndex]->Render(hdc, (INT)(900 + (sampleTileImg[currShowIndex]->GetWidth() * DEVIDE_HALF)), (INT)(380 + (sampleTileImg[currShowIndex]->GetHeight() * DEVIDE_HALF)));
 		}
 	}
 
@@ -447,11 +511,58 @@ void TilemapToolScene::Render(HDC hdc)
 
 void TilemapToolScene::OnDebug(HDC hdc)
 {
+	if (debugMode)
+	{
+		// SampleTileType 출력
+		switch (sampleTileType)
+		{
+		case SampleTileTypes::NONE:
+			cout << "SampleTileType : NONE\n";
+			break;
+		case SampleTileTypes::BASEMENT:
+			cout << "SampleTileType : BASEMENT\n";
+			break;
+		case SampleTileTypes::CAVE:
+			cout << "SampleTileType : CAVE\n";
+			break;
+		case SampleTileTypes::CELLAR:
+			cout << "SampleTileType : CELLAR\n";
+			break;
+		case SampleTileTypes::DEPTH:
+			cout << "SampleTileType : DEPTH\n";
+			break;
+		default:
+			break;
+		}
+
+		// Tile
+		for (int r = 0; r < TILE_ROW; ++r)
+		{
+			for (int c = 0; c < TILE_COLUMN; ++c)
+			{
+				Rectangle(hdc, mainBasementTileInfo[r][c].rc.left, mainBasementTileInfo[r][c].rc.top, mainBasementTileInfo[r][c].rc.right, mainBasementTileInfo[r][c].rc.bottom);
+			}
+		}
+
+		if (button->GetSelectSampleTile())
+		{
+			// SampleTile
+			for (int r = 0; r < SAMPLE_TILE_ROW; ++r)
+			{
+				for (int c = 0; c < SAMPLE_TILE_COLUMN; ++c)
+				{
+					Rectangle(hdc, sampleTileInfo[r][c].rc.left, sampleTileInfo[r][c].rc.top, sampleTileInfo[r][c].rc.right, sampleTileInfo[r][c].rc.bottom);
+				}
+			}
+		}
+	}
+
 	// MousePointer
 	wsprintf(text, "Mouse.PosX : %d", g_ptMouse.x);
 	TextOut(hdc, (TILEMAP_SIZE_X - 300), 20, text, (INT)(strlen(text)));
 	wsprintf(text, "Mouse.PosY : %d", g_ptMouse.y);
 	TextOut(hdc, (TILEMAP_SIZE_X - 300), 40, text, (INT)(strlen(text)));
+
 	// 선택한 샘플 타일들의 프레임값
 	wsprintf(text, "Single Sample.X : %d", singleSelectedSampleTile.frameX);
 	TextOut(hdc, (TILEMAP_SIZE_X - 300), 80, text, (INT)(strlen(text)));
@@ -465,6 +576,7 @@ void TilemapToolScene::OnDebug(HDC hdc)
 	TextOut(hdc, (TILEMAP_SIZE_X - 300), 180, text, (INT)(strlen(text)));
 	wsprintf(text, "Multi Sample[1].Y : %d", multiSelectedSampleTile[0][1].frameY);
 	TextOut(hdc, (TILEMAP_SIZE_X - 300), 200, text, (INT)(strlen(text)));
+
 	if (multiSelectedSampleTile[1].size() <= 0)
 	{
 		wsprintf(text, "! !복사할 샘플 영역이 존재하지 않음! !");
@@ -476,53 +588,26 @@ void TilemapToolScene::OnDebug(HDC hdc)
 	{
 		for (int c = 0; c < SAMPLE_TILE_COLUMN; ++c)
 		{
-			if (PtInRect(&(mainTileInfo[r][c].rc), g_ptMouse))
+			if (PtInRect(&(mainBasementTileInfo[r][c].rc), g_ptMouse))
 			{
 				if (Input::GetButtonDown('T'))
 				{
-					cout << "frameX : " << mainTileInfo[r][c].frameX << "\t" << "frameY : " << mainTileInfo[r][c].frameY << "\n";
-					if (mainTileInfo[r][c].terrain == TileTypes::WALL)
+					cout << "frameX : " << mainBasementTileInfo[r][c].frameX << "\t" << "frameY : " << mainBasementTileInfo[r][c].frameY << "\n";
+					if (mainBasementTileInfo[r][c].terrain == TileTypes::WALL)
 					{
 						cout << "TileType : WALL\n";
 					}
-					if (mainTileInfo[r][c].terrain == TileTypes::DOOR)
+					if (mainBasementTileInfo[r][c].terrain == TileTypes::DOOR)
 					{
 						cout << "TileType : DOOR\n";
 					}
-					if (mainTileInfo[r][c].terrain == TileTypes::ROAD)
+					if (mainBasementTileInfo[r][c].terrain == TileTypes::ROAD)
 					{
 						cout << "TileType : ROAD\n";
 					}
-					if (mainTileInfo[r][c].terrain == TileTypes::NOTHINGNESS)
+					if (mainBasementTileInfo[r][c].terrain == TileTypes::NOTHINGNESS)
 					{
 						cout << "TileType : NOTHINGNESS\n";
-					}
-				}
-			}
-		}
-	}
-
-	if (debugMode)
-	{
-		// Tile
-		for (int r = 0; r < TILE_ROW; ++r)
-		{
-			for (int c = 0; c < TILE_COLUMN; ++c)
-			{
-				Rectangle(hdc, mainTileInfo[r][c].rc.left, mainTileInfo[r][c].rc.top, mainTileInfo[r][c].rc.right, mainTileInfo[r][c].rc.bottom);
-			}
-		}
-
-		if (button->GetSelectSampleTile())
-		{
-			// SampleTile
-			for (int r = 0; r < SAMPLE_TILE_ROW; ++r)
-			{
-				for (int c = 0; c < SAMPLE_TILE_COLUMN; ++c)
-				{
-					if (sampleTileInfo[r][c].size() != 0)
-					{
-						Rectangle(hdc, sampleTileInfo[r][c][currShowIndex].rc.left, sampleTileInfo[r][c][currShowIndex].rc.top, sampleTileInfo[r][c][currShowIndex].rc.right, sampleTileInfo[r][c][currShowIndex].rc.bottom);
 					}
 				}
 			}
@@ -566,8 +651,8 @@ void TilemapToolScene::DrawMultiTile(RECT rc)
 		{
 			for (int c = startX; c <= endX; ++c)
 			{
-				multiSelectedSampleTile[1][index].frameX = sampleTileInfo[r][c][0].frameX;
-				multiSelectedSampleTile[1][index].frameY = sampleTileInfo[r][c][0].frameY;
+				multiSelectedSampleTile[1][index].frameX = sampleTileInfo[r][c].frameX;
+				multiSelectedSampleTile[1][index].frameY = sampleTileInfo[r][c].frameY;
 				++index;
 			}
 		}
@@ -575,43 +660,172 @@ void TilemapToolScene::DrawMultiTile(RECT rc)
 		{
 			for (int c = 0; c < TILE_COLUMN; ++c)
 			{
-				if (PtInRect(&(mainTileInfo[r][c].rc), g_ptMouse))
+				switch (sampleTileType)
 				{
-					int originC = c;
-					int originR = r;
-					int plusColumn = 0;
-					int plusRow = 0;
-					int copyHorizontalLength = 0;
-					if (Input::GetButtonDown(VK_LBUTTON))
+				case SampleTileTypes::BASEMENT:
+					if (PtInRect(&(mainBasementTileInfo[r][c].rc), g_ptMouse))
 					{
-						for (int i = 0; i < multiSelectedSampleTile[1].size(); ++i)
+						int originC = c;
+						int originR = r;
+						int plusColumn = 0;
+						int plusRow = 0;
+						int copyHorizontalLength = 0;
+						if (Input::GetButtonDown(VK_LBUTTON))
 						{
-							mainTileInfo[r + plusRow][c + plusColumn].frameX = multiSelectedSampleTile[1][i].frameX;
-							mainTileInfo[r + plusRow][c + plusColumn].frameY = multiSelectedSampleTile[1][i].frameY;
-							++plusColumn;								// 복사할 가로 길이 증가
-							++copyHorizontalLength;						// 복사할 가로 길이 증가
-							if ((c + plusColumn) > 31)					// 세로의 범위를 넘어설 때
+							for (int i = 0; i < multiSelectedSampleTile[1].size(); ++i)
 							{
-								++r;									// 다음 세로 프레임으로 넘김.
-								c = 0;									// 가로 프레임은 0
-								plusColumn = 0;							// 가로 프레임은 0
+								mainBasementTileInfo[r + plusRow][c + plusColumn].frameX = multiSelectedSampleTile[1][i].frameX;
+								mainBasementTileInfo[r + plusRow][c + plusColumn].frameY = multiSelectedSampleTile[1][i].frameY;
+								++plusColumn;								// 복사할 가로 길이 증가
+								++copyHorizontalLength;						// 복사할 가로 길이 증가
+								if ((c + plusColumn) > 31)					// 세로의 범위를 넘어설 때
+								{
+									++r;									// 다음 세로 프레임으로 넘김.
+									c = 0;									// 가로 프레임은 0
+									plusColumn = 0;							// 가로 프레임은 0
+								}
+								if (copyHorizontalLength > endX - startX)	// 선택한 가로 길이를 다 복사하면 다음 줄 복사
+								{
+									r = originR;							// 원래 세로 프레임으로 돌림.(위의 상황에서 세로의 범위를 넘어서면 총 두줄이 띄어진다.)
+									++plusRow;								// 세로 프레임 증가
+									c = originC;							// 가로 프레임 초기화(시작 지점)
+									plusColumn = 0;							// 가로 프레임 초기화
+									copyHorizontalLength = 0;				// 복사할 가로 길이 초기화
+								}
+								if ((r + plusRow) > 19)						// 가로의 범위를 넘어설 때
+								{
+									r = 0;									// 가로 크기를 벗어나면 맨 첫줄로 복사
+									plusRow = 0;							// 가로 크기를 벗어나면 맨 첫줄로 복사
+								}
 							}
-							if (copyHorizontalLength > endX - startX)	// 선택한 가로 길이를 다 복사하면 다음 줄 복사
-							{
-								r = originR;							// 원래 세로 프레임으로 돌림.(위의 상황에서 세로의 범위를 넘어서면 총 두줄이 띄어진다.)
-								++plusRow;								// 세로 프레임 증가
-								c = originC;							// 가로 프레임 초기화(시작 지점)
-								plusColumn = 0;							// 가로 프레임 초기화
-								copyHorizontalLength = 0;				// 복사할 가로 길이 초기화
-							}
-							if ((r + plusRow) > 19)						// 가로의 범위를 넘어설 때
-							{
-								r = 0;									// 가로 크기를 벗어나면 맨 첫줄로 복사
-								plusRow = 0;							// 가로 크기를 벗어나면 맨 첫줄로 복사
-							}
+							finishDrawing = true;
 						}
-						finishDrawing = true;
 					}
+					break;
+				case SampleTileTypes::CAVE:
+					if (PtInRect(&(mainCaveTileInfo[r][c].rc), g_ptMouse))
+					{
+						int originC = c;
+						int originR = r;
+						int plusColumn = 0;
+						int plusRow = 0;
+						int copyHorizontalLength = 0;
+						if (Input::GetButtonDown(VK_LBUTTON))
+						{
+							for (int i = 0; i < multiSelectedSampleTile[1].size(); ++i)
+							{
+								mainCaveTileInfo[r + plusRow][c + plusColumn].frameX = multiSelectedSampleTile[1][i].frameX;
+								mainCaveTileInfo[r + plusRow][c + plusColumn].frameY = multiSelectedSampleTile[1][i].frameY;
+								++plusColumn;
+								++copyHorizontalLength;
+								if ((c + plusColumn) > 31)
+								{
+									++r;
+									c = 0;
+									plusColumn = 0;
+								}
+								if (copyHorizontalLength > endX - startX)
+								{
+									r = originR;
+									++plusRow;
+									c = originC;
+									plusColumn = 0;	
+									copyHorizontalLength = 0;
+								}
+								if ((r + plusRow) > 19)
+								{
+									r = 0;
+									plusRow = 0;
+								}
+							}
+							finishDrawing = true;
+						}
+					}
+					break;
+				case SampleTileTypes::CELLAR:
+					if (PtInRect(&(mainCellarTileInfo[r][c].rc), g_ptMouse))
+					{
+						int originC = c;
+						int originR = r;
+						int plusColumn = 0;
+						int plusRow = 0;
+						int copyHorizontalLength = 0;
+						if (Input::GetButtonDown(VK_LBUTTON))
+						{
+							for (int i = 0; i < multiSelectedSampleTile[1].size(); ++i)
+							{
+								mainCellarTileInfo[r + plusRow][c + plusColumn].frameX = multiSelectedSampleTile[1][i].frameX;
+								mainCellarTileInfo[r + plusRow][c + plusColumn].frameY = multiSelectedSampleTile[1][i].frameY;
+								++plusColumn;
+								++copyHorizontalLength;
+								if ((c + plusColumn) > 31)
+								{
+									++r;
+									c = 0;
+									plusColumn = 0;
+								}
+								if (copyHorizontalLength > endX - startX)
+								{
+									r = originR;
+									++plusRow;
+									c = originC;
+									plusColumn = 0;
+									copyHorizontalLength = 0;
+								}
+								if ((r + plusRow) > 19)
+								{
+									r = 0;
+									plusRow = 0;
+								}
+							}
+							finishDrawing = true;
+						}
+					}
+					break;
+				case SampleTileTypes::DEPTH:
+					if (PtInRect(&(mainDepthTileInfo[r][c].rc), g_ptMouse))
+					{
+						int originC = c;
+						int originR = r;
+						int plusColumn = 0;
+						int plusRow = 0;
+						int copyHorizontalLength = 0;
+						if (Input::GetButtonDown(VK_LBUTTON))
+						{
+							for (int i = 0; i < multiSelectedSampleTile[1].size(); ++i)
+							{
+								mainDepthTileInfo[r + plusRow][c + plusColumn].frameX = multiSelectedSampleTile[1][i].frameX;
+								mainDepthTileInfo[r + plusRow][c + plusColumn].frameY = multiSelectedSampleTile[1][i].frameY;
+								++plusColumn;
+								++copyHorizontalLength;
+								if ((c + plusColumn) > 31)
+								{
+									++r;
+									c = 0;
+									plusColumn = 0;
+								}
+								if (copyHorizontalLength > endX - startX)
+								{
+									r = originR;
+									++plusRow;
+									c = originC;
+									plusColumn = 0;
+									copyHorizontalLength = 0;
+								}
+								if ((r + plusRow) > 19)
+								{
+									r = 0;
+									plusRow = 0;
+								}
+							}
+							finishDrawing = true;
+						}
+					}
+					break;
+				case SampleTileTypes::NONE:
+					break;
+				default:
+					break;
 				}
 			}
 		}
@@ -634,13 +848,52 @@ void TilemapToolScene::DrawSingleTile(RECT rc)
 		{
 			for (int c = 0; c < TILE_COLUMN; ++c)
 			{
-				if (PtInRect(&(mainTileInfo[r][c].rc), g_ptMouse))
+				switch (sampleTileType)
 				{
-					if (Input::GetButtonDown(VK_RBUTTON))
+				case SampleTileTypes::BASEMENT:
+					if (PtInRect(&(mainBasementTileInfo[r][c].rc), g_ptMouse))
 					{
-						mainTileInfo[r][c].frameX = singleSelectedSampleTile.frameX;
-						mainTileInfo[r][c].frameY = singleSelectedSampleTile.frameY;
+						if (Input::GetButtonDown(VK_RBUTTON))
+						{
+							mainBasementTileInfo[r][c].frameX = singleSelectedSampleTile.frameX;
+							mainBasementTileInfo[r][c].frameY = singleSelectedSampleTile.frameY;
+						}
 					}
+					break;
+				case SampleTileTypes::CAVE:
+					if (PtInRect(&(mainCaveTileInfo[r][c].rc), g_ptMouse))
+					{
+						if (Input::GetButtonDown(VK_RBUTTON))
+						{
+							mainCaveTileInfo[r][c].frameX = singleSelectedSampleTile.frameX;
+							mainCaveTileInfo[r][c].frameY = singleSelectedSampleTile.frameY;
+						}
+					}
+					break;
+				case SampleTileTypes::CELLAR:
+					if (PtInRect(&(mainCellarTileInfo[r][c].rc), g_ptMouse))
+					{
+						if (Input::GetButtonDown(VK_RBUTTON))
+						{
+							mainCellarTileInfo[r][c].frameX = singleSelectedSampleTile.frameX;
+							mainCellarTileInfo[r][c].frameY = singleSelectedSampleTile.frameY;
+						}
+					}
+					break;
+				case SampleTileTypes::DEPTH:
+					if (PtInRect(&(mainDepthTileInfo[r][c].rc), g_ptMouse))
+					{
+						if (Input::GetButtonDown(VK_RBUTTON))
+						{
+							mainDepthTileInfo[r][c].frameX = singleSelectedSampleTile.frameX;
+							mainDepthTileInfo[r][c].frameY = singleSelectedSampleTile.frameY;
+						}
+					}
+					break;
+				case SampleTileTypes::NONE:
+					break;
+				default:
+					break;
 				}
 			}
 		}
@@ -683,8 +936,8 @@ void TilemapToolScene::SelectMultiTile(RECT rc)
 
 			multiSelectPoint[0] = true;
 
-			multiSelectedSampleTile[0][0].frameX = sampleTileInfo[selectedIdY][selectedIdX][currShowIndex].frameX;
-			multiSelectedSampleTile[0][0].frameY = sampleTileInfo[selectedIdY][selectedIdX][currShowIndex].frameY;
+			multiSelectedSampleTile[0][0].frameX = sampleTileInfo[selectedIdY + ( currShowIndex * TILE_ROW)][selectedIdX].frameX;
+			multiSelectedSampleTile[0][0].frameY = sampleTileInfo[selectedIdY + ( currShowIndex * TILE_ROW)][selectedIdX].frameY;
 		}
 	}
 	// 샘플 영역의 Point02
@@ -700,8 +953,8 @@ void TilemapToolScene::SelectMultiTile(RECT rc)
 
 			multiSelectPoint[1] = true;
 
-			multiSelectedSampleTile[0][1].frameX = sampleTileInfo[selectedIdY][selectedIdX][currShowIndex].frameX;
-			multiSelectedSampleTile[0][1].frameY = sampleTileInfo[selectedIdY][selectedIdX][currShowIndex].frameY;
+			multiSelectedSampleTile[0][1].frameX = sampleTileInfo[selectedIdY + (currShowIndex * TILE_ROW)][selectedIdX].frameX;
+			multiSelectedSampleTile[0][1].frameY = sampleTileInfo[selectedIdY + (currShowIndex * TILE_ROW)][selectedIdX].frameY;
 		}
 	}
 }
@@ -720,8 +973,8 @@ void TilemapToolScene::SelectSingleTile(RECT rc)
 				int posY = g_ptMouse.y - rc.top;
 				int selectedIdY = posY / SAMPLE_TILE_SIZE;
 
-				singleSelectedSampleTile.frameX = sampleTileInfo[selectedIdY][selectedIdX][currShowIndex].frameX;
-				singleSelectedSampleTile.frameY = sampleTileInfo[selectedIdY][selectedIdX][currShowIndex].frameY;
+				singleSelectedSampleTile.frameX = sampleTileInfo[selectedIdY + (currShowIndex * TILE_ROW)][selectedIdX].frameX;
+				singleSelectedSampleTile.frameY = sampleTileInfo[selectedIdY + (currShowIndex * TILE_ROW)][selectedIdX].frameY;
 			}
 		}
 	}

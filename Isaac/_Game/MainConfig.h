@@ -128,62 +128,80 @@ typedef struct tagTile
 } TILE_INFO;
 
 #define TILE_SIZE				40
-#define	TILE_COLUMN				1280 / TILE_SIZE
-#define TILE_ROW				800 / TILE_SIZE
+#define	TILE_COLUMN				32
+#define TILE_ROW				20
+#define BASEMENT_TILE_ROW		80
+#define CAVE_TILE_ROW			120
+#define CELLAR_TILE_ROW			80
+#define DEPTH_TILE_ROW			60
 #define SAMPLE_TILE_SIZE		14
-#define SAMPLE_TILE_COLUMN		(TILE_COLUMN + 1)
-#define SAMPLE_TILE_ROW			TILE_ROW
+#define SAMPLE_TILE_COLUMN		33
+#define SAMPLE_TILE_ROW			20
 
-inline void SetTerrain(TILE_INFO* rc)
+inline void SetTerrain(TILE_INFO* rc, int index)
 {
 	// WALL로 설정
 	if (0 <= rc->frameX && rc->frameX < 32)
 	{
-		if (0 <= rc->frameY && rc->frameY < 20)
+		for (int r = 0; r < index; ++r)
 		{
-			rc->terrain = TileTypes::WALL;
+			if (0 + (r * TILE_ROW) <= rc->frameY && rc->frameY < (r + 1) * TILE_ROW)
+			{
+				rc->terrain = TileTypes::WALL;
+			}
 		}
 	}
 	// DOOR로 설정/상/하
 	if (14 <= rc->frameX && rc->frameX < 18)
 	{
-		// 상
-		if (0 <= rc->frameY && rc->frameY < 3)
+		for (int r = 0; r < index; ++r)
 		{
-			rc->terrain = TileTypes::DOOR;
-		}
-		// 하
-		if (17 <= rc->frameY && rc->frameY < 20)
-		{
-			rc->terrain = TileTypes::DOOR;
+			if (0 + (r * TILE_ROW) <= rc->frameY && rc->frameY < 3 + (r * TILE_ROW))
+			{
+				rc->terrain = TileTypes::DOOR;
+			}
+			if (17 + (r * TILE_ROW) <= rc->frameY && rc->frameY < (r + 1) * TILE_ROW)
+			{
+				rc->terrain = TileTypes::DOOR;
+			}
 		}
 	}
 	// DOOR로 설정/좌/우
 	if (0 <= rc->frameX && rc->frameX < 32)
 	{
-		if (8 <= rc->frameY && rc->frameY < 12)
+		for (int r = 0; r < index; ++r)
 		{
-			rc->terrain = TileTypes::DOOR;
+			if (8 + (r * TILE_ROW) <= rc->frameY && rc->frameY < 12 + (r * TILE_ROW))
+			{
+				rc->terrain = TileTypes::DOOR;
+			}
 		}
 	}
 	// ROAD로 설정
 	if (3 <= rc->frameX && rc->frameX < 29)
 	{
-		if (3 <= rc->frameY && rc->frameY < 17)
+		for (int r = 0; r < index; ++r)
 		{
-			rc->terrain = TileTypes::ROAD;
+			if (3 + (r * TILE_ROW) <= rc->frameY && rc->frameY < 17 + (r * TILE_ROW))
+			{
+				rc->terrain = TileTypes::ROAD;
+			}
 		}
 	}
 	if (rc->frameX == 32 && rc->frameY == 0)
 	{
 		rc->terrain = TileTypes::ROAD;
 	}
+
 	// 빈 공간
 	if (rc->frameX == 32)
 	{
-		if (0 < rc->frameY && rc->frameY < 20)
+		for (int r = 0; r < index; ++r)
 		{
-			rc->terrain = TileTypes::NOTHINGNESS;
+			if (0 < rc->frameY && rc->frameY < (r + 1) * TILE_ROW)
+			{
+				rc->terrain = TileTypes::NOTHINGNESS;
+			}
 		}
 	}
 }
