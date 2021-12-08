@@ -50,7 +50,9 @@ public:
 	void						DrawMultiTile(RECT rc);
 	void						DrawSingleTile(RECT rc);
 	void						InitializeMultiPoint();
+	void						Load(int loadIndex = 0);
 	void						MarkMultiPoint();
+	void						Save(int saveIndex = 0);
 	void						SelectMultiTile(RECT rc);
 	void						SelectSingleTile(RECT rc);
 

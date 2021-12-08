@@ -21,8 +21,8 @@ HRESULT TilemapToolScene::Init()
 		for (int c = 0; c < TILE_COLUMN; ++c)
 		{
 			SetRect(&(tempTileInfo[r][c].rc), c * TILE_SIZE, r * TILE_SIZE, (c + 1) * TILE_SIZE, (r + 1) * TILE_SIZE);
-			tempTileInfo[r][c].frameX = 32;
-			tempTileInfo[r][c].frameY = 0;
+			tempTileInfo[r][c].frameX = c;
+			tempTileInfo[r][c].frameY = r;
 		}
 	}
 
@@ -181,7 +181,6 @@ void TilemapToolScene::Update()
 				}
 			}
 		}
-
 
 		sampleTileType = SampleTileTypes::CAVE;
 		currShowIndex = 0;
@@ -421,6 +420,15 @@ void TilemapToolScene::Update()
 	DrawSingleTile(sampleTileArea);
 	// MutiSelectTile
 	DrawMultiTile(sampleTileArea);
+
+	if (Input::GetButtonDown('S'))
+	{
+		Save();
+	}
+	if (Input::GetButtonDown('L'))
+	{
+		Load();
+	}
 }
 
 void TilemapToolScene::Render(HDC hdc)
@@ -536,12 +544,48 @@ void TilemapToolScene::OnDebug(HDC hdc)
 		}
 
 		// Tile
-		for (int r = 0; r < TILE_ROW; ++r)
+		switch (sampleTileType)
 		{
-			for (int c = 0; c < TILE_COLUMN; ++c)
+		case SampleTileTypes::BASEMENT:
+			for (int r = 0; r < TILE_ROW; ++r)
 			{
-				Rectangle(hdc, mainBasementTileInfo[r][c].rc.left, mainBasementTileInfo[r][c].rc.top, mainBasementTileInfo[r][c].rc.right, mainBasementTileInfo[r][c].rc.bottom);
+				for (int c = 0; c < TILE_COLUMN; ++c)
+				{
+					Rectangle(hdc, mainBasementTileInfo[r][c].rc.left, mainBasementTileInfo[r][c].rc.top, mainBasementTileInfo[r][c].rc.right, mainBasementTileInfo[r][c].rc.bottom);
+				}
 			}
+			break;
+		case SampleTileTypes::CAVE:
+			for (int r = 0; r < TILE_ROW; ++r)
+			{
+				for (int c = 0; c < TILE_COLUMN; ++c)
+				{
+					Rectangle(hdc, mainCaveTileInfo[r][c].rc.left, mainCaveTileInfo[r][c].rc.top, mainCaveTileInfo[r][c].rc.right, mainCaveTileInfo[r][c].rc.bottom);
+				}
+			}
+			break;
+		case SampleTileTypes::CELLAR:
+			for (int r = 0; r < TILE_ROW; ++r)
+			{
+				for (int c = 0; c < TILE_COLUMN; ++c)
+				{
+					Rectangle(hdc, mainCellarTileInfo[r][c].rc.left, mainCellarTileInfo[r][c].rc.top, mainCellarTileInfo[r][c].rc.right, mainCellarTileInfo[r][c].rc.bottom);
+				}
+			}
+			break;
+		case SampleTileTypes::DEPTH:
+			for (int r = 0; r < TILE_ROW; ++r)
+			{
+				for (int c = 0; c < TILE_COLUMN; ++c)
+				{
+					Rectangle(hdc, mainDepthTileInfo[r][c].rc.left, mainDepthTileInfo[r][c].rc.top, mainDepthTileInfo[r][c].rc.right, mainDepthTileInfo[r][c].rc.bottom);
+				}
+			}
+			break;
+		case SampleTileTypes::NONE:
+			break;
+		default:
+			break;
 		}
 
 		if (button->GetSelectSampleTile())
@@ -592,22 +636,88 @@ void TilemapToolScene::OnDebug(HDC hdc)
 			{
 				if (Input::GetButtonDown('T'))
 				{
-					cout << "frameX : " << mainBasementTileInfo[r][c].frameX << "\t" << "frameY : " << mainBasementTileInfo[r][c].frameY << "\n";
-					if (mainBasementTileInfo[r][c].terrain == TileTypes::WALL)
+					switch (sampleTileType)
 					{
-						cout << "TileType : WALL\n";
-					}
-					if (mainBasementTileInfo[r][c].terrain == TileTypes::DOOR)
-					{
-						cout << "TileType : DOOR\n";
-					}
-					if (mainBasementTileInfo[r][c].terrain == TileTypes::ROAD)
-					{
-						cout << "TileType : ROAD\n";
-					}
-					if (mainBasementTileInfo[r][c].terrain == TileTypes::NOTHINGNESS)
-					{
-						cout << "TileType : NOTHINGNESS\n";
+					case SampleTileTypes::BASEMENT:
+						cout << "Basement frameX : " << mainBasementTileInfo[r][c].frameX << "\t" << "Basement frameY : " << mainBasementTileInfo[r][c].frameY << "\n";
+						if (mainBasementTileInfo[r][c].terrain == TileTypes::WALL)
+						{
+							cout << "TileType : WALL\n";
+						}
+						if (mainBasementTileInfo[r][c].terrain == TileTypes::DOOR)
+						{
+							cout << "TileType : DOOR\n";
+						}
+						if (mainBasementTileInfo[r][c].terrain == TileTypes::ROAD)
+						{
+							cout << "TileType : ROAD\n";
+						}
+						if (mainBasementTileInfo[r][c].terrain == TileTypes::NOTHINGNESS)
+						{
+							cout << "TileType : NOTHINGNESS\n";
+						}
+						break;
+					case SampleTileTypes::CAVE:
+						cout << "Cave frameX : " << mainCaveTileInfo[r][c].frameX << "\t" << "Cave frameY : " << mainCaveTileInfo[r][c].frameY << "\n";
+						if (mainCaveTileInfo[r][c].terrain == TileTypes::WALL)
+						{
+							cout << "TileType : WALL\n";
+						}
+						if (mainCaveTileInfo[r][c].terrain == TileTypes::DOOR)
+						{
+							cout << "TileType : DOOR\n";
+						}
+						if (mainCaveTileInfo[r][c].terrain == TileTypes::ROAD)
+						{
+							cout << "TileType : ROAD\n";
+						}
+						if (mainCaveTileInfo[r][c].terrain == TileTypes::NOTHINGNESS)
+						{
+							cout << "TileType : NOTHINGNESS\n";
+						}
+						break;
+					case SampleTileTypes::CELLAR:
+						cout << "Cellar frameX : " << mainCellarTileInfo[r][c].frameX << "\t" << "Cellar frameY : " << mainCellarTileInfo[r][c].frameY << "\n";
+						if (mainCellarTileInfo[r][c].terrain == TileTypes::WALL)
+						{
+							cout << "TileType : WALL\n";
+						}
+						if (mainCellarTileInfo[r][c].terrain == TileTypes::DOOR)
+						{
+							cout << "TileType : DOOR\n";
+						}
+						if (mainCellarTileInfo[r][c].terrain == TileTypes::ROAD)
+						{
+							cout << "TileType : ROAD\n";
+						}
+						if (mainCellarTileInfo[r][c].terrain == TileTypes::NOTHINGNESS)
+						{
+							cout << "TileType : NOTHINGNESS\n";
+						}
+						break;
+					case SampleTileTypes::DEPTH:
+						cout << "Depth frameX : " << mainDepthTileInfo[r][c].frameX << "\t" << "Depth frameY : " << mainDepthTileInfo[r][c].frameY << "\n";
+						if (mainDepthTileInfo[r][c].terrain == TileTypes::WALL)
+						{
+							cout << "TileType : WALL\n";
+						}
+						if (mainDepthTileInfo[r][c].terrain == TileTypes::DOOR)
+						{
+							cout << "TileType : DOOR\n";
+						}
+						if (mainDepthTileInfo[r][c].terrain == TileTypes::ROAD)
+						{
+							cout << "TileType : ROAD\n";
+						}
+						if (mainDepthTileInfo[r][c].terrain == TileTypes::NOTHINGNESS)
+						{
+							cout << "TileType : NOTHINGNESS\n";
+						}
+						break;
+					case SampleTileTypes::NONE:
+						break;
+					default:
+						break;
 					}
 				}
 			}
@@ -913,12 +1023,150 @@ void TilemapToolScene::InitializeMultiPoint()
 	}
 }
 
+void TilemapToolScene::Load(int loadIndex)
+{
+	string loadFileName = "Save/";
+	switch (sampleTileType)
+	{
+	case SampleTileTypes::BASEMENT:
+		loadFileName += "BASEMENT";
+		break;
+	case SampleTileTypes::CAVE:
+		loadFileName += "CAVE";
+		break;
+	case SampleTileTypes::CELLAR:
+		loadFileName += "CELLAR";
+		break;
+	case SampleTileTypes::DEPTH:
+		loadFileName += "DEPTH";
+		break;
+	case SampleTileTypes::NONE:
+		break;
+	default:
+		break;
+	}
+	// 한자리 숫자일 때
+	if (loadIndex < 10)
+	{
+		loadFileName += "0";
+	}
+	loadFileName += to_string(loadIndex) + ".map";
+
+	HANDLE hFile = CreateFile(loadFileName.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	DWORD mapSaveFileInfo = sizeof(tagTile) * TILE_ROW * TILE_COLUMN;
+
+	DWORD readByte;
+	switch (sampleTileType)
+	{
+	case SampleTileTypes::BASEMENT:
+		if (ReadFile(hFile, mainBasementTileInfo, mapSaveFileInfo, &readByte, NULL) == false)
+		{
+			MessageBox(g_hWnd, "Basement 맵 데이터 로드에 실패! !", "에러", MB_OK);
+		}
+		break;
+	case SampleTileTypes::CAVE:
+		if (ReadFile(hFile, mainCaveTileInfo, mapSaveFileInfo, &readByte, NULL) == false)
+		{
+			MessageBox(g_hWnd, "Basement 맵 데이터 로드에 실패! !", "에러", MB_OK);
+		}
+		break;
+	case SampleTileTypes::CELLAR:
+		if (ReadFile(hFile, mainCellarTileInfo, mapSaveFileInfo, &readByte, NULL) == false)
+		{
+			MessageBox(g_hWnd, "Basement 맵 데이터 로드에 실패! !", "에러", MB_OK);
+		}
+		break;
+	case SampleTileTypes::DEPTH:
+		if (ReadFile(hFile, mainDepthTileInfo, mapSaveFileInfo, &readByte, NULL) == false)
+		{
+			MessageBox(g_hWnd, "Basement 맵 데이터 로드에 실패! !", "에러", MB_OK);
+		}
+		break;
+	case SampleTileTypes::NONE:
+		break;
+	default:
+		break;
+	}
+
+	CloseHandle(hFile);
+}
+
 void TilemapToolScene::MarkMultiPoint()
 {
 	if (multiSelectPoint[0] && multiSelectPoint[1])
 	{
 		isMultiSelect = true;
 	}
+}
+
+void TilemapToolScene::Save(int saveIndex)
+{
+	string saveFileName = "Save/";
+	switch (sampleTileType)
+	{
+	case SampleTileTypes::BASEMENT:
+		saveFileName += "BASEMENT";
+		break;
+	case SampleTileTypes::CAVE:
+		saveFileName += "CAVE";
+		break;
+	case SampleTileTypes::CELLAR:
+		saveFileName += "CELLAR";
+		break;
+	case SampleTileTypes::DEPTH:
+		saveFileName += "DEPTH";
+		break;
+	case SampleTileTypes::NONE:
+		break;
+	default:
+		break;
+	}
+	// 한자리 숫자일 때
+	if (saveIndex < 10)
+	{
+		saveFileName += "0";
+	}
+	saveFileName += to_string(saveIndex) + ".map";
+
+	HANDLE hFile = CreateFile(saveFileName.c_str(), GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	DWORD byteSize = sizeof(tagTile) * TILE_ROW * TILE_COLUMN;
+
+	DWORD writtenByte;
+	switch (sampleTileType)
+	{
+	case SampleTileTypes::BASEMENT:
+		if (WriteFile(hFile, mainBasementTileInfo, byteSize, &writtenByte, NULL) == false)
+		{
+			MessageBox(g_hWnd, "Basement 맵 데이터 저장에 실패! !", "에러", MB_OK);
+		}
+		break;
+	case SampleTileTypes::CAVE:
+		if (WriteFile(hFile, mainCaveTileInfo, byteSize, &writtenByte, NULL) == false)
+		{
+			MessageBox(g_hWnd, "Cave 맵 데이터 저장에 실패! !", "에러", MB_OK);
+		}
+		break;
+	case SampleTileTypes::CELLAR:
+		if (WriteFile(hFile, mainCellarTileInfo, byteSize, &writtenByte, NULL) == false)
+		{
+			MessageBox(g_hWnd, "Cellar 맵 데이터 저장에 실패! !", "에러", MB_OK);
+		}
+		break;
+	case SampleTileTypes::DEPTH:
+		if (WriteFile(hFile, mainDepthTileInfo, byteSize, &writtenByte, NULL) == false)
+		{
+			MessageBox(g_hWnd, "Depth 맵 데이터 저장에 실패! !", "에러", MB_OK);
+		}
+		break;
+	case SampleTileTypes::NONE:
+		break;
+	default:
+		break;
+	}
+
+	CloseHandle(hFile);
 }
 
 void TilemapToolScene::SelectMultiTile(RECT rc)
