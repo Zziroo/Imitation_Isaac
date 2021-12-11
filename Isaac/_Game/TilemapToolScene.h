@@ -36,6 +36,7 @@ private:
 	int							currShowIndex;
 	int							sampleTileCurrIndex[4] = {};
 	int							sampleTileMaxIndex[4] = { 4, 5, 4, 3 };
+	int							saveIndex = 0;
 
 	char						text[64] = {};
 

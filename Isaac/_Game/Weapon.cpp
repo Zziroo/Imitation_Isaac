@@ -10,7 +10,7 @@ void Weapon::Init()
     pos.x = WIN_SIZE_X * DEVIDE_HALF;
     pos.y = (WIN_SIZE_Y * DEVIDE_HALF) - 150;
     objectSize = 30.0f;
-    moveSpeed = 500.0f;
+    moveSpeed = 750.0f;
     shape.left = (LONG)(pos.x - (objectSize * DEVIDE_HALF));
     shape.top = (LONG)(pos.y - (objectSize * DEVIDE_HALF));
     shape.right = (LONG)(pos.x + (objectSize * DEVIDE_HALF));
@@ -56,7 +56,7 @@ void Weapon::Update()
 
 void Weapon::Render(HDC hdc)
 {
-    //if (isFire) 
+    if (isFire) 
     { 
         tear->Render(hdc, (INT)(pos.x), (INT)(pos.y), tear->GetCurrFrameX(), tear->GetCurrFrameY());     // Image
     }

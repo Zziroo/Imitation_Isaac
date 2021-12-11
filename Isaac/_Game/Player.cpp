@@ -2,6 +2,7 @@
 #include "Player.h"
 
 #include "Image.h"
+#include "WeaponManager.h"
 
 void Player::Init()
 {
@@ -32,10 +33,16 @@ void Player::Init()
     pos.y = (FLOAT)((PLAYER_HEAD_POS_Y + PLAYER_BODY_POS_Y - ADJUST_SIZE_30) * DEVIDE_HALF);
     moveSpeed = PLAYER_MOVESPEED;
     elapsedAnime = ZERO;
+
+    // Weapon
+    weaponTear = new WeaponManager;
+    weaponTear->Init();
+    weaponTear->SetOwner(this);
 }
 
 void Player::Release()
 {
+    SAFE_RELEASE(weaponTear);
 }
 
 void Player::Update()
@@ -46,6 +53,18 @@ void Player::Update()
     TakeAction();
     Move();
     BlinkEye();
+
+    // Weapon
+    weaponTear->Update();
+    if (isFire)
+    {
+        ++fireDelay;
+        if (fireDelay > 50)
+        {
+            isFire = false;
+            fireDelay = 0;
+        }
+    }
 }
 
 void Player::Render(HDC hdc)
@@ -72,6 +91,9 @@ void Player::Render(HDC hdc)
     default:
         break;
     }
+
+    // Weapon
+    weaponTear->Render(hdc);
 
     // Debug
     GameObject::Render(hdc);
@@ -150,8 +172,6 @@ void Player::ApplyHeadDir(MoveDir moveDir, int attckFrame)
 void Player::BlinkEye()
 {
     ChangeAttackFrame();
-    
-    isFire = false;
 }
 
 void Player::ChangeAnimation()
@@ -212,7 +232,7 @@ bool Player::ClosedEye()
     return headInfo.image->GetCurrFrameX() == 1 || headInfo.image->GetCurrFrameX() == 3 || headInfo.image->GetCurrFrameX() == 5 || headInfo.image->GetCurrFrameX() == 7;
 }
 
-void Player::DevideHeadDir(int pointY, int section, int dir1, int dir2)
+void Player::DevideHeadDir(int pointY, float section, int dir1, int dir2)
 {
     if (pointY >= section)
     {
@@ -244,6 +264,7 @@ void Player::FireWeapon(int x, int y)
     }
 
     isFire = true;
+    weaponTear->WeaponFire();
 }
 
 void Player::Move()

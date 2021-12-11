@@ -55,3 +55,15 @@ void WeaponManager::WeaponFire()
 		break;
 	}
 }
+
+WeaponManager::~WeaponManager()
+{
+	owner = nullptr;
+
+	for (size_t i = 0; i < vecWeapon.size(); ++i)
+	{
+		SAFE_RELEASE(vecWeapon[i]);
+	}
+
+	vecWeapon.clear();
+}

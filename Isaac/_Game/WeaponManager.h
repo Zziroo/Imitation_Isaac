@@ -23,6 +23,6 @@ public:
 
 	inline void		SetOwner(Player* owner) { this->owner = owner;}
 
-	virtual ~WeaponManager() = default;
+	virtual			~WeaponManager() noexcept;
 };
 

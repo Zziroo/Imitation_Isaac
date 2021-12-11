@@ -3,6 +3,7 @@
 #include "GameObject.h"
 
 class Image;
+class WeaponManager;
 class Player : public GameObject
 {
 private:
@@ -42,10 +43,12 @@ private:
 
 private:
 	Image*				otherStateImg = nullptr;
+	WeaponManager*		weaponTear = nullptr;
 
 	ObjectStates		playerState = ObjectStates::IDLE;				// 상태
 
 	bool				isFire = false;									// 무기 발사
+	int					fireDelay = 0;									// 무기 발사 지연
 	char				text[64] = {};
 
 public:
@@ -66,7 +69,7 @@ public:
 	void				ChangeHeadFrame();												
 	void				ChangeHeadDir();												
 	bool				ClosedEye();													// 눈이 감긴 상태
-	void				DevideHeadDir(int pointY, int section, int dir1, int dir2);		// 입력한 위치 바라보기
+	void				DevideHeadDir(int pointY, float section, int dir1, int dir2);	// 입력한 위치 바라보기
 	void				FireWeapon(int x, int y);										// weapon 발사
 	void				Move();															// 움직임
 	void				TakeAction();													// 입력키

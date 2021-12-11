@@ -3,11 +3,10 @@
 
 #include "Image.h"
 
-#define TILETOOL
+//#define TILETOOL
 
 void MainGame::Init()
 {
-
 	// Manager
 	Input::Init(g_hWnd);
 	GET_SINGLETON_IMAGE->Init();

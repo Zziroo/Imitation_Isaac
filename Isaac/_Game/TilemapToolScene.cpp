@@ -78,8 +78,8 @@ void TilemapToolScene::Update()
 			for (int c = 0; c < TILE_COLUMN; ++c)
 			{
 				SetRect(&(mainBasementTileInfo[r][c].rc), c * TILE_SIZE, r * TILE_SIZE, (c + 1) * TILE_SIZE, (r + 1) * TILE_SIZE);
-				mainBasementTileInfo[r][c].frameX = 32;
-				mainBasementTileInfo[r][c].frameY = 0;
+				mainBasementTileInfo[r][c].frameX = c;
+				mainBasementTileInfo[r][c].frameY = r;
 			}
 		}
 
@@ -138,8 +138,8 @@ void TilemapToolScene::Update()
 			for (int c = 0; c < TILE_COLUMN; ++c)
 			{
 				SetRect(&(mainCaveTileInfo[r][c].rc), c * TILE_SIZE, r * TILE_SIZE, (c + 1) * TILE_SIZE, (r + 1) * TILE_SIZE);
-				mainCaveTileInfo[r][c].frameX = 32;
-				mainCaveTileInfo[r][c].frameY = 0;
+				mainCaveTileInfo[r][c].frameX = c;
+				mainCaveTileInfo[r][c].frameY = r;
 			}
 		}
 
@@ -198,8 +198,8 @@ void TilemapToolScene::Update()
 			for (int c = 0; c < TILE_COLUMN; ++c)
 			{
 				SetRect(&(mainCellarTileInfo[r][c].rc), c * TILE_SIZE, r * TILE_SIZE, (c + 1) * TILE_SIZE, (r + 1) * TILE_SIZE);
-				mainCellarTileInfo[r][c].frameX = 32;
-				mainCellarTileInfo[r][c].frameY = 0;
+				mainCellarTileInfo[r][c].frameX = c;
+				mainCellarTileInfo[r][c].frameY = r;
 			}
 		}
 
@@ -258,8 +258,8 @@ void TilemapToolScene::Update()
 			for (int c = 0; c < TILE_COLUMN; ++c)
 			{
 				SetRect(&(mainDepthTileInfo[r][c].rc), c * TILE_SIZE, r * TILE_SIZE, (c + 1) * TILE_SIZE, (r + 1) * TILE_SIZE);
-				mainDepthTileInfo[r][c].frameX = 32;
-				mainDepthTileInfo[r][c].frameY = 0;
+				mainDepthTileInfo[r][c].frameX = c;
+				mainDepthTileInfo[r][c].frameY = r;
 			}
 		}
 
@@ -423,7 +423,8 @@ void TilemapToolScene::Update()
 
 	if (Input::GetButtonDown('S'))
 	{
-		Save();
+		Save(saveIndex);
+		++saveIndex;
 	}
 	if (Input::GetButtonDown('L'))
 	{

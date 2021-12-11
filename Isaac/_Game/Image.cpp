@@ -197,8 +197,8 @@ void Image::EnlargeSampleTile(HDC hdc, int destX, int destY, int frameX, int fra
 			hdc,
 			destX,
 			destY,
-			(INT)(imageInfo->frameWidth) * scale,
-			(INT)(imageInfo->frameHeight) * scale,
+			(INT)(imageInfo->frameWidth * scale),
+			(INT)(imageInfo->frameHeight * scale),
 
 			imageInfo->hMemDc,
 			imageInfo->frameWidth* frameX,

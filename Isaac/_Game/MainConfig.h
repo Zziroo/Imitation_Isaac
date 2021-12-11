@@ -95,7 +95,7 @@ typedef struct ArgumentFuncPtr
 #define PLAYER_HEAD_POS_X		WIN_SIZE_X * 0.5f
 #define PLAYER_HEAD_POS_Y		WIN_SIZE_Y * 0.5f
 #define PLAYER_HEADSIZE			70.0f
-#define PLAYER_MOVESPEED		100.0f
+#define PLAYER_MOVESPEED		500.0f
 #define HEAD_LOOK_DOWN			0
 #define ATTACKING_DOWNSIDE		1
 #define HEAD_LOOK_RIGHT			2
