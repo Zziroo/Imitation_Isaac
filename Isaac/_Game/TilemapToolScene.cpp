@@ -423,8 +423,32 @@ void TilemapToolScene::Update()
 
 	if (Input::GetButtonDown('S'))
 	{
-		Save(saveIndex);
-		++saveIndex;
+		int index = 0;
+		switch (sampleTileType)
+		{
+		case SampleTileTypes::BASEMENT:
+			index = saveIndex[0];
+			++saveIndex[0];
+			break;
+		case SampleTileTypes::CAVE:
+			index = saveIndex[1];
+			++saveIndex[1];
+			break;
+		case SampleTileTypes::CELLAR:
+			index = saveIndex[2];
+			++saveIndex[2];
+			break;
+		case SampleTileTypes::DEPTH:
+			index = saveIndex[3];
+			++saveIndex[3];
+			break;
+		case SampleTileTypes::NONE:
+			break;
+		default:
+			break;
+		}
+		Save(index);
+		++index;
 	}
 	if (Input::GetButtonDown('L'))
 	{
