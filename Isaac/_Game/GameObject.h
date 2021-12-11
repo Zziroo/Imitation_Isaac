@@ -2,9 +2,8 @@
 
 class GameObject
 {
-private:
-
 protected:
+	TILE_INFO*			tile = nullptr;						// 타일의 정보
 	POINTFLOAT			pos = { 0 };						// 위치
 	RECT				shape = { 0 };						// 모양
 	float				objectSize = 0.0f;					// 크기
@@ -24,6 +23,7 @@ public:
 
 	inline void			GetMoveSpeed(float moveSpeed) { this->moveSpeed = moveSpeed; }
 	inline void			SetPos(POINTFLOAT pos) { this->pos = pos; }
+	inline void			SetTileInfo(TILE_INFO* tile) { this->tile = tile; }
 
 	inline float		GetMoveSpeed() { return moveSpeed; }
 	inline POINTFLOAT	GetPos() { return pos; }

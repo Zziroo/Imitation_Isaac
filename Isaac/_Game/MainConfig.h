@@ -109,7 +109,7 @@ typedef struct ArgumentFuncPtr
 #define WEAPON_MAX_COUNT		100
 
 // Tilemap
-enum class TileTypes { CLIFF, DOOR, ROAD, WALL, NOTHINGNESS };
+enum class TileTypes { CLIFF, DOOR, ROAD, WALL, NOTHINGNESS }; 
 enum class SampleTileTypes { BASEMENT, CAVE, CELLAR, DEPTH, NONE };
 
 typedef struct tagSampleTile
@@ -152,7 +152,7 @@ inline void SetTerrain(TILE_INFO* rc, int index)
 		}
 	}
 	// DOOR로 설정/상/하
-	if (14 <= rc->frameX && rc->frameX < 18)
+	if (15 <= rc->frameX && rc->frameX < 17)
 	{
 		for (int r = 0; r < index; ++r)
 		{
@@ -171,7 +171,7 @@ inline void SetTerrain(TILE_INFO* rc, int index)
 	{
 		for (int r = 0; r < index; ++r)
 		{
-			if (8 + (r * TILE_ROW) <= rc->frameY && rc->frameY < 12 + (r * TILE_ROW))
+			if (9 + (r * TILE_ROW) <= rc->frameY && rc->frameY < 11 + (r * TILE_ROW))
 			{
 				rc->terrain = TileTypes::DOOR;
 			}

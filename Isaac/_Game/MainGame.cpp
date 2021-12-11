@@ -3,7 +3,9 @@
 
 #include "Image.h"
 
+#ifdef _DEBUG
 //#define TILETOOL
+#endif
 
 void MainGame::Init()
 {

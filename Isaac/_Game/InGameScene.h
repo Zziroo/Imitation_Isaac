@@ -13,10 +13,12 @@ private:
 
 	int					sampleTileMaxIndex[4] = { 4, 5, 4, 3 };
 
+	TILE_INFO			colliderTileInfo[TILE_ROW * TILE_COLUMN];
 	TILE_INFO			mainBasementTileInfo[BASEMENT_TILE_ROW][TILE_COLUMN];
 	TILE_INFO			mainCaveTileInfo[CAVE_TILE_ROW][TILE_COLUMN];
 	TILE_INFO			mainCellarTileInfo[CELLAR_TILE_ROW][TILE_COLUMN];
 	TILE_INFO			mainDepthTileInfo[DEPTH_TILE_ROW][TILE_COLUMN];
+
 	SampleTileTypes		sampleTileType = SampleTileTypes::BASEMENT;
 
 public:

@@ -51,7 +51,6 @@ void Player::Update()
     GameObject::Update();
 #endif
     TakeAction();
-    Move();
     BlinkEye();
 
     // Weapon
@@ -273,6 +272,73 @@ void Player::Move()
     {
         ChangeAnimation();
     }
+
+    POINTFLOAT buffBodyPos = bodyInfo.pos;
+    RECT buffBodyShape = bodyInfo.shape;
+    POINTFLOAT buffHeadPos = headInfo.pos;
+    RECT buffHeadShape = headInfo.shape;
+
+    switch (bodyInfo.moveDir)
+    {
+    case MoveDir::UP:
+        bodyInfo.pos.y -= moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
+        break;
+    case MoveDir::DOWN:
+        bodyInfo.pos.y += moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
+        break;
+    case MoveDir::LEFT:
+        bodyInfo.pos.x -= moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
+        break;
+    case MoveDir::RIGHT:
+        bodyInfo.pos.x += moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
+        break;
+    default:
+        break;
+    }
+
+    switch (headInfo.moveDir)
+    {
+    case MoveDir::UP:
+        headInfo.pos.y -= moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
+        break;
+    case MoveDir::DOWN:
+        headInfo.pos.y += moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
+        break;
+    case MoveDir::LEFT:
+        headInfo.pos.x -= moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
+        break;
+    case MoveDir::RIGHT:
+        headInfo.pos.x += moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
+        break;
+    default:
+        break;
+    }
+
+    // bodyShape
+    bodyInfo.shape.left = (LONG)(bodyInfo.pos.x - (bodyInfo.size * DEVIDE_HALF) - ADJUST_SIZE_14);	    // Left
+    bodyInfo.shape.top = (LONG)(bodyInfo.pos.y - (bodyInfo.size * DEVIDE_HALF));			            // Top
+    bodyInfo.shape.right = (LONG)(bodyInfo.pos.x + (bodyInfo.size * DEVIDE_HALF) + ADJUST_SIZE_14);	    // Right
+    bodyInfo.shape.bottom = (LONG)(bodyInfo.pos.y + (bodyInfo.size * DEVIDE_HALF));			            // Bottom
+    // headShape
+    headInfo.shape.left = (LONG)(headInfo.pos.x - (headInfo.size * DEVIDE_HALF) - ADJUST_SIZE_05);      // Left
+    headInfo.shape.top = (LONG)(headInfo.pos.y - (headInfo.size * DEVIDE_HALF));			            // Top
+    headInfo.shape.right = (LONG)(headInfo.pos.x + (headInfo.size * DEVIDE_HALF) + ADJUST_SIZE_05);	    // Right
+    headInfo.shape.bottom = (LONG)(headInfo.pos.y + (headInfo.size * DEVIDE_HALF));			            // Bottom
+    // 벽 타일과 부딪혔을 때 이동하지 않게 하기
+    for (int i = 0; i < (TILE_ROW * TILE_COLUMN); ++i)
+    {
+        if (IntersectRect(&colliderRect, &bodyInfo.shape, &tile[i].rc))
+        {
+            if ((tile[i].terrain == TileTypes::WALL))
+            {
+                bodyInfo.pos = buffBodyPos;
+                bodyInfo.shape = buffBodyShape;
+                headInfo.pos = buffHeadPos;
+                headInfo.shape = buffHeadShape;
+            }
+        }
+        
+    }
 }
 
 void Player::TakeAction()
@@ -300,50 +366,36 @@ void Player::TakeAction()
         playerState = ObjectStates::WALK;
         bodyInfo.moveDir = MoveDir::UP;
         headInfo.moveDir = MoveDir::UP;
-        bodyInfo.pos.y -= moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
-        headInfo.pos.y -= moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
+        Move();
     }
     else if (Input::GetButton('S'))                          // 하
     {
         playerState = ObjectStates::WALK;
         bodyInfo.moveDir = MoveDir::DOWN;
         headInfo.moveDir = MoveDir::DOWN;
-        bodyInfo.pos.y += moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
-        headInfo.pos.y += moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
+        Move();
     }
     if (Input::GetButton('D'))                               // 우
     {
         playerState = ObjectStates::WALK;
         bodyInfo.moveDir = MoveDir::RIGHT;
         headInfo.moveDir = MoveDir::RIGHT;
-        bodyInfo.pos.x += moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
-        headInfo.pos.x += moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
+        Move();
     }
     else if (Input::GetButton('A'))                           // 좌
     {
         playerState = ObjectStates::WALK;
         bodyInfo.moveDir = MoveDir::LEFT;
         headInfo.moveDir = MoveDir::LEFT;
-        bodyInfo.pos.x -= moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
-        headInfo.pos.x -= moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
+        Move();
     }
+
     // 공격키
     if (Input::GetButton(VK_LBUTTON) && !isFire)
     {
-        //playerState = ObjectStates::ATTACK;
+        playerState = ObjectStates::ATTACK;
         FireWeapon(g_ptMouse.x, g_ptMouse.y);
     }
-
-    // bodyShape
-    bodyInfo.shape.left = (LONG)(bodyInfo.pos.x - (bodyInfo.size * DEVIDE_HALF) - ADJUST_SIZE_14);	    // Left
-    bodyInfo.shape.top = (LONG)(bodyInfo.pos.y - (bodyInfo.size * DEVIDE_HALF));			            // Top
-    bodyInfo.shape.right = (LONG)(bodyInfo.pos.x + (bodyInfo.size * DEVIDE_HALF) + ADJUST_SIZE_14);	    // Right
-    bodyInfo.shape.bottom = (LONG)(bodyInfo.pos.y + (bodyInfo.size * DEVIDE_HALF));			            // Bottom
-    // headShape
-    headInfo.shape.left = (LONG)(headInfo.pos.x - (headInfo.size * DEVIDE_HALF) - ADJUST_SIZE_05);      // Left
-    headInfo.shape.top = (LONG)(headInfo.pos.y - (headInfo.size * DEVIDE_HALF));			            // Top
-    headInfo.shape.right = (LONG)(headInfo.pos.x + (headInfo.size * DEVIDE_HALF) + ADJUST_SIZE_05);	    // Right
-    headInfo.shape.bottom = (LONG)(headInfo.pos.y + (headInfo.size * DEVIDE_HALF));			            // Bottom
 }
 
 float Player::CalculateSlope(RECT rc)

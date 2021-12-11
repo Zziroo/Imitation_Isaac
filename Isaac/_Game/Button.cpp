@@ -111,10 +111,6 @@ void Button::Update()
 		else if (Input::GetButtonUp(VK_LBUTTON) && loadBtn.buttonState == ButtonStates::DOWN)
 		{
 			loadBtn.buttonState = ButtonStates::UP;
-			//if (btnFunc && pFunc) 
-			//{ 
-			//	(btnFunc->*pFunc)(argFunc);
-			//}
 		}
 	}
 	else
@@ -132,10 +128,6 @@ void Button::Update()
 		else if (Input::GetButtonUp(VK_LBUTTON) && saveBtn.buttonState == ButtonStates::DOWN)
 		{
 			saveBtn.buttonState = ButtonStates::UP;
-			//if (btnFunc && pFunc) 
-			//{ 
-			//	(btnFunc->*pFunc)(argFunc);
-			//}
 		}
 	}
 	else

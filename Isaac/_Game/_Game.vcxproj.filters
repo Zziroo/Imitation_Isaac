@@ -40,9 +40,6 @@
     <Filter Include="MainGame\GameObject\Player">
       <UniqueIdentifier>{f8a09fee-90f5-4f73-8ee7-f354f6cee0b7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MainGame\GameObject\Monster">
-      <UniqueIdentifier>{30cbc23a-613f-4eed-b23b-5531fd2f4fdd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="MainGame\Scene">
       <UniqueIdentifier>{4258ccba-f5ff-4f61-ac68-ca0d6cdfe272}</UniqueIdentifier>
     </Filter>
@@ -57,6 +54,15 @@
     </Filter>
     <Filter Include="FrameWork\Input">
       <UniqueIdentifier>{7fe31e98-97eb-4632-9477-902af3e47a3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\GameObject\Enemy">
+      <UniqueIdentifier>{30cbc23a-613f-4eed-b23b-5531fd2f4fdd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\GameObject\Enemy\Normal Monster">
+      <UniqueIdentifier>{e302fcba-dbd9-4453-974e-b2c085615e4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\GameObject\Enemy\Boss Monster">
+      <UniqueIdentifier>{dc042360-3994-4bd4-a9d3-936f32f0d77d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

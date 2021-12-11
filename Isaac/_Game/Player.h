@@ -46,9 +46,11 @@ private:
 	WeaponManager*		weaponTear = nullptr;
 
 	ObjectStates		playerState = ObjectStates::IDLE;				// 상태
+	RECT				colliderRect = {};								// 벽과 충돌 처리용
 
 	bool				isFire = false;									// 무기 발사
 	int					fireDelay = 0;									// 무기 발사 지연
+
 	char				text[64] = {};
 
 public:

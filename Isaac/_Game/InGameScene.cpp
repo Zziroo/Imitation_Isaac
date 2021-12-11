@@ -7,6 +7,9 @@
 
 HRESULT InGameScene::Init()
 {
+	// Tile
+	Load(0);
+
 	// Tilemap
 	switch (sampleTileType)
 	{
@@ -31,9 +34,50 @@ HRESULT InGameScene::Init()
 	// Player
 	playerIsaac = new Player;
 	playerIsaac->Init();
-
-	// ≈∏¿œ
-	Load();
+	switch (sampleTileType)
+	{
+	case SampleTileTypes::BASEMENT:
+		for (int r = 0; r < TILE_ROW; ++r)
+		{
+			for (int c = 0; c < TILE_COLUMN; ++c)
+			{
+				colliderTileInfo[r * TILE_COLUMN + c] = mainBasementTileInfo[r][c];
+			}
+		};
+		break;
+	case SampleTileTypes::CAVE:
+		for (int r = 0; r < TILE_ROW; ++r)
+		{
+			for (int c = 0; c < TILE_COLUMN; ++c)
+			{
+				colliderTileInfo[r * TILE_COLUMN + c] = mainCaveTileInfo[r][c];
+			}
+		};
+		break;
+	case SampleTileTypes::CELLAR:
+		for (int r = 0; r < TILE_ROW; ++r)
+		{
+			for (int c = 0; c < TILE_COLUMN; ++c)
+			{
+				colliderTileInfo[r * TILE_COLUMN + c] = mainCellarTileInfo[r][c];
+			}
+		};
+		break;
+	case SampleTileTypes::DEPTH:
+		for (int r = 0; r < TILE_ROW; ++r)
+		{
+			for (int c = 0; c < TILE_COLUMN; ++c)
+			{
+				colliderTileInfo[r * TILE_COLUMN + c] = mainDepthTileInfo[r][c];
+			}
+		};
+		break;
+	case SampleTileTypes::NONE:
+		break;
+	default:
+		break;
+	}
+	playerIsaac->SetTileInfo(colliderTileInfo);
 
 	return S_OK;
 }
