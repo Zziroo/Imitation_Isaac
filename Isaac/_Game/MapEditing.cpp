@@ -200,7 +200,7 @@ void MapEditing::CountLinkedMap(int row, int column)
 	int leftColumn = searchColumn - 1;
 	int rightColumn = searchColumn + 1;
 	// 위쪽 맵 자리가 비어있지 않으면 (stage01[-1(맵 밖)][N] 방지 && 맵의 유무 && 방문했는지)
-	if (topRow >=0 && stage01[topRow][searchColumn].empty() == false && isTransitMap[topRow][searchColumn] == false)
+	if (topRow >= 0 && stage01[topRow][searchColumn].empty() == false && isTransitMap[topRow][searchColumn] == false)
 	{
 		++countLinkedMap;									// ++경유
 		isTransitMap[topRow][searchColumn] = true;			// 통과 = true
@@ -249,6 +249,8 @@ void MapEditing::CreateStage()
 	{
 		DeginateMap(dis(gen) % stageSize, dis(gen) % stageSize, i);
 	}
+	// 한 Stage안에 맵들이 연결돼어있는지 확인하기 위한 변수
+	countLinkedMap = 1;		
 	// 통과했는지의 여부를 알기 위해 vector<vector<bool>> 생성
 	isTransitMap.resize(stageSize);
 	for (size_t i = 0; i < isTransitMap.size(); ++i)
