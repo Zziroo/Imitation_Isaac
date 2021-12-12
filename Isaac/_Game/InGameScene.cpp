@@ -3,14 +3,15 @@
 
 #include "Image.h"
 #include "Player.h"
-#include "WeaponManager.h"
+
+#include "MapEditing.h"
 
 HRESULT InGameScene::Init()
 {
 	// Tile
-	Load(0);
+	Load(1);
 
-	// Tilemap
+	// Tilemap Image
 	switch (sampleTileType)
 	{
 	case SampleTileTypes::BASEMENT:
@@ -79,12 +80,16 @@ HRESULT InGameScene::Init()
 	}
 	playerIsaac->SetTileInfo(colliderTileInfo);
 
+	temp = new MapEditing;
+	temp->Init();
+
 	return S_OK;
 }
 
 void InGameScene::Release()
 {
 	SAFE_RELEASE(playerIsaac);
+	SAFE_RELEASE(temp);
 }
 
 void InGameScene::Update()

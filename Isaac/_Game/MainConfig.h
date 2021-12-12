@@ -2,6 +2,7 @@
 
 #include <bitset>
 #include <iostream>
+#include <list>
 #include <map>
 #include <string>
 #include <vector>
@@ -156,18 +157,18 @@ inline void SetTerrain(TILE_INFO* rc, int index)
 	{
 		for (int r = 0; r < index; ++r)
 		{
-			if (0 + (r * TILE_ROW) <= rc->frameY && rc->frameY < 3 + (r * TILE_ROW))
+			if (1 + (r * TILE_ROW) <= rc->frameY && rc->frameY < 3 + (r * TILE_ROW))
 			{
 				rc->terrain = TileTypes::DOOR;
 			}
-			if (17 + (r * TILE_ROW) <= rc->frameY && rc->frameY < (r + 1) * TILE_ROW)
+			if (17 + (r * TILE_ROW) <= rc->frameY && rc->frameY < ((r + 1) * TILE_ROW) - 1)
 			{
 				rc->terrain = TileTypes::DOOR;
 			}
 		}
 	}
 	// DOOR·Î ¼³Á¤/ÁÂ/¿ì
-	if (0 <= rc->frameX && rc->frameX < 32)
+	if (1 <= rc->frameX && rc->frameX < 31)
 	{
 		for (int r = 0; r < index; ++r)
 		{

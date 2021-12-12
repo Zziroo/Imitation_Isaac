@@ -2,6 +2,8 @@
 
 #include "Scene.h"
 
+class MapEditing;
+
 class Image;
 class Player;
 class WeaponManager;
@@ -20,6 +22,8 @@ private:
 	TILE_INFO			mainDepthTileInfo[DEPTH_TILE_ROW][TILE_COLUMN];
 
 	SampleTileTypes		sampleTileType = SampleTileTypes::BASEMENT;
+
+	MapEditing*			temp;
 
 public:
 	virtual HRESULT		Init() override;

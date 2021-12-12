@@ -64,6 +64,9 @@
     <Filter Include="MainGame\GameObject\Enemy\Boss Monster">
       <UniqueIdentifier>{dc042360-3994-4bd4-a9d3-936f32f0d77d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\GameObject\MapEditing">
+      <UniqueIdentifier>{01039fbf-d59d-4c89-95bd-de1e3a480b1a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -125,6 +128,9 @@
     </ClCompile>
     <ClCompile Include="Input.cpp">
       <Filter>FrameWork\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="MapEditing.cpp">
+      <Filter>MainGame\GameObject\MapEditing</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -190,6 +196,9 @@
     </ClInclude>
     <ClInclude Include="Input.h">
       <Filter>FrameWork\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="MapEditing.h">
+      <Filter>MainGame\GameObject\MapEditing</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

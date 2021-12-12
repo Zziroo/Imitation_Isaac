@@ -102,6 +102,12 @@ void Player::OnDebug(HDC hdc)
 {
     if (debugMode)
     {
+        // Tile
+        for (int i = 0; i < (TILE_ROW * TILE_COLUMN); ++i)
+        {
+            Rectangle(hdc, tile[i].rc.left, tile[i].rc.top, tile[i].rc.right, tile[i].rc.bottom);
+        }
+
         // playerRectangle
         Rectangle(hdc, (INT)(bodyInfo.shape.left), (INT)(bodyInfo.shape.top), (INT)(bodyInfo.shape.right), (INT)(bodyInfo.shape.bottom));
         Ellipse(hdc, (INT)(headInfo.shape.left), (INT)(headInfo.shape.top), (INT)(headInfo.shape.right), (INT)(headInfo.shape.bottom));
@@ -111,11 +117,13 @@ void Player::OnDebug(HDC hdc)
         TextOut(hdc, (INT)((WIN_SIZE_X * DEVIDE_HALF) + 250), (INT)((WIN_SIZE_Y * DEVIDE_HALF) - 40), text, (INT)(strlen(text)));
         wsprintf(text, "player.pos.y : %d", (INT)(headInfo.pos.y));
         TextOut(hdc, (INT)((WIN_SIZE_X * DEVIDE_HALF) + 250), (INT)((WIN_SIZE_Y * DEVIDE_HALF) - 20), text, (INT)(strlen(text)));
+
         // MousePointer
         wsprintf(text, "Mouse.PosX : %d", g_ptMouse.x);
         TextOut(hdc, (INT)((WIN_SIZE_X * DEVIDE_HALF) + 250), (INT)((WIN_SIZE_Y * DEVIDE_HALF) + 20), text, (INT)(strlen(text)));
         wsprintf(text, "Mouse.PosY : %d", g_ptMouse.y);
         TextOut(hdc, (INT)((WIN_SIZE_X * DEVIDE_HALF) + 250), (INT)((WIN_SIZE_Y * DEVIDE_HALF) + 40), text, (INT)(strlen(text)));
+
         // ±â¿ï±â
         float slope = CalculateSlope(headInfo.shape);
         // section01
