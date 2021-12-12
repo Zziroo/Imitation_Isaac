@@ -22,7 +22,7 @@ public:
 	virtual void			Update() override;
 	virtual void			Render(HDC hdc) override;
 
-	int						DeginateBossMap(int point);
+	void					DeginateBossMap(int row, int column);
 	void					DeginateMap(int row, int column, size_t index);
 	void					EditStage(SampleTileTypes sampleType, int loadIndex);
 };
