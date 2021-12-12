@@ -71,17 +71,21 @@ public:
 
 	void				SetFunction(FuncPtr pFunc, ButtonFunction* btnFunc, ArgumentFuncPtr* argFunc = nullptr) { this->pFunc = pFunc; this->btnFunc = btnFunc; this->argFunc = argFunc; }
 
-	inline bool			GetPressPrevButton() { return this->prevBtn.clicked; }
+	inline bool			GetPressLoadButton() { return this->loadBtn.clicked; }
 	inline bool			GetPressNextButton() { return this->nextBtn.clicked; }
-	inline bool			GetSelectSampleTile() { return this->sampleTileBtn.clicked; }
+	inline bool			GetPressPrevButton() { return this->prevBtn.clicked; }
+	inline bool			GetPressSaveButton() { return this->saveBtn.clicked; }
 	inline bool			GetSelectBasementTile() { return this->basementTileBtn.clicked; }
 	inline bool			GetSelectCaveTile() { return this->caveTileBtn.clicked; }
 	inline bool			GetSelectCellarTile() { return this->cellarTileBtn.clicked; }
 	inline bool			GetSelectDepthTile() { return this->depthTileBtn.clicked; }
+	inline bool			GetSelectSampleTile() { return this->sampleTileBtn.clicked; }
 	inline int			GetTileIndex() { return this->tileIndex; }
 
-	inline void			SetPressPrevButton(bool clicked) { this->prevBtn.clicked = clicked; }
+	inline void			SetPressLoadButton(bool clicked) { this->loadBtn.clicked = clicked; }
 	inline void			SetPressNextButton(bool clicked) { this->nextBtn.clicked = clicked; }
+	inline void			SetPressPrevButton(bool clicked) { this->prevBtn.clicked = clicked; }
+	inline void			SetPressSaveButton(bool clicked) { this->saveBtn.clicked = clicked; }
 	inline void			SetSelecteBasementTile(bool clicked) { this->basementTileBtn.clicked = clicked; }
 	inline void			SetTileIndex(int tileIndex) { this->tileIndex = tileIndex; }
 

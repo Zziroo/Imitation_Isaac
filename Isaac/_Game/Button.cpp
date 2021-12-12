@@ -106,16 +106,18 @@ void Button::Update()
 		if (Input::GetButtonDown(VK_LBUTTON))
 		{ 
 			loadBtn.buttonState = ButtonStates::DOWN;
-
+			loadBtn.clicked = true;
 		}
 		else if (Input::GetButtonUp(VK_LBUTTON) && loadBtn.buttonState == ButtonStates::DOWN)
 		{
 			loadBtn.buttonState = ButtonStates::UP;
+			loadBtn.clicked = false;
 		}
 	}
 	else
 	{
 		loadBtn.buttonState = ButtonStates::NONE;
+		loadBtn.clicked = false;
 	}
 	// Save
 	if (PtInRect(&saveBtn.shape, g_ptMouse))
@@ -123,16 +125,18 @@ void Button::Update()
 		if (Input::GetButtonDown(VK_LBUTTON))
 		{ 
 			saveBtn.buttonState = ButtonStates::DOWN;
-
+			saveBtn.clicked = true;
 		}
 		else if (Input::GetButtonUp(VK_LBUTTON) && saveBtn.buttonState == ButtonStates::DOWN)
 		{
 			saveBtn.buttonState = ButtonStates::UP;
+			saveBtn.clicked = false;
 		}
 	}
 	else
 	{
 		saveBtn.buttonState = ButtonStates::NONE;
+		saveBtn.clicked = false;
 	}
 
 	// 버튼을 끄고 키고 할 수 있음

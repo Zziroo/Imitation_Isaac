@@ -421,8 +421,9 @@ void TilemapToolScene::Update()
 	// MutiSelectTile
 	DrawMultiTile(sampleTileArea);
 
-	if (Input::GetButtonDown('S'))
+	if (button->GetPressSaveButton())
 	{
+		button->SetPressSaveButton(false);
 		int index = 0;
 		switch (sampleTileType)
 		{
@@ -450,8 +451,9 @@ void TilemapToolScene::Update()
 		Save(index);
 		++index;
 	}
-	if (Input::GetButtonDown('L'))
+	if (button->GetPressLoadButton())
 	{
+		button->SetPressLoadButton(false);
 		Load();
 	}
 }
