@@ -11,19 +11,22 @@ private:
 	TILE_INFO				mainCellarTileInfo[CELLAR_TILE_ROW][TILE_COLUMN];
 	TILE_INFO				mainDepthTileInfo[DEPTH_TILE_ROW][TILE_COLUMN];
 
-	vector<string>			stage[2];			// 맵의 이름을 담을 그릇
-	vector<vector<string>>	stage01;			// Stage01
-	int						stageSize = 0;		// Stage 크기
-	int						startPoint = 0;		// Stage의 중앙(시작) 지점
+	vector<vector<bool>>	isTransitMap;			// 맵을 경유했는지 확인하기 위한 이중벡터
+	vector<string>			stage[2];				// 맵의 이름을 담을 벡터
+	vector<vector<string>>	stage01;				// Stage01
+
+	int						countLinkedMap = 1;		// 한 Stage안에 맵들이 연결돼어있는지 확인하기 위한 변수
+	int						stageSize = 0;			// Stage 크기
+	int						startPoint = 0;			// Stage의 중앙(시작) 지점
 
 public:
 	virtual void			Init() override;
-	virtual void			Release() override;
-	virtual void			Update() override;
-	virtual void			Render(HDC hdc) override;
 
+	void					ArrangeStageIndex(SampleTileTypes sampleType, int loadIndex);
+	void					CountLinkedMap(int row, int column);
+	void					CreateStage();
 	void					DeginateBossMap(int row, int column);
 	void					DeginateMap(int row, int column, size_t index);
-	void					EditStage(SampleTileTypes sampleType, int loadIndex);
+	void					SettingStageSize();
 };
 

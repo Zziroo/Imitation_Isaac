@@ -8,7 +8,7 @@ void MapEditing::Init()
 	for (int i = 0; i < 100; ++i)
 	{
 		size_t originIndex = stage[0].size();	// 현재 사이즈를 저장(추가가 됐는지 비교하기 위해)
-		EditStage(sampleType, i);				// map을 추가
+		ArrangeStageIndex(sampleType, i);				// map을 추가
 		if (originIndex == stage[0].size())		// 더 이상 추가가 안될 때 == 맵이 더 이상 없을 때
 		{
 			break;
@@ -18,7 +18,7 @@ void MapEditing::Init()
 	for (int i = 0; i < 100; ++i)
 	{
 		size_t originIndex = stage[1].size();
-		EditStage(sampleType, i);
+		ArrangeStageIndex(sampleType, i);
 		if (originIndex == stage[1].size())
 		{
 			break;
@@ -28,7 +28,7 @@ void MapEditing::Init()
 	for (int i = 0; i < 100; ++i)
 	{
 		size_t originIndex = stage[0].size();
-		EditStage(sampleType, i);
+		ArrangeStageIndex(sampleType, i);
 		if (originIndex == stage[0].size())
 		{
 			break;
@@ -37,7 +37,7 @@ void MapEditing::Init()
 	for (int i = 0; i < 100; ++i)
 	{
 		size_t originIndex = stage[1].size();
-		EditStage(sampleType, i);
+		ArrangeStageIndex(sampleType, i);
 		if (originIndex == stage[1].size())
 		{
 			break;
@@ -47,7 +47,7 @@ void MapEditing::Init()
 	for (int i = 0; i < 100; ++i)
 	{
 		size_t originIndex = stage[0].size();
-		EditStage(sampleType, i);
+		ArrangeStageIndex(sampleType, i);
 		if (originIndex == stage[0].size())
 		{
 			break;
@@ -56,7 +56,7 @@ void MapEditing::Init()
 	for (int i = 0; i < 100; ++i)
 	{
 		size_t originIndex = stage[1].size();
-		EditStage(sampleType, i);
+		ArrangeStageIndex(sampleType, i);
 		if (originIndex == stage[1].size())
 		{
 			break;
@@ -86,99 +86,16 @@ void MapEditing::Init()
 		}
 	}
 	// 맵의 개수로 stage 크기 결정
-	if (4 <= stage[0].size() && stage[0].size() < ((4 - 1) * (4 - 1)) - 2)
-	{
-		stageSize = 3;
-	}
-	if (((4 - 1) * (4 - 1)) - 2 <= stage[0].size() && stage[0].size() < ((5 - 1) * (5 - 1)) - 2)
-	{
-		stageSize = 4;
-	}
-	if (((5 - 1) * (5 - 1)) - 2 <= stage[0].size() && stage[0].size() < ((6 - 1) * (6 - 1)) - 2)
-	{
-		stageSize = 5;
-	}
-	// Stage 초기화
-	stage01.resize(stageSize);
-	for (size_t i = 0; i < stage01.size(); ++i)
-	{
-		stage01[i].resize(stageSize);
-	}
+	SettingStageSize();
 	// Stage 중앙의 Index
 	startPoint = stageSize * DEVIDE_HALF;
-	// 중앙에 Start 지점
-	stage01[startPoint][startPoint] = stage[0].front();
-	// 램덤수 생성
-	random_device rd;
-	mt19937 gen(rd());
-	uniform_int_distribution<int> dis(0, 99);
-	// 보스맵을 Start맵과 겹치지 않게 설정
-	DeginateBossMap(dis(gen) % stageSize, dis(gen) % stageSize);
-	// 나머지 방들을 삽입(시작 지점, 보스 지점 제외)
-	for (size_t i = 1; i < (stage[0].size() - 1); ++i)
-	{
-		DeginateMap(dis(gen) % stageSize, dis(gen) % stageSize, i);
-	}
-	// 모든 맵들이 연결돼있지 않으면 어떻게 할 것인가?
-	// 1. 다시 처음부터 돌린다.
-	// 2. Start지점의 상하좌우 단계의 맵이 없고 그 다음의 상하좌우 단계의 맵이 존재할 때 존재하지 않은 배열에 기본 맵을 추가(오류 : 전부 다 생길 위험 있음)
-	cout << stage[0].size();
+	// Stage 초기화
+	stage01.resize(stageSize);
+	// Loop
+	CreateStage();
 }
 
-void MapEditing::Release()
-{
-}
-
-void MapEditing::Update()
-{
-}
-
-void MapEditing::Render(HDC hdc)
-{
-}
-
-void MapEditing::DeginateBossMap(int row, int column)
-{
-	int randRow = row;
-	int randColumn = column;
-	if ((randRow != startPoint && randColumn != startPoint)				// StartPoint X
-		|| (randRow != (startPoint - 1) && randColumn != startPoint)	// StartPoint 상
-		|| (randRow != (startPoint + 1) && randColumn != startPoint)	// StartPoint 하
-		|| (randRow != startPoint && randColumn != (startPoint - 1))	// StartPoint 좌
-		|| (randRow != startPoint && randColumn != (startPoint + 1)))	// StartPoint 우
-	{
-		stage01[randRow][randColumn] = stage[0].back();
-		return;
-	}
-
-	random_device rd;
-	mt19937 gen(rd());
-	uniform_int_distribution<int> dis(0, 99);
-
-	DeginateBossMap(dis(gen) % stageSize, dis(gen) % stageSize);
-}
-
-void MapEditing::DeginateMap(int row, int column, size_t index)
-{
-	int randRow = row;
-	int randColumn = column;
-	if (stage01[randRow][randColumn].empty())
-	{
-		stage01[randRow][randColumn] = stage[0].at(index);
-		return;
-	}
-
-	random_device rd;
-	mt19937 gen(rd());
-	uniform_int_distribution<int> dis(0, 99);
-
-	randRow = dis(gen) % stageSize;
-	randColumn = dis(gen) % stageSize;
-
-	DeginateMap(randRow, randColumn, index);
-}
-
-void MapEditing::EditStage(SampleTileTypes sampleType, int loadIndex)
+void MapEditing::ArrangeStageIndex(SampleTileTypes sampleType, int loadIndex)
 {
 	string loadFileName = "Save/";
 	switch (sampleType)
@@ -273,3 +190,157 @@ void MapEditing::EditStage(SampleTileTypes sampleType, int loadIndex)
 	CloseHandle(hFile);
 }
 
+void MapEditing::CountLinkedMap(int row, int column)
+{
+	int searchRow = row;
+	int searchColumn = column;
+	// 스택 오버 경고 때문에 정의
+	int topRow = searchRow - 1;
+	int bottomRow = searchRow + 1;
+	int leftColumn = searchColumn - 1;
+	int rightColumn = searchColumn + 1;
+	// 위쪽 맵 자리가 비어있지 않으면 (stage01[-1(맵 밖)][N] 방지 && 맵의 유무 && 방문했는지)
+	if (topRow >=0 && stage01[topRow][searchColumn].empty() == false && isTransitMap[topRow][searchColumn] == false)
+	{
+		++countLinkedMap;									// ++경유
+		isTransitMap[topRow][searchColumn] = true;			// 통과 = true
+		CountLinkedMap(topRow, searchColumn);
+	}
+	// 아래쪽 맵 자리가 비어있지 않으면 (stage01[mapSize(맵 밖)][N] 방지 && 맵의 유무 && 방문했는지)
+	if (bottomRow < stageSize && stage01[bottomRow][searchColumn].empty() == false && isTransitMap[bottomRow][searchColumn] == false)
+	{
+		++countLinkedMap;									// ++경유
+		isTransitMap[bottomRow][searchColumn] = true;		// 통과 = true
+		CountLinkedMap(bottomRow, searchColumn);
+	}
+	// 왼쪽 맵 자리가 비어있지 않으면 (stage01[N][-1(맵 밖)] 방지 && 맵의 유무 && 방문했는지)
+	if (leftColumn >= 0 && stage01[searchRow][leftColumn].empty() == false && isTransitMap[searchRow][leftColumn] == false)
+	{
+		++countLinkedMap;									// ++경유
+		isTransitMap[searchRow][leftColumn] = true;			// 통과 = true
+		CountLinkedMap(searchRow, leftColumn);
+	}
+	// 오른쪽 맵 자리가 비어있지 않으면 (stage01[N][mapSize(맵 밖)] 방지 && 맵의 유무 && 방문했는지)
+	if (rightColumn < stageSize && stage01[searchRow][rightColumn].empty() == false && isTransitMap[searchRow][rightColumn] == false)
+	{
+		++countLinkedMap;									// ++경유
+		isTransitMap[searchRow][rightColumn] = true;		// 통과 = true
+		CountLinkedMap(searchRow, rightColumn);
+	}
+}
+
+void MapEditing::CreateStage()
+{
+	// Stage 초기화
+	for (size_t i = 0; i < stage01.size(); ++i)
+	{
+		stage01[i].resize(stageSize);
+	}
+	// 중앙에 Start 지점
+	stage01[startPoint][startPoint] = stage[0].front();
+	// 램덤수 생성
+	random_device rd;
+	mt19937 gen(rd());
+	uniform_int_distribution<int> dis(0, 99);
+	// 보스맵을 Start맵과 겹치지 않게 설정
+	DeginateBossMap(dis(gen) % stageSize, dis(gen) % stageSize);
+	// 나머지 방들을 삽입(시작 지점, 보스 지점 제외)
+	for (size_t i = 1; i < (stage[0].size() - 1); ++i)
+	{
+		DeginateMap(dis(gen) % stageSize, dis(gen) % stageSize, i);
+	}
+	// 통과했는지의 여부를 알기 위해 vector<vector<bool>> 생성
+	isTransitMap.resize(stageSize);
+	for (size_t i = 0; i < isTransitMap.size(); ++i)
+	{
+		isTransitMap[i].resize(stageSize);
+		for (size_t j = 0; j < isTransitMap[i].size(); ++j)
+		{
+			isTransitMap[i][j] = false;
+		}
+	}
+	// Start지점은 true
+	isTransitMap[startPoint][startPoint] = true;
+	// Start지점부터 상하좌우 한칸씩 진입해 비어있는지 아닌지 확인 하면서 수를 셈. 총 수가 stage[0].size()와 다르면 다시 처음부터 돌림
+	CountLinkedMap(startPoint, startPoint);
+	// 연결된 맵의 개수와 Stage[0].size() 다르면 다시 Stage01 구성
+	if (countLinkedMap != stage[0].size())
+	{
+		// 맵을 초기화
+		for (size_t i = 0; i < stage01.size(); ++i)
+		{
+			stage01[i].clear();
+		}
+
+		CreateStage();
+	}
+}
+
+void MapEditing::DeginateBossMap(int row, int column)
+{
+	int randRow = row;
+	int randColumn = column;
+	if ((randRow == startPoint && randColumn == startPoint)				// StartPoint X
+		|| (randRow == (startPoint - 1) && randColumn == startPoint)	// StartPoint 상
+		|| (randRow == (startPoint + 1) && randColumn == startPoint)	// StartPoint 하
+		|| (randRow == startPoint && randColumn == (startPoint - 1))	// StartPoint 좌
+		|| (randRow == startPoint && randColumn == (startPoint + 1)))	// StartPoint 우
+	{
+		random_device rd;
+		mt19937 gen(rd());
+		uniform_int_distribution<int> dis(0, 99);
+
+		DeginateBossMap(dis(gen) % stageSize, dis(gen) % stageSize);
+		return;
+	}
+	// BossMap 설정
+	stage01[randRow][randColumn] = stage[0].back();
+}
+
+void MapEditing::DeginateMap(int row, int column, size_t index)
+{
+	int randRow = row;
+	int randColumn = column;
+	if (stage01[randRow][randColumn].empty())
+	{
+		stage01[randRow][randColumn] = stage[0].at(index);
+		return;
+	}
+
+	random_device rd;
+	mt19937 gen(rd());
+	uniform_int_distribution<int> dis(0, 99);
+
+	randRow = dis(gen) % stageSize;
+	randColumn = dis(gen) % stageSize;
+
+	DeginateMap(randRow, randColumn, index);
+}
+
+void MapEditing::SettingStageSize()
+{
+	if (stage[0].size() < ((4 - 1) * (4 - 1)) - 2)
+	{
+		stageSize = 3;
+	}
+	if (((4 - 1) * (4 - 1)) - 2 <= stage[0].size() && stage[0].size() < ((5 - 1) * (5 - 1)) - 2)
+	{
+		stageSize = 4;
+	}
+	if (((5 - 1) * (5 - 1)) - 2 <= stage[0].size() && stage[0].size() < ((6 - 1) * (6 - 1)) - 2)
+	{
+		stageSize = 5;
+	}
+	if (((6 - 1) * (6 - 1)) - 2 <= stage[0].size() && stage[0].size() < ((7 - 1) * (7 - 1)) - 2)
+	{
+		stageSize = 6;
+	}
+	if (((7 - 1) * (7 - 1)) - 2 <= stage[0].size() && stage[0].size() < ((8 - 1) * (8 - 1)) - 2)
+	{
+		stageSize = 7;
+	}
+	if (((8 - 1) * (8 - 1)) - 2 <= stage[0].size() && stage[0].size() < ((9 - 1) * (9 - 1)) - 2)
+	{
+		stageSize = 8;
+	}
+}
