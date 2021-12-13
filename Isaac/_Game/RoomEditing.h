@@ -24,8 +24,10 @@ public:
 	virtual void					Init() override;
 	virtual void					Release() override;
 
-	void							NamingRoom(int row, int column);
 	void							DeclareRoomName(int row, int column);
+	void							DeginateBossRoom();
+	void							DeginateItemRoom(int row, int column);
+	void							NamingRoom(int row, int column);
 
 	inline vector<vector<string>>	GetStage() { return this->stage01Index; }
 	inline int						GetStageSize() { return this->_stageSize; }

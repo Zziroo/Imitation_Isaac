@@ -64,6 +64,15 @@ void RoomEditing::Init()
 	isTransitMap[_startPoint][_startPoint] = true;
 	// 각 Tilemap들을 경유하며 RoomType으로 Naming
 	NamingRoom(_startPoint, _startPoint);
+	// BASEMENT01.map인 Tilemap을 BOSS ROOM으로 지정
+	DeginateBossRoom();
+	// ItemRoom 지정
+	// 1. 램덤수 생성
+	random_device rd;
+	mt19937 gen(rd());
+	uniform_int_distribution<int> dis(0, 99);
+	// 2. 함수를 통해 ItemRoom 지정
+	DeginateItemRoom(dis(gen) % _stageSize, dis(gen) % _stageSize);
 #ifdef _DEBUG RoomInfo
 	for (size_t i = 0; i < roomInfo.size(); ++i)
 	{
@@ -106,6 +115,72 @@ void RoomEditing::Release()
 	SAFE_RELEASE(stage01);
 }
 
+void RoomEditing::DeclareRoomName(int row, int column)
+{
+	if (stage01Index[row][column].substr(5, 1) == "B")
+	{
+		roomInfo[row][column] = RoomTypes::NORMAL;
+	}
+	if (stage01Index[row][column].substr(5, 1) == "C")
+	{
+		if (stage01Index[row][column].substr(6, 1) == "A")
+		{
+			roomInfo[row][column] = RoomTypes::NORMAL;
+		}
+		if (stage01Index[row][column].substr(6, 1) == "E")
+		{
+			roomInfo[row][column] = RoomTypes::PRIVATE;
+		}
+	}
+	if (stage01Index[row][column].substr(5, 1) == "D")
+	{
+		if (stage01Index[row][column].substr(11, 1) == "0")
+		{
+			roomInfo[row][column] = RoomTypes::COURSE;
+		}
+		if (stage01Index[row][column].substr(11, 1) == "1")
+		{
+			roomInfo[row][column] = RoomTypes::SATAN;
+		}
+	}
+}
+
+void RoomEditing::DeginateBossRoom()
+{
+	// Stage01을 순회하면서 "Save/BASEMENT01.map"인 Tilemap을 Boss Room으로 지정
+	for (size_t i = 0; i < stage01Index.size(); ++i)
+	{
+		for (size_t j = 0; j < stage01Index[i].size(); ++j)
+		{
+			if (stage01Index[i][j] == "Save/BASEMENT01.map")
+			{
+				roomInfo[i][j] = RoomTypes::BOSS;
+				break;
+			}
+		}
+	}
+}
+
+void RoomEditing::DeginateItemRoom(int row, int column)
+{
+	const int randRow = row;
+	const int randColumn = column;
+	// RoomTypes::NORMAL 중 랜덤으로 지정
+	// 1. NORMAL이 아닐 시 함수를 다시 호출해 랜덤 생성
+	if (roomInfo[randRow][randColumn] != RoomTypes::NORMAL || roomInfo[randRow][randColumn] == RoomTypes::BOSS)
+	{
+		// 램덤수 생성
+		random_device rd;
+		mt19937 gen(rd());
+		uniform_int_distribution<int> dis(0, 99);
+
+		DeginateItemRoom(dis(gen) % _stageSize, dis(gen) % _stageSize);
+		return;
+	}
+	// 2. NORMAL일 시 그 맵의 RoomType을 ItemRoom으로 설정
+	roomInfo[randRow][randColumn] = RoomTypes::ITEM;
+}
+
 void RoomEditing::NamingRoom(int row, int column)
 {
 #ifdef _DEBUG via Tilemap
@@ -145,36 +220,5 @@ void RoomEditing::NamingRoom(int row, int column)
 		DeclareRoomName(searchRow, rightColumn);			// Naming 하기
 		isTransitMap[searchRow][rightColumn] = true;		// 통과 = true
 		NamingRoom(searchRow, rightColumn);
-	}
-	// 수정 필요!! => Item Room 필수
-}
-
-void RoomEditing::DeclareRoomName(int row, int column)
-{
-	if (stage01Index[row][column].substr(5, 1) == "B")
-	{
-		roomInfo[row][column] = RoomTypes::NORMAL;
-	}
-	if (stage01Index[row][column].substr(5, 1) == "C")
-	{
-		if (stage01Index[row][column].substr(6, 1) == "A")
-		{
-			roomInfo[row][column] = RoomTypes::NORMAL;
-		}
-		if (stage01Index[row][column].substr(6, 1) == "E")
-		{
-			roomInfo[row][column] = RoomTypes::PRIVATE;
-		}
-	}
-	if (stage01Index[row][column].substr(5, 1) == "D")
-	{
-		if (stage01Index[row][column].substr(11, 1) == "0")
-		{
-			roomInfo[row][column] = RoomTypes::COURSE;
-		}
-		if (stage01Index[row][column].substr(11, 1) == "1")
-		{
-			roomInfo[row][column] = RoomTypes::SATAN;
-		}
 	}
 }
