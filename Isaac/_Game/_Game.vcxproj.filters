@@ -132,6 +132,9 @@
     <ClCompile Include="MapEditing.cpp">
       <Filter>MainGame\GameObject\MapEditing</Filter>
     </ClCompile>
+    <ClCompile Include="Stage01Scene.cpp">
+      <Filter>MainGame\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainConfig.h">
@@ -199,6 +202,9 @@
     </ClInclude>
     <ClInclude Include="MapEditing.h">
       <Filter>MainGame\GameObject\MapEditing</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage01Scene.h">
+      <Filter>MainGame\Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

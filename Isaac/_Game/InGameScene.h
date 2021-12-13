@@ -21,7 +21,7 @@ private:
 	TILE_INFO			mainCellarTileInfo[CELLAR_TILE_ROW][TILE_COLUMN];
 	TILE_INFO			mainDepthTileInfo[DEPTH_TILE_ROW][TILE_COLUMN];
 
-	SampleTileTypes		sampleTileType = SampleTileTypes::BASEMENT;
+	SampleTileTypes		sampleTileType = SampleTileTypes::CELLAR;
 
 	MapEditing*			temp;
 

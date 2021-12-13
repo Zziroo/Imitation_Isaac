@@ -250,7 +250,7 @@ void MapEditing::CreateStage()
 		DeginateMap(dis(gen) % stageSize, dis(gen) % stageSize, i);
 	}
 	// 한 Stage안에 맵들이 연결돼어있는지 확인하기 위한 변수
-	countLinkedMap = 1;		
+	countLinkedMap = 1;
 	// 통과했는지의 여부를 알기 위해 vector<vector<bool>> 생성
 	isTransitMap.resize(stageSize);
 	for (size_t i = 0; i < isTransitMap.size(); ++i)
