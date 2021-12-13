@@ -3,16 +3,16 @@
 class GameObject
 {
 protected:
-	TILE_INFO*			tile = nullptr;							// 타일의 정보
-	POINTFLOAT			pos = { 0 };							// 위치
-	RECT				shape = { 0 };							// 모양
-	float				objectSize = 0.0f;						// 크기
-	float				moveSpeed = 0.0f;						// 속도
-	int					elapsedAnime = 0;						// 애니메이션 지연
+	TILE_INFO*			tile = nullptr;								// 타일의 정보
+	POINTFLOAT			pos = { 0 };								// 위치
+	RECT				shape = { 0 };								// 모양
+	float				objectSize = 0.0f;							// 크기
+	float				moveSpeed = 0.0f;							// 속도
+	int					elapsedAnime = 0;							// 애니메이션 지연
 
-	bool				debugMode = false;						// 디버깅용
+	bool				debugMode = false;							// 디버깅용
 
-	enum class			ObjectDir { UP, DOWN, LEFT, RIGHT };	// 이동 방향
+	enum class			ObjectDir { UP, DOWN, LEFT, RIGHT, NONE };	// 이동 방향
 
 public:
 	virtual void		Init();

@@ -3,6 +3,7 @@
 
 #include "Image.h"
 #include "MapEditing.h"
+#include "RoomEditing.h"
 
 HRESULT Stage01Scene::Init()
 {
@@ -29,7 +30,7 @@ HRESULT Stage01Scene::Init()
 	Load(stage01Index[_startPoint][_startPoint]);
 	// Tilemap Image
 	drawingAreaImg = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Tile/Basement.bmp");
-
+#ifdef _DEBUG
 	// 맵의 정보를 콘솔창에 보여줌
 	for (size_t i = 0; i < stage01Index.size(); ++i)
 	{
@@ -43,6 +44,10 @@ HRESULT Stage01Scene::Init()
 		}
 		cout << "\n";
 	}
+#endif
+	// RoomType 설정
+	namingRoom = new RoomEditing;
+	namingRoom->Init();
 
 	return S_OK;
 }
@@ -50,6 +55,7 @@ HRESULT Stage01Scene::Init()
 void Stage01Scene::Release()
 {
 	SAFE_RELEASE(stage01);
+	SAFE_RELEASE(namingRoom);
 }
 
 void Stage01Scene::Update()

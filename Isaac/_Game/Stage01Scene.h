@@ -4,11 +4,13 @@
 
 class Iamge;
 class MapEditing;
+class RoomEditing;
 class Stage01Scene : public Scene
 {
 private:
 	Image*					drawingAreaImg = nullptr;
 	MapEditing*				stage01;
+	RoomEditing*			namingRoom;
 
 	SampleTileTypes			sampleTileType = SampleTileTypes::BASEMENT;
 

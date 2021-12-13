@@ -164,15 +164,17 @@ void MapEditing::ArrangeStageIndex(SampleTileTypes sampleType, int loadIndex)
 	// 중복 불가 처리
 	for (size_t i = 0; i < stage[0].size(); ++i)
 	{
-		if (stage[0].at(i) == loadFileName)
+		if (stage[0][i] == loadFileName)
 		{
+			CloseHandle(hFile);
 			return;
 		}
 	}
 	for (size_t i = 0; i < stage[1].size(); ++i)
 	{
-		if (stage[1].at(i) == loadFileName)
+		if (stage[1][i] == loadFileName)
 		{
+			CloseHandle(hFile);
 			return;
 		}
 	}
@@ -305,7 +307,7 @@ void MapEditing::DeginateMap(int row, int column, size_t index)
 	int randColumn = column;
 	if (stage01[randRow][randColumn].empty())
 	{
-		stage01[randRow][randColumn] = stage[0].at(index);
+		stage01[randRow][randColumn] = stage[0][index];
 		return;
 	}
 
