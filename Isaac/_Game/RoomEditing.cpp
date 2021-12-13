@@ -37,6 +37,7 @@ void RoomEditing::Init()
 		}
 		cout << "\n";
 	}
+	cout << "\n";
 #endif
 	// Room의 정보를 담기 위한 Stage Size 정하기
 	roomInfo.resize(_stageSize);
@@ -74,6 +75,7 @@ void RoomEditing::Init()
 	// 2. 함수를 통해 ItemRoom 지정
 	DeginateItemRoom(dis(gen) % _stageSize, dis(gen) % _stageSize);
 #ifdef _DEBUG RoomInfo
+	cout << "RoomInfo\n";
 	for (size_t i = 0; i < roomInfo.size(); ++i)
 	{
 		for (size_t j = 0; j < roomInfo[i].size(); ++j)
@@ -107,6 +109,7 @@ void RoomEditing::Init()
 		}
 		cout << "\n";
 	}
+	cout << "\n";
 #endif
 }
 
@@ -183,9 +186,6 @@ void RoomEditing::DeginateItemRoom(int row, int column)
 
 void RoomEditing::NamingRoom(int row, int column)
 {
-#ifdef _DEBUG via Tilemap
-	cout << stage01Index[row][column] << "\n";
-#endif
 	int searchRow = row;
 	int searchColumn = column;
 	// 스택 오버 경고 때문에 정의

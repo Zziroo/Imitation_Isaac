@@ -93,6 +93,22 @@ void MapEditing::Init()
 	stage01.resize(stageSize);
 	// Loop
 	CreateStage();
+#ifdef _DEBUG MapEditing
+	cout << "MapEditing\n";
+	for (size_t i = 0; i < stage01.size(); ++i)
+	{
+		for (size_t j = 0; j < stage01[i].size(); ++j)
+		{
+			cout << stage01[i][j] << "\t";
+			if (stage01[i][j].empty())
+			{
+				cout << "########\t";
+			}
+		}
+		cout << "\n";
+	}
+	cout << "\n";
+#endif
 }
 
 void MapEditing::ArrangeStageIndex(SampleTileTypes sampleType, int loadIndex)

@@ -208,3 +208,6 @@ inline void SetTerrain(TILE_INFO* rc, int index)
 		}
 	}
 }
+
+// RoomEditing
+enum class RoomTypes { BOSS, COURSE, ITEM, NORMAL, PRIVATE, SATAN, START, NONE };

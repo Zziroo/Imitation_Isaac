@@ -26,13 +26,11 @@ HRESULT Stage01Scene::Init()
 			stage01Index[i][j] = stage01->GetStage()[i][j];
 		}
 	}
-	// Load
-	Load(stage01Index[_startPoint][_startPoint]);
 	// Tilemap Image
 	drawingAreaImg = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Tile/Basement.bmp");
 #ifdef _DEBUG Stage01Index(MapEditing)
 	// 맵의 정보를 콘솔창에 보여줌
-	cout << "Stage01Scene\n";
+	cout << "Stage01Scene : MapEditing\n";
 	for (size_t i = 0; i < stage01Index.size(); ++i)
 	{
 		for (size_t j = 0; j < stage01Index[i].size(); ++j)
@@ -45,6 +43,7 @@ HRESULT Stage01Scene::Init()
 		}
 		cout << "\n";
 	}
+	cout << "\n";
 #endif
 	// RoomType 설정
 	namingRoom = new RoomEditing;
@@ -66,11 +65,19 @@ HRESULT Stage01Scene::Init()
 			stage01Index[i][j] = namingRoom->GetStage()[i][j];
 		}
 	}
-	// Load
-	Load(stage01Index[_startPoint][_startPoint]);
-#ifdef _DEBUG Stage01Index(RoomEditing)
+	// Stage Size만큼 resize하고
+	roomInfo.resize(_stageSize);
+	for (size_t i = 0; i < roomInfo.size(); ++i)
+	{
+		roomInfo[i].resize(_stageSize);
+		for (size_t j = 0; j < roomInfo[i].size(); ++j)
+		{
+			roomInfo[i][j] = namingRoom->GetRoomType()[i][j];
+		}
+	}
+#ifdef _DEBUG Stage01Index(RoomEditing), RoomInfo(RoomEditing)
 	// 맵의 정보를 콘솔창에 보여줌
-	cout << "Stage01Scene\n";
+	cout << "Stage01Scene : RoomEditing\n";
 	for (size_t i = 0; i < stage01Index.size(); ++i)
 	{
 		for (size_t j = 0; j < stage01Index[i].size(); ++j)
@@ -83,7 +90,45 @@ HRESULT Stage01Scene::Init()
 		}
 		cout << "\n";
 	}
+	cout << "\n";
+	cout << "RoomInfo : RoomEditing\n";
+	for (size_t i = 0; i < roomInfo.size(); ++i)
+	{
+		for (size_t j = 0; j < roomInfo[i].size(); ++j)
+		{
+			switch (roomInfo[i][j])
+			{
+			case RoomTypes::BOSS:
+				cout << "BOSS\t";
+				break;
+			case RoomTypes::COURSE:
+				cout << "COURSE\t";
+				break;
+			case RoomTypes::ITEM:
+				cout << "ITEM\t";
+				break;
+			case RoomTypes::NORMAL:
+				cout << "NORMAL\t";
+				break;
+			case RoomTypes::PRIVATE:
+				cout << "PRIVATE\t";
+				break;
+			case RoomTypes::SATAN:
+				cout << "SATAN\t";
+				break;
+			case RoomTypes::START:
+				cout << "START\t";
+				break;
+			default:
+				cout << "####\t";			
+			}
+		}
+		cout << "\n";
+	}
+	cout << "\n";
 #endif
+	// Load
+	Load(stage01Index[_startPoint][_startPoint]);
 
 	return S_OK;
 }
