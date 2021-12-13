@@ -22,7 +22,7 @@ int APIENTRY WinMain(HINSTANCE _hInstance, HINSTANCE _hPrevInstance, LPSTR _lpsz
 {
 #ifdef _DEBUG
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-	//_CrtSetBreakAlloc(157);
+	//_CrtSetBreakAlloc(154);
 #endif
 	// 윈도우를 생성하기 위한 기본 셋팅
 	g_hInstance = _hInstance;

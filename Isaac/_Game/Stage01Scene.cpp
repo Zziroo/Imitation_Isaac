@@ -101,10 +101,15 @@ void Stage01Scene::Render(HDC hdc)
 void Stage01Scene::Load(string loadFileName)
 {
 	HANDLE hFile = CreateFile(loadFileName.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-
+#ifdef _DEBUG
+	if (hFile == INVALID_HANDLE_VALUE)
+	{
+		cout << GetLastError();
+	}
+#endif
 	DWORD mapLoadFileInfo = sizeof(tagTile) * TILE_ROW * TILE_COLUMN;
 
-	DWORD readByte;
+	DWORD readByte = 0;
 	switch (sampleTileType)
 	{
 	case SampleTileTypes::BASEMENT:
@@ -122,6 +127,7 @@ void Stage01Scene::Load(string loadFileName)
 	case SampleTileTypes::CELLAR:
 		if (ReadFile(hFile, mainCellarTileInfo, mapLoadFileInfo, &readByte, NULL) == false)
 		{
+			cout << GetLastError();
 			MessageBox(g_hWnd, "Basement 맵 데이터 로드에 실패! !", "에러", MB_OK);
 		}
 		break;

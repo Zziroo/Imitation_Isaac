@@ -133,10 +133,16 @@ void InGameScene::Load(int loadIndex)
 	loadFileName += to_string(loadIndex) + ".map";
 
 	HANDLE hFile = CreateFile(loadFileName.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+#ifdef _DEBUG
+	if (hFile == INVALID_HANDLE_VALUE)
+	{
+		cout << GetLastError();
+	}
+#endif
 
 	DWORD mapLoadFileInfo = sizeof(tagTile) * TILE_ROW * TILE_COLUMN;
 
-	DWORD readByte;
+	DWORD readByte = 0;
 	switch (sampleTileType)
 	{
 	case SampleTileTypes::BASEMENT:

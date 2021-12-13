@@ -67,6 +67,12 @@
     <Filter Include="MainGame\GameObject\MapEditing">
       <UniqueIdentifier>{01039fbf-d59d-4c89-95bd-de1e3a480b1a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\GameObject\DoorEditing">
+      <UniqueIdentifier>{f2654b5f-eeca-4e22-ae38-666157a791ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\GameObject\RoomEditing">
+      <UniqueIdentifier>{00e61f00-5601-471a-8767-604fbc916aa7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -134,6 +140,9 @@
     </ClCompile>
     <ClCompile Include="Stage01Scene.cpp">
       <Filter>MainGame\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="RoomEditing.cpp">
+      <Filter>MainGame\GameObject\RoomEditing</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -205,6 +214,9 @@
     </ClInclude>
     <ClInclude Include="Stage01Scene.h">
       <Filter>MainGame\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomEditing.h">
+      <Filter>MainGame\GameObject\RoomEditing</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
