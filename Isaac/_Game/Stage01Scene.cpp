@@ -30,8 +30,9 @@ HRESULT Stage01Scene::Init()
 	Load(stage01Index[_startPoint][_startPoint]);
 	// Tilemap Image
 	drawingAreaImg = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Tile/Basement.bmp");
-#ifdef _DEBUG
+#ifdef _DEBUG Stage01Index(MapEditing)
 	// 맵의 정보를 콘솔창에 보여줌
+	cout << "Stage01Scene\n";
 	for (size_t i = 0; i < stage01Index.size(); ++i)
 	{
 		for (size_t j = 0; j < stage01Index[i].size(); ++j)
@@ -48,6 +49,41 @@ HRESULT Stage01Scene::Init()
 	// RoomType 설정
 	namingRoom = new RoomEditing;
 	namingRoom->Init();
+	// Stage01의 Size를 받기
+	_stageSize = namingRoom->GetStageSize();
+	// StartPoint를 받기
+	_startPoint = namingRoom->GetStartPoint();
+	stageColumn = _startPoint;
+	stageRow = _startPoint;
+	// Stage Size만큼 resize하고
+	stage01Index.resize(_stageSize);
+	for (size_t i = 0; i < stage01Index.size(); ++i)
+	{
+		stage01Index[i].resize(_stageSize);
+		for (size_t j = 0; j < stage01Index[i].size(); ++j)
+		{
+			// Stage 정보를 받아오기
+			stage01Index[i][j] = namingRoom->GetStage()[i][j];
+		}
+	}
+	// Load
+	Load(stage01Index[_startPoint][_startPoint]);
+#ifdef _DEBUG Stage01Index(RoomEditing)
+	// 맵의 정보를 콘솔창에 보여줌
+	cout << "Stage01Scene\n";
+	for (size_t i = 0; i < stage01Index.size(); ++i)
+	{
+		for (size_t j = 0; j < stage01Index[i].size(); ++j)
+		{
+			cout << stage01Index[i][j] << "\t";
+			if (stage01Index[i][j].empty())
+			{
+				cout << "########\t";
+			}
+		}
+		cout << "\n";
+	}
+#endif
 
 	return S_OK;
 }

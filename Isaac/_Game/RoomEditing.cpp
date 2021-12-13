@@ -22,14 +22,34 @@ void RoomEditing::Init()
 			stage01Index[i][j] = stage01->GetStage()[i][j];
 		}
 	}
+#ifdef _DEBUG Stage01Index
+	// 맵의 정보를 콘솔창에 보여줌
+	cout << "RoomEditing\n";
+	for (size_t i = 0; i < stage01Index.size(); ++i)
+	{
+		for (size_t j = 0; j < stage01Index[i].size(); ++j)
+		{
+			cout << stage01Index[i][j] << "\t";
+			if (stage01Index[i][j].empty())
+			{
+				cout << "########\t";
+			}
+		}
+		cout << "\n";
+	}
+#endif
 	// Room의 정보를 담기 위한 Stage Size 정하기
 	roomInfo.resize(_stageSize);
 	for (size_t i = 0; i < roomInfo.size(); ++i)
 	{
 		roomInfo[i].resize(_stageSize);
+		for (size_t j = 0; j < roomInfo[i].size(); ++j)
+		{
+			roomInfo[i][j] = RoomTypes::NONE;
+		}
 	}
 	// Start 지점을 선언
-	roomInfo[_startPoint][_startPoint] = RoomType::START;
+	roomInfo[_startPoint][_startPoint] = RoomTypes::START;
 	// 통과했는지의 여부를 알기 위해 vector<vector<bool>> 생성
 	isTransitMap.resize(_stageSize);
 	for (size_t i = 0; i < isTransitMap.size(); ++i)
@@ -44,32 +64,32 @@ void RoomEditing::Init()
 	isTransitMap[_startPoint][_startPoint] = true;
 	// 각 Tilemap들을 경유하며 RoomType으로 Naming
 	NamingRoom(_startPoint, _startPoint);
-
+#ifdef _DEBUG RoomInfo
 	for (size_t i = 0; i < roomInfo.size(); ++i)
 	{
 		for (size_t j = 0; j < roomInfo[i].size(); ++j)
 		{
 			switch (roomInfo[i][j])
 			{
-			case RoomType::BOSS:
+			case RoomTypes::BOSS:
 				cout << "BOSS\t";
 				break;
-			case RoomType::COURSE:
+			case RoomTypes::COURSE:
 				cout << "COURSE\t";
 				break;
-			case RoomType::ITEM:
+			case RoomTypes::ITEM:
 				cout << "ITEM\t";
 				break;
-			case RoomType::NORMAL:
+			case RoomTypes::NORMAL:
 				cout << "NORMAL\t";
 				break;
-			case RoomType::PRIVATE:
+			case RoomTypes::PRIVATE:
 				cout << "PRIVATE\t";
 				break;
-			case RoomType::SATAN:
+			case RoomTypes::SATAN:
 				cout << "SATAN\t";
 				break;
-			case RoomType::START:
+			case RoomTypes::START:
 				cout << "START\t";
 				break;
 			default:
@@ -78,6 +98,7 @@ void RoomEditing::Init()
 		}
 		cout << "\n";
 	}
+#endif
 }
 
 void RoomEditing::Release()
@@ -87,6 +108,9 @@ void RoomEditing::Release()
 
 void RoomEditing::NamingRoom(int row, int column)
 {
+#ifdef _DEBUG via Tilemap
+	cout << stage01Index[row][column] << "\n";
+#endif
 	int searchRow = row;
 	int searchColumn = column;
 	// 스택 오버 경고 때문에 정의
@@ -97,60 +121,60 @@ void RoomEditing::NamingRoom(int row, int column)
 	// 위쪽 맵 자리가 비어있지 않으면 (stage01[-1(맵 밖)][N] 방지 && 맵의 유무 && 방문했는지)
 	if (topRow >= 0 && stage01Index[topRow][searchColumn].empty() == false && isTransitMap[topRow][searchColumn] == false)
 	{
-		DeclareRoomName(stage01Index, roomInfo, topRow, searchColumn);		// Naming 하기
-		isTransitMap[topRow][searchColumn] = true;							// 통과 = true
+		DeclareRoomName(topRow, searchColumn);				// Naming 하기
+		isTransitMap[topRow][searchColumn] = true;			// 통과 = true
 		NamingRoom(topRow, searchColumn);
 	}
 	// 아래쪽 맵 자리가 비어있지 않으면 (stage01[mapSize(맵 밖)][N] 방지 && 맵의 유무 && 방문했는지)
 	if (bottomRow < _stageSize && stage01Index[bottomRow][searchColumn].empty() == false && isTransitMap[bottomRow][searchColumn] == false)
 	{
-		DeclareRoomName(stage01Index, roomInfo, bottomRow, searchColumn);	// Naming 하기
-		isTransitMap[bottomRow][searchColumn] = true;						// 통과 = true
-		NamingRoom(topRow, searchColumn);
+		DeclareRoomName(bottomRow, searchColumn);			// Naming 하기
+		isTransitMap[bottomRow][searchColumn] = true;		// 통과 = true
+		NamingRoom(bottomRow, searchColumn);
 	}
 	// 왼쪽 맵 자리가 비어있지 않으면 (stage01[N][-1(맵 밖)] 방지 && 맵의 유무 && 방문했는지)
 	if (leftColumn >= 0 && stage01Index[searchRow][leftColumn].empty() == false && isTransitMap[searchRow][leftColumn] == false)
 	{
-		DeclareRoomName(stage01Index, roomInfo, searchRow, leftColumn);		// Naming 하기
-		isTransitMap[searchRow][leftColumn] = true;							// 통과 = true
-		NamingRoom(topRow, searchColumn);
+		DeclareRoomName(searchRow, leftColumn);				// Naming 하기
+		isTransitMap[searchRow][leftColumn] = true;			// 통과 = true
+		NamingRoom(searchRow, leftColumn);
 	}
 	// 오른쪽 맵 자리가 비어있지 않으면 (stage01[N][mapSize(맵 밖)] 방지 && 맵의 유무 && 방문했는지)
 	if (rightColumn < _stageSize && stage01Index[searchRow][rightColumn].empty() == false && isTransitMap[searchRow][rightColumn] == false)
 	{
-		DeclareRoomName(stage01Index, roomInfo, searchRow, rightColumn);	// Naming 하기
-		isTransitMap[searchRow][rightColumn] = true;						// 통과 = true
-		NamingRoom(topRow, searchColumn);
+		DeclareRoomName(searchRow, rightColumn);			// Naming 하기
+		isTransitMap[searchRow][rightColumn] = true;		// 통과 = true
+		NamingRoom(searchRow, rightColumn);
 	}
 	// 수정 필요!! => Item Room 필수
 }
 
-void RoomEditing::DeclareRoomName(vector<vector<string>> stageIndex, vector<vector<RoomType>> _roomInfo, int row, int column)
+void RoomEditing::DeclareRoomName(int row, int column)
 {
-	if (stageIndex[row][column].substr(5, 1) == "B")
+	if (stage01Index[row][column].substr(5, 1) == "B")
 	{
-		_roomInfo[row][column] = RoomType::NORMAL;
+		roomInfo[row][column] = RoomTypes::NORMAL;
 	}
-	if (stageIndex[row][column].substr(5, 1) == "C")
+	if (stage01Index[row][column].substr(5, 1) == "C")
 	{
-		if (stageIndex[row][column].substr(6, 1) == "A")
+		if (stage01Index[row][column].substr(6, 1) == "A")
 		{
-			_roomInfo[row][column] = RoomType::NORMAL;
+			roomInfo[row][column] = RoomTypes::NORMAL;
 		}
-		if (stageIndex[row][column].substr(6, 1) == "E")
+		if (stage01Index[row][column].substr(6, 1) == "E")
 		{
-			_roomInfo[row][column] = RoomType::PRIVATE;
+			roomInfo[row][column] = RoomTypes::PRIVATE;
 		}
 	}
-	if (stageIndex[row][column].substr(5, 1) == "D")
+	if (stage01Index[row][column].substr(5, 1) == "D")
 	{
-		if (stageIndex[row][column].substr(12, 1) == "0")
+		if (stage01Index[row][column].substr(11, 1) == "0")
 		{
-			_roomInfo[row][column] = RoomType::COURSE;
+			roomInfo[row][column] = RoomTypes::COURSE;
 		}
-		if (stageIndex[row][column].substr(12, 1) == "1")
+		if (stage01Index[row][column].substr(11, 1) == "1")
 		{
-			_roomInfo[row][column] = RoomType::SATAN;
+			roomInfo[row][column] = RoomTypes::SATAN;
 		}
 	}
 }
