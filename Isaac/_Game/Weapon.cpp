@@ -29,16 +29,16 @@ void Weapon::Update()
     {
         switch (weaponDir)
         {
-        case MoveDir::UP:
+        case ObjectDir::UP:
             pos.y -= moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
             break;
-        case MoveDir::DOWN:
+        case ObjectDir::DOWN:
             pos.y += moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
             break;
-        case MoveDir::LEFT:
+        case ObjectDir::LEFT:
             pos.x -= moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
             break;
-        case MoveDir::RIGHT:
+        case ObjectDir::RIGHT:
             pos.x += moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
             break;
         default:

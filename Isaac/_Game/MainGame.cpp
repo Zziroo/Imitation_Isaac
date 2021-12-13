@@ -26,7 +26,7 @@ void MainGame::Init()
 	maxSizeX = TILEMAP_SIZE_X;
 	maxSizeY = TILEMAP_SIZE_Y;
 #else
-	GET_SINGLETON_SCENE->ChangeScene("InGame");	// Title / InGame / Stage01
+	GET_SINGLETON_SCENE->ChangeScene("Stage01");	// Title / InGame / Stage01
 	maxSizeX = WIN_SIZE_X;
 	maxSizeY = WIN_SIZE_Y;
 #endif

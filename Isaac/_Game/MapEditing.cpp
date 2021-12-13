@@ -88,7 +88,7 @@ void MapEditing::Init()
 	// 맵의 개수로 stage 크기 결정
 	SettingStageSize();
 	// Stage 중앙의 Index
-	startPoint = stageSize * DEVIDE_HALF;
+	startPoint = (INT)(stageSize * DEVIDE_HALF);
 	// Stage 초기화
 	stage01.resize(stageSize);
 	// Loop

@@ -152,7 +152,7 @@ void Player::ApplyAttackFrame(int attackFrame, int usuallyFrame)
     }
 }
 
-void Player::ApplyBodyFrame(MoveDir moveDir, int bodyFrameY)
+void Player::ApplyBodyFrame(ObjectDir moveDir, int bodyFrameY)
 {
     if (bodyInfo.moveDir == moveDir)
     {
@@ -160,7 +160,7 @@ void Player::ApplyBodyFrame(MoveDir moveDir, int bodyFrameY)
     }
 }
 
-void Player::ApplyHeadFrame(MoveDir moveDir, int headFrameX)
+void Player::ApplyHeadFrame(ObjectDir moveDir, int headFrameX)
 {
     if (playerState == ObjectStates::WALK && headInfo.moveDir == moveDir)
     {
@@ -168,7 +168,7 @@ void Player::ApplyHeadFrame(MoveDir moveDir, int headFrameX)
     }
 }
 
-void Player::ApplyHeadDir(MoveDir moveDir, int attckFrame)
+void Player::ApplyHeadDir(ObjectDir moveDir, int attckFrame)
 {
     if (headInfo.image->GetCurrFrameX() == attckFrame)
     {
@@ -209,29 +209,29 @@ void Player::ChangeAttackFrame()
 
 void Player::ChangeBodyFrame()
 {
-    ApplyBodyFrame(MoveDir::UP, BODY_DEFAULT_DIR);
-    ApplyBodyFrame(MoveDir::DOWN, BODY_DEFAULT_DIR);
-    ApplyBodyFrame(MoveDir::LEFT, BODY_LEFT_DIR);
-    ApplyBodyFrame(MoveDir::RIGHT, BODY_RIGHT_DIR);
+    ApplyBodyFrame(ObjectDir::UP, BODY_DEFAULT_DIR);
+    ApplyBodyFrame(ObjectDir::DOWN, BODY_DEFAULT_DIR);
+    ApplyBodyFrame(ObjectDir::LEFT, BODY_LEFT_DIR);
+    ApplyBodyFrame(ObjectDir::RIGHT, BODY_RIGHT_DIR);
 }
 
 void Player::ChangeHeadFrame()
 {
     if (!ClosedEye())
     {
-        ApplyHeadFrame(MoveDir::UP, HEAD_LOOK_UP);
-        ApplyHeadFrame(MoveDir::DOWN, HEAD_LOOK_DOWN);
-        ApplyHeadFrame(MoveDir::LEFT, HEAD_LOOK_LEFT);
-        ApplyHeadFrame(MoveDir::RIGHT, HEAD_LOOK_RIGHT);
+        ApplyHeadFrame(ObjectDir::UP, HEAD_LOOK_UP);
+        ApplyHeadFrame(ObjectDir::DOWN, HEAD_LOOK_DOWN);
+        ApplyHeadFrame(ObjectDir::LEFT, HEAD_LOOK_LEFT);
+        ApplyHeadFrame(ObjectDir::RIGHT, HEAD_LOOK_RIGHT);
     }
 }
 
 void Player::ChangeHeadDir()
 {
-    ApplyHeadDir(MoveDir::UP, ATTACKING_UPSIDE);
-    ApplyHeadDir(MoveDir::DOWN, ATTACKING_DOWNSIDE);
-    ApplyHeadDir(MoveDir::LEFT, ATTACKING_LEFTSIDE);
-    ApplyHeadDir(MoveDir::RIGHT, ATTACKING_RIGHTSIDE);
+    ApplyHeadDir(ObjectDir::UP, ATTACKING_UPSIDE);
+    ApplyHeadDir(ObjectDir::DOWN, ATTACKING_DOWNSIDE);
+    ApplyHeadDir(ObjectDir::LEFT, ATTACKING_LEFTSIDE);
+    ApplyHeadDir(ObjectDir::RIGHT, ATTACKING_RIGHTSIDE);
 }
 
 bool Player::ClosedEye()
@@ -288,16 +288,16 @@ void Player::Move()
 
     switch (bodyInfo.moveDir)
     {
-    case MoveDir::UP:
+    case ObjectDir::UP:
         bodyInfo.pos.y -= moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
         break;
-    case MoveDir::DOWN:
+    case ObjectDir::DOWN:
         bodyInfo.pos.y += moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
         break;
-    case MoveDir::LEFT:
+    case ObjectDir::LEFT:
         bodyInfo.pos.x -= moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
         break;
-    case MoveDir::RIGHT:
+    case ObjectDir::RIGHT:
         bodyInfo.pos.x += moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
         break;
     default:
@@ -306,16 +306,16 @@ void Player::Move()
 
     switch (headInfo.moveDir)
     {
-    case MoveDir::UP:
+    case ObjectDir::UP:
         headInfo.pos.y -= moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
         break;
-    case MoveDir::DOWN:
+    case ObjectDir::DOWN:
         headInfo.pos.y += moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
         break;
-    case MoveDir::LEFT:
+    case ObjectDir::LEFT:
         headInfo.pos.x -= moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
         break;
-    case MoveDir::RIGHT:
+    case ObjectDir::RIGHT:
         headInfo.pos.x += moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
         break;
     default:
@@ -355,8 +355,8 @@ void Player::TakeAction()
     if (Input::GetButtonUp('W') || Input::GetButtonUp('S') || Input::GetButtonUp('D') || Input::GetButtonUp('A'))
     {
         playerState = ObjectStates::IDLE;
-        bodyInfo.moveDir = MoveDir::DOWN;
-        headInfo.moveDir = MoveDir::DOWN;
+        bodyInfo.moveDir = ObjectDir::DOWN;
+        headInfo.moveDir = ObjectDir::DOWN;
         bodyInfo.image->SetCurrFrameX(START_BODY_FRAME_X);
         bodyInfo.image->SetCurrFrameY(BODY_DEFAULT_DIR);
         
@@ -365,36 +365,36 @@ void Player::TakeAction()
     // 공격키 땠을 때
     if (Input::GetButtonUp(VK_LBUTTON))
     {
-        headInfo.moveDir = MoveDir::DOWN;
+        headInfo.moveDir = ObjectDir::DOWN;
         headInfo.image->SetCurrFrameX(HEAD_LOOK_DOWN);
     }
     // 이동키
     if (Input::GetButton('W'))                               // 상
     {
         playerState = ObjectStates::WALK;
-        bodyInfo.moveDir = MoveDir::UP;
-        headInfo.moveDir = MoveDir::UP;
+        bodyInfo.moveDir = ObjectDir::UP;
+        headInfo.moveDir = ObjectDir::UP;
         Move();
     }
     else if (Input::GetButton('S'))                          // 하
     {
         playerState = ObjectStates::WALK;
-        bodyInfo.moveDir = MoveDir::DOWN;
-        headInfo.moveDir = MoveDir::DOWN;
+        bodyInfo.moveDir = ObjectDir::DOWN;
+        headInfo.moveDir = ObjectDir::DOWN;
         Move();
     }
     if (Input::GetButton('D'))                               // 우
     {
         playerState = ObjectStates::WALK;
-        bodyInfo.moveDir = MoveDir::RIGHT;
-        headInfo.moveDir = MoveDir::RIGHT;
+        bodyInfo.moveDir = ObjectDir::RIGHT;
+        headInfo.moveDir = ObjectDir::RIGHT;
         Move();
     }
     else if (Input::GetButton('A'))                           // 좌
     {
         playerState = ObjectStates::WALK;
-        bodyInfo.moveDir = MoveDir::LEFT;
-        headInfo.moveDir = MoveDir::LEFT;
+        bodyInfo.moveDir = ObjectDir::LEFT;
+        headInfo.moveDir = ObjectDir::LEFT;
         Move();
     }
 

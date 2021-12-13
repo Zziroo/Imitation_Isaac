@@ -21,7 +21,7 @@ private:
 			(LONG)(pos.y + (size * DEVIDE_HALF))						// Bottom
 		};
 		Image*			image = nullptr;
-		MoveDir			moveDir = MoveDir::DOWN;						// 이동 방향
+		ObjectDir			moveDir = ObjectDir::DOWN;						// 이동 방향
 	} bodyInfo;
 	struct PlayerHeadInfo
 	{
@@ -37,7 +37,7 @@ private:
 			(LONG)(pos.y + (size * DEVIDE_HALF))						// Bottom
 		};
 		Image*			image = nullptr;
-		MoveDir			moveDir = MoveDir::DOWN;						// 이동 방향
+		ObjectDir			moveDir = ObjectDir::DOWN;						// 이동 방향
 		int				blinkEye = 0;									// 눈 깜빡임
 	} headInfo;
 
@@ -61,9 +61,9 @@ public:
 	virtual void		OnDebug(HDC hdc) override;
 
 	void				ApplyAttackFrame(int attackFrame, int usuallyFrame);
-	void				ApplyBodyFrame(MoveDir moveDir, int bodyFrameY);				// Body 프레임 변화
-	void				ApplyHeadFrame(MoveDir moveDir, int headFrameX);				// Head 프레임 변화
-	void				ApplyHeadDir(MoveDir moveDir, int attckFrame);					// Head 방향 변화
+	void				ApplyBodyFrame(ObjectDir moveDir, int bodyFrameY);				// Body 프레임 변화
+	void				ApplyHeadFrame(ObjectDir moveDir, int headFrameX);				// Head 프레임 변화
+	void				ApplyHeadDir(ObjectDir moveDir, int attckFrame);					// Head 방향 변화
 	void				BlinkEye();														// 눈 깜빡임
 	void				ChangeAnimation();												// 애니메이션 변화
 	void				ChangeAttackFrame();
@@ -80,11 +80,11 @@ public:
 
 	inline void			SetIsFire(bool isFire) { this->isFire = isFire; }
 	inline void			SetPlayerHeadPos(POINTFLOAT pos) { this->headInfo.pos = pos; }
-	inline void			SetPlayerHeadMoveDir(MoveDir moveDir) { this->headInfo.moveDir = moveDir; }
+	inline void			SetPlayerHeadMoveDir(ObjectDir moveDir) { this->headInfo.moveDir = moveDir; }
 
 	inline bool			GetIsFire() { return this->isFire; }
 	inline POINTFLOAT	GetPlayerHeadPos() { return this->headInfo.pos; }
-	inline MoveDir		GetPlayerHeadMoveDir() { return this->headInfo.moveDir; }
+	inline ObjectDir	GetPlayerHeadMoveDir() { return this->headInfo.moveDir; }
 
 	virtual ~Player() = default;
 };
