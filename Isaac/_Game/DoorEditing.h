@@ -14,6 +14,8 @@ private:
 		Image*							img = nullptr;
 		DoorStates						doorState = DoorStates::NONE;
 		ObjectDir						doorDir = ObjectDir::NONE;
+		RoomTypes						roomType = RoomTypes::NONE;
+
 		POINTFLOAT						pos = {};
 		RECT							shape = {};
 	} DOOR_INFO;
@@ -42,7 +44,6 @@ public:
 	void								FixCurseDoor();
 	void								FixItemDoor();
 	void								FixSatanDoor();
-	void								IdentifyRoomType(int row, int column, int index);
 	void								StoreRoomType(int row, int column);
 
 	inline vector<vector<string>>		GetStage() { return this->stage01Index; }

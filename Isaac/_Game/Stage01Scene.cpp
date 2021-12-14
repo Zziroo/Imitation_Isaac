@@ -182,6 +182,7 @@ void Stage01Scene::Update()
 		LoadMap();
 	}
 
+	door->Update();
 	player->Update();
 }
 

@@ -47,6 +47,8 @@ void DoorEditing::Init()
 			door[i][j][0].img = nullptr;
 			door[i][j][0].doorState = DoorStates::CLOSED;								// Door의 상태
 			door[i][j][0].doorDir = ObjectDir::UP;										// Door의 방향
+			door[i][j][0].roomType = RoomTypes::NONE;									// Door의 방향
+
 			door[i][j][0].pos.x = 640.0f;												// terrain frameX 16
 			door[i][j][0].pos.y = 80.0f;												// terrain frameY 2
 			door[i][j][0].shape = {
@@ -59,6 +61,8 @@ void DoorEditing::Init()
 			door[i][j][1].img = nullptr;
 			door[i][j][1].doorState = DoorStates::CLOSED;								// Door의 상태
 			door[i][j][1].doorDir = ObjectDir::DOWN;									// Door의 방향
+			door[i][j][1].roomType = RoomTypes::NONE;									// Door의 방향
+
 			door[i][j][1].pos.x = 640.0f;												// terrain frameX 16
 			door[i][j][1].pos.y = 720.0f;												// terrain frameY 18
 			door[i][j][1].shape = {
@@ -71,6 +75,8 @@ void DoorEditing::Init()
 			door[i][j][2].img = nullptr;
 			door[i][j][2].doorState = DoorStates::CLOSED;								// Door의 상태
 			door[i][j][2].doorDir = ObjectDir::LEFT;									// Door의 방향
+			door[i][j][2].roomType = RoomTypes::NONE;									// Door의 방향
+
 			door[i][j][2].pos.x = 80.0f;												// terrain frameX 2
 			door[i][j][2].pos.y = 400.0f;												// terrain frameY 10
 			door[i][j][2].shape = {
@@ -83,6 +89,8 @@ void DoorEditing::Init()
 			door[i][j][3].img = nullptr;
 			door[i][j][3].doorState = DoorStates::CLOSED;								// Door의 상태
 			door[i][j][3].doorDir = ObjectDir::RIGHT;									// Door의 방향
+			door[i][j][3].roomType = RoomTypes::NONE;									// Door의 방향
+
 			door[i][j][3].pos.x = 1200.0f;												// terrain frameX 29
 			door[i][j][3].pos.y = 400.0f;												// terrain frameY 10
 			door[i][j][3].shape = {
@@ -146,6 +154,7 @@ void DoorEditing::Update()
 	//}
 	
 	// 예시) 상,하,좌,우 키를 입력해서 맵을 바꿈.(문을 알아서 보여줘야함)
+	#pragma region Sample
 	if (Input::GetButtonDown(VK_UP))
 	{
 		--currLocateRow;
@@ -178,17 +187,83 @@ void DoorEditing::Update()
 			currLocateColumn = _stageSize - 1;
 		}
 	}
+	#pragma endregion
 }
 
 void DoorEditing::Render(HDC hdc)
 {
-	if (door[currLocateRow][currLocateColumn][0].img != nullptr) door[currLocateRow][currLocateColumn][0].img->Render(hdc, door[currLocateRow][currLocateColumn][0].pos.x, door[currLocateRow][currLocateColumn][0].pos.y, 0, door[currLocateRow][currLocateColumn][0].img->GetCurrFrameY());
-	if (door[currLocateRow][currLocateColumn][1].img != nullptr) door[currLocateRow][currLocateColumn][1].img->Render(hdc, door[currLocateRow][currLocateColumn][1].pos.x, door[currLocateRow][currLocateColumn][1].pos.y, 1, door[currLocateRow][currLocateColumn][1].img->GetCurrFrameY());
-	if (door[currLocateRow][currLocateColumn][2].img != nullptr) door[currLocateRow][currLocateColumn][2].img->Render(hdc, door[currLocateRow][currLocateColumn][2].pos.x, door[currLocateRow][currLocateColumn][2].pos.y, 2, door[currLocateRow][currLocateColumn][2].img->GetCurrFrameY());
-	if (door[currLocateRow][currLocateColumn][3].img != nullptr) door[currLocateRow][currLocateColumn][3].img->Render(hdc, door[currLocateRow][currLocateColumn][3].pos.x, door[currLocateRow][currLocateColumn][3].pos.y, 3, door[currLocateRow][currLocateColumn][3].img->GetCurrFrameY());
+	// 상
+	if (door[currLocateRow][currLocateColumn][0].img != nullptr) 
+	{
+		switch (door[currLocateRow][currLocateColumn][0].roomType)
+		{
+		case RoomTypes::BOSS: 
+			door[currLocateRow][currLocateColumn][0].img->Render(hdc, door[currLocateRow][currLocateColumn][0].pos.x, door[currLocateRow][currLocateColumn][0].pos.y + 5, 0, door[currLocateRow][currLocateColumn][0].img->GetCurrFrameY());
+			break;
+		case RoomTypes::CURSE: case RoomTypes::ITEM: case RoomTypes::NORMAL: case RoomTypes::PRIVATE: case RoomTypes::START:
+			door[currLocateRow][currLocateColumn][0].img->Render(hdc, door[currLocateRow][currLocateColumn][0].pos.x, door[currLocateRow][currLocateColumn][0].pos.y, 0, door[currLocateRow][currLocateColumn][0].img->GetCurrFrameY());
+			break;
+		case RoomTypes::SATAN:
+			door[currLocateRow][currLocateColumn][0].img->Render(hdc, door[currLocateRow][currLocateColumn][0].pos.x, door[currLocateRow][currLocateColumn][0].pos.y - 13, 0, door[currLocateRow][currLocateColumn][0].img->GetCurrFrameY());
+			break;
+		default:
+			break;
+		}
+	}
+	// 하
+	if (door[currLocateRow][currLocateColumn][1].img != nullptr) 
+	{
+		switch (door[currLocateRow][currLocateColumn][1].roomType)
+		{
+		case RoomTypes::BOSS:
+			door[currLocateRow][currLocateColumn][1].img->Render(hdc, door[currLocateRow][currLocateColumn][1].pos.x, door[currLocateRow][currLocateColumn][1].pos.y - 5, 1, door[currLocateRow][currLocateColumn][1].img->GetCurrFrameY());
+			break;
+		case RoomTypes::CURSE: case RoomTypes::ITEM: case RoomTypes::NORMAL: case RoomTypes::PRIVATE: case RoomTypes::START:
+			door[currLocateRow][currLocateColumn][1].img->Render(hdc, door[currLocateRow][currLocateColumn][1].pos.x, door[currLocateRow][currLocateColumn][1].pos.y, 1, door[currLocateRow][currLocateColumn][1].img->GetCurrFrameY());
+			break;
+		case RoomTypes::SATAN:
+			door[currLocateRow][currLocateColumn][1].img->Render(hdc, door[currLocateRow][currLocateColumn][1].pos.x, door[currLocateRow][currLocateColumn][1].pos.y + 13, 1, door[currLocateRow][currLocateColumn][1].img->GetCurrFrameY());
+			break;
+		default:
+			break;
+		}
+	}
+	// 좌
+	if (door[currLocateRow][currLocateColumn][2].img != nullptr) 
+	{
+		switch (door[currLocateRow][currLocateColumn][2].roomType)
+		{
+		case RoomTypes::BOSS:
+			door[currLocateRow][currLocateColumn][2].img->Render(hdc, door[currLocateRow][currLocateColumn][2].pos.x + 15, door[currLocateRow][currLocateColumn][2].pos.y, 2, door[currLocateRow][currLocateColumn][2].img->GetCurrFrameY());
+		break; case RoomTypes::CURSE: case RoomTypes::ITEM: case RoomTypes::NORMAL: case RoomTypes::PRIVATE: case RoomTypes::START:
+			door[currLocateRow][currLocateColumn][2].img->Render(hdc, door[currLocateRow][currLocateColumn][2].pos.x + 10, door[currLocateRow][currLocateColumn][2].pos.y, 2, door[currLocateRow][currLocateColumn][2].img->GetCurrFrameY());
+			break;
+		case RoomTypes::SATAN:
+			door[currLocateRow][currLocateColumn][2].img->Render(hdc, door[currLocateRow][currLocateColumn][2].pos.x, door[currLocateRow][currLocateColumn][2].pos.y, 2, door[currLocateRow][currLocateColumn][2].img->GetCurrFrameY());
+			break;
+		default:
+			break;
+		}
+	}
+	// 우
+	if (door[currLocateRow][currLocateColumn][3].img != nullptr) 
+	{
+		switch (door[currLocateRow][currLocateColumn][3].roomType)
+		{
+		case RoomTypes::BOSS:
+			door[currLocateRow][currLocateColumn][3].img->Render(hdc, door[currLocateRow][currLocateColumn][3].pos.x - 15, door[currLocateRow][currLocateColumn][3].pos.y, 3, door[currLocateRow][currLocateColumn][3].img->GetCurrFrameY());
+		break; 
+		case RoomTypes::CURSE: case RoomTypes::ITEM: case RoomTypes::NORMAL: case RoomTypes::PRIVATE: case RoomTypes::START:
+			door[currLocateRow][currLocateColumn][3].img->Render(hdc, door[currLocateRow][currLocateColumn][3].pos.x - 10, door[currLocateRow][currLocateColumn][3].pos.y, 3, door[currLocateRow][currLocateColumn][3].img->GetCurrFrameY());
+			break;
+		case RoomTypes::SATAN:
+			door[currLocateRow][currLocateColumn][3].img->Render(hdc, door[currLocateRow][currLocateColumn][3].pos.x, door[currLocateRow][currLocateColumn][3].pos.y, 3, door[currLocateRow][currLocateColumn][3].img->GetCurrFrameY());
+			break;
+		default:
+			break;
+		}
+	}
 
-	// Debug
-	GameObject::Update();
 	GameObject::Render(hdc);
 }
 
@@ -211,10 +286,32 @@ void DoorEditing::FixBossDoor()
 		{
 			if (roomInfo[i][j] == RoomTypes::BOSS)
 			{
-				door[i][j][0].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Boss_Room_Door.bmp");
-				door[i][j][1].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Boss_Room_Door.bmp");
-				door[i][j][2].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Boss_Room_Door.bmp");
-				door[i][j][3].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Boss_Room_Door.bmp");
+				int topRow = i - 1;
+				int bottomRow = i + 1;
+				int leftColumn = j - 1;
+				int rightColumn = j + 1;
+				// 이미지 변경, 사방향 전부 BossDoor
+				if (topRow >= 0 && roomInfo[topRow][j] != RoomTypes::NONE)
+				{
+					door[i][j][0].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Boss_Room_Door.bmp");
+					door[i][j][0].roomType = RoomTypes::BOSS;
+				}
+				if (bottomRow < _stageSize && roomInfo[bottomRow][j] != RoomTypes::NONE)
+				{
+					door[i][j][1].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Boss_Room_Door.bmp");
+					door[i][j][1].roomType = RoomTypes::BOSS;
+				}
+				if (leftColumn >= 0 && roomInfo[i][leftColumn] != RoomTypes::NONE)
+				{
+					door[i][j][2].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Boss_Room_Door.bmp");
+					door[i][j][2].roomType = RoomTypes::BOSS;
+
+				}
+				if (rightColumn < _stageSize && roomInfo[i][rightColumn] != RoomTypes::NONE)
+				{
+					door[i][j][3].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Boss_Room_Door.bmp");
+					door[i][j][3].roomType = RoomTypes::BOSS;
+				}
 			}
 		}
 	}
@@ -228,16 +325,35 @@ void DoorEditing::FixCurseDoor()
 		{
 			if (roomInfo[i][j] == RoomTypes::CURSE)
 			{
-				// 이미지 변경
-				door[i][j][0].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Curse_Room_Door.bmp");
-				door[i][j][1].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Curse_Room_Door.bmp");
-				door[i][j][2].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Curse_Room_Door.bmp");
-				door[i][j][3].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Curse_Room_Door.bmp");
-				// 항상 열려 있음
-				door[i][j][0].doorState = DoorStates::OPENED;
-				door[i][j][1].doorState = DoorStates::OPENED;
-				door[i][j][2].doorState = DoorStates::OPENED;
-				door[i][j][3].doorState = DoorStates::OPENED;
+				int topRow = i - 1;
+				int bottomRow = i + 1;
+				int leftColumn = j - 1;
+				int rightColumn = j + 1;
+				// 이미지 변경, 항상 열려있음, 사방향 전부 BossDoor
+				if (topRow >= 0 && roomInfo[topRow][j] != RoomTypes::NONE)
+				{
+					door[i][j][0].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Curse_Room_Door.bmp");
+					door[i][j][0].doorState = DoorStates::OPENED;
+					door[i][j][0].roomType = RoomTypes::CURSE;
+				}
+				if (bottomRow < _stageSize && roomInfo[bottomRow][j] != RoomTypes::NONE)
+				{
+					door[i][j][1].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Curse_Room_Door.bmp");
+					door[i][j][1].doorState = DoorStates::OPENED;
+					door[i][j][1].roomType = RoomTypes::CURSE;
+				}
+				if (leftColumn >= 0 && roomInfo[i][leftColumn] != RoomTypes::NONE)
+				{
+					door[i][j][2].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Curse_Room_Door.bmp");
+					door[i][j][2].doorState = DoorStates::OPENED;
+					door[i][j][2].roomType = RoomTypes::CURSE;
+				}
+				if (rightColumn < _stageSize && roomInfo[i][rightColumn] != RoomTypes::NONE)
+				{
+					door[i][j][3].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Curse_Room_Door.bmp");
+					door[i][j][3].doorState = DoorStates::OPENED;
+					door[i][j][3].roomType = RoomTypes::CURSE;
+				}
 			}
 		}
 	}
@@ -251,10 +367,31 @@ void DoorEditing::FixItemDoor()
 		{
 			if (roomInfo[i][j] == RoomTypes::ITEM)
 			{
-				door[i][j][0].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Item_Room_Door.bmp");
-				door[i][j][1].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Item_Room_Door.bmp");
-				door[i][j][2].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Item_Room_Door.bmp");
-				door[i][j][3].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Item_Room_Door.bmp");
+				int topRow = i - 1;
+				int bottomRow = i + 1;
+				int leftColumn = j - 1;
+				int rightColumn = j + 1;
+				// 이미지 변경, 사방향 전부 BossDoor
+				if (topRow >= 0 && roomInfo[topRow][j] != RoomTypes::NONE)
+				{
+					door[i][j][0].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Item_Room_Door.bmp");
+					door[i][j][0].roomType = RoomTypes::ITEM;
+				}
+				if (bottomRow < _stageSize && roomInfo[bottomRow][j] != RoomTypes::NONE)
+				{
+					door[i][j][1].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Item_Room_Door.bmp");
+					door[i][j][1].roomType = RoomTypes::ITEM;
+				}
+				if (leftColumn >= 0 && roomInfo[i][leftColumn] != RoomTypes::NONE)
+				{
+					door[i][j][2].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Item_Room_Door.bmp");
+					door[i][j][2].roomType = RoomTypes::ITEM;
+				}
+				if (rightColumn < _stageSize && roomInfo[i][rightColumn] != RoomTypes::NONE)
+				{
+					door[i][j][3].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Item_Room_Door.bmp");
+					door[i][j][3].roomType = RoomTypes::ITEM;
+				}
 			}
 		}
 	}
@@ -268,41 +405,37 @@ void DoorEditing::FixSatanDoor()
 		{
 			if (roomInfo[i][j] == RoomTypes::SATAN)
 			{
-				door[i][j][0].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Satan_Room_Door.bmp");
-				door[i][j][1].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Satan_Room_Door.bmp");
-				door[i][j][2].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Satan_Room_Door.bmp");
-				door[i][j][3].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Satan_Room_Door.bmp");
-				// 항상 열려 있음
-				door[i][j][0].doorState = DoorStates::OPENED;
-				door[i][j][1].doorState = DoorStates::OPENED;
-				door[i][j][2].doorState = DoorStates::OPENED;
-				door[i][j][3].doorState = DoorStates::OPENED;
+				int topRow = i - 1;
+				int bottomRow = i + 1;
+				int leftColumn = j - 1;
+				int rightColumn = j + 1;
+				// 이미지 변경, 항상 열려있음, 사방향 전부 BossDoor
+				if (topRow >= 0 && roomInfo[topRow][j] != RoomTypes::NONE)
+				{
+					door[i][j][0].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Satan_Room_Door.bmp");
+					door[i][j][0].doorState = DoorStates::OPENED;
+					door[i][j][0].roomType = RoomTypes::SATAN;
+				}
+				if (bottomRow < _stageSize && roomInfo[bottomRow][j] != RoomTypes::NONE)
+				{
+					door[i][j][1].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Satan_Room_Door.bmp");
+					door[i][j][1].doorState = DoorStates::OPENED;
+					door[i][j][1].roomType = RoomTypes::SATAN;
+				}
+				if (leftColumn >= 0 && roomInfo[i][leftColumn] != RoomTypes::NONE)
+				{
+					door[i][j][2].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Satan_Room_Door.bmp");
+					door[i][j][2].doorState = DoorStates::OPENED;
+					door[i][j][2].roomType = RoomTypes::SATAN;
+				}
+				if (rightColumn < _stageSize && roomInfo[i][rightColumn] != RoomTypes::NONE)
+				{
+					door[i][j][3].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Satan_Room_Door.bmp");
+					door[i][j][3].doorState = DoorStates::OPENED;
+					door[i][j][3].roomType = RoomTypes::SATAN;
+				}
 			}
 		}
-	}
-}
-
-void DoorEditing::IdentifyRoomType(int row, int column, int index)
-{
-	switch (roomInfo[row][column])
-	{
-	case RoomTypes::BOSS:
-		door[row][column][index].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Boss_Room_Door.bmp");
-		break;
-	case RoomTypes::CURSE:
-		door[row][column][index].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Curse_Room_Door.bmp");
-		break;
-	case RoomTypes::ITEM:
-		door[row][column][index].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Item_Room_Door.bmp");
-		break;
-	case RoomTypes::SATAN:
-		door[row][column][index].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Satan_Room_Door.bmp");
-		break;
-	case RoomTypes::NORMAL:	case RoomTypes::PRIVATE: case RoomTypes::START:
-		door[row][column][index].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Normal_Room_Door.bmp");
-		break;
-	default:
-		break;
 	}
 }
 
@@ -324,20 +457,33 @@ void DoorEditing::StoreRoomType(int row, int column)
 		{
 		case RoomTypes::BOSS:
 			door[currRow][currColumn][0].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Boss_Room_Door.bmp");
+			door[currRow][currColumn][0].roomType = RoomTypes::BOSS;
 			break;
 		case RoomTypes::CURSE:
 			door[currRow][currColumn][0].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Curse_Room_Door.bmp");
 			door[currRow][currColumn][0].doorState = DoorStates::OPENED;
+			door[currRow][currColumn][0].roomType = RoomTypes::CURSE;
 			break;
 		case RoomTypes::ITEM:
 			door[currRow][currColumn][0].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Item_Room_Door.bmp");
+			door[currRow][currColumn][0].roomType = RoomTypes::ITEM;
+			break;
+		case RoomTypes::NORMAL:
+			door[currRow][currColumn][0].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Normal_Room_Door.bmp");
+			door[currRow][currColumn][0].roomType = RoomTypes::NORMAL;
+			break;
+		case RoomTypes::PRIVATE:
+			door[currRow][currColumn][0].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Normal_Room_Door.bmp");
+			door[currRow][currColumn][0].roomType = RoomTypes::PRIVATE;
 			break;
 		case RoomTypes::SATAN:
 			door[currRow][currColumn][0].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Satan_Room_Door.bmp");
 			door[currRow][currColumn][0].doorState = DoorStates::OPENED;
+			door[currRow][currColumn][0].roomType = RoomTypes::SATAN;
 			break;
-		case RoomTypes::NORMAL:	case RoomTypes::PRIVATE: case RoomTypes::START:
+		case RoomTypes::START:
 			door[currRow][currColumn][0].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Normal_Room_Door.bmp");
+			door[currRow][currColumn][0].roomType = RoomTypes::START;
 			break;
 		default:
 			break;
@@ -350,20 +496,33 @@ void DoorEditing::StoreRoomType(int row, int column)
 		{
 		case RoomTypes::BOSS:
 			door[currRow][currColumn][1].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Boss_Room_Door.bmp");
+			door[currRow][currColumn][1].roomType = RoomTypes::BOSS;
 			break;
 		case RoomTypes::CURSE:
 			door[currRow][currColumn][1].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Curse_Room_Door.bmp");
 			door[currRow][currColumn][1].doorState = DoorStates::OPENED;
+			door[currRow][currColumn][1].roomType = RoomTypes::CURSE;
 			break;
 		case RoomTypes::ITEM:
 			door[currRow][currColumn][1].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Item_Room_Door.bmp");
+			door[currRow][currColumn][1].roomType = RoomTypes::ITEM;
+			break;
+		case RoomTypes::NORMAL:
+			door[currRow][currColumn][1].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Normal_Room_Door.bmp");
+			door[currRow][currColumn][1].roomType = RoomTypes::NORMAL;
+			break;
+		case RoomTypes::PRIVATE:
+			door[currRow][currColumn][1].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Normal_Room_Door.bmp");
+			door[currRow][currColumn][1].roomType = RoomTypes::PRIVATE;
 			break;
 		case RoomTypes::SATAN:
 			door[currRow][currColumn][1].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Satan_Room_Door.bmp");
 			door[currRow][currColumn][1].doorState = DoorStates::OPENED;
+			door[currRow][currColumn][1].roomType = RoomTypes::SATAN;
 			break;
-		case RoomTypes::NORMAL:	case RoomTypes::PRIVATE: case RoomTypes::START:
+		case RoomTypes::START:
 			door[currRow][currColumn][1].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Normal_Room_Door.bmp");
+			door[currRow][currColumn][1].roomType = RoomTypes::START;
 			break;
 		default:
 			break;
@@ -376,20 +535,33 @@ void DoorEditing::StoreRoomType(int row, int column)
 		{
 		case RoomTypes::BOSS:
 			door[currRow][currColumn][2].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Boss_Room_Door.bmp");
+			door[currRow][currColumn][2].roomType = RoomTypes::BOSS;
 			break;
 		case RoomTypes::CURSE:
 			door[currRow][currColumn][2].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Curse_Room_Door.bmp");
 			door[currRow][currColumn][2].doorState = DoorStates::OPENED;
+			door[currRow][currColumn][2].roomType = RoomTypes::CURSE;
 			break;
 		case RoomTypes::ITEM:
 			door[currRow][currColumn][2].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Item_Room_Door.bmp");
+			door[currRow][currColumn][2].roomType = RoomTypes::ITEM;
+			break;
+		case RoomTypes::NORMAL:
+			door[currRow][currColumn][2].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Normal_Room_Door.bmp");
+			door[currRow][currColumn][2].roomType = RoomTypes::NORMAL;
+			break;
+		case RoomTypes::PRIVATE:
+			door[currRow][currColumn][2].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Normal_Room_Door.bmp");
+			door[currRow][currColumn][2].roomType = RoomTypes::PRIVATE;
 			break;
 		case RoomTypes::SATAN:
 			door[currRow][currColumn][2].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Satan_Room_Door.bmp");
 			door[currRow][currColumn][2].doorState = DoorStates::OPENED;
+			door[currRow][currColumn][2].roomType = RoomTypes::SATAN;
 			break;
-		case RoomTypes::NORMAL:	case RoomTypes::PRIVATE: case RoomTypes::START:
+		case RoomTypes::START:
 			door[currRow][currColumn][2].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Normal_Room_Door.bmp");
+			door[currRow][currColumn][2].roomType = RoomTypes::START;
 			break;
 		default:
 			break;
@@ -402,20 +574,33 @@ void DoorEditing::StoreRoomType(int row, int column)
 		{
 		case RoomTypes::BOSS:
 			door[currRow][currColumn][3].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Boss_Room_Door.bmp");
+			door[currRow][currColumn][3].roomType = RoomTypes::BOSS;
 			break;
 		case RoomTypes::CURSE:
 			door[currRow][currColumn][3].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Curse_Room_Door.bmp");
 			door[currRow][currColumn][3].doorState = DoorStates::OPENED;
+			door[currRow][currColumn][3].roomType = RoomTypes::CURSE;
 			break;
 		case RoomTypes::ITEM:
 			door[currRow][currColumn][3].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Item_Room_Door.bmp");
+			door[currRow][currColumn][3].roomType = RoomTypes::ITEM;
+			break;
+		case RoomTypes::NORMAL:
+			door[currRow][currColumn][3].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Normal_Room_Door.bmp");
+			door[currRow][currColumn][3].roomType = RoomTypes::NORMAL;
+			break;
+		case RoomTypes::PRIVATE:
+			door[currRow][currColumn][3].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Normal_Room_Door.bmp");
+			door[currRow][currColumn][3].roomType = RoomTypes::PRIVATE;
 			break;
 		case RoomTypes::SATAN:
 			door[currRow][currColumn][3].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Satan_Room_Door.bmp");
 			door[currRow][currColumn][3].doorState = DoorStates::OPENED;
+			door[currRow][currColumn][3].roomType = RoomTypes::SATAN;
 			break;
-		case RoomTypes::NORMAL:	case RoomTypes::PRIVATE: case RoomTypes::START:
+		case RoomTypes::START:
 			door[currRow][currColumn][3].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Normal_Room_Door.bmp");
+			door[currRow][currColumn][3].roomType = RoomTypes::START;
 			break;
 		default:
 			break;
