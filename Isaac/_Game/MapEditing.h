@@ -11,8 +11,8 @@ private:
 	TILE_INFO						mainCellarTileInfo[CELLAR_TILE_ROW][TILE_COLUMN];
 	TILE_INFO						mainDepthTileInfo[DEPTH_TILE_ROW][TILE_COLUMN];
 
+	vector<string>					ThinOutMapInfo[2];		// Sample Tile 맵의 종류를 담을 벡터
 	vector<vector<bool>>			isTransitMap;			// 맵을 경유했는지 확인하기 위한 이중벡터
-	vector<string>					stage[2];				// Sample Tile 맵의 종류를 담을 벡터
 	vector<vector<string>>			stage01;				// Stage01
 
 	int								countLinkedMap = 1;		// 한 Stage안에 맵들이 연결돼어있는지 확인하기 위한 변수

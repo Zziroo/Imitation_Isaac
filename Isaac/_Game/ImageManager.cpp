@@ -73,7 +73,7 @@ void ImageManager::Init()
 	#pragma endregion
 	#pragma region Door
 	GET_SINGLETON_IMAGE->AddImage("Image/Door/Boss_Room_Door.bmp", 1008, 504, 4, 2, true, MAGENTA);
-	GET_SINGLETON_IMAGE->AddImage("Image/Door/Curse_Room_Door.bmp", 784, 196, 4, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Door/Curse_Room_Door.bmp", 640, 160, 4, 1, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Door/Item_Room_Door.bmp", 784, 588, 4, 3, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Door/Normal_Room_Door.bmp", 784, 588, 4, 3, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Door/Satan_Room_Door.bmp", 768, 192, 4, 1, true, MAGENTA);

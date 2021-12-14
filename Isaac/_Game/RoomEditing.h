@@ -9,9 +9,9 @@ private:
 	MapEditing*							stage01 = nullptr;
 	RoomTypes							roomType = RoomTypes::NONE;
 
+	vector<vector<RoomTypes>>			roomInfo;				// Map의 정보로 Room Type을 지정
 	vector<vector<bool>>				isTransitMap;			// 맵을 경유했는지 확인하기 위한 이중 벡터
 	vector<vector<string>>				stage01Index;			// Stage01의 Map 정보를 가져오는 이중 벡터
-	vector<vector<RoomTypes>>			roomInfo;				// Map의 정보로 Room Type을 지정
 
 	int									_stageSize = 0;
 	int									_startPoint = 0;

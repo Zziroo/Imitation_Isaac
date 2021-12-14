@@ -21,10 +21,10 @@ private:
 private:
 	RoomEditing*						roomIndex = nullptr;
 
-	vector<vector<bool>>				isTransitMap;			// 맵을 경유했는지 확인하기 위한 이중 벡터
-	vector<vector<string>>				stage01Index;			// Stage01의 Map 정보를 가져오는 이중 벡터
 	vector<vector<RoomTypes>>			roomInfo;				// 동적할당해 가져오는 정보(RoomTypes)를 담는 이중 벡터
 	vector<vector<array<DOOR_INFO, 4>>>	door;					// 순회하면서 각 Room들의 상, 하, 좌, 우의 RoomTyeps을 인식하고 imga를 저장하는 이중 벡터
+	vector<vector<bool>>				isTransitMap;			// 맵을 경유했는지 확인하기 위한 이중 벡터
+	vector<vector<string>>				stage01Index;			// Stage01의 Map 정보를 가져오는 이중 벡터
 
 	int									_stageSize = 0;
 	int									_startPoint = 0;
