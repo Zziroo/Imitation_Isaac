@@ -1,57 +1,22 @@
 #include "MainConfig.h"
 #include "Stage01Scene.h"
 
+#include "DoorEditing.h"
 #include "Image.h"
-#include "MapEditing.h"
-#include "RoomEditing.h"
+#include "Player.h"
 
 HRESULT Stage01Scene::Init()
 {
-	stage01 = new MapEditing;
-	stage01->Init();
-	// Stage01의 Size를 받기
-	_stageSize = stage01->GetStageSize();
-	// StartPoint를 받기
-	_startPoint = stage01->GetStartPoint();
-	stageColumn = _startPoint;
-	stageRow = _startPoint;
-	// Stage Size만큼 resize하고
-	stage01Index.resize(_stageSize);
-	for (size_t i = 0; i < stage01Index.size(); ++i)
-	{
-		stage01Index[i].resize(_stageSize);
-		for (size_t j = 0; j < stage01Index[i].size(); ++j)
-		{
-			// Stage 정보를 받아오기
-			stage01Index[i][j] = stage01->GetStage()[i][j];
-		}
-	}
 	// Tilemap Image
 	drawingAreaImg = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Tile/Basement.bmp");
-#ifdef _DEBUG Stage01Index(MapEditing)
-	// 맵의 정보를 콘솔창에 보여줌
-	cout << "Stage01Scene : MapEditing\n";
-	for (size_t i = 0; i < stage01Index.size(); ++i)
-	{
-		for (size_t j = 0; j < stage01Index[i].size(); ++j)
-		{
-			cout << stage01Index[i][j] << "\t";
-			if (stage01Index[i][j].empty())
-			{
-				cout << "########\t";
-			}
-		}
-		cout << "\n";
-	}
-	cout << "\n";
-#endif
-	// RoomType 설정
-	namingRoom = new RoomEditing;
-	namingRoom->Init();
+
+	// Door
+	door = new DoorEditing;
+	door->Init();
 	// Stage01의 Size를 받기
-	_stageSize = namingRoom->GetStageSize();
-	// StartPoint를 받기
-	_startPoint = namingRoom->GetStartPoint();
+	_stageSize = door->GetStageSize();
+	// Start Point를 받기
+	_startPoint = door->GetStartPoint();
 	stageColumn = _startPoint;
 	stageRow = _startPoint;
 	// Stage Size만큼 resize하고
@@ -62,36 +27,25 @@ HRESULT Stage01Scene::Init()
 		for (size_t j = 0; j < stage01Index[i].size(); ++j)
 		{
 			// Stage 정보를 받아오기
-			stage01Index[i][j] = namingRoom->GetStage()[i][j];
+			stage01Index[i][j] = door->GetStage()[i][j];
 		}
 	}
-	// Stage Size만큼 resize하고
+	// Room Size만큼 resize하고
 	roomInfo.resize(_stageSize);
 	for (size_t i = 0; i < roomInfo.size(); ++i)
 	{
 		roomInfo[i].resize(_stageSize);
 		for (size_t j = 0; j < roomInfo[i].size(); ++j)
 		{
-			roomInfo[i][j] = namingRoom->GetRoomType()[i][j];
+			roomInfo[i][j] = door->GetRoomType()[i][j];
 		}
 	}
-#ifdef _DEBUG Stage01Index(RoomEditing), RoomInfo(RoomEditing)
-	// 맵의 정보를 콘솔창에 보여줌
-	cout << "Stage01Scene : RoomEditing\n";
-	for (size_t i = 0; i < stage01Index.size(); ++i)
-	{
-		for (size_t j = 0; j < stage01Index[i].size(); ++j)
-		{
-			cout << stage01Index[i][j] << "\t";
-			if (stage01Index[i][j].empty())
-			{
-				cout << "########\t";
-			}
-		}
-		cout << "\n";
-	}
-	cout << "\n";
-	cout << "RoomInfo : RoomEditing\n";
+
+	// Load
+	Load(stage01Index[_startPoint][_startPoint]);
+
+#ifdef _DEBUG RoomInfo
+	cout << "Stage01Scene => DoorEditing => RoomInfo\n";
 	for (size_t i = 0; i < roomInfo.size(); ++i)
 	{
 		for (size_t j = 0; j < roomInfo[i].size(); ++j)
@@ -101,7 +55,7 @@ HRESULT Stage01Scene::Init()
 			case RoomTypes::BOSS:
 				cout << "BOSS\t";
 				break;
-			case RoomTypes::COURSE:
+			case RoomTypes::CURSE:
 				cout << "COURSE\t";
 				break;
 			case RoomTypes::ITEM:
@@ -119,24 +73,73 @@ HRESULT Stage01Scene::Init()
 			case RoomTypes::START:
 				cout << "START\t";
 				break;
+			case RoomTypes::NONE:
+				cout << "NONE\t";
+				break;
 			default:
-				cout << "####\t";			
+				cout << "####\t";
 			}
 		}
 		cout << "\n";
 	}
 	cout << "\n";
 #endif
-	// Load
-	Load(stage01Index[_startPoint][_startPoint]);
+
+	// Player
+	player = new Player;
+	player->Init();
+	switch (sampleTileType)
+	{
+	case SampleTileTypes::BASEMENT:
+		for (int r = 0; r < TILE_ROW; ++r)
+		{
+			for (int c = 0; c < TILE_COLUMN; ++c)
+			{
+				colliderTileInfo[r * TILE_COLUMN + c] = mainBasementTileInfo[r][c];
+			}
+		};
+		break;
+	case SampleTileTypes::CAVE:
+		for (int r = 0; r < TILE_ROW; ++r)
+		{
+			for (int c = 0; c < TILE_COLUMN; ++c)
+			{
+				colliderTileInfo[r * TILE_COLUMN + c] = mainCaveTileInfo[r][c];
+			}
+		};
+		break;
+	case SampleTileTypes::CELLAR:
+		for (int r = 0; r < TILE_ROW; ++r)
+		{
+			for (int c = 0; c < TILE_COLUMN; ++c)
+			{
+				colliderTileInfo[r * TILE_COLUMN + c] = mainCellarTileInfo[r][c];
+			}
+		};
+		break;
+	case SampleTileTypes::DEPTH:
+		for (int r = 0; r < TILE_ROW; ++r)
+		{
+			for (int c = 0; c < TILE_COLUMN; ++c)
+			{
+				colliderTileInfo[r * TILE_COLUMN + c] = mainDepthTileInfo[r][c];
+			}
+		};
+		break;
+	case SampleTileTypes::NONE:
+		break;
+	default:
+		break;
+	}
+	player->SetTileInfo(colliderTileInfo);
 
 	return S_OK;
 }
 
 void Stage01Scene::Release()
 {
-	SAFE_RELEASE(stage01);
-	SAFE_RELEASE(namingRoom);
+	SAFE_RELEASE(door);
+	SAFE_RELEASE(player);
 }
 
 void Stage01Scene::Update()
@@ -178,11 +181,15 @@ void Stage01Scene::Update()
 		}
 		LoadMap();
 	}
+
+	player->Update();
 }
 
 void Stage01Scene::Render(HDC hdc)
 {
 	TileRender(hdc);
+	door->Render(hdc);
+	player->Render(hdc);
 }
 
 void Stage01Scene::Load(string loadFileName)

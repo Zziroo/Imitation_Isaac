@@ -9,20 +9,20 @@ void Player::Init()
     // playerImg
     switch (playerState)
     {
-    case ObjectStates::IDLE:    case ObjectStates::WALK:    case ObjectStates::ATTACK:
+    case PlayerStates::IDLE:    case PlayerStates::WALK:    case PlayerStates::ATTACK:
         bodyInfo.image = GET_SINGLETON_IMAGE->FindImage("Image/Character/Body.bmp");
         headInfo.image = GET_SINGLETON_IMAGE->FindImage("Image/Character/Head.bmp");
         break;
-    case ObjectStates::HURT:
+    case PlayerStates::HURT:
         otherStateImg = GET_SINGLETON_IMAGE->FindImage("Image/Character/Hurt.bmp");
         break;
-    case ObjectStates::ITEMPICKUP:
+    case PlayerStates::ITEMPICKUP:
         otherStateImg = GET_SINGLETON_IMAGE->FindImage("Image/Character/ItemPickUp.bmp");
         break;
-    case ObjectStates::JUMP:
+    case PlayerStates::JUMP:
         otherStateImg = GET_SINGLETON_IMAGE->FindImage("Image/Character/Jump.bmp");
         break;
-    case ObjectStates::STAT:
+    case PlayerStates::STAT:
         otherStateImg = GET_SINGLETON_IMAGE->FindImage("Image/Character/Stat.bmp");
         break;
     default:
@@ -71,20 +71,20 @@ void Player::Render(HDC hdc)
     // playerImage
     switch (playerState)
     {
-    case ObjectStates::IDLE:    case ObjectStates::WALK:    case ObjectStates::ATTACK:
+    case PlayerStates::IDLE:    case PlayerStates::WALK:    case PlayerStates::ATTACK:
         bodyInfo.image->Render(hdc, (INT)(bodyInfo.pos.x), (INT)(bodyInfo.pos.y), bodyInfo.image->GetCurrFrameX(), bodyInfo.image->GetCurrFrameY());
         headInfo.image->Render(hdc, (INT)(headInfo.pos.x), (INT)(headInfo.pos.y), headInfo.image->GetCurrFrameX(), headInfo.image->GetCurrFrameY());
         break;
-    case ObjectStates::HURT:
+    case PlayerStates::HURT:
         otherStateImg->Render(hdc, (INT)(pos.x), (INT)(pos.y), otherStateImg->GetCurrFrameX(), otherStateImg->GetCurrFrameY());
         break;
-    case ObjectStates::ITEMPICKUP:
+    case PlayerStates::ITEMPICKUP:
         otherStateImg->Render(hdc, (INT)(pos.x), (INT)(pos.y), otherStateImg->GetCurrFrameX(), otherStateImg->GetCurrFrameY());
         break;
-    case ObjectStates::JUMP:
+    case PlayerStates::JUMP:
         otherStateImg->Render(hdc, (INT)(pos.x), (INT)(pos.y), otherStateImg->GetCurrFrameX(), otherStateImg->GetCurrFrameY());
         break;
-    case ObjectStates::STAT:
+    case PlayerStates::STAT:
         otherStateImg->Render(hdc, (INT)(pos.x + ADJUST_SIZE_09), (INT)(pos.y), otherStateImg->GetCurrFrameX(), otherStateImg->GetCurrFrameY());
         break;
     default:
@@ -102,10 +102,13 @@ void Player::OnDebug(HDC hdc)
 {
     if (debugMode)
     {
-        // Tile
-        for (int i = 0; i < (TILE_ROW * TILE_COLUMN); ++i)
+        if (Input::GetButton('M'))
         {
-            Rectangle(hdc, tile[i].rc.left, tile[i].rc.top, tile[i].rc.right, tile[i].rc.bottom);
+            // Tile
+            for (int i = 0; i < (TILE_ROW * TILE_COLUMN); ++i)
+            {
+                Rectangle(hdc, tile[i].rc.left, tile[i].rc.top, tile[i].rc.right, tile[i].rc.bottom);
+            }
         }
 
         // playerRectangle
@@ -162,7 +165,7 @@ void Player::ApplyBodyFrame(ObjectDir moveDir, int bodyFrameY)
 
 void Player::ApplyHeadFrame(ObjectDir moveDir, int headFrameX)
 {
-    if (playerState == ObjectStates::WALK && headInfo.moveDir == moveDir)
+    if (playerState == PlayerStates::WALK && headInfo.moveDir == moveDir)
     {
         headInfo.image->SetCurrFrameX(headFrameX);
     }
@@ -276,7 +279,7 @@ void Player::FireWeapon(int x, int y)
 
 void Player::Move()
 {
-    if (playerState != ObjectStates::IDLE)
+    if (playerState != PlayerStates::IDLE)
     {
         ChangeAnimation();
     }
@@ -354,7 +357,7 @@ void Player::TakeAction()
     // 이동키 땠을 때
     if (Input::GetButtonUp('W') || Input::GetButtonUp('S') || Input::GetButtonUp('D') || Input::GetButtonUp('A'))
     {
-        playerState = ObjectStates::IDLE;
+        playerState = PlayerStates::IDLE;
         bodyInfo.moveDir = ObjectDir::DOWN;
         headInfo.moveDir = ObjectDir::DOWN;
         bodyInfo.image->SetCurrFrameX(START_BODY_FRAME_X);
@@ -371,28 +374,28 @@ void Player::TakeAction()
     // 이동키
     if (Input::GetButton('W'))                               // 상
     {
-        playerState = ObjectStates::WALK;
+        playerState = PlayerStates::WALK;
         bodyInfo.moveDir = ObjectDir::UP;
         headInfo.moveDir = ObjectDir::UP;
         Move();
     }
     else if (Input::GetButton('S'))                          // 하
     {
-        playerState = ObjectStates::WALK;
+        playerState = PlayerStates::WALK;
         bodyInfo.moveDir = ObjectDir::DOWN;
         headInfo.moveDir = ObjectDir::DOWN;
         Move();
     }
     if (Input::GetButton('D'))                               // 우
     {
-        playerState = ObjectStates::WALK;
+        playerState = PlayerStates::WALK;
         bodyInfo.moveDir = ObjectDir::RIGHT;
         headInfo.moveDir = ObjectDir::RIGHT;
         Move();
     }
     else if (Input::GetButton('A'))                           // 좌
     {
-        playerState = ObjectStates::WALK;
+        playerState = PlayerStates::WALK;
         bodyInfo.moveDir = ObjectDir::LEFT;
         headInfo.moveDir = ObjectDir::LEFT;
         Move();
@@ -401,7 +404,7 @@ void Player::TakeAction()
     // 공격키
     if (Input::GetButton(VK_LBUTTON) && !isFire)
     {
-        playerState = ObjectStates::ATTACK;
+        playerState = PlayerStates::ATTACK;
         FireWeapon(g_ptMouse.x, g_ptMouse.y);
     }
 }

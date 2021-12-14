@@ -5,24 +5,24 @@
 
 void ImageManager::Init()
 {
-	// BackGround
+	#pragma region BackGround
 	GET_SINGLETON_IMAGE->AddImage("Image/BackGround/BackGround00.bmp", 1920, 1080);
 	GET_SINGLETON_IMAGE->AddImage("Image/BackGround/BackGround01.bmp", 1920, 1080);
 	GET_SINGLETON_IMAGE->AddImage("Image/BackGround/BackGround02.bmp", 853, 480);
 	GET_SINGLETON_IMAGE->AddImage("Image/BackGround/Title.bmp", 1280, 6400, 1, 8);
-
-	// Isaac
+	#pragma endregion
+	#pragma region Isaac
 	GET_SINGLETON_IMAGE->AddImage("Image/Character/Body.bmp", 540, 99, 10, 3, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Character/Head.bmp", 720, 75, 8, 1, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Character/Hurt.bmp", 324, 99, 3, 1, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Character/ItemPickUp.bmp", 74, 99, 1, 1, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Character/Jump.bmp", 360, 99, 4, 1, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Character/Stat.bmp", 204, 198, 2, 2, true, MAGENTA);
-
-	// Weapon(Tear)
+	#pragma endregion
+	#pragma region Weapon(Tear)
 	GET_SINGLETON_IMAGE->AddImage("Image/Character/Weapon_Tear.bmp", 30, 30, 1, 1, true, MAGENTA);
-
-	// Tilemap/UI
+	#pragma endregion
+	#pragma region Tilemap/UI
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Close.bmp", 40, 40, 1, 1, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Index.bmp", 206, 120, 1, 2, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/UI/List.bmp", 117, 60, 2, 1, true, MAGENTA);
@@ -30,7 +30,8 @@ void ImageManager::Init()
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Next.bmp", 42, 60, 1, 1, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Prev.bmp", 42, 60, 1, 1, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Save.bmp", 60, 120, 1, 2, true, MAGENTA);
-	// Tilemap/Letter
+	#pragma endregion
+	#pragma region Tilemap/Letter
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Letter/Basement.bmp", 137, 20, 1, 1, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Letter/Cave.bmp", 65, 20, 1, 1, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Letter/Cellar.bmp", 97, 20, 1, 1, true, MAGENTA);
@@ -40,7 +41,8 @@ void ImageManager::Init()
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Letter/Object.bmp", 150, 30, 1, 1, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Letter/Shop.bmp", 69, 20, 1, 1, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Letter/Tile.bmp", 80, 30, 1, 1, true, MAGENTA);
-	// Tilemap/Tile
+	#pragma endregion
+	#pragma region Tilemap/Tile
 	// Basement
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Tile/Basement.bmp", 462, 1120, 33, 80, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Tile/Basement00.bmp", 462, 280, 33, 20, true, MAGENTA);
@@ -68,12 +70,19 @@ void ImageManager::Init()
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Tile/Depth02.bmp", 462, 280, 33, 20, true, MAGENTA);
 	// Nothingness
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Tile/Nothingness.bmp", 462, 280, 33, 20, true, MAGENTA);
-
-
-	// Unused
+	#pragma endregion
+	#pragma region Door
+	GET_SINGLETON_IMAGE->AddImage("Image/Door/Boss_Room_Door.bmp", 1008, 504, 4, 2, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Door/Curse_Room_Door.bmp", 784, 196, 4, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Door/Item_Room_Door.bmp", 784, 588, 4, 3, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Door/Normal_Room_Door.bmp", 784, 588, 4, 3, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Door/Satan_Room_Door.bmp", 768, 192, 4, 1, true, MAGENTA);
+	#pragma endregion
+	#pragma region Unused
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Sample_Image.bmp", 1280, 800);
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/UI/On_Off.bmp", 60, 60, 1, 2, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Revert.bmp", 61, 60, 1, 1, true, MAGENTA);
+	#pragma endregion
 }
 
 void ImageManager::Release()

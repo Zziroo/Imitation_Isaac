@@ -21,7 +21,7 @@ private:
 			(LONG)(pos.y + (size * DEVIDE_HALF))						// Bottom
 		};
 		Image*			image = nullptr;
-		ObjectDir			moveDir = ObjectDir::DOWN;						// 이동 방향
+		ObjectDir		moveDir = ObjectDir::DOWN;						// 이동 방향
 	} bodyInfo;
 	struct PlayerHeadInfo
 	{
@@ -37,7 +37,7 @@ private:
 			(LONG)(pos.y + (size * DEVIDE_HALF))						// Bottom
 		};
 		Image*			image = nullptr;
-		ObjectDir			moveDir = ObjectDir::DOWN;						// 이동 방향
+		ObjectDir		moveDir = ObjectDir::DOWN;						// 이동 방향
 		int				blinkEye = 0;									// 눈 깜빡임
 	} headInfo;
 
@@ -45,7 +45,7 @@ private:
 	Image*				otherStateImg = nullptr;
 	WeaponManager*		weaponTear = nullptr;
 
-	ObjectStates		playerState = ObjectStates::IDLE;				// 상태
+	PlayerStates		playerState = PlayerStates::IDLE;				// 상태
 	RECT				colliderRect = {};								// 벽과 충돌 처리용
 
 	bool				isFire = false;									// 무기 발사

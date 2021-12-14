@@ -11,7 +11,7 @@ void RoomEditing::Init()
 	_stageSize = stage01->GetStageSize();
 	// StartPoint를 받기
 	_startPoint = stage01->GetStartPoint();
-	// Stage Size만큼 resize하기
+	// Stage Size만큼 resize하고
 	stage01Index.resize(_stageSize);
 	for (size_t i = 0; i < stage01Index.size(); ++i)
 	{
@@ -22,23 +22,6 @@ void RoomEditing::Init()
 			stage01Index[i][j] = stage01->GetStage()[i][j];
 		}
 	}
-#ifdef _DEBUG Stage01Index
-	// 맵의 정보를 콘솔창에 보여줌
-	cout << "RoomEditing\n";
-	for (size_t i = 0; i < stage01Index.size(); ++i)
-	{
-		for (size_t j = 0; j < stage01Index[i].size(); ++j)
-		{
-			cout << stage01Index[i][j] << "\t";
-			if (stage01Index[i][j].empty())
-			{
-				cout << "########\t";
-			}
-		}
-		cout << "\n";
-	}
-	cout << "\n";
-#endif
 	// Room의 정보를 담기 위한 Stage Size 정하기
 	roomInfo.resize(_stageSize);
 	for (size_t i = 0; i < roomInfo.size(); ++i)
@@ -85,7 +68,7 @@ void RoomEditing::Init()
 			case RoomTypes::BOSS:
 				cout << "BOSS\t";
 				break;
-			case RoomTypes::COURSE:
+			case RoomTypes::CURSE:
 				cout << "COURSE\t";
 				break;
 			case RoomTypes::ITEM:
@@ -102,6 +85,9 @@ void RoomEditing::Init()
 				break;
 			case RoomTypes::START:
 				cout << "START\t";
+				break;
+			case RoomTypes::NONE:
+				cout << "NONE\t";
 				break;
 			default:
 				cout << "####\t";
@@ -139,12 +125,16 @@ void RoomEditing::DeclareRoomName(int row, int column)
 	{
 		if (stage01Index[row][column].substr(11, 1) == "0")
 		{
-			roomInfo[row][column] = RoomTypes::COURSE;
+			roomInfo[row][column] = RoomTypes::CURSE;
 		}
 		if (stage01Index[row][column].substr(11, 1) == "1")
 		{
 			roomInfo[row][column] = RoomTypes::SATAN;
 		}
+	}
+	if(stage01Index[row][column].empty())
+	{
+		roomInfo[row][column] = RoomTypes::NONE;
 	}
 }
 

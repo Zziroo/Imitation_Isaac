@@ -2,15 +2,15 @@
 
 #include "Scene.h"
 
+class DoorEditing;
 class Iamge;
-class MapEditing;
-class RoomEditing;
+class Player;
 class Stage01Scene : public Scene
 {
 private:
+	DoorEditing*				door = nullptr;
 	Image*						drawingAreaImg = nullptr;
-	MapEditing*					stage01 = nullptr;
-	RoomEditing*				namingRoom = nullptr;
+	Player*						player = nullptr;
 
 	SampleTileTypes				sampleTileType = SampleTileTypes::BASEMENT;
 

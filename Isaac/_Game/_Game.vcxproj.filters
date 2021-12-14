@@ -144,6 +144,9 @@
     <ClCompile Include="RoomEditing.cpp">
       <Filter>MainGame\GameObject\RoomEditing</Filter>
     </ClCompile>
+    <ClCompile Include="DoorEditing.cpp">
+      <Filter>MainGame\GameObject\DoorEditing</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainConfig.h">
@@ -217,6 +220,9 @@
     </ClInclude>
     <ClInclude Include="RoomEditing.h">
       <Filter>MainGame\GameObject\RoomEditing</Filter>
+    </ClInclude>
+    <ClInclude Include="DoorEditing.h">
+      <Filter>MainGame\GameObject\DoorEditing</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -66,8 +66,6 @@ inline void SetWindowSize(int sizeX, int sizeY)
 #define MAGENTA				RGB(255, 0, 255)
 
 // GameObject
-enum class ObjectStates { IDLE, WALK, ATTACK, HURT, ITEMPICKUP, JUMP, STAT };
-
 #define ADVANCE_FRAME		1
 
 #define DEVIDE_HALF			0.5f
@@ -81,6 +79,8 @@ typedef struct ArgumentFuncPtr
 } ARGUMENT_PTR, *LPARGUMENT_PTR;
 
 // Player
+enum class PlayerStates { IDLE, WALK, ATTACK, HURT, ITEMPICKUP, JUMP, STAT };
+
 #define ADJUST_SIZE_05			5
 #define ADJUST_SIZE_09			9
 #define ADJUST_SIZE_14			14
@@ -210,4 +210,4 @@ inline void SetTerrain(TILE_INFO* rc, int index)
 }
 
 // RoomEditing
-enum class RoomTypes { BOSS, COURSE, ITEM, NORMAL, PRIVATE, SATAN, START, NONE };
+enum class RoomTypes { BOSS, CURSE, ITEM, NORMAL, PRIVATE, SATAN, START, NONE };
