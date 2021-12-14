@@ -348,7 +348,6 @@ void Player::Move()
                 headInfo.shape = buffHeadShape;
             }
         }
-        
     }
 }
 

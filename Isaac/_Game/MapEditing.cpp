@@ -294,6 +294,125 @@ void MapEditing::CreateStage()
 
 		CreateStage();
 	}
+	// 서로 붙지 말아야할 타일 지정
+	for (size_t i = 0; i < stage01.size(); ++i)
+	{
+		for (size_t j = 0; j < stage01[i].size(); ++j)
+		{
+			// BossMap(BASEMENT01.map) 주면에 DEPTH Tilemap이면 다시 구성
+			if (stage01[i][j] == "Save/BASEMENT01.map")
+			{
+				int topRow = (INT)(i - 1);
+				int bottomRow = (INT)(i + 1);
+				int leftColumn = (INT)(j - 1);
+				int rightColumn = (INT)(j + 1);
+				// 상
+				if (topRow >= 0 && (stage01[topRow][j] == "Save/CELLAR00.map" || stage01[topRow][j] == "Save/DEPTH00.map" || stage01[topRow][j] == "Save/DEPTH01.map"))
+				{
+					// 맵을 초기화
+					for (size_t i = 0; i < stage01.size(); ++i)
+					{
+						stage01[i].clear();
+					}
+
+					CreateStage();
+					return;
+				}
+				// 하
+				if (bottomRow < stageSize && (stage01[bottomRow][j] == "Save/CELLAR00.map" || stage01[bottomRow][j] == "Save/DEPTH00.map" || stage01[bottomRow][j] == "Save/DEPTH01.map"))
+				{
+					// 맵을 초기화
+					for (size_t i = 0; i < stage01.size(); ++i)
+					{
+						stage01[i].clear();
+					}
+
+					CreateStage();
+					return;
+				}
+				// 좌
+				if (leftColumn >= 0 && (stage01[i][leftColumn] == "Save/CELLAR00.map" || stage01[i][leftColumn] == "Save/DEPTH00.map" || stage01[i][leftColumn] == "Save/DEPTH01.map"))
+				{
+					// 맵을 초기화
+					for (size_t i = 0; i < stage01.size(); ++i)
+					{
+						stage01[i].clear();
+					}
+
+					CreateStage();
+					return;
+				}
+				// 우
+				if (rightColumn < stageSize && (stage01[i][rightColumn] == "Save/CELLAR00.map" || stage01[i][rightColumn] == "Save/DEPTH00.map" || stage01[i][rightColumn] == "Save/DEPTH01.map"))
+				{
+					// 맵을 초기화
+					for (size_t i = 0; i < stage01.size(); ++i)
+					{
+						stage01[i].clear();
+					}
+
+					CreateStage();
+					return;
+				}
+			}
+			// DEPTH00.map 과 DEPTH01.map 서로 붙어 있으면 다시 구성
+			if (stage01[i][j] == "Save/DEPTH00.map")
+			{
+				int topRow = (INT)(i - 1);
+				int bottomRow = (INT)(i + 1);
+				int leftColumn = (INT)(j - 1);
+				int rightColumn = (INT)(j + 1);
+				// 상
+				if (topRow >= 0 && stage01[topRow][j] == "Save/DEPTH01.map")
+				{
+					// 맵을 초기화
+					for (size_t i = 0; i < stage01.size(); ++i)
+					{
+						stage01[i].clear();
+					}
+
+					CreateStage();
+					return;
+				}
+				// 하
+				if (bottomRow < stageSize && stage01[bottomRow][j] == "Save/DEPTH01.map")
+				{
+					// 맵을 초기화
+					for (size_t i = 0; i < stage01.size(); ++i)
+					{
+						stage01[i].clear();
+					}
+
+					CreateStage();
+					return;
+				}
+				// 좌
+				if (leftColumn >= 0 && stage01[i][leftColumn] == "Save/DEPTH01.map")
+				{
+					// 맵을 초기화
+					for (size_t i = 0; i < stage01.size(); ++i)
+					{
+						stage01[i].clear();
+					}
+
+					CreateStage();
+					return;
+				}
+				// 우
+				if (rightColumn < stageSize && stage01[i][rightColumn] == "Save/DEPTH01.map")
+				{
+					// 맵을 초기화
+					for (size_t i = 0; i < stage01.size(); ++i)
+					{
+						stage01[i].clear();
+					}
+
+					CreateStage();
+					return;
+				}
+			}
+		}
+	}
 }
 
 void MapEditing::DeginateBossMap(int row, int column)

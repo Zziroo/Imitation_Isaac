@@ -66,6 +66,8 @@ inline void SetWindowSize(int sizeX, int sizeY)
 #define MAGENTA				RGB(255, 0, 255)
 
 // GameObject
+enum class			ObjectDir { UP, DOWN, LEFT, RIGHT, NONE };	// 이동 방향
+
 #define ADVANCE_FRAME		1
 
 #define DEVIDE_HALF			0.5f
@@ -211,3 +213,17 @@ inline void SetTerrain(TILE_INFO* rc, int index)
 
 // RoomEditing
 enum class RoomTypes { BOSS, CURSE, ITEM, NORMAL, PRIVATE, SATAN, START, NONE };
+
+// DoorEditing
+enum class DoorStates { OPENED, CLOSED, LOCKED, NONE };
+
+typedef struct tagDoorInfo
+{
+	Image* img = nullptr;
+	DoorStates						doorState = DoorStates::NONE;
+	ObjectDir						doorDir = ObjectDir::NONE;
+	RoomTypes						roomType = RoomTypes::NONE;
+
+	POINTFLOAT						pos = {};
+	RECT							shape = {};
+} DOOR_INFO;

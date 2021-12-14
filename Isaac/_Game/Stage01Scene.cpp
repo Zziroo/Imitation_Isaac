@@ -40,6 +40,19 @@ HRESULT Stage01Scene::Init()
 			roomInfo[i][j] = door->GetRoomType()[i][j];
 		}
 	}
+	// DOOR_INFO 를 저장
+	doorInfo.resize(_stageSize);
+	for (size_t i = 0; i < doorInfo.size(); ++i)
+	{
+		doorInfo[i].resize(_stageSize);
+		for (size_t j = 0; j < doorInfo[i].size(); ++j)
+		{
+			for (int k = 0; k < 4; ++k)
+			{
+				doorInfo[i][j][k] = door->GetDoorInfo()[i][j][k];
+			}
+		}
+	}
 
 	// Load
 	Load(stage01Index[_startPoint][_startPoint]);
@@ -181,9 +194,82 @@ void Stage01Scene::Update()
 		}
 		LoadMap();
 	}
+	//// 문이 닫혀 있거나 잠겨 있을 때, 플레이어는 통과하지 못함
+	//for (size_t i = 0; i < doorInfo.size(); ++i)
+	//{
+	//	for (size_t j = 0; j < doorInfo[i].size(); ++j)
+	//	{
+	//		for (int k = 0; k < 4; ++k)
+	//		{
+	//			POINTFLOAT	buffPlayerBodyPos = player->GetPlayerBodyPos();
+	//			RECT		buffPlayerBodyShape = player->GetPlayerBodyShape();
+	//			POINTFLOAT	buffPlayerHeadPos = player->GetPlayerHeadPos();
+	//			RECT		buffPlayerHeadShape = player->GetPlayerHeadShape();
+	//			if (IntersectRect(&colliderRect, &buffPlayerHeadShape, &doorInfo[i][j][k].shape) || IntersectRect(&colliderRect, &buffPlayerBodyShape, &doorInfo[i][j][k].shape))
+	//			{
+	//				if (doorInfo[i][j][k].doorState != DoorStates::OPENED || doorInfo[i][j][k].img == nullptr)
+	//				{
+	//					player->SetPlayerBodyPos(buffPlayerBodyPos);
+	//					player->SetPlayerBodyShape(buffPlayerBodyShape);
+	//					player->SetPlayerHeadPos(buffPlayerHeadPos);
+	//					player->SetPlayerHeadShape(buffPlayerHeadShape);
+	//				}
+	//			}
+	//		}
+	//	}
+	//}
+	//// OPENED 상태일 때 player가 접촉하면 다음 맵으로 이동
+	//// 상
+	//if (doorInfo[door->GetLocatedRow()][door->GetLocatedColumn()][0].doorState == DoorStates::OPENED && doorInfo[door->GetLocatedRow()][door->GetLocatedColumn()][0].img != nullptr)
+	//{
+	//	int row = door->GetLocatedRow();
+	//	--stageRow;
+	//	if (stageRow < 0)
+	//	{
+	//		stageRow = 0;
+	//	}
+	//	LoadMap();
+	//	door->SetLocatedRow(--row);
+	//}
+	//// 하
+	//if (doorInfo[door->GetLocatedRow()][door->GetLocatedColumn()][1].doorState == DoorStates::OPENED && doorInfo[door->GetLocatedRow()][door->GetLocatedColumn()][1].img != nullptr)
+	//{
+	//	int row = door->GetLocatedRow();
+	//	++stageRow;
+	//	if (stageRow >= _stageSize)
+	//	{
+	//		stageRow = _stageSize - 1;
+	//	}
+	//	LoadMap();
+	//	door->SetLocatedRow(++row);
+	//}
+	//// 좌
+	//if (doorInfo[door->GetLocatedRow()][door->GetLocatedColumn()][2].doorState == DoorStates::OPENED && doorInfo[door->GetLocatedRow()][door->GetLocatedColumn()][2].img != nullptr)
+	//{
+	//	int column = door->GetLocatedColumn();
+	//	--stageColumn;
+	//	if (stageColumn < 0)
+	//	{
+	//		stageColumn = 0;
+	//	}
+	//	LoadMap();
+	//	door->SetLocatedRow(--column);
+	//}
+	//// 우
+	//if (doorInfo[door->GetLocatedRow()][door->GetLocatedColumn()][3].doorState == DoorStates::OPENED && doorInfo[door->GetLocatedRow()][door->GetLocatedColumn()][3].img != nullptr)
+	//{
+	//	int column = door->GetLocatedColumn();
+	//	++stageColumn;
+	//	if (stageColumn >= _stageSize)
+	//	{
+	//		stageColumn = _stageSize - 1;
+	//	}
+	//	LoadMap();
+	//	door->SetLocatedRow(++column);
+	//}
 
-	door->Update();
 	player->Update();
+	door->Update();
 }
 
 void Stage01Scene::Render(HDC hdc)

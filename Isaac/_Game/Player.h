@@ -63,7 +63,7 @@ public:
 	void				ApplyAttackFrame(int attackFrame, int usuallyFrame);
 	void				ApplyBodyFrame(ObjectDir moveDir, int bodyFrameY);				// Body 프레임 변화
 	void				ApplyHeadFrame(ObjectDir moveDir, int headFrameX);				// Head 프레임 변화
-	void				ApplyHeadDir(ObjectDir moveDir, int attckFrame);					// Head 방향 변화
+	void				ApplyHeadDir(ObjectDir moveDir, int attckFrame);				// Head 방향 변화
 	void				BlinkEye();														// 눈 깜빡임
 	void				ChangeAnimation();												// 애니메이션 변화
 	void				ChangeAttackFrame();
@@ -79,11 +79,17 @@ public:
 	float				CalculateSlope(RECT rc);										// 기울기
 
 	inline void			SetIsFire(bool isFire) { this->isFire = isFire; }
+	inline void			SetPlayerBodyPos(POINTFLOAT pos) { this->bodyInfo.pos = pos; }
+	inline void			SetPlayerBodyShape(RECT rc) { this->bodyInfo.shape = rc; }
 	inline void			SetPlayerHeadPos(POINTFLOAT pos) { this->headInfo.pos = pos; }
+	inline void			SetPlayerHeadShape(RECT rc) { this->headInfo.shape = rc; }
 	inline void			SetPlayerHeadMoveDir(ObjectDir moveDir) { this->headInfo.moveDir = moveDir; }
 
 	inline bool			GetIsFire() { return this->isFire; }
+	inline POINTFLOAT	GetPlayerBodyPos() { return this->bodyInfo.pos; }
+	inline RECT			GetPlayerBodyShape() { return this->bodyInfo.shape; }
 	inline POINTFLOAT	GetPlayerHeadPos() { return this->headInfo.pos; }
+	inline RECT			GetPlayerHeadShape() { return this->headInfo.shape; }
 	inline ObjectDir	GetPlayerHeadMoveDir() { return this->headInfo.moveDir; }
 
 	virtual ~Player() = default;
