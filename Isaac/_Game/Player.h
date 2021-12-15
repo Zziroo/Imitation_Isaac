@@ -45,17 +45,19 @@ private:
 	Image*									otherStateImg = nullptr;
 	WeaponManager*							weaponTear = nullptr;
 
-	vector<vector<array<DOOR_INFO, 4 >>>*	doorInfo = nullptr;
+	vector<vector<array<DOOR_INFO, 4 >>>*	doorInfo = nullptr;												// 문의 정보
 
-	PlayerStates							playerState = PlayerStates::IDLE;				// 상태
-	RECT									colliderRect = {};								// 충돌 처리용
+	PlayerStates							playerState = PlayerStates::IDLE;								// 상태
+	RECT									colliderRect = {};												// 충돌 처리용
 
-	bool									isFire = false;									// 무기 발사
+	bool									isFire = false;													// 무기 발사
 
 	char									text[64] = {};
 
-	int										fireDelay = 0;									// 무기 발사 지연
-	int										_stageSize = 0;
+	int										_stageSize = 0;													// Stage Size
+	int										currColumn = 0;
+	int										currRow = 0;
+	int										fireDelay = 0;													// 무기 발사 지연
 
 public:
 	virtual void							Init() override;
@@ -82,6 +84,8 @@ public:
 
 	float									CalculateSlope(RECT rc);										// 기울기
 
+	inline void								SetCurrCloumn(int column) { this->currColumn = column; }
+	inline void								SetCurrRow(int row) { this->currRow = row; }
 	inline void								SetDoorInfo(vector<vector<array<DOOR_INFO, 4 >>>* doorInfo) { this->doorInfo = doorInfo; }
 	inline void								SetIsFire(bool isFire) { this->isFire = isFire; }
 	inline void								SetPlayerBodyPos(POINTFLOAT pos) { this->bodyInfo.pos = pos; }

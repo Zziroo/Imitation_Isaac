@@ -220,11 +220,26 @@ void Stage01Scene::Update()
 		LoadMap();
 	}
 
+	// Door의 정보를 Update
+	for (size_t i = 0; i < doorInfo.size(); ++i)
+	{
+		for (size_t j = 0; j < doorInfo[i].size(); ++j)
+		{
+			for (int k = 0; k < 4; ++k)
+			{
+				doorInfo[i][j][k] = door->GetDoorInfo()[i][j][k];
+			}
+		}
+	}
+
 	minimap->SetCurrCloumn(currColumn);
 	minimap->SetCurrRow(currRow);
 	minimap->Update();
 	door->Update();
 
+	player->SetCurrCloumn(currColumn);
+	player->SetCurrRow(currRow);
+	player->SetDoorInfo(&doorInfo);
 	player->Update();
 }
 

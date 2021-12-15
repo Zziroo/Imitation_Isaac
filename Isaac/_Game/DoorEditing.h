@@ -31,6 +31,7 @@ public:
 	void										FixItemDoor();
 	void										FixPrivateDoor();
 	void										FixSatanDoor();
+	void										FixStartDoor();
 	void										StoreRoomType(int row, int column);
 
 	inline int									GetLocatedRow() { return this->currLocatedRow; }

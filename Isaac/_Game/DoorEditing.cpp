@@ -80,9 +80,9 @@ void DoorEditing::Init()
 			door[i][j][2].pos.x = 80.0f;												// terrain frameX 2
 			door[i][j][2].pos.y = 400.0f;												// terrain frameY 10
 			door[i][j][2].shape = {
-				(LONG)(door[i][j][2].pos.x - (objectSize * DEVIDE_HALF) - 40),			// shape.left
+				(LONG)(door[i][j][2].pos.x - (objectSize * DEVIDE_HALF)),				// shape.left
 				(LONG)(door[i][j][2].pos.y - (objectSize * DEVIDE_HALF)),				// shape.top
-				(LONG)(door[i][j][2].pos.x + (objectSize * DEVIDE_HALF) - 17),			// shape.right
+				(LONG)(door[i][j][2].pos.x + (objectSize * DEVIDE_HALF)),				// shape.right
 				(LONG)(door[i][j][2].pos.y + (objectSize * DEVIDE_HALF))				// shape.bottom
 			};
 			//RIGHT
@@ -96,7 +96,7 @@ void DoorEditing::Init()
 			door[i][j][3].shape = {
 				(LONG)(door[i][j][3].pos.x - (objectSize * DEVIDE_HALF) + 17),			// shape.left
 				(LONG)(door[i][j][3].pos.y - (objectSize * DEVIDE_HALF)),				// shape.top
-				(LONG)(door[i][j][3].pos.x + (objectSize * DEVIDE_HALF) + 40),			// shape.right
+				(LONG)(door[i][j][3].pos.x + (objectSize * DEVIDE_HALF)),				// shape.right
 				(LONG)(door[i][j][3].pos.y + (objectSize * DEVIDE_HALF))				// shape.bottom
 			};
 		}
@@ -115,17 +115,19 @@ void DoorEditing::Init()
 
 	// 방문하면서 현재의 맵 기준 상, 하, 좌, 우 의 RoomType들을 판별해서 Image들을 저장
 	StoreRoomType(_startPoint, _startPoint);
-	// 특정 방들은 자기 방에 맞는 이미지를 가지게 함
-	FixItemDoor();									// ItemRoom
-	FixSatanDoor();									// SatanRoom
-	FixCurseDoor();									// CurseRoom
-	FixBossDoor();									// BossRoom
-	// Private방은 안의 모든 문이 열려있다.
-	FixPrivateDoor();
 
 	// 현재 맵의 위치
 	currLocatedRow = _startPoint;
 	currLocatedColumn = _startPoint;
+
+	// 특정 방들은 자기 방에 맞는 이미지를 가지게 함
+	FixBossDoor();									// BossRoom
+	FixCurseDoor();									// CurseRoom
+	FixItemDoor();									// ItemRoom
+	FixSatanDoor();									// SatanRoom
+	// 특정 방들은 안의 모든 문이 열려있다.
+	FixPrivateDoor();
+	FixStartDoor();
 
 	// DoorState에 따른 이미지 프레임 초기화
 	for (size_t i = 0; i < door.size(); ++i)
@@ -185,12 +187,15 @@ void DoorEditing::Update()
 	}
 	#pragma region SampleChangeDoorState
 	// 예시) 키입력을 했을 때 해당 맵의 문을 OPENED 상태로 변화
-	if (Input::GetButtonDown('O'))
+	if (Input::GetButtonDown('O') )
 	{
-		door[currLocatedRow][currLocatedColumn][0].doorState = DoorStates::OPENED;
-		door[currLocatedRow][currLocatedColumn][1].doorState = DoorStates::OPENED;
-		door[currLocatedRow][currLocatedColumn][2].doorState = DoorStates::OPENED;
-		door[currLocatedRow][currLocatedColumn][3].doorState = DoorStates::OPENED;
+		for (int i = 0; i < 4; ++i)
+		{
+			if (door[currLocatedRow][currLocatedColumn][i].img != nullptr)
+			{
+				door[currLocatedRow][currLocatedColumn][i].doorState = DoorStates::OPENED;
+			}
+		}
 	}
 	if (Input::GetButtonDown('C'))
 	{
@@ -229,9 +234,9 @@ void DoorEditing::Update()
 		objectSize = 10.0f;
 		door[currLocatedRow][currLocatedColumn][2].shape = {
 			(LONG)(door[currLocatedRow][currLocatedColumn][2].pos.x - (objectSize * DEVIDE_HALF)),				// shape.left
-			(LONG)(door[currLocatedRow][currLocatedColumn][2].pos.y - (objectSize * DEVIDE_HALF)),				// shape.top
+			(LONG)(door[currLocatedRow][currLocatedColumn][2].pos.y - (objectSize * DEVIDE_HALF) - 15),			// shape.top
 			(LONG)(door[currLocatedRow][currLocatedColumn][2].pos.x + (objectSize * DEVIDE_HALF)),				// shape.right
-			(LONG)(door[currLocatedRow][currLocatedColumn][2].pos.y + (objectSize * DEVIDE_HALF))				// shape.bottom
+			(LONG)(door[currLocatedRow][currLocatedColumn][2].pos.y + (objectSize * DEVIDE_HALF) + 15)			// shape.bottom
 		};
 	}
 	// 우
@@ -240,9 +245,9 @@ void DoorEditing::Update()
 		objectSize = 10.0f;
 		door[currLocatedRow][currLocatedColumn][3].shape = {
 			(LONG)(door[currLocatedRow][currLocatedColumn][3].pos.x - (objectSize * DEVIDE_HALF)),				// shape.left
-			(LONG)(door[currLocatedRow][currLocatedColumn][3].pos.y - (objectSize * DEVIDE_HALF)),				// shape.top
+			(LONG)(door[currLocatedRow][currLocatedColumn][3].pos.y - (objectSize * DEVIDE_HALF) - 15),			// shape.top
 			(LONG)(door[currLocatedRow][currLocatedColumn][3].pos.x + (objectSize * DEVIDE_HALF)),				// shape.right
-			(LONG)(door[currLocatedRow][currLocatedColumn][3].pos.y + (objectSize * DEVIDE_HALF))				// shape.bottom
+			(LONG)(door[currLocatedRow][currLocatedColumn][3].pos.y + (objectSize * DEVIDE_HALF) + 15)			// shape.bottom
 		};
 	}
 	#pragma region SampleChangeMap
@@ -566,6 +571,14 @@ void DoorEditing::FixSatanDoor()
 			}
 		}
 	}
+}
+
+void DoorEditing::FixStartDoor()
+{
+	door[currLocatedRow][currLocatedColumn][0].doorState = DoorStates::OPENED;
+	door[currLocatedRow][currLocatedColumn][1].doorState = DoorStates::OPENED;
+	door[currLocatedRow][currLocatedColumn][2].doorState = DoorStates::OPENED;
+	door[currLocatedRow][currLocatedColumn][3].doorState = DoorStates::OPENED;
 }
 
 void DoorEditing::StoreRoomType(int row, int column)

@@ -349,61 +349,149 @@ void Player::Move()
             }
         }
     }
-    // 닫힌 문(잠긴 문)과 부딪혔을 때 이동하기 않게 하기
-    for (int i = 0; i < _stageSize; ++i)
+
+    // 열린 문과 부딪혔을 때 반대편으로 이동하기
+#pragma region DoorStates::OPENED
+    // 위쪽 문이 몸통 부분과 겹치고
+    if (IntersectRect(&colliderRect, &bodyInfo.shape, &doorInfo[0][currRow][currColumn][0].shape))
     {
-        for (int j = 0; j < _stageSize; ++j)
+        // 위쪽 문이 열려있으면
+        if (doorInfo[0][currRow][currColumn][0].doorState == DoorStates::OPENED && doorInfo[0][currRow][currColumn][0].img != nullptr)
         {
-            // 위쪽 문이 열려있지 않고
-            if (doorInfo[0][i][j][0].doorState == DoorStates::CLOSED || doorInfo[0][i][j][0].doorState == DoorStates::LOCKED)
-            {
-                // 몸통 부분이 겹치면
-                if (IntersectRect(&colliderRect, &bodyInfo.shape, &doorInfo[0][i][j][0].shape))
-                {
-                    bodyInfo.pos = buffBodyPos;
-                    bodyInfo.shape = buffBodyShape;
-                    headInfo.pos = buffHeadPos;
-                    headInfo.shape = buffHeadShape;
-                }
-            }
-            // 아래쪽 문이 열려있지 않고
-            if (doorInfo[0][i][j][1].doorState == DoorStates::CLOSED || doorInfo[0][i][j][1].doorState == DoorStates::LOCKED)
-            {
-                // 머리 부분이나 몸통 부분이 겹치면
-                if (IntersectRect(&colliderRect, &headInfo.shape, &doorInfo[0][i][j][1].shape) || IntersectRect(&colliderRect, &bodyInfo.shape, &doorInfo[0][i][j][1].shape))
-                {
-                    bodyInfo.pos = buffBodyPos;
-                    bodyInfo.shape = buffBodyShape;
-                    headInfo.pos = buffHeadPos;
-                    headInfo.shape = buffHeadShape;
-                }
-            }
-            // 왼쪽 문이 열려있지 않고
-            if (doorInfo[0][i][j][2].doorState == DoorStates::CLOSED || doorInfo[0][i][j][2].doorState == DoorStates::LOCKED)
-            {
-                // 머리 부분이나 몸통 부분이 겹치면
-                if (IntersectRect(&colliderRect, &headInfo.shape, &doorInfo[0][i][j][2].shape) || IntersectRect(&colliderRect, &bodyInfo.shape, &doorInfo[0][i][j][2].shape))
-                {
-                    bodyInfo.pos = buffBodyPos;
-                    bodyInfo.shape = buffBodyShape;
-                    headInfo.pos = buffHeadPos;
-                    headInfo.shape = buffHeadShape;
-                }
-            }
-            // 오른쪽 문이 열려있지 않고
-            if (doorInfo[0][i][j][3].doorState == DoorStates::CLOSED || doorInfo[0][i][j][3].doorState == DoorStates::LOCKED)
-            {
-                // 머리 부분이나 몸통 부분이 겹치면
-                if (IntersectRect(&colliderRect, &headInfo.shape, &doorInfo[0][i][j][3].shape) || IntersectRect(&colliderRect, &bodyInfo.shape, &doorInfo[0][i][j][3].shape))
-                {
-                    bodyInfo.pos = buffBodyPos;
-                    bodyInfo.shape = buffBodyShape;
-                    headInfo.pos = buffHeadPos;
-                    headInfo.shape = buffHeadShape;
-                }
-            }
+            headInfo.pos = { 640.0f, 625.0f };
+            headInfo.shape = {
+                (LONG)(headInfo.pos.x - (PLAYER_HEADSIZE * DEVIDE_HALF) - ADJUST_SIZE_05),
+                (LONG)(headInfo.pos.y - (PLAYER_HEADSIZE * DEVIDE_HALF)),
+                (LONG)(headInfo.pos.x + (PLAYER_HEADSIZE * DEVIDE_HALF) + ADJUST_SIZE_05),
+                (LONG)(headInfo.pos.y + (PLAYER_HEADSIZE * DEVIDE_HALF))
+            };
+            bodyInfo.pos = { headInfo.pos.x, headInfo.pos.y + +42.5f };
+            bodyInfo.shape = {
+                (LONG)(bodyInfo.pos.x - (PLAYER_BODYSIZE * DEVIDE_HALF) - ADJUST_SIZE_14),
+                (LONG)(bodyInfo.pos.y - (PLAYER_BODYSIZE * DEVIDE_HALF)),
+                (LONG)(bodyInfo.pos.x + (PLAYER_BODYSIZE * DEVIDE_HALF) + ADJUST_SIZE_14),
+                (LONG)(bodyInfo.pos.y + (PLAYER_BODYSIZE * DEVIDE_HALF))
+            };
         }
     }
+    // 아래쪽 문이 몸통 부분과 겹치고
+    if (IntersectRect(&colliderRect, &headInfo.shape, &doorInfo[0][currRow][currColumn][1].shape))
+    {
+        // 아래쪽 문이 열려있으면
+        if (doorInfo[0][currRow][currColumn][1].doorState == DoorStates::OPENED && doorInfo[0][currRow][currColumn][1].img != nullptr)
+        {
+            headInfo.pos = { 640.0f, 95.0f };
+            headInfo.shape = {
+                (LONG)(headInfo.pos.x - (PLAYER_HEADSIZE * DEVIDE_HALF) - ADJUST_SIZE_05),
+                (LONG)(headInfo.pos.y - (PLAYER_HEADSIZE * DEVIDE_HALF)),
+                (LONG)(headInfo.pos.x + (PLAYER_HEADSIZE * DEVIDE_HALF) + ADJUST_SIZE_05),
+                (LONG)(headInfo.pos.y + (PLAYER_HEADSIZE * DEVIDE_HALF))
+            };
+            bodyInfo.pos = { headInfo.pos.x, headInfo.pos.y + +42.5f };
+            bodyInfo.shape = {
+                (LONG)(bodyInfo.pos.x - (PLAYER_BODYSIZE * DEVIDE_HALF) - ADJUST_SIZE_14),
+                (LONG)(bodyInfo.pos.y - (PLAYER_BODYSIZE * DEVIDE_HALF)),
+                (LONG)(bodyInfo.pos.x + (PLAYER_BODYSIZE * DEVIDE_HALF) + ADJUST_SIZE_14),
+                (LONG)(bodyInfo.pos.y + (PLAYER_BODYSIZE * DEVIDE_HALF))
+            };
+        }
+    }
+    // 왼쪽 문이 몸통 부분과 겹치고
+    if (IntersectRect(&colliderRect, &bodyInfo.shape, &doorInfo[0][currRow][currColumn][2].shape) || IntersectRect(&colliderRect, &headInfo.shape, &doorInfo[0][currRow][currColumn][2].shape))
+    {
+        // 왼쪽 문이 열려있으면
+        if (doorInfo[0][currRow][currColumn][2].doorState == DoorStates::OPENED && doorInfo[0][currRow][currColumn][2].img != nullptr)
+        {
+            headInfo.pos = { 1100.0f, 380.0f };
+            headInfo.shape = {
+                (LONG)(headInfo.pos.x - (PLAYER_HEADSIZE * DEVIDE_HALF) - ADJUST_SIZE_05),
+                (LONG)(headInfo.pos.y - (PLAYER_HEADSIZE * DEVIDE_HALF)),
+                (LONG)(headInfo.pos.x + (PLAYER_HEADSIZE * DEVIDE_HALF) + ADJUST_SIZE_05),
+                (LONG)(headInfo.pos.y + (PLAYER_HEADSIZE * DEVIDE_HALF))
+            };
+            bodyInfo.pos = { headInfo.pos.x, headInfo.pos.y + +42.5f };
+            bodyInfo.shape = {
+                (LONG)(bodyInfo.pos.x - (PLAYER_BODYSIZE * DEVIDE_HALF) - ADJUST_SIZE_14),
+                (LONG)(bodyInfo.pos.y - (PLAYER_BODYSIZE * DEVIDE_HALF)),
+                (LONG)(bodyInfo.pos.x + (PLAYER_BODYSIZE * DEVIDE_HALF) + ADJUST_SIZE_14),
+                (LONG)(bodyInfo.pos.y + (PLAYER_BODYSIZE * DEVIDE_HALF))
+            };
+        }
+    }
+    // 오른쪽 문이 몸통 부분과 겹치고
+    if (IntersectRect(&colliderRect, &bodyInfo.shape, &doorInfo[0][currRow][currColumn][3].shape) || IntersectRect(&colliderRect, &headInfo.shape, &doorInfo[0][currRow][currColumn][3].shape))
+    {
+        // 오른쪽 문이 열려있으면
+        if (doorInfo[0][currRow][currColumn][3].doorState == DoorStates::OPENED && doorInfo[0][currRow][currColumn][3].img != nullptr)
+        {
+            headInfo.pos = { 170.0f, 380.0f };
+            headInfo.shape = {
+                (LONG)(headInfo.pos.x - (PLAYER_HEADSIZE * DEVIDE_HALF) - ADJUST_SIZE_05),
+                (LONG)(headInfo.pos.y - (PLAYER_HEADSIZE * DEVIDE_HALF)),
+                (LONG)(headInfo.pos.x + (PLAYER_HEADSIZE * DEVIDE_HALF) + ADJUST_SIZE_05),
+                (LONG)(headInfo.pos.y + (PLAYER_HEADSIZE * DEVIDE_HALF))
+            };
+            bodyInfo.pos = { headInfo.pos.x, headInfo.pos.y + +42.5f };
+            bodyInfo.shape = {
+                (LONG)(bodyInfo.pos.x - (PLAYER_BODYSIZE * DEVIDE_HALF) - ADJUST_SIZE_14),
+                (LONG)(bodyInfo.pos.y - (PLAYER_BODYSIZE * DEVIDE_HALF)),
+                (LONG)(bodyInfo.pos.x + (PLAYER_BODYSIZE * DEVIDE_HALF) + ADJUST_SIZE_14),
+                (LONG)(bodyInfo.pos.y + (PLAYER_BODYSIZE * DEVIDE_HALF))
+            };
+        }
+    }
+#pragma endregion
+#pragma region DoorStates::CLOSED/LOCKED
+    // 닫힌 문(잠긴 문)과 부딪혔을 때 이동하기 않게 하기
+    // 위쪽 문과 몸통 부분이 겹치고
+    if (IntersectRect(&colliderRect, &bodyInfo.shape, &doorInfo[0][currRow][currColumn][0].shape))
+    {
+        // 위쪽 문이 열려있지 않으면
+        if (doorInfo[0][currRow][currColumn][0].doorState == DoorStates::CLOSED || doorInfo[0][currRow][currColumn][0].doorState == DoorStates::LOCKED)
+        {
+            bodyInfo.pos = buffBodyPos;
+            bodyInfo.shape = buffBodyShape;
+            headInfo.pos = buffHeadPos;
+            headInfo.shape = buffHeadShape;
+        }
+    }
+    // 아래쪽 문이 머리 부분이나 몸통 부분이 겹치고
+    if (IntersectRect(&colliderRect, &headInfo.shape, &doorInfo[0][currRow][currColumn][1].shape) || IntersectRect(&colliderRect, &bodyInfo.shape, &doorInfo[0][currRow][currColumn][1].shape))
+    {
+        // 아래쪽 문이 열려있지 않으면
+        if (doorInfo[0][currRow][currColumn][1].doorState == DoorStates::CLOSED || doorInfo[0][currRow][currColumn][1].doorState == DoorStates::LOCKED)
+        {
+            bodyInfo.pos = buffBodyPos;
+            bodyInfo.shape = buffBodyShape;
+            headInfo.pos = buffHeadPos;
+            headInfo.shape = buffHeadShape;
+        }
+    }
+    // 왼쪽 문이 머리 부분이나 몸통 부분이 겹치고
+    if (IntersectRect(&colliderRect, &headInfo.shape, &doorInfo[0][currRow][currColumn][2].shape) || IntersectRect(&colliderRect, &bodyInfo.shape, &doorInfo[0][currRow][currColumn][2].shape))
+    {
+        // 왼쪽 문이 열려있지 않으면
+        if (doorInfo[0][currRow][currColumn][2].doorState == DoorStates::CLOSED || doorInfo[0][currRow][currColumn][2].doorState == DoorStates::LOCKED)
+        {
+            bodyInfo.pos = buffBodyPos;
+            bodyInfo.shape = buffBodyShape;
+            headInfo.pos = buffHeadPos;
+            headInfo.shape = buffHeadShape;
+        }
+    }
+    // 오른쪽 문이 머리 부분이나 몸통 부분이 겹치고
+    if (IntersectRect(&colliderRect, &headInfo.shape, &doorInfo[0][currRow][currColumn][3].shape) || IntersectRect(&colliderRect, &bodyInfo.shape, &doorInfo[0][currRow][currColumn][3].shape))
+    {
+        // 오른쪽 문이 열려있지 않으면
+        if (doorInfo[0][currRow][currColumn][3].doorState == DoorStates::CLOSED || doorInfo[0][currRow][currColumn][3].doorState == DoorStates::LOCKED)
+        {
+            bodyInfo.pos = buffBodyPos;
+            bodyInfo.shape = buffBodyShape;
+            headInfo.pos = buffHeadPos;
+            headInfo.shape = buffHeadShape;
+        }
+    }
+#pragma endregion
 }
 
 void Player::TakeAction()
