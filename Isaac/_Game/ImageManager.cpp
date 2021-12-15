@@ -78,6 +78,19 @@ void ImageManager::Init()
 	GET_SINGLETON_IMAGE->AddImage("Image/Door/Normal_Room_Door.bmp", 640, 480, 4, 3, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Door/Satan_Room_Door.bmp", 640, 160, 4, 1, true, MAGENTA);
 	#pragma endregion
+	#pragma region Minimap
+	GET_SINGLETON_IMAGE->AddImage("Image/Minimap/MinimapBackGround00.bmp", 159, 141, 1, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Minimap/MinimapBackGround01.bmp", 147, 129, 1, 1, true, MAGENTA);
+	// Site
+	GET_SINGLETON_IMAGE->AddImage("Image/Minimap/AroundedSite.bmp", 27, 24, 1, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Minimap/LocatedSite.bmp", 27, 24, 1, 1, true, MAGENTA);
+	// Icon
+	GET_SINGLETON_IMAGE->AddImage("Image/Minimap/BossIcon.bmp", 16, 15, 1, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Minimap/CurseIcon.bmp", 15, 15, 1, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Minimap/ItemIcon.bmp", 16, 15, 1, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Minimap/PrivateIcon.bmp", 14, 15, 1, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Minimap/SatanIcon.bmp", 14, 15, 1, 1, true, MAGENTA);
+	#pragma endregion
 	#pragma region Unused
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Sample_Image.bmp", 1280, 800);
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/UI/On_Off.bmp", 60, 60, 1, 2, true, MAGENTA);

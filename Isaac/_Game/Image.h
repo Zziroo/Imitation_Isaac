@@ -58,10 +58,11 @@ public:
 	void			Release();
 
 	void			Render(HDC hdc);
-	void			Render(HDC hdc, int destX, int destY);															// 이미지 데이터를 화면에 복사
-	void			Render(HDC hdc, int destX, int destY, int frameX, int frameY);									// 프레임을 지정해서 이미지 데이터를 화면에 복사
+	void			Render(HDC hdc, int destX, int destY);																								// 이미지 데이터를 화면에 복사
+	void			Render(HDC hdc, int destX, int destY, int frameX, int frameY);																		// 프레임을 지정해서 이미지 데이터를 화면에 복사
 
-	void			EnlargeSampleTile(HDC hdc, int destX, int destY, int frameX, int frameY, float scale = 1.0f);	// 크기를 확대하여 Tilemap 이미지 데이터를 화면에 복사
+	void			EnlargeSampleTile(HDC hdc, int destX, int destY, int frameX, int frameY, float scale = 1.0f);										// 크기를 확대하여 Tilemap 이미지 데이터를 화면에 복사
+	void			TransparentRender(HDC hdc, int destX, int destY, int frameX, int frameY, float transparency = 255.0f);								// 이미지를 투명화 처리
 
 	inline HDC		GetMemDC() { if (imageInfo) return imageInfo->hMemDc; return NULL; }
 

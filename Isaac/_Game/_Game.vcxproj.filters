@@ -73,6 +73,9 @@
     <Filter Include="MainGame\GameObject\RoomEditing">
       <UniqueIdentifier>{00e61f00-5601-471a-8767-604fbc916aa7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\GameObject\Minimap">
+      <UniqueIdentifier>{98449c08-7073-417b-8b73-e3f889efe621}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -146,6 +149,9 @@
     </ClCompile>
     <ClCompile Include="DoorEditing.cpp">
       <Filter>MainGame\GameObject\DoorEditing</Filter>
+    </ClCompile>
+    <ClCompile Include="Minimap.cpp">
+      <Filter>MainGame\GameObject\Minimap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -223,6 +229,9 @@
     </ClInclude>
     <ClInclude Include="DoorEditing.h">
       <Filter>MainGame\GameObject\DoorEditing</Filter>
+    </ClInclude>
+    <ClInclude Include="Minimap.h">
+      <Filter>MainGame\GameObject\Minimap</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

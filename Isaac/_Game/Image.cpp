@@ -208,3 +208,42 @@ void Image::EnlargeSampleTile(HDC hdc, int destX, int destY, int frameX, int fra
 			SRCCOPY);
 	}
 }
+
+void Image::TransparentRender(HDC hdc, int destX, int destY, int frameX, int frameY, float transparency)
+{
+	BLENDFUNCTION _bf;
+	_bf.BlendOp = 0;
+	_bf.BlendFlags = 0;
+	_bf.SourceConstantAlpha = transparency;
+	_bf.AlphaFormat = 0;
+
+	if (isTransparent)
+	{
+		GdiAlphaBlend(
+			hdc,
+			destX - (imageInfo->frameWidth / 2),
+			destY - (imageInfo->frameHeight / 2),
+			(INT)(imageInfo->frameWidth),
+			(INT)(imageInfo->frameHeight),
+
+			imageInfo->hMemDc,
+			imageInfo->frameWidth * frameX,
+			imageInfo->frameHeight * frameY,
+			imageInfo->frameWidth,
+			imageInfo->frameHeight,
+			_bf);
+	}
+	else
+	{
+		BitBlt(
+			hdc,
+			destX - (imageInfo->frameWidth / 2),
+			destY - (imageInfo->frameHeight / 2),
+			imageInfo->frameWidth,
+			imageInfo->frameHeight,
+			imageInfo->hMemDc,
+			imageInfo->frameWidth * frameX,
+			imageInfo->frameHeight * frameY,
+			SRCCOPY);
+	}
+}
