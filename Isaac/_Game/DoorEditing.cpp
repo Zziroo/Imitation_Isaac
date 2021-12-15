@@ -192,6 +192,13 @@ void DoorEditing::Update()
 		door[currLocatedRow][currLocatedColumn][2].doorState = DoorStates::OPENED;
 		door[currLocatedRow][currLocatedColumn][3].doorState = DoorStates::OPENED;
 	}
+	if (Input::GetButtonDown('C'))
+	{
+		door[currLocatedRow][currLocatedColumn][0].doorState = DoorStates::CLOSED;
+		door[currLocatedRow][currLocatedColumn][1].doorState = DoorStates::CLOSED;
+		door[currLocatedRow][currLocatedColumn][2].doorState = DoorStates::CLOSED;
+		door[currLocatedRow][currLocatedColumn][3].doorState = DoorStates::CLOSED;
+	}
 	#pragma endregion
 	// DoorStates::OPENED 이고, 이미지가 있다면 shape을 작게 만든다.
 	// 상

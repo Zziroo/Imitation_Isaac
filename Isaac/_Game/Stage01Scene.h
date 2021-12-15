@@ -15,7 +15,6 @@ private:
 	RECT									colliderRect = {};										// 문과 충돌 처리용
 	SampleTileTypes							sampleTileType = SampleTileTypes::BASEMENT;
 
-
 	TILE_INFO								colliderTileInfo[TILE_ROW * TILE_COLUMN];
 	TILE_INFO								mainBasementTileInfo[BASEMENT_TILE_ROW][TILE_COLUMN];
 	TILE_INFO								mainCaveTileInfo[CAVE_TILE_ROW][TILE_COLUMN];
