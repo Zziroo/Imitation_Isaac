@@ -70,6 +70,8 @@ void ImageManager::Init()
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Tile/Depth02.bmp", 462, 280, 33, 20, true, MAGENTA);
 	// Nothingness
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Tile/Nothingness.bmp", 462, 280, 33, 20, true, MAGENTA);
+	// Info
+	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Tile/Info.bmp", 900, 268, 1, 1, true, MAGENTA);
 	#pragma endregion
 	#pragma region Door
 	GET_SINGLETON_IMAGE->AddImage("Image/Door/Boss_Room_Door.bmp", 640, 320, 4, 2, true, MAGENTA);

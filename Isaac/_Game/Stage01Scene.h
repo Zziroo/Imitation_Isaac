@@ -11,6 +11,7 @@ class Stage01Scene : public Scene
 private:
 	DoorEditing*							door = nullptr;
 	Image*									drawingAreaImg = nullptr;
+	Image*									infomationStartImg = nullptr;
 	Minimap*								minimap = nullptr;
 	Player*									player = nullptr;
 

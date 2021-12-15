@@ -10,6 +10,8 @@ HRESULT Stage01Scene::Init()
 {
 	// Tilemap Image
 	drawingAreaImg = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Tile/Basement.bmp");
+	// StartPoint Infomation Image
+	infomationStartImg = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Tile/Info.bmp");
 
 	// Door
 	door = new DoorEditing;
@@ -256,10 +258,10 @@ void Stage01Scene::Update()
 		if (doorInfo[currRow][currColumn][1].roomType != RoomTypes::NONE || doorInfo[currRow][currColumn][1].img != nullptr)
 		{
 			++currRow;
-		}
-		if (currRow >= _stageSize)
-		{
-			currRow = _stageSize - 1;
+			if (currRow >= _stageSize)
+			{
+				currRow = _stageSize - 1;
+			}
 		}
 		LoadMap();
 		player->SetEnterNextDownDoor(false);
@@ -270,10 +272,10 @@ void Stage01Scene::Update()
 		if (doorInfo[currRow][currColumn][2].roomType != RoomTypes::NONE || doorInfo[currRow][currColumn][2].img != nullptr)
 		{
 			--currColumn;
-		}
-		if (currColumn < 0)
-		{
-			currColumn = 0;
+			if (currColumn < 0)
+			{
+				currColumn = 0;
+			}
 		}
 		LoadMap();
 		player->SetEnterNextLeftDoor(false);
@@ -284,12 +286,11 @@ void Stage01Scene::Update()
 		if (doorInfo[currRow][currColumn][3].roomType != RoomTypes::NONE || doorInfo[currRow][currColumn][3].img != nullptr)
 		{
 			++currColumn;
+			if (currColumn >= _stageSize)
+			{
+				currColumn = _stageSize - 1;
+			}
 		}
-		if (currColumn >= _stageSize)
-		{
-			currColumn = _stageSize - 1;
-		}
-
 		LoadMap();
 		player->SetEnterNextRightDoor(false);
 	}
@@ -306,6 +307,10 @@ void Stage01Scene::Update()
 void Stage01Scene::Render(HDC hdc)
 {
 	TileRender(hdc);
+	if (currRow == _startPoint && currColumn == _startPoint)
+	{
+		infomationStartImg->Render(hdc, WIN_SIZE_X * DEVIDE_HALF, WIN_SIZE_Y * DEVIDE_HALF);
+	}
 	door->Render(hdc);
 	player->Render(hdc);
 	minimap->Render(hdc);
