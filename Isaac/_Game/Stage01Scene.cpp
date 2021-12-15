@@ -146,6 +146,8 @@ HRESULT Stage01Scene::Init()
 		break;
 	}
 	player->SetTileInfo(colliderTileInfo);
+	player->SetDoorInfo(&doorInfo);
+	player->SetStageSize(_stageSize);
 
 	// Minimap
 	minimap = new Minimap;
@@ -218,12 +220,12 @@ void Stage01Scene::Update()
 		LoadMap();
 	}
 
-	player->Update();
-
 	minimap->SetCurrCloumn(currColumn);
 	minimap->SetCurrRow(currRow);
 	minimap->Update();
 	door->Update();
+
+	player->Update();
 }
 
 void Stage01Scene::Render(HDC hdc)

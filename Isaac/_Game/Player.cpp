@@ -349,6 +349,61 @@ void Player::Move()
             }
         }
     }
+    // 닫힌 문(잠긴 문)과 부딪혔을 때 이동하기 않게 하기
+    for (int i = 0; i < _stageSize; ++i)
+    {
+        for (int j = 0; j < _stageSize; ++j)
+        {
+            // 위쪽 문이 열려있지 않고
+            if (doorInfo[0][i][j][0].doorState == DoorStates::CLOSED || doorInfo[0][i][j][0].doorState == DoorStates::LOCKED)
+            {
+                // 몸통 부분이 겹치면
+                if (IntersectRect(&colliderRect, &bodyInfo.shape, &doorInfo[0][i][j][0].shape))
+                {
+                    bodyInfo.pos = buffBodyPos;
+                    bodyInfo.shape = buffBodyShape;
+                    headInfo.pos = buffHeadPos;
+                    headInfo.shape = buffHeadShape;
+                }
+            }
+            // 아래쪽 문이 열려있지 않고
+            if (doorInfo[0][i][j][1].doorState == DoorStates::CLOSED || doorInfo[0][i][j][1].doorState == DoorStates::LOCKED)
+            {
+                // 머리 부분이나 몸통 부분이 겹치면
+                if (IntersectRect(&colliderRect, &headInfo.shape, &doorInfo[0][i][j][1].shape) || IntersectRect(&colliderRect, &bodyInfo.shape, &doorInfo[0][i][j][1].shape))
+                {
+                    bodyInfo.pos = buffBodyPos;
+                    bodyInfo.shape = buffBodyShape;
+                    headInfo.pos = buffHeadPos;
+                    headInfo.shape = buffHeadShape;
+                }
+            }
+            // 왼쪽 문이 열려있지 않고
+            if (doorInfo[0][i][j][2].doorState == DoorStates::CLOSED || doorInfo[0][i][j][2].doorState == DoorStates::LOCKED)
+            {
+                // 머리 부분이나 몸통 부분이 겹치면
+                if (IntersectRect(&colliderRect, &headInfo.shape, &doorInfo[0][i][j][2].shape) || IntersectRect(&colliderRect, &bodyInfo.shape, &doorInfo[0][i][j][2].shape))
+                {
+                    bodyInfo.pos = buffBodyPos;
+                    bodyInfo.shape = buffBodyShape;
+                    headInfo.pos = buffHeadPos;
+                    headInfo.shape = buffHeadShape;
+                }
+            }
+            // 오른쪽 문이 열려있지 않고
+            if (doorInfo[0][i][j][3].doorState == DoorStates::CLOSED || doorInfo[0][i][j][3].doorState == DoorStates::LOCKED)
+            {
+                // 머리 부분이나 몸통 부분이 겹치면
+                if (IntersectRect(&colliderRect, &headInfo.shape, &doorInfo[0][i][j][3].shape) || IntersectRect(&colliderRect, &bodyInfo.shape, &doorInfo[0][i][j][3].shape))
+                {
+                    bodyInfo.pos = buffBodyPos;
+                    bodyInfo.shape = buffBodyShape;
+                    headInfo.pos = buffHeadPos;
+                    headInfo.shape = buffHeadShape;
+                }
+            }
+        }
+    }
 }
 
 void Player::TakeAction()
@@ -371,32 +426,36 @@ void Player::TakeAction()
         headInfo.image->SetCurrFrameX(HEAD_LOOK_DOWN);
     }
     // 이동키
-    if (Input::GetButton('W'))                               // 상
-    {
-        playerState = PlayerStates::WALK;
-        bodyInfo.moveDir = ObjectDir::UP;
-        headInfo.moveDir = ObjectDir::UP;
-        Move();
-    }
-    else if (Input::GetButton('S'))                          // 하
-    {
-        playerState = PlayerStates::WALK;
-        bodyInfo.moveDir = ObjectDir::DOWN;
-        headInfo.moveDir = ObjectDir::DOWN;
-        Move();
-    }
-    if (Input::GetButton('D'))                               // 우
+    // 우
+    if (Input::GetButton('D'))
     {
         playerState = PlayerStates::WALK;
         bodyInfo.moveDir = ObjectDir::RIGHT;
         headInfo.moveDir = ObjectDir::RIGHT;
         Move();
     }
-    else if (Input::GetButton('A'))                           // 좌
+    // 좌
+    else if (Input::GetButton('A'))
     {
         playerState = PlayerStates::WALK;
         bodyInfo.moveDir = ObjectDir::LEFT;
         headInfo.moveDir = ObjectDir::LEFT;
+        Move();
+    }
+    // 상
+    if (Input::GetButton('W'))
+    {
+        playerState = PlayerStates::WALK;
+        bodyInfo.moveDir = ObjectDir::UP;
+        headInfo.moveDir = ObjectDir::UP;
+        Move();
+    }
+    // 하
+    else if (Input::GetButton('S'))
+    {
+        playerState = PlayerStates::WALK;
+        bodyInfo.moveDir = ObjectDir::DOWN;
+        headInfo.moveDir = ObjectDir::DOWN;
         Move();
     }
 

@@ -82,7 +82,7 @@ void DoorEditing::Init()
 			door[i][j][2].shape = {
 				(LONG)(door[i][j][2].pos.x - (objectSize * DEVIDE_HALF) - 40),			// shape.left
 				(LONG)(door[i][j][2].pos.y - (objectSize * DEVIDE_HALF)),				// shape.top
-				(LONG)(door[i][j][2].pos.x + (objectSize * DEVIDE_HALF)),				// shape.right
+				(LONG)(door[i][j][2].pos.x + (objectSize * DEVIDE_HALF) - 17),			// shape.right
 				(LONG)(door[i][j][2].pos.y + (objectSize * DEVIDE_HALF))				// shape.bottom
 			};
 			//RIGHT
@@ -94,7 +94,7 @@ void DoorEditing::Init()
 			door[i][j][3].pos.x = 1200.0f;												// terrain frameX 29
 			door[i][j][3].pos.y = 400.0f;												// terrain frameY 10
 			door[i][j][3].shape = {
-				(LONG)(door[i][j][3].pos.x - (objectSize * DEVIDE_HALF)),				// shape.left
+				(LONG)(door[i][j][3].pos.x - (objectSize * DEVIDE_HALF) + 17),			// shape.left
 				(LONG)(door[i][j][3].pos.y - (objectSize * DEVIDE_HALF)),				// shape.top
 				(LONG)(door[i][j][3].pos.x + (objectSize * DEVIDE_HALF) + 40),			// shape.right
 				(LONG)(door[i][j][3].pos.y + (objectSize * DEVIDE_HALF))				// shape.bottom
