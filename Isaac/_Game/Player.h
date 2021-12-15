@@ -50,6 +50,7 @@ private:
 	PlayerStates							playerState = PlayerStates::IDLE;								// 상태
 	RECT									colliderRect = {};												// 충돌 처리용
 
+	array<bool, 4>							enterNextDoor = { false };
 	bool									isFire = false;													// 무기 발사
 
 	char									text[64] = {};
@@ -86,6 +87,10 @@ public:
 
 	inline void								SetCurrCloumn(int column) { this->currColumn = column; }
 	inline void								SetCurrRow(int row) { this->currRow = row; }
+	inline void								SetEnterNextUpDoor(bool enterNextDoor) { this->enterNextDoor[0] = enterNextDoor; }
+	inline void								SetEnterNextDownDoor(bool enterNextDoor) { this->enterNextDoor[1] = enterNextDoor; }
+	inline void								SetEnterNextLeftDoor(bool enterNextDoor) { this->enterNextDoor[2] = enterNextDoor; }
+	inline void								SetEnterNextRightDoor(bool enterNextDoor) { this->enterNextDoor[3] = enterNextDoor; }
 	inline void								SetDoorInfo(vector<vector<array<DOOR_INFO, 4 >>>* doorInfo) { this->doorInfo = doorInfo; }
 	inline void								SetIsFire(bool isFire) { this->isFire = isFire; }
 	inline void								SetPlayerBodyPos(POINTFLOAT pos) { this->bodyInfo.pos = pos; }
@@ -95,6 +100,7 @@ public:
 	inline void								SetPlayerHeadMoveDir(ObjectDir moveDir) { this->headInfo.moveDir = moveDir; }
 	inline void								SetStageSize(int stageSize) { this->_stageSize = stageSize; }
 
+	inline array<bool, 4>					GetEnterNextDoor() { return this->enterNextDoor; }
 	inline bool								GetIsFire() { return this->isFire; }
 	inline POINTFLOAT						GetPlayerBodyPos() { return this->bodyInfo.pos; }
 	inline RECT								GetPlayerBodyShape() { return this->bodyInfo.shape; }

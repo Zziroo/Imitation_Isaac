@@ -350,14 +350,15 @@ void Player::Move()
         }
     }
 
-    // 열린 문과 부딪혔을 때 반대편으로 이동하기
 #pragma region DoorStates::OPENED
+    // 열린 문과 부딪혔을 때 반대편으로 이동하기
     // 위쪽 문이 몸통 부분과 겹치고
     if (IntersectRect(&colliderRect, &bodyInfo.shape, &doorInfo[0][currRow][currColumn][0].shape))
     {
         // 위쪽 문이 열려있으면
         if (doorInfo[0][currRow][currColumn][0].doorState == DoorStates::OPENED && doorInfo[0][currRow][currColumn][0].img != nullptr)
         {
+            enterNextDoor[0] = true;
             headInfo.pos = { 640.0f, 625.0f };
             headInfo.shape = {
                 (LONG)(headInfo.pos.x - (PLAYER_HEADSIZE * DEVIDE_HALF) - ADJUST_SIZE_05),
@@ -380,6 +381,7 @@ void Player::Move()
         // 아래쪽 문이 열려있으면
         if (doorInfo[0][currRow][currColumn][1].doorState == DoorStates::OPENED && doorInfo[0][currRow][currColumn][1].img != nullptr)
         {
+            enterNextDoor[1] = true;
             headInfo.pos = { 640.0f, 95.0f };
             headInfo.shape = {
                 (LONG)(headInfo.pos.x - (PLAYER_HEADSIZE * DEVIDE_HALF) - ADJUST_SIZE_05),
@@ -402,6 +404,7 @@ void Player::Move()
         // 왼쪽 문이 열려있으면
         if (doorInfo[0][currRow][currColumn][2].doorState == DoorStates::OPENED && doorInfo[0][currRow][currColumn][2].img != nullptr)
         {
+            enterNextDoor[2] = true;
             headInfo.pos = { 1100.0f, 380.0f };
             headInfo.shape = {
                 (LONG)(headInfo.pos.x - (PLAYER_HEADSIZE * DEVIDE_HALF) - ADJUST_SIZE_05),
@@ -424,6 +427,7 @@ void Player::Move()
         // 오른쪽 문이 열려있으면
         if (doorInfo[0][currRow][currColumn][3].doorState == DoorStates::OPENED && doorInfo[0][currRow][currColumn][3].img != nullptr)
         {
+            enterNextDoor[3] = true;
             headInfo.pos = { 170.0f, 380.0f };
             headInfo.shape = {
                 (LONG)(headInfo.pos.x - (PLAYER_HEADSIZE * DEVIDE_HALF) - ADJUST_SIZE_05),

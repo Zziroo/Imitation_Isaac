@@ -175,10 +175,10 @@ void Stage01Scene::Update()
 		if (doorInfo[currRow][currColumn][0].roomType != RoomTypes::NONE || doorInfo[currRow][currColumn][0].img != nullptr)
 		{
 			--currRow;
-		}
-		if (currRow < 0)
-		{
-			currRow = 0;
+			if (currRow < 0)
+			{
+				currRow = 0;
+			}
 		}
 		LoadMap();
 	}
@@ -187,10 +187,10 @@ void Stage01Scene::Update()
 		if (doorInfo[currRow][currColumn][1].roomType != RoomTypes::NONE || doorInfo[currRow][currColumn][1].img != nullptr)
 		{
 			++currRow;
-		}
-		if (currRow >= _stageSize)
-		{
-			currRow = _stageSize - 1;
+			if (currRow >= _stageSize)
+			{
+				currRow = _stageSize - 1;
+			}
 		}
 		LoadMap();
 	}
@@ -199,23 +199,22 @@ void Stage01Scene::Update()
 		if (doorInfo[currRow][currColumn][2].roomType != RoomTypes::NONE || doorInfo[currRow][currColumn][2].img != nullptr)
 		{
 			--currColumn;
-		}
-		if (currColumn < 0)
-		{
-			currColumn = 0;
+			if (currColumn < 0)
+			{
+				currColumn = 0;
+			}
 		}
 		LoadMap();
 	}
 	if (Input::GetButtonDown(VK_RIGHT))
 	{
-
 		if (doorInfo[currRow][currColumn][3].roomType != RoomTypes::NONE || doorInfo[currRow][currColumn][3].img != nullptr)
 		{
 			++currColumn;
-		}
-		if (currColumn >= _stageSize)
-		{
-			currColumn = _stageSize - 1;
+			if (currColumn >= _stageSize)
+			{
+				currColumn = _stageSize - 1;
+			}
 		}
 		LoadMap();
 	}
@@ -231,16 +230,77 @@ void Stage01Scene::Update()
 			}
 		}
 	}
-
-	minimap->SetCurrCloumn(currColumn);
-	minimap->SetCurrRow(currRow);
-	minimap->Update();
-	door->Update();
-
+	// Player Update
 	player->SetCurrCloumn(currColumn);
 	player->SetCurrRow(currRow);
 	player->SetDoorInfo(&doorInfo);
 	player->Update();
+	// Map Update
+	if (player->GetEnterNextDoor()[0])
+	{
+		// ╩С
+		if (doorInfo[currRow][currColumn][0].roomType != RoomTypes::NONE || doorInfo[currRow][currColumn][0].img != nullptr)
+		{
+			--currRow;
+			if (currRow < 0)
+			{
+				currRow = 0;
+			}
+		}
+		LoadMap();
+		player->SetEnterNextUpDoor(false);
+	}
+	if (player->GetEnterNextDoor()[1])
+	{
+		// го
+		if (doorInfo[currRow][currColumn][1].roomType != RoomTypes::NONE || doorInfo[currRow][currColumn][1].img != nullptr)
+		{
+			++currRow;
+		}
+		if (currRow >= _stageSize)
+		{
+			currRow = _stageSize - 1;
+		}
+		LoadMap();
+		player->SetEnterNextDownDoor(false);
+	}
+	if (player->GetEnterNextDoor()[2])
+	{
+		// аб
+		if (doorInfo[currRow][currColumn][2].roomType != RoomTypes::NONE || doorInfo[currRow][currColumn][2].img != nullptr)
+		{
+			--currColumn;
+		}
+		if (currColumn < 0)
+		{
+			currColumn = 0;
+		}
+		LoadMap();
+		player->SetEnterNextLeftDoor(false);
+	}
+	if (player->GetEnterNextDoor()[3])
+	{
+		// ©Л
+		if (doorInfo[currRow][currColumn][3].roomType != RoomTypes::NONE || doorInfo[currRow][currColumn][3].img != nullptr)
+		{
+			++currColumn;
+		}
+		if (currColumn >= _stageSize)
+		{
+			currColumn = _stageSize - 1;
+		}
+
+		LoadMap();
+		player->SetEnterNextRightDoor(false);
+	}
+	// DoorEditing Update
+	door->SetLocatedColumn(currColumn);
+	door->SetLocatedRow(currRow);
+	door->Update();
+	// Minimap Update
+	minimap->SetCurrCloumn(currColumn);
+	minimap->SetCurrRow(currRow);
+	minimap->Update();
 }
 
 void Stage01Scene::Render(HDC hdc)
