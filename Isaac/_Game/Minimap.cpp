@@ -69,6 +69,8 @@ void Minimap::Release()
 
 void Minimap::Update()
 {
+	// Map 이동 시 Minimap 이동
+	MoveMinimap();
 	// CurrPoint와 주변 지역을 탐색하여 Minimap에 표시
 	ExploreSurroundingMap(currRow, currColumn);
 	// 특정 방을 방문하면 Minimap에 Icon 표시하기 위한 bool값
@@ -93,6 +95,17 @@ void Minimap::Render(HDC hdc)
 				int renderPosY = (INT)minimap[i][j].pos.y;
 				minimap[i][j].minimapImg->Render(hdc, renderPosX, renderPosY);
 			}
+		}
+	}
+	
+	// 현재 위치의 맵을 Minimap에 Render
+	currSiteImg->Render(hdc, pos.x, pos.y);
+
+	// 전체 Minimap 조건을 걸어 Render
+	for (size_t i = 0; i < minimap.size(); ++i)
+	{
+		for (size_t j = 0; j < minimap[i].size(); ++j)
+		{
 			// 전체 Minimap중 방문한 Map이고 특정 map이면 Icon Render
 			if (minimap[i][j].isVisitedMap && minimap[i][j].minimapIconImg != nullptr)
 			{
@@ -102,9 +115,6 @@ void Minimap::Render(HDC hdc)
 			}
 		}
 	}
-	
-	// 현재 위치의 맵을 Minimap에 Render
-	currSiteImg->Render(hdc, pos.x, pos.y);
 }
 
 void Minimap::ExploreSurroundingMap(int row, int column)
@@ -134,6 +144,25 @@ void Minimap::ExploreSurroundingMap(int row, int column)
 	if (NextRightColumn < stageSize)
 	{
 		minimap[row][NextRightColumn].exploreSurroundingMap = true;
+	}
+}
+
+void Minimap::MoveMinimap()
+{
+	// 상
+
+	// 하
+
+	// 좌
+
+	// 우
+
+
+	for (size_t i = 0; i < minimap.size(); ++i)
+	{
+		for (size_t j = 0; j < minimap[i].size(); ++j)
+		{
+		}
 	}
 }
 

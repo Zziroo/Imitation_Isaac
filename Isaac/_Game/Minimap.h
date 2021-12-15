@@ -38,6 +38,7 @@ public:
 	virtual void					Render(HDC hdc) override;
 
 	void							ExploreSurroundingMap(int row, int column);
+	void							MoveMinimap();
 	void							VisitedMapIcon(int row, int column);
 
 	inline void						SetCurrCloumn(int column) { this->currColumn = column; }
