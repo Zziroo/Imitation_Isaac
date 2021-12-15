@@ -3,6 +3,7 @@
 
 #include "DoorEditing.h"
 #include "Image.h"
+#include "Minimap.h"
 #include "Player.h"
 
 HRESULT Stage01Scene::Init()
@@ -17,8 +18,8 @@ HRESULT Stage01Scene::Init()
 	_stageSize = door->GetStageSize();
 	// Start Point를 받기
 	_startPoint = door->GetStartPoint();
-	stageColumn = _startPoint;
-	stageRow = _startPoint;
+	currColumn = _startPoint;
+	currRow = _startPoint;
 	// Stage Size만큼 resize하고
 	stage01Index.resize(_stageSize);
 	for (size_t i = 0; i < stage01Index.size(); ++i)
@@ -58,7 +59,7 @@ HRESULT Stage01Scene::Init()
 	Load(stage01Index[_startPoint][_startPoint]);
 
 #ifdef _DEBUG RoomInfo
-	cout << "Stage01Scene => DoorEditing => RoomInfo\n";
+	std::cout << "Stage01Scene => DoorEditing => RoomInfo\n";
 	for (size_t i = 0; i < roomInfo.size(); ++i)
 	{
 		for (size_t j = 0; j < roomInfo[i].size(); ++j)
@@ -66,36 +67,36 @@ HRESULT Stage01Scene::Init()
 			switch (roomInfo[i][j])
 			{
 			case RoomTypes::BOSS:
-				cout << "BOSS\t";
+				std::cout << "BOSS\t";
 				break;
 			case RoomTypes::CURSE:
-				cout << "COURSE\t";
+				std::cout << "COURSE\t";
 				break;
 			case RoomTypes::ITEM:
-				cout << "ITEM\t";
+				std::cout << "ITEM\t";
 				break;
 			case RoomTypes::NORMAL:
-				cout << "NORMAL\t";
+				std::cout << "NORMAL\t";
 				break;
 			case RoomTypes::PRIVATE:
-				cout << "PRIVATE\t";
+				std::cout << "PRIVATE\t";
 				break;
 			case RoomTypes::SATAN:
-				cout << "SATAN\t";
+				std::cout << "SATAN\t";
 				break;
 			case RoomTypes::START:
-				cout << "START\t";
+				std::cout << "START\t";
 				break;
 			case RoomTypes::NONE:
-				cout << "NONE\t";
+				std::cout << "NONE\t";
 				break;
 			default:
-				cout << "####\t";
+				std::cout << "####\t";
 			}
 		}
-		cout << "\n";
+		std::cout << "\n";
 	}
-	cout << "\n";
+	std::cout << "\n";
 #endif
 
 	// Player
@@ -146,12 +147,21 @@ HRESULT Stage01Scene::Init()
 	}
 	player->SetTileInfo(colliderTileInfo);
 
+	// Minimap
+	minimap = new Minimap;
+	minimap->SetRoomInfo(&roomInfo);
+	minimap->SetStageSize(_stageSize);
+	minimap->SetStartPointRow(currRow);
+	minimap->SetStartPointColumn(currColumn);
+	minimap->Init();
+
 	return S_OK;
 }
 
 void Stage01Scene::Release()
 {
 	SAFE_RELEASE(door);
+	SAFE_RELEASE(minimap);
 	SAFE_RELEASE(player);
 }
 
@@ -160,115 +170,59 @@ void Stage01Scene::Update()
 	// 예시) 상,하,좌,우 키를 입력해서 맵을 바꿈.(맵의 종류를 알아서 보여줘야함)
 	if (Input::GetButtonDown(VK_UP))
 	{
-		--stageRow;
-		if (stageRow < 0)
+		if (doorInfo[currRow][currColumn][0].roomType != RoomTypes::NONE || doorInfo[currRow][currColumn][0].img != nullptr)
 		{
-			stageRow = 0;
+			--currRow;
+		}
+		if (currRow < 0)
+		{
+			currRow = 0;
 		}
 		LoadMap();
 	}
 	if (Input::GetButtonDown(VK_DOWN))
 	{
-		++stageRow;
-		if (stageRow >= _stageSize)
+		if (doorInfo[currRow][currColumn][1].roomType != RoomTypes::NONE || doorInfo[currRow][currColumn][1].img != nullptr)
 		{
-			stageRow = _stageSize - 1;
+			++currRow;
+		}
+		if (currRow >= _stageSize)
+		{
+			currRow = _stageSize - 1;
 		}
 		LoadMap();
 	}
 	if (Input::GetButtonDown(VK_LEFT))
 	{
-		--stageColumn;
-		if (stageColumn < 0)
+		if (doorInfo[currRow][currColumn][2].roomType != RoomTypes::NONE || doorInfo[currRow][currColumn][2].img != nullptr)
 		{
-			stageColumn = 0;
+			--currColumn;
+		}
+		if (currColumn < 0)
+		{
+			currColumn = 0;
 		}
 		LoadMap();
 	}
 	if (Input::GetButtonDown(VK_RIGHT))
 	{
-		++stageColumn;
-		if (stageColumn >= _stageSize)
+
+		if (doorInfo[currRow][currColumn][3].roomType != RoomTypes::NONE || doorInfo[currRow][currColumn][3].img != nullptr)
 		{
-			stageColumn = _stageSize - 1;
+			++currColumn;
+		}
+		if (currColumn >= _stageSize)
+		{
+			currColumn = _stageSize - 1;
 		}
 		LoadMap();
 	}
-	//// 문이 닫혀 있거나 잠겨 있을 때, 플레이어는 통과하지 못함
-	//for (size_t i = 0; i < doorInfo.size(); ++i)
-	//{
-	//	for (size_t j = 0; j < doorInfo[i].size(); ++j)
-	//	{
-	//		for (int k = 0; k < 4; ++k)
-	//		{
-	//			POINTFLOAT	buffPlayerBodyPos = player->GetPlayerBodyPos();
-	//			RECT		buffPlayerBodyShape = player->GetPlayerBodyShape();
-	//			POINTFLOAT	buffPlayerHeadPos = player->GetPlayerHeadPos();
-	//			RECT		buffPlayerHeadShape = player->GetPlayerHeadShape();
-	//			if (IntersectRect(&colliderRect, &buffPlayerHeadShape, &doorInfo[i][j][k].shape) || IntersectRect(&colliderRect, &buffPlayerBodyShape, &doorInfo[i][j][k].shape))
-	//			{
-	//				if (doorInfo[i][j][k].doorState != DoorStates::OPENED || doorInfo[i][j][k].img == nullptr)
-	//				{
-	//					player->SetPlayerBodyPos(buffPlayerBodyPos);
-	//					player->SetPlayerBodyShape(buffPlayerBodyShape);
-	//					player->SetPlayerHeadPos(buffPlayerHeadPos);
-	//					player->SetPlayerHeadShape(buffPlayerHeadShape);
-	//				}
-	//			}
-	//		}
-	//	}
-	//}
-	//// OPENED 상태일 때 player가 접촉하면 다음 맵으로 이동
-	//// 상
-	//if (doorInfo[door->GetLocatedRow()][door->GetLocatedColumn()][0].doorState == DoorStates::OPENED && doorInfo[door->GetLocatedRow()][door->GetLocatedColumn()][0].img != nullptr)
-	//{
-	//	int row = door->GetLocatedRow();
-	//	--stageRow;
-	//	if (stageRow < 0)
-	//	{
-	//		stageRow = 0;
-	//	}
-	//	LoadMap();
-	//	door->SetLocatedRow(--row);
-	//}
-	//// 하
-	//if (doorInfo[door->GetLocatedRow()][door->GetLocatedColumn()][1].doorState == DoorStates::OPENED && doorInfo[door->GetLocatedRow()][door->GetLocatedColumn()][1].img != nullptr)
-	//{
-	//	int row = door->GetLocatedRow();
-	//	++stageRow;
-	//	if (stageRow >= _stageSize)
-	//	{
-	//		stageRow = _stageSize - 1;
-	//	}
-	//	LoadMap();
-	//	door->SetLocatedRow(++row);
-	//}
-	//// 좌
-	//if (doorInfo[door->GetLocatedRow()][door->GetLocatedColumn()][2].doorState == DoorStates::OPENED && doorInfo[door->GetLocatedRow()][door->GetLocatedColumn()][2].img != nullptr)
-	//{
-	//	int column = door->GetLocatedColumn();
-	//	--stageColumn;
-	//	if (stageColumn < 0)
-	//	{
-	//		stageColumn = 0;
-	//	}
-	//	LoadMap();
-	//	door->SetLocatedRow(--column);
-	//}
-	//// 우
-	//if (doorInfo[door->GetLocatedRow()][door->GetLocatedColumn()][3].doorState == DoorStates::OPENED && doorInfo[door->GetLocatedRow()][door->GetLocatedColumn()][3].img != nullptr)
-	//{
-	//	int column = door->GetLocatedColumn();
-	//	++stageColumn;
-	//	if (stageColumn >= _stageSize)
-	//	{
-	//		stageColumn = _stageSize - 1;
-	//	}
-	//	LoadMap();
-	//	door->SetLocatedRow(++column);
-	//}
 
 	player->Update();
+
+	minimap->SetCurrCloumn(currColumn);
+	minimap->SetCurrRow(currRow);
+	minimap->Update();
 	door->Update();
 }
 
@@ -277,6 +231,7 @@ void Stage01Scene::Render(HDC hdc)
 	TileRender(hdc);
 	door->Render(hdc);
 	player->Render(hdc);
+	minimap->Render(hdc);
 }
 
 void Stage01Scene::Load(string loadFileName)
@@ -330,34 +285,34 @@ void Stage01Scene::Load(string loadFileName)
 void Stage01Scene::LoadMap()
 {
 	// Stage01Index가 비어있으면 가면 안됨.
-	if (stage01Index[stageRow][stageColumn].empty() == false)
+	if (stage01Index[currRow][currColumn].empty() == false)
 	{
 		// SampleTileType 속성을 바꿔줘야함
-		if (stage01Index[stageRow][stageColumn].substr(5, 1) == "B")
+		if (stage01Index[currRow][currColumn].substr(5, 1) == "B")
 		{
 			sampleTileType = SampleTileTypes::BASEMENT;
 			drawingAreaImg = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Tile/Basement.bmp");
 		}
-		if (stage01Index[stageRow][stageColumn].substr(5, 1) == "C")
+		if (stage01Index[currRow][currColumn].substr(5, 1) == "C")
 		{
-			if (stage01Index[stageRow][stageColumn].substr(6, 1) == "A")
+			if (stage01Index[currRow][currColumn].substr(6, 1) == "A")
 			{
 				sampleTileType = SampleTileTypes::CAVE;
 				drawingAreaImg = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Tile/Cave.bmp");
 			}
-			if (stage01Index[stageRow][stageColumn].substr(6, 1) == "E")
+			if (stage01Index[currRow][currColumn].substr(6, 1) == "E")
 			{
 				sampleTileType = SampleTileTypes::CELLAR;
 				drawingAreaImg = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Tile/Cellar.bmp");		// 문제 발생 => CELLAR00.map Load()시 readByte = 0 이 돼버림.
 			}
 		}
-		if (stage01Index[stageRow][stageColumn].substr(5, 1) == "D")
+		if (stage01Index[currRow][currColumn].substr(5, 1) == "D")
 		{
 			sampleTileType = SampleTileTypes::DEPTH;
 			drawingAreaImg = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Tile/Depth.bmp");			// 문제 발생 => DEPTH00.map Load()시 readByte = 0 이 돼버림.
 		}
 		// Load
-		Load(stage01Index[stageRow][stageColumn]);
+		Load(stage01Index[currRow][currColumn]);
 	}
 }
 

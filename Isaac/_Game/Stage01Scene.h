@@ -4,15 +4,16 @@
 
 class DoorEditing;
 class Iamge;
+class Minimap;
 class Player;
 class Stage01Scene : public Scene
 {
 private:
 	DoorEditing*							door = nullptr;
 	Image*									drawingAreaImg = nullptr;
+	Minimap*								minimap = nullptr;
 	Player*									player = nullptr;
 
-	RECT									colliderRect = {};										// 문과 충돌 처리용
 	SampleTileTypes							sampleTileType = SampleTileTypes::BASEMENT;
 
 	TILE_INFO								colliderTileInfo[TILE_ROW * TILE_COLUMN];
@@ -27,8 +28,8 @@ private:
 
 	int										_stageSize = 0;
 	int										_startPoint = 0;
-	int										stageColumn = 0;										// 진행하려는 행
-	int										stageRow = 0;											// 진행하려는 열
+	int										currColumn = 0;										// 진행하려는 행
+	int										currRow = 0;										// 진행하려는 열
 	int										sampleTileMaxIndex[4] = { 4, 5, 4, 3 };
 
 public:

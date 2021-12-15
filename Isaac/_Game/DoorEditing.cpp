@@ -249,7 +249,11 @@ void DoorEditing::Update()
 	// 예시) 상,하,좌,우 키를 입력해서 맵을 바꿈.(문을 알아서 보여줘야함)
 	if (Input::GetButtonDown(VK_UP))
 	{
-		--currLocatedRow;
+		int nextUpRow = currLocatedRow - 1;
+		if (nextUpRow >= 0 && roomInfo[nextUpRow][currLocatedColumn] != RoomTypes::NONE)
+		{
+			--currLocatedRow;
+		}
 		if (currLocatedRow < 0)
 		{
 			currLocatedRow = 0;
@@ -257,7 +261,11 @@ void DoorEditing::Update()
 	}
 	if (Input::GetButtonDown(VK_DOWN))
 	{
-		++currLocatedRow;
+		int nextDownRow = currLocatedRow + 1;
+		if (nextDownRow < _stageSize && roomInfo[nextDownRow][currLocatedColumn] != RoomTypes::NONE)
+		{
+			++currLocatedRow;
+		}
 		if (currLocatedRow >= _stageSize)
 		{
 			currLocatedRow = _stageSize - 1;
@@ -265,7 +273,11 @@ void DoorEditing::Update()
 	}
 	if (Input::GetButtonDown(VK_LEFT))
 	{
-		--currLocatedColumn;
+		int nextLeftColumn = currLocatedColumn - 1;
+		if (nextLeftColumn >= 0 && roomInfo[currLocatedRow][nextLeftColumn] != RoomTypes::NONE)
+		{
+			--currLocatedColumn;
+		}
 		if (currLocatedColumn < 0)
 		{
 			currLocatedColumn = 0;
@@ -273,7 +285,11 @@ void DoorEditing::Update()
 	}
 	if (Input::GetButtonDown(VK_RIGHT))
 	{
-		++currLocatedColumn;
+		int nextRightColumn = currLocatedColumn + 1;
+		if (nextRightColumn < _stageSize && roomInfo[currLocatedRow][nextRightColumn] != RoomTypes::NONE)
+		{
+			++currLocatedColumn;
+		}
 		if (currLocatedColumn >= _stageSize)
 		{
 			currLocatedColumn = _stageSize - 1;
