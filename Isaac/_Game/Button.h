@@ -3,7 +3,7 @@
 #include "GameObject.h"
 
 class ButtonFunction;
-typedef void (ButtonFunction::* FuncPtr)(ArgumentFuncPtr*);
+typedef void (ButtonFunction::* FuncPtr)();
 
 enum class ButtonStates { NONE, UP, DOWN };
 
@@ -50,7 +50,6 @@ private:
 
 	FuncPtr				pFunc = nullptr;
 	ButtonFunction*		btnFunc = nullptr;
-	ArgumentFuncPtr*	argFunc = nullptr;
 
 	int					tileIndex = 0;
 	char				text[64] = {};					// Debuging
@@ -69,7 +68,7 @@ public:
 	void				RenderUpButton(HDC hdc, ButtonInfo* btnInfo);
 	void				ShowLetter(HDC hdc, Image* img, ButtonInfo* btnInfo);
 
-	void				SetFunction(FuncPtr pFunc, ButtonFunction* btnFunc, ArgumentFuncPtr* argFunc = nullptr) { this->pFunc = pFunc; this->btnFunc = btnFunc; this->argFunc = argFunc; }
+	void				SetFunction(FuncPtr pFunc, ButtonFunction* btnFunc) { this->pFunc = pFunc; this->btnFunc = btnFunc; }
 
 	inline bool			GetPressLoadButton() { return this->loadBtn.clicked; }
 	inline bool			GetPressNextButton() { return this->nextBtn.clicked; }

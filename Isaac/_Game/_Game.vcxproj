@@ -25,7 +25,6 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="ImageManager.cpp" />
-    <ClCompile Include="InGameScene.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -52,7 +51,6 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="ImageManager.h" />
-    <ClInclude Include="InGameScene.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="KeyManager.h" />
     <ClInclude Include="MainConfig.h" />

@@ -90,7 +90,7 @@ void Button::Update()
 			exitBtn.buttonState = ButtonStates::UP;
 			if (btnFunc && pFunc) 
 			{ 
-				(btnFunc->*pFunc)(argFunc);
+				(btnFunc->*pFunc)();
 			}
 
 			return;

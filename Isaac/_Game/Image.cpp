@@ -214,7 +214,7 @@ void Image::TransparentRender(HDC hdc, int destX, int destY, int frameX, int fra
 	BLENDFUNCTION _bf;
 	_bf.BlendOp = 0;
 	_bf.BlendFlags = 0;
-	_bf.SourceConstantAlpha = transparency;
+	_bf.SourceConstantAlpha = (BYTE)transparency;
 	_bf.AlphaFormat = 0;
 
 	if (isTransparent)

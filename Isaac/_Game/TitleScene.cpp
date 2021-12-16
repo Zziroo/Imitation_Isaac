@@ -19,7 +19,7 @@ void TitleScene::Update()
 	// InGame Scene ÀüÈ¯
 	if (Input::GetButtonDown(VK_SPACE))
 	{
-		GET_SINGLETON_SCENE->ChangeScene("InGame");
+		GET_SINGLETON_SCENE->ChangeScene("Stage01");
 		return;
 	}
 

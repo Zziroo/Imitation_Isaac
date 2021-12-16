@@ -50,9 +50,9 @@ void Minimap::Init()
 			default:
 				break;
 			}
-			// debuging
-			minimap[i][j].exploreSurroundingMap = true;
-			minimap[i][j].isVisitedMap = true;
+			//// debuging
+			//minimap[i][j].exploreSurroundingMap = true;
+			//minimap[i][j].isVisitedMap = true;
 		}
 	}
 	// 현재 위치한 Map의 Image
@@ -80,8 +80,8 @@ void Minimap::Update()
 void Minimap::Render(HDC hdc)
 {
 	// MinimapBackGround Render
-	minimapBackGround[0]->Render(hdc, pos.x, pos.y);
-	minimapBackGround[1]->TransparentRender(hdc, pos.x, pos.y, minimapBackGround[1]->GetCurrFrameX(), minimapBackGround[1]->GetCurrFrameY(), 75.0f);
+	minimapBackGround[0]->Render(hdc, (INT)pos.x, (INT)pos.y);
+	minimapBackGround[1]->TransparentRender(hdc, (INT)pos.x, (INT)pos.y, minimapBackGround[1]->GetCurrFrameX(), minimapBackGround[1]->GetCurrFrameY(), 75.0f);
 
 	// 전체 Minimap 조건을 걸어 Render
 	for (size_t i = 0; i < minimap.size(); ++i)
@@ -99,7 +99,7 @@ void Minimap::Render(HDC hdc)
 	}
 	
 	// 현재 위치의 맵을 Minimap에 Render
-	currSiteImg->Render(hdc, pos.x, pos.y);
+	currSiteImg->Render(hdc, (INT)pos.x, (INT)pos.y);
 
 	// 전체 Minimap 조건을 걸어 Render
 	for (size_t i = 0; i < minimap.size(); ++i)

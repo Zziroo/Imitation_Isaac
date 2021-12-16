@@ -5,7 +5,7 @@ class ButtonFunction
 private:
 
 public:
-	void QuitProgram(ArgumentFuncPtr* argFunc = nullptr);
+	void QuitProgram();
 
 	~ButtonFunction() = default;
 };

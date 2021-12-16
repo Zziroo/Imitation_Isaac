@@ -76,6 +76,15 @@
     <Filter Include="MainGame\GameObject\Minimap">
       <UniqueIdentifier>{98449c08-7073-417b-8b73-e3f889efe621}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\Scene\Title">
+      <UniqueIdentifier>{1e78f6a8-1d68-4d6b-8bf8-6a0fbd8d3023}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\Scene\Stage">
+      <UniqueIdentifier>{3bf859dc-d0c6-45ba-9a8e-26848b2ac4fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\Scene\MapTool">
+      <UniqueIdentifier>{d7943b34-e74a-485c-99c0-f6564769765a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -114,20 +123,11 @@
     <ClCompile Include="Player.cpp">
       <Filter>MainGame\GameObject\Player</Filter>
     </ClCompile>
-    <ClCompile Include="TitleScene.cpp">
-      <Filter>MainGame\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="InGameScene.cpp">
-      <Filter>MainGame\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="Weapon.cpp">
       <Filter>MainGame\GameObject\Weapon</Filter>
     </ClCompile>
     <ClCompile Include="WeaponManager.cpp">
       <Filter>MainGame\GameObject\Weapon</Filter>
-    </ClCompile>
-    <ClCompile Include="TilemapToolScene.cpp">
-      <Filter>MainGame\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Button.cpp">
       <Filter>MainGame\GameObject\Button</Filter>
@@ -141,9 +141,6 @@
     <ClCompile Include="MapEditing.cpp">
       <Filter>MainGame\GameObject\MapEditing</Filter>
     </ClCompile>
-    <ClCompile Include="Stage01Scene.cpp">
-      <Filter>MainGame\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="RoomEditing.cpp">
       <Filter>MainGame\GameObject\RoomEditing</Filter>
     </ClCompile>
@@ -152,6 +149,15 @@
     </ClCompile>
     <ClCompile Include="Minimap.cpp">
       <Filter>MainGame\GameObject\Minimap</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleScene.cpp">
+      <Filter>MainGame\Scene\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage01Scene.cpp">
+      <Filter>MainGame\Scene\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="TilemapToolScene.cpp">
+      <Filter>MainGame\Scene\MapTool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -194,20 +200,11 @@
     <ClInclude Include="Player.h">
       <Filter>MainGame\GameObject\Player</Filter>
     </ClInclude>
-    <ClInclude Include="TitleScene.h">
-      <Filter>MainGame\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="InGameScene.h">
-      <Filter>MainGame\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="Weapon.h">
       <Filter>MainGame\GameObject\Weapon</Filter>
     </ClInclude>
     <ClInclude Include="WeaponManager.h">
       <Filter>MainGame\GameObject\Weapon</Filter>
-    </ClInclude>
-    <ClInclude Include="TilemapToolScene.h">
-      <Filter>MainGame\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Button.h">
       <Filter>MainGame\GameObject\Button</Filter>
@@ -221,9 +218,6 @@
     <ClInclude Include="MapEditing.h">
       <Filter>MainGame\GameObject\MapEditing</Filter>
     </ClInclude>
-    <ClInclude Include="Stage01Scene.h">
-      <Filter>MainGame\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="RoomEditing.h">
       <Filter>MainGame\GameObject\RoomEditing</Filter>
     </ClInclude>
@@ -232,6 +226,15 @@
     </ClInclude>
     <ClInclude Include="Minimap.h">
       <Filter>MainGame\GameObject\Minimap</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleScene.h">
+      <Filter>MainGame\Scene\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage01Scene.h">
+      <Filter>MainGame\Scene\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="TilemapToolScene.h">
+      <Filter>MainGame\Scene\MapTool</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

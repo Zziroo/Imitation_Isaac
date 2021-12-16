@@ -1,7 +1,7 @@
 #include "MainConfig.h"
 #include "ButtonFunction.h"
 
-void ButtonFunction::QuitProgram(ArgumentFuncPtr* argFunc)
+void ButtonFunction::QuitProgram()
 {
 	PostQuitMessage(0);
 }

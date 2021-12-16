@@ -74,12 +74,6 @@ enum class			ObjectDir { UP, DOWN, LEFT, RIGHT, NONE };	// 이동 방향
 
 #define ZERO				0
 
-// Button
-typedef struct ArgumentFuncPtr
-{
-
-} ARGUMENT_PTR, *LPARGUMENT_PTR;
-
 // Player
 enum class PlayerStates { IDLE, WALK, ATTACK, HURT, ITEMPICKUP, JUMP, STAT };
 
