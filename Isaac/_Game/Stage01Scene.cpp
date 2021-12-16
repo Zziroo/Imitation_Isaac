@@ -309,7 +309,7 @@ void Stage01Scene::Render(HDC hdc)
 	TileRender(hdc);
 	if (currRow == _startPoint && currColumn == _startPoint)
 	{
-		infomationStartImg->Render(hdc, WIN_SIZE_X * DEVIDE_HALF, WIN_SIZE_Y * DEVIDE_HALF);
+		infomationStartImg->Render(hdc, (INT)(WIN_SIZE_X * DEVIDE_HALF), (INT)(WIN_SIZE_Y * DEVIDE_HALF));
 	}
 	door->Render(hdc);
 	player->Render(hdc);
