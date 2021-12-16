@@ -4,158 +4,6 @@
 #include "Image.h"
 #include "RoomEditing.h"
 
-void DoorEditing::Init()
-{
-	roomIndex = new RoomEditing;
-	roomIndex->Init();
-	// Stage01의 Size를 받기
-	_stageSize = roomIndex->GetStageSize();
-	// StartPoint를 받기
-	_startPoint = roomIndex->GetStartPoint();
-	// Stage Size만큼 resize 하고
-	stage01Index.resize(_stageSize);
-	for (size_t i = 0; i < stage01Index.size(); ++i)
-	{
-		stage01Index[i].resize(_stageSize);
-		for (size_t j = 0; j < stage01Index[i].size(); ++j)
-		{
-			stage01Index[i][j] = roomIndex->GetStage()[i][j];
-		}
-	}
-	// Room Size만큼 resize하고
-	roomInfo.resize(_stageSize);
-	for (size_t i = 0; i < roomInfo.size(); ++i)
-	{
-		roomInfo[i].resize(_stageSize);
-		for (size_t j = 0; j < roomInfo[i].size(); ++j)
-		{
-			// Room의 정보를 가져오기
-			roomInfo[i][j] = roomIndex->GetRoomType()[i][j];
-		}
-	}
-
-	// 각각의 Room마다 DOOR_INFO를 저장할 이중벡터 초기화
-	door.resize(_stageSize);
-	for (size_t i = 0; i < door.size(); ++i)
-	{
-		door[i].resize(_stageSize);
-		for (size_t j = 0; j < door[i].size(); ++j)
-		{
-			// Door의 Size
-			objectSize = 80.0f;
-			//UP
-			door[i][j][0].img = nullptr;
-			door[i][j][0].doorState = DoorStates::CLOSED;								// Door의 상태
-			door[i][j][0].doorDir = ObjectDir::UP;										// Door의 방향
-			door[i][j][0].roomType = RoomTypes::NONE;									// Door의 방향
-
-			door[i][j][0].pos.x = 640.0f;												// terrain frameX 16
-			door[i][j][0].pos.y = 80.0f;												// terrain frameY 2
-			door[i][j][0].shape = {
-				(LONG)(door[i][j][0].pos.x - (objectSize * DEVIDE_HALF)),				// shape.left
-				(LONG)(door[i][j][0].pos.y - (objectSize * DEVIDE_HALF) - 40),			// shape.top
-				(LONG)(door[i][j][0].pos.x + (objectSize * DEVIDE_HALF)),				// shape.right
-				(LONG)(door[i][j][0].pos.y + (objectSize * DEVIDE_HALF))				// shape.bottom
-			};
-			//DOWN
-			door[i][j][1].img = nullptr;
-			door[i][j][1].doorState = DoorStates::CLOSED;								// Door의 상태
-			door[i][j][1].doorDir = ObjectDir::DOWN;									// Door의 방향
-			door[i][j][1].roomType = RoomTypes::NONE;									// Door의 방향
-
-			door[i][j][1].pos.x = 640.0f;												// terrain frameX 16
-			door[i][j][1].pos.y = 720.0f;												// terrain frameY 18
-			door[i][j][1].shape = {
-				(LONG)(door[i][j][1].pos.x - (objectSize * DEVIDE_HALF)),				// shape.left
-				(LONG)(door[i][j][1].pos.y - (objectSize * DEVIDE_HALF)),				// shape.top
-				(LONG)(door[i][j][1].pos.x + (objectSize * DEVIDE_HALF)),				// shape.right
-				(LONG)(door[i][j][1].pos.y + (objectSize * DEVIDE_HALF) + 40)			// shape.bottom
-			};
-			//LEFT
-			door[i][j][2].img = nullptr;
-			door[i][j][2].doorState = DoorStates::CLOSED;								// Door의 상태
-			door[i][j][2].doorDir = ObjectDir::LEFT;									// Door의 방향
-			door[i][j][2].roomType = RoomTypes::NONE;									// Door의 방향
-
-			door[i][j][2].pos.x = 80.0f;												// terrain frameX 2
-			door[i][j][2].pos.y = 400.0f;												// terrain frameY 10
-			door[i][j][2].shape = {
-				(LONG)(door[i][j][2].pos.x - (objectSize * DEVIDE_HALF)),				// shape.left
-				(LONG)(door[i][j][2].pos.y - (objectSize * DEVIDE_HALF)),				// shape.top
-				(LONG)(door[i][j][2].pos.x + (objectSize * DEVIDE_HALF)),				// shape.right
-				(LONG)(door[i][j][2].pos.y + (objectSize * DEVIDE_HALF))				// shape.bottom
-			};
-			//RIGHT
-			door[i][j][3].img = nullptr;
-			door[i][j][3].doorState = DoorStates::CLOSED;								// Door의 상태
-			door[i][j][3].doorDir = ObjectDir::RIGHT;									// Door의 방향
-			door[i][j][3].roomType = RoomTypes::NONE;									// Door의 방향
-
-			door[i][j][3].pos.x = 1200.0f;												// terrain frameX 29
-			door[i][j][3].pos.y = 400.0f;												// terrain frameY 10
-			door[i][j][3].shape = {
-				(LONG)(door[i][j][3].pos.x - (objectSize * DEVIDE_HALF) + 17),			// shape.left
-				(LONG)(door[i][j][3].pos.y - (objectSize * DEVIDE_HALF)),				// shape.top
-				(LONG)(door[i][j][3].pos.x + (objectSize * DEVIDE_HALF)),				// shape.right
-				(LONG)(door[i][j][3].pos.y + (objectSize * DEVIDE_HALF))				// shape.bottom
-			};
-		}
-	}
-
-	// 통과했는지의 여부를 알기 위한 이중 벡터 초기화
-	isTransitMap.resize(_stageSize);
-	for (size_t i = 0; i < isTransitMap.size(); ++i)
-	{
-		isTransitMap[i].resize(_stageSize);
-		for (size_t j = 0; j < isTransitMap[i].size(); ++j)
-		{
-			isTransitMap[i][j] = false;
-		}
-	}
-
-	// 방문하면서 현재의 맵 기준 상, 하, 좌, 우 의 RoomType들을 판별해서 Image들을 저장
-	StoreRoomType(_startPoint, _startPoint);
-
-	// 현재 맵의 위치
-	currLocatedRow = _startPoint;
-	currLocatedColumn = _startPoint;
-
-	// 특정 방들은 자기 방에 맞는 이미지를 가지게 함
-	FixBossDoor();									// BossRoom
-	FixCurseDoor();									// CurseRoom
-	FixItemDoor();									// ItemRoom
-	FixSatanDoor();									// SatanRoom
-	// 특정 방들은 안의 모든 문이 열려있다.
-	FixPrivateDoor();
-	FixStartDoor();
-
-	// DoorState에 따른 이미지 프레임 초기화
-	for (size_t i = 0; i < door.size(); ++i)
-	{
-		for (size_t j = 0; j < door[i].size(); ++j)
-		{
-			for (int k = 0; k < 4; ++k)
-			{
-				if (door[i][j][k].img != nullptr)
-				{
-					if (door[i][j][k].doorState == DoorStates::OPENED)
-					{
-						door[i][j][k].img->SetCurrFrameY(0);
-					}
-					if (door[i][j][k].img->GetMaxFrameY() >= 1 && door[i][j][k].doorState == DoorStates::CLOSED)
-					{
-						door[i][j][k].img->SetCurrFrameY(1);
-					}
-					if (door[i][j][k].img->GetMaxFrameY() >= 2 && door[i][j][k].doorState == DoorStates::LOCKED)
-					{
-						door[i][j][k].img->SetCurrFrameY(2);
-					}
-				}
-			}
-		}
-	}
-}
-
 void DoorEditing::Release()
 {
 	SAFE_RELEASE(roomIndex);
@@ -579,6 +427,158 @@ void DoorEditing::FixStartDoor()
 	door[currLocatedRow][currLocatedColumn][1].doorState = DoorStates::OPENED;
 	door[currLocatedRow][currLocatedColumn][2].doorState = DoorStates::OPENED;
 	door[currLocatedRow][currLocatedColumn][3].doorState = DoorStates::OPENED;
+}
+
+void DoorEditing::Init(int stageNum)
+{
+	roomIndex = new RoomEditing;
+	roomIndex->Init(stageNum);
+	// Stage01의 Size를 받기
+	_stageSize = roomIndex->GetStageSize();
+	// StartPoint를 받기
+	_startPoint = roomIndex->GetStartPoint();
+	// Stage Size만큼 resize 하고
+	stage01Index.resize(_stageSize);
+	for (size_t i = 0; i < stage01Index.size(); ++i)
+	{
+		stage01Index[i].resize(_stageSize);
+		for (size_t j = 0; j < stage01Index[i].size(); ++j)
+		{
+			stage01Index[i][j] = roomIndex->GetStage()[i][j];
+		}
+	}
+	// Room Size만큼 resize하고
+	roomInfo.resize(_stageSize);
+	for (size_t i = 0; i < roomInfo.size(); ++i)
+	{
+		roomInfo[i].resize(_stageSize);
+		for (size_t j = 0; j < roomInfo[i].size(); ++j)
+		{
+			// Room의 정보를 가져오기
+			roomInfo[i][j] = roomIndex->GetRoomType()[i][j];
+		}
+	}
+
+	// 각각의 Room마다 DOOR_INFO를 저장할 이중벡터 초기화
+	door.resize(_stageSize);
+	for (size_t i = 0; i < door.size(); ++i)
+	{
+		door[i].resize(_stageSize);
+		for (size_t j = 0; j < door[i].size(); ++j)
+		{
+			// Door의 Size
+			objectSize = 80.0f;
+			//UP
+			door[i][j][0].img = nullptr;
+			door[i][j][0].doorState = DoorStates::CLOSED;								// Door의 상태
+			door[i][j][0].doorDir = ObjectDir::UP;										// Door의 방향
+			door[i][j][0].roomType = RoomTypes::NONE;									// Door의 방향
+
+			door[i][j][0].pos.x = 640.0f;												// terrain frameX 16
+			door[i][j][0].pos.y = 80.0f;												// terrain frameY 2
+			door[i][j][0].shape = {
+				(LONG)(door[i][j][0].pos.x - (objectSize * DEVIDE_HALF)),				// shape.left
+				(LONG)(door[i][j][0].pos.y - (objectSize * DEVIDE_HALF) - 40),			// shape.top
+				(LONG)(door[i][j][0].pos.x + (objectSize * DEVIDE_HALF)),				// shape.right
+				(LONG)(door[i][j][0].pos.y + (objectSize * DEVIDE_HALF))				// shape.bottom
+			};
+			//DOWN
+			door[i][j][1].img = nullptr;
+			door[i][j][1].doorState = DoorStates::CLOSED;								// Door의 상태
+			door[i][j][1].doorDir = ObjectDir::DOWN;									// Door의 방향
+			door[i][j][1].roomType = RoomTypes::NONE;									// Door의 방향
+
+			door[i][j][1].pos.x = 640.0f;												// terrain frameX 16
+			door[i][j][1].pos.y = 720.0f;												// terrain frameY 18
+			door[i][j][1].shape = {
+				(LONG)(door[i][j][1].pos.x - (objectSize * DEVIDE_HALF)),				// shape.left
+				(LONG)(door[i][j][1].pos.y - (objectSize * DEVIDE_HALF)),				// shape.top
+				(LONG)(door[i][j][1].pos.x + (objectSize * DEVIDE_HALF)),				// shape.right
+				(LONG)(door[i][j][1].pos.y + (objectSize * DEVIDE_HALF) + 40)			// shape.bottom
+			};
+			//LEFT
+			door[i][j][2].img = nullptr;
+			door[i][j][2].doorState = DoorStates::CLOSED;								// Door의 상태
+			door[i][j][2].doorDir = ObjectDir::LEFT;									// Door의 방향
+			door[i][j][2].roomType = RoomTypes::NONE;									// Door의 방향
+
+			door[i][j][2].pos.x = 80.0f;												// terrain frameX 2
+			door[i][j][2].pos.y = 400.0f;												// terrain frameY 10
+			door[i][j][2].shape = {
+				(LONG)(door[i][j][2].pos.x - (objectSize * DEVIDE_HALF)),				// shape.left
+				(LONG)(door[i][j][2].pos.y - (objectSize * DEVIDE_HALF)),				// shape.top
+				(LONG)(door[i][j][2].pos.x + (objectSize * DEVIDE_HALF)),				// shape.right
+				(LONG)(door[i][j][2].pos.y + (objectSize * DEVIDE_HALF))				// shape.bottom
+			};
+			//RIGHT
+			door[i][j][3].img = nullptr;
+			door[i][j][3].doorState = DoorStates::CLOSED;								// Door의 상태
+			door[i][j][3].doorDir = ObjectDir::RIGHT;									// Door의 방향
+			door[i][j][3].roomType = RoomTypes::NONE;									// Door의 방향
+
+			door[i][j][3].pos.x = 1200.0f;												// terrain frameX 29
+			door[i][j][3].pos.y = 400.0f;												// terrain frameY 10
+			door[i][j][3].shape = {
+				(LONG)(door[i][j][3].pos.x - (objectSize * DEVIDE_HALF) + 17),			// shape.left
+				(LONG)(door[i][j][3].pos.y - (objectSize * DEVIDE_HALF)),				// shape.top
+				(LONG)(door[i][j][3].pos.x + (objectSize * DEVIDE_HALF)),				// shape.right
+				(LONG)(door[i][j][3].pos.y + (objectSize * DEVIDE_HALF))				// shape.bottom
+			};
+		}
+	}
+
+	// 통과했는지의 여부를 알기 위한 이중 벡터 초기화
+	isTransitMap.resize(_stageSize);
+	for (size_t i = 0; i < isTransitMap.size(); ++i)
+	{
+		isTransitMap[i].resize(_stageSize);
+		for (size_t j = 0; j < isTransitMap[i].size(); ++j)
+		{
+			isTransitMap[i][j] = false;
+		}
+	}
+
+	// 방문하면서 현재의 맵 기준 상, 하, 좌, 우 의 RoomType들을 판별해서 Image들을 저장
+	StoreRoomType(_startPoint, _startPoint);
+
+	// 현재 맵의 위치
+	currLocatedRow = _startPoint;
+	currLocatedColumn = _startPoint;
+
+	// 특정 방들은 자기 방에 맞는 이미지를 가지게 함
+	FixBossDoor();									// BossRoom
+	FixCurseDoor();									// CurseRoom
+	FixItemDoor();									// ItemRoom
+	FixSatanDoor();									// SatanRoom
+	// 특정 방들은 안의 모든 문이 열려있다.
+	FixPrivateDoor();
+	FixStartDoor();
+
+	// DoorState에 따른 이미지 프레임 초기화
+	for (size_t i = 0; i < door.size(); ++i)
+	{
+		for (size_t j = 0; j < door[i].size(); ++j)
+		{
+			for (int k = 0; k < 4; ++k)
+			{
+				if (door[i][j][k].img != nullptr)
+				{
+					if (door[i][j][k].doorState == DoorStates::OPENED)
+					{
+						door[i][j][k].img->SetCurrFrameY(0);
+					}
+					if (door[i][j][k].img->GetMaxFrameY() >= 1 && door[i][j][k].doorState == DoorStates::CLOSED)
+					{
+						door[i][j][k].img->SetCurrFrameY(1);
+					}
+					if (door[i][j][k].img->GetMaxFrameY() >= 2 && door[i][j][k].doorState == DoorStates::LOCKED)
+					{
+						door[i][j][k].img->SetCurrFrameY(2);
+					}
+				}
+			}
+		}
+	}
 }
 
 void DoorEditing::StoreRoomType(int row, int column)

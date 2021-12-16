@@ -1,117 +1,7 @@
 #include "MainConfig.h"
 #include "MapEditing.h"
 
-void MapEditing::Init()
-{
-	// 모든 맵들을 나열
-	SampleTileTypes sampleType = SampleTileTypes::BASEMENT;
-	for (int i = 0; i < 100; ++i)
-	{
-		size_t originIndex = ThinOutMapInfo[0].size();	// 현재 사이즈를 저장(추가가 됐는지 비교하기 위해)
-		ArrangeStageIndex(sampleType, i);				// map을 추가
-		if (originIndex == ThinOutMapInfo[0].size())		// 더 이상 추가가 안될 때 == 맵이 더 이상 없을 때
-		{
-			break;
-		}
-	}
-	sampleType = SampleTileTypes::CAVE;
-	for (int i = 0; i < 100; ++i)
-	{
-		size_t originIndex = ThinOutMapInfo[1].size();
-		ArrangeStageIndex(sampleType, i);
-		if (originIndex == ThinOutMapInfo[1].size())
-		{
-			break;
-		}
-	}
-	sampleType = SampleTileTypes::CELLAR;
-	for (int i = 0; i < 100; ++i)
-	{
-		size_t originIndex = ThinOutMapInfo[0].size();
-		ArrangeStageIndex(sampleType, i);
-		if (originIndex == ThinOutMapInfo[0].size())
-		{
-			break;
-		}
-	}
-	for (int i = 0; i < 100; ++i)
-	{
-		size_t originIndex = ThinOutMapInfo[1].size();
-		ArrangeStageIndex(sampleType, i);
-		if (originIndex == ThinOutMapInfo[1].size())
-		{
-			break;
-		}
-	}
-	sampleType = SampleTileTypes::DEPTH;
-	for (int i = 0; i < 100; ++i)
-	{
-		size_t originIndex = ThinOutMapInfo[0].size();
-		ArrangeStageIndex(sampleType, i);
-		if (originIndex == ThinOutMapInfo[0].size())
-		{
-			break;
-		}
-	}
-	for (int i = 0; i < 100; ++i)
-	{
-		size_t originIndex = ThinOutMapInfo[1].size();
-		ArrangeStageIndex(sampleType, i);
-		if (originIndex == ThinOutMapInfo[1].size())
-		{
-			break;
-		}
-	}
-	// 보스맵을 끝으로 이동
-	for (size_t i = 0; i < ThinOutMapInfo[0].size(); ++i)
-	{
-		string str = "Save/BASEMENT01.map";
-		if (ThinOutMapInfo[0].at(i) == str)
-		{
-			string bossMap = ThinOutMapInfo[0].at(i);
-			ThinOutMapInfo[0].erase(ThinOutMapInfo[0].begin() + 1);		// 수정 필요
-			ThinOutMapInfo[0].push_back(bossMap);
-			break;
-		}
-	}
-	for (size_t i = 0; i < ThinOutMapInfo[1].size(); ++i)
-	{
-		string str = "Save/CAVE01.map";
-		if (ThinOutMapInfo[1].at(i) == str)
-		{
-			string bossMap = ThinOutMapInfo[1].at(i);
-			ThinOutMapInfo[1].erase(ThinOutMapInfo[1].begin() + 1);		// 수정 필요
-			ThinOutMapInfo[1].push_back(bossMap);
-			break;
-		}
-	}
-	// 맵의 개수로 stage 크기 결정
-	SettingStageSize();
-	// Stage 중앙의 Index
-	startPoint = (INT)(stageSize * DEVIDE_HALF);
-	// Stage 초기화
-	stage01.resize(stageSize);
-	// Loop
-	CreateStage();
-#ifdef _DEBUG MapEditing
-	cout << "MapEditing\n";
-	for (size_t i = 0; i < stage01.size(); ++i)
-	{
-		for (size_t j = 0; j < stage01[i].size(); ++j)
-		{
-			cout << stage01[i][j] << "\t";
-			if (stage01[i][j].empty())
-			{
-				cout << "########\t";
-			}
-		}
-		cout << "\n";
-	}
-	cout << "\n";
-#endif
-}
-
-void MapEditing::ArrangeStageIndex(SampleTileTypes sampleType, int loadIndex)
+void MapEditing::ArrangeStageIndex(SampleTileTypes sampleType, int loadIndex, int stageNum)
 {
 	string loadFileName = "Save/";
 	switch (sampleType)
@@ -178,31 +68,36 @@ void MapEditing::ArrangeStageIndex(SampleTileTypes sampleType, int loadIndex)
 	}
 
 	// 중복 불가 처리
-	for (size_t i = 0; i < ThinOutMapInfo[0].size(); ++i)
+	for (size_t i = 0; i < ThinOutMapInfo.size(); ++i)
 	{
-		if (ThinOutMapInfo[0][i] == loadFileName)
+		if (ThinOutMapInfo[i] == loadFileName)
 		{
 			CloseHandle(hFile);
 			return;
 		}
 	}
-	for (size_t i = 0; i < ThinOutMapInfo[1].size(); ++i)
+	for (size_t i = 0; i < ThinOutMapInfo.size(); ++i)
 	{
-		if (ThinOutMapInfo[1][i] == loadFileName)
+		if (ThinOutMapInfo[i] == loadFileName)
 		{
 			CloseHandle(hFile);
 			return;
 		}
 	}
 	// stage[0]에 삽입
-	if (sampleType != SampleTileTypes::CAVE)
+	if (stageNum == 0)
 	{
-		ThinOutMapInfo[0].push_back(loadFileName);
+		if (sampleType != SampleTileTypes::CAVE)
+		{
+			ThinOutMapInfo.push_back(loadFileName);
+		}
 	}
-	// stage[1]에 삽입
-	if (sampleType != SampleTileTypes::BASEMENT)
+	if (stageNum == 1)
 	{
-		ThinOutMapInfo[1].push_back(loadFileName);
+		if (sampleType != SampleTileTypes::BASEMENT)
+		{
+			ThinOutMapInfo.push_back(loadFileName);
+		}
 	}
 
 	CloseHandle(hFile);
@@ -218,28 +113,28 @@ void MapEditing::CountLinkedMap(int row, int column)
 	int leftColumn = searchColumn - 1;
 	int rightColumn = searchColumn + 1;
 	// 위쪽 맵 자리가 비어있지 않으면 (stage01[-1(맵 밖)][N] 방지 && 맵의 유무 && 방문했는지)
-	if (topRow >= 0 && stage01[topRow][searchColumn].empty() == false && isTransitMap[topRow][searchColumn] == false)
+	if (topRow >= 0 && stage[topRow][searchColumn].empty() == false && isTransitMap[topRow][searchColumn] == false)
 	{
 		++countLinkedMap;									// ++경유
 		isTransitMap[topRow][searchColumn] = true;			// 통과 = true
 		CountLinkedMap(topRow, searchColumn);
 	}
 	// 아래쪽 맵 자리가 비어있지 않으면 (stage01[mapSize(맵 밖)][N] 방지 && 맵의 유무 && 방문했는지)
-	if (bottomRow < stageSize && stage01[bottomRow][searchColumn].empty() == false && isTransitMap[bottomRow][searchColumn] == false)
+	if (bottomRow < stageSize && stage[bottomRow][searchColumn].empty() == false && isTransitMap[bottomRow][searchColumn] == false)
 	{
 		++countLinkedMap;									// ++경유
 		isTransitMap[bottomRow][searchColumn] = true;		// 통과 = true
 		CountLinkedMap(bottomRow, searchColumn);
 	}
 	// 왼쪽 맵 자리가 비어있지 않으면 (stage01[N][-1(맵 밖)] 방지 && 맵의 유무 && 방문했는지)
-	if (leftColumn >= 0 && stage01[searchRow][leftColumn].empty() == false && isTransitMap[searchRow][leftColumn] == false)
+	if (leftColumn >= 0 && stage[searchRow][leftColumn].empty() == false && isTransitMap[searchRow][leftColumn] == false)
 	{
 		++countLinkedMap;									// ++경유
 		isTransitMap[searchRow][leftColumn] = true;			// 통과 = true
 		CountLinkedMap(searchRow, leftColumn);
 	}
 	// 오른쪽 맵 자리가 비어있지 않으면 (stage01[N][mapSize(맵 밖)] 방지 && 맵의 유무 && 방문했는지)
-	if (rightColumn < stageSize && stage01[searchRow][rightColumn].empty() == false && isTransitMap[searchRow][rightColumn] == false)
+	if (rightColumn < stageSize && stage[searchRow][rightColumn].empty() == false && isTransitMap[searchRow][rightColumn] == false)
 	{
 		++countLinkedMap;									// ++경유
 		isTransitMap[searchRow][rightColumn] = true;		// 통과 = true
@@ -250,12 +145,12 @@ void MapEditing::CountLinkedMap(int row, int column)
 void MapEditing::CreateStage()
 {
 	// Stage 초기화
-	for (size_t i = 0; i < stage01.size(); ++i)
+	for (size_t i = 0; i < stage.size(); ++i)
 	{
-		stage01[i].resize(stageSize);
+		stage[i].resize(stageSize);
 	}
 	// 중앙에 Start 지점
-	stage01[startPoint][startPoint] = ThinOutMapInfo[0].front();
+	stage[startPoint][startPoint] = ThinOutMapInfo.front();
 	// 램덤수 생성
 	random_device rd;
 	mt19937 gen(rd());
@@ -263,7 +158,7 @@ void MapEditing::CreateStage()
 	// 보스맵을 Start맵과 겹치지 않게 설정
 	DeginateBossMap(dis(gen) % stageSize, dis(gen) % stageSize);
 	// 나머지 방들을 삽입(시작 지점, 보스 지점 제외)
-	for (size_t i = 1; i < (ThinOutMapInfo[0].size() - 1); ++i)
+	for (size_t i = 1; i < (ThinOutMapInfo.size() - 1); ++i)
 	{
 		DeginateMap(dis(gen) % stageSize, dis(gen) % stageSize, i);
 	}
@@ -284,71 +179,71 @@ void MapEditing::CreateStage()
 	// Start지점부터 상하좌우 한칸씩 진입해 비어있는지 아닌지 확인 하면서 수를 셈. 총 수가 stage[0].size()와 다르면 다시 처음부터 돌림
 	CountLinkedMap(startPoint, startPoint);
 	// 연결된 맵의 개수와 Stage[0].size() 다르면 다시 Stage01 구성
-	if (countLinkedMap != ThinOutMapInfo[0].size())
+	if (countLinkedMap != ThinOutMapInfo.size())
 	{
 		// 맵을 초기화
-		for (size_t i = 0; i < stage01.size(); ++i)
+		for (size_t i = 0; i < stage.size(); ++i)
 		{
-			stage01[i].clear();
+			stage[i].clear();
 		}
 
 		CreateStage();
 	}
 	// 서로 붙지 말아야할 타일 지정
-	for (size_t i = 0; i < stage01.size(); ++i)
+	for (size_t i = 0; i < stage.size(); ++i)
 	{
-		for (size_t j = 0; j < stage01[i].size(); ++j)
+		for (size_t j = 0; j < stage[i].size(); ++j)
 		{
 			// BossMap(BASEMENT01.map) 주면에 DEPTH Tilemap이면 다시 구성
-			if (stage01[i][j] == "Save/BASEMENT01.map")
+			if (stage[i][j] == "Save/BASEMENT01.map")
 			{
 				int topRow = (INT)(i - 1);
 				int bottomRow = (INT)(i + 1);
 				int leftColumn = (INT)(j - 1);
 				int rightColumn = (INT)(j + 1);
 				// 상
-				if (topRow >= 0 && (stage01[topRow][j] == "Save/CELLAR00.map" || stage01[topRow][j] == "Save/DEPTH00.map" || stage01[topRow][j] == "Save/DEPTH01.map"))
+				if (topRow >= 0 && (stage[topRow][j] == "Save/CELLAR00.map" || stage[topRow][j] == "Save/DEPTH00.map" || stage[topRow][j] == "Save/DEPTH01.map"))
 				{
 					// 맵을 초기화
-					for (size_t i = 0; i < stage01.size(); ++i)
+					for (size_t i = 0; i < stage.size(); ++i)
 					{
-						stage01[i].clear();
+						stage[i].clear();
 					}
 
 					CreateStage();
 					return;
 				}
 				// 하
-				if (bottomRow < stageSize && (stage01[bottomRow][j] == "Save/CELLAR00.map" || stage01[bottomRow][j] == "Save/DEPTH00.map" || stage01[bottomRow][j] == "Save/DEPTH01.map"))
+				if (bottomRow < stageSize && (stage[bottomRow][j] == "Save/CELLAR00.map" || stage[bottomRow][j] == "Save/DEPTH00.map" || stage[bottomRow][j] == "Save/DEPTH01.map"))
 				{
 					// 맵을 초기화
-					for (size_t i = 0; i < stage01.size(); ++i)
+					for (size_t i = 0; i < stage.size(); ++i)
 					{
-						stage01[i].clear();
+						stage[i].clear();
 					}
 
 					CreateStage();
 					return;
 				}
 				// 좌
-				if (leftColumn >= 0 && (stage01[i][leftColumn] == "Save/CELLAR00.map" || stage01[i][leftColumn] == "Save/DEPTH00.map" || stage01[i][leftColumn] == "Save/DEPTH01.map"))
+				if (leftColumn >= 0 && (stage[i][leftColumn] == "Save/CELLAR00.map" || stage[i][leftColumn] == "Save/DEPTH00.map" || stage[i][leftColumn] == "Save/DEPTH01.map"))
 				{
 					// 맵을 초기화
-					for (size_t i = 0; i < stage01.size(); ++i)
+					for (size_t i = 0; i < stage.size(); ++i)
 					{
-						stage01[i].clear();
+						stage[i].clear();
 					}
 
 					CreateStage();
 					return;
 				}
 				// 우
-				if (rightColumn < stageSize && (stage01[i][rightColumn] == "Save/CELLAR00.map" || stage01[i][rightColumn] == "Save/DEPTH00.map" || stage01[i][rightColumn] == "Save/DEPTH01.map"))
+				if (rightColumn < stageSize && (stage[i][rightColumn] == "Save/CELLAR00.map" || stage[i][rightColumn] == "Save/DEPTH00.map" || stage[i][rightColumn] == "Save/DEPTH01.map"))
 				{
 					// 맵을 초기화
-					for (size_t i = 0; i < stage01.size(); ++i)
+					for (size_t i = 0; i < stage.size(); ++i)
 					{
-						stage01[i].clear();
+						stage[i].clear();
 					}
 
 					CreateStage();
@@ -356,55 +251,55 @@ void MapEditing::CreateStage()
 				}
 			}
 			// DEPTH00.map 과 DEPTH01.map 서로 붙어 있으면 다시 구성
-			if (stage01[i][j] == "Save/DEPTH00.map")
+			if (stage[i][j] == "Save/DEPTH00.map")
 			{
 				int topRow = (INT)(i - 1);
 				int bottomRow = (INT)(i + 1);
 				int leftColumn = (INT)(j - 1);
 				int rightColumn = (INT)(j + 1);
 				// 상
-				if (topRow >= 0 && stage01[topRow][j] == "Save/DEPTH01.map")
+				if (topRow >= 0 && stage[topRow][j] == "Save/DEPTH01.map")
 				{
 					// 맵을 초기화
-					for (size_t i = 0; i < stage01.size(); ++i)
+					for (size_t i = 0; i < stage.size(); ++i)
 					{
-						stage01[i].clear();
+						stage[i].clear();
 					}
 
 					CreateStage();
 					return;
 				}
 				// 하
-				if (bottomRow < stageSize && stage01[bottomRow][j] == "Save/DEPTH01.map")
+				if (bottomRow < stageSize && stage[bottomRow][j] == "Save/DEPTH01.map")
 				{
 					// 맵을 초기화
-					for (size_t i = 0; i < stage01.size(); ++i)
+					for (size_t i = 0; i < stage.size(); ++i)
 					{
-						stage01[i].clear();
+						stage[i].clear();
 					}
 
 					CreateStage();
 					return;
 				}
 				// 좌
-				if (leftColumn >= 0 && stage01[i][leftColumn] == "Save/DEPTH01.map")
+				if (leftColumn >= 0 && stage[i][leftColumn] == "Save/DEPTH01.map")
 				{
 					// 맵을 초기화
-					for (size_t i = 0; i < stage01.size(); ++i)
+					for (size_t i = 0; i < stage.size(); ++i)
 					{
-						stage01[i].clear();
+						stage[i].clear();
 					}
 
 					CreateStage();
 					return;
 				}
 				// 우
-				if (rightColumn < stageSize && stage01[i][rightColumn] == "Save/DEPTH01.map")
+				if (rightColumn < stageSize && stage[i][rightColumn] == "Save/DEPTH01.map")
 				{
 					// 맵을 초기화
-					for (size_t i = 0; i < stage01.size(); ++i)
+					for (size_t i = 0; i < stage.size(); ++i)
 					{
-						stage01[i].clear();
+						stage[i].clear();
 					}
 
 					CreateStage();
@@ -433,16 +328,16 @@ void MapEditing::DeginateBossMap(int row, int column)
 		return;
 	}
 	// BossMap 설정
-	stage01[randRow][randColumn] = ThinOutMapInfo[0].back();
+	stage[randRow][randColumn] = ThinOutMapInfo.back();
 }
 
 void MapEditing::DeginateMap(int row, int column, size_t index)
 {
 	int randRow = row;
 	int randColumn = column;
-	if (stage01[randRow][randColumn].empty())
+	if (stage[randRow][randColumn].empty())
 	{
-		stage01[randRow][randColumn] = ThinOutMapInfo[0][index];
+		stage[randRow][randColumn] = ThinOutMapInfo[index];
 		return;
 	}
 
@@ -454,6 +349,132 @@ void MapEditing::DeginateMap(int row, int column, size_t index)
 	randColumn = dis(gen) % stageSize;
 
 	DeginateMap(randRow, randColumn, index);
+}
+
+void MapEditing::Init(int stageNum)
+{	
+	// 모든 맵들을 나열
+	if (stageNum == 0)
+	{
+		SampleTileTypes sampleType = SampleTileTypes::BASEMENT;
+		for (int i = 0; i < 100; ++i)
+		{
+			size_t originIndex = ThinOutMapInfo.size();			// 현재 사이즈를 저장(추가가 됐는지 비교하기 위해)
+			ArrangeStageIndex(sampleType, i, stageNum);			// map을 추가
+			if (originIndex == ThinOutMapInfo.size())			// 더 이상 추가가 안될 때 == 맵이 더 이상 없을 때
+			{
+				break;
+			}
+		}
+
+		sampleType = SampleTileTypes::CELLAR;
+		for (int i = 0; i < 100; ++i)
+		{
+			size_t originIndex = ThinOutMapInfo.size();
+			ArrangeStageIndex(sampleType, i, stageNum);
+			if (originIndex == ThinOutMapInfo.size())
+			{
+				break;
+			}
+		}
+
+		sampleType = SampleTileTypes::DEPTH;
+		for (int i = 0; i < 100; ++i)
+		{
+			size_t originIndex = ThinOutMapInfo.size();
+			ArrangeStageIndex(sampleType, i, stageNum);
+			if (originIndex == ThinOutMapInfo.size())
+			{
+				break;
+			}
+		}
+
+		// 보스맵을 끝으로 이동
+		for (size_t i = 0; i < ThinOutMapInfo.size(); ++i)
+		{
+			string str = "Save/BASEMENT01.map";
+			if (ThinOutMapInfo.at(i) == str)
+			{
+				string bossMap = ThinOutMapInfo.at(i);
+				ThinOutMapInfo.erase(ThinOutMapInfo.begin() + 1);
+				ThinOutMapInfo.push_back(bossMap);
+				break;
+			}
+		}
+	}
+	if (stageNum == 1)
+	{
+		SampleTileTypes sampleType = SampleTileTypes::CAVE;
+		for (int i = 0; i < 100; ++i)
+		{
+			size_t originIndex = ThinOutMapInfo.size();
+			ArrangeStageIndex(sampleType, i, stageNum);
+			if (originIndex == ThinOutMapInfo.size())
+			{
+				break;
+			}
+		}
+
+		sampleType = SampleTileTypes::CELLAR;
+		for (int i = 0; i < 100; ++i)
+		{
+			size_t originIndex = ThinOutMapInfo.size();
+			ArrangeStageIndex(sampleType, i, stageNum);
+			if (originIndex == ThinOutMapInfo.size())
+			{
+				break;
+			}
+		}
+
+		sampleType = SampleTileTypes::DEPTH;
+		for (int i = 0; i < 100; ++i)
+		{
+			size_t originIndex = ThinOutMapInfo.size();
+			ArrangeStageIndex(sampleType, i, stageNum);
+			if (originIndex == ThinOutMapInfo.size())
+			{
+				break;
+			}
+		}
+
+		// 보스맵을 끝으로 이동
+		for (size_t i = 0; i < ThinOutMapInfo.size(); ++i)
+		{
+			string str = "Save/CAVE01.map";
+			if (ThinOutMapInfo.at(i) == str)
+			{
+				string bossMap = ThinOutMapInfo.at(i);
+				ThinOutMapInfo.erase(ThinOutMapInfo.begin() + 1);
+				ThinOutMapInfo.push_back(bossMap);
+				break;
+			}
+		}
+	}
+
+	// 맵의 개수로 stage 크기 결정
+	SettingStageSize();
+	// Stage 중앙의 Index
+	startPoint = (INT)(stageSize * DEVIDE_HALF);
+	// Stage 초기화
+	stage.resize(stageSize);
+	// Loop
+	CreateStage();
+#ifdef _DEBUG MapEditing
+	cout << "MapEditing\n";
+	for (size_t i = 0; i < stage.size(); ++i)
+	{
+		for (size_t j = 0; j < stage[i].size(); ++j)
+		{
+			cout << stage[i][j] << "\t";
+			if (stage[i][j].empty())
+			{
+				cout << "########\t";
+			}
+		}
+		cout << "\n";
+	}
+	cout << "\n";
+#endif
 }
 
 void MapEditing::SettingStageSize()

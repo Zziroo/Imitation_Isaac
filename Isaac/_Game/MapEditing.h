@@ -11,25 +11,24 @@ private:
 	TILE_INFO						mainCellarTileInfo[CELLAR_TILE_ROW][TILE_COLUMN];
 	TILE_INFO						mainDepthTileInfo[DEPTH_TILE_ROW][TILE_COLUMN];
 
-	vector<string>					ThinOutMapInfo[2];		// Sample Tile 맵의 종류를 담을 벡터
+	vector<string>					ThinOutMapInfo;			// Sample Tile 맵의 종류를 담을 벡터
 	vector<vector<bool>>			isTransitMap;			// 맵을 경유했는지 확인하기 위한 이중벡터
-	vector<vector<string>>			stage01;				// Stage01
+	vector<vector<string>>			stage;					// Stage
 
 	int								countLinkedMap = 1;		// 한 Stage안에 맵들이 연결돼어있는지 확인하기 위한 변수
 	int								stageSize = 0;			// Stage 크기
 	int								startPoint = 0;			// Stage의 중앙(시작) 지점
 
 public:
-	virtual void					Init() override;
-
-	void							ArrangeStageIndex(SampleTileTypes sampleType, int loadIndex);
+	void							ArrangeStageIndex(SampleTileTypes sampleType, int loadIndex, int stageNum);
 	void							CountLinkedMap(int row, int column);
 	void							CreateStage();
 	void							DeginateBossMap(int row, int column);
 	void							DeginateMap(int row, int column, size_t index);
+	void							Init(int stageNum = 0);
 	void							SettingStageSize();
 
-	inline vector<vector<string>>	GetStage() { return this->stage01; }
+	inline vector<vector<string>>	GetStage() { return this->stage; }
 	inline int						GetStageSize() { return this->stageSize; }
 	inline int						GetStartPoint() { return this->startPoint; }
 

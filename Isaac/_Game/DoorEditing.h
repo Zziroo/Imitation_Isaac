@@ -20,7 +20,6 @@ private:
 	int											currLocatedColumn = 0;
 
 public:
-	virtual void								Init() override;
 	virtual void								Release() override;
 	virtual void								Update() override;
 	virtual void								Render(HDC hdc) override;
@@ -32,6 +31,7 @@ public:
 	void										FixPrivateDoor();
 	void										FixSatanDoor();
 	void										FixStartDoor();
+	void										Init(int stageNum = 0);
 	void										StoreRoomType(int row, int column);
 
 	inline int									GetLocatedRow() { return this->currLocatedRow; }
