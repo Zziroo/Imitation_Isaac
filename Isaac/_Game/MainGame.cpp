@@ -4,7 +4,7 @@
 #include "Image.h"
 
 #ifdef _DEBUG
-//#define TILETOOL
+//#define MAPTOOL
 #endif
 
 void MainGame::Init()
@@ -21,12 +21,12 @@ void MainGame::Init()
 	// ¹é¹öÆÛ
 	backBuffer = new Image;
 
-#ifdef TILETOOL
-	GET_SINGLETON_SCENE->ChangeScene("TilemapTool");
+#ifdef MAPTOOL
+	GET_SINGLETON_SCENE->ChangeScene("TilemapTool");	// TilemapTool
 	maxSizeX = TILEMAP_SIZE_X;
 	maxSizeY = TILEMAP_SIZE_Y;
 #else
-	GET_SINGLETON_SCENE->ChangeScene("Title");	// Title / Stage01
+	GET_SINGLETON_SCENE->ChangeScene("Title");			// Title / Stage01
 	maxSizeX = WIN_SIZE_X;
 	maxSizeY = WIN_SIZE_Y;
 #endif

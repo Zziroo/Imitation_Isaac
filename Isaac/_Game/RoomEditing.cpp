@@ -74,7 +74,69 @@ void RoomEditing::DeginateItemRoom(int row, int column)
 		DeginateItemRoom(dis(gen) % _stageSize, dis(gen) % _stageSize);
 		return;
 	}
-	// 2. NORMAL일 시 그 맵의 RoomType을 ItemRoom으로 설정
+	const int topRow = randRow - 1;
+	const int bottomRow = randRow + 1;
+	const int leftColumn = randColumn - 1;
+	const int rightColumn = randColumn + 1;
+	// 2. 지정한 방 주위에 특정 방이 있으면 함수를 다시 호출해 랜덤 생성
+	// 상
+	if (topRow >= 0)
+	{
+		if (roomInfo[topRow][randColumn] != RoomTypes::NORMAL)
+		{
+			// 램덤수 생성
+			random_device rd;
+			mt19937 gen(rd());
+			uniform_int_distribution<int> dis(0, 99);
+
+			DeginateItemRoom(dis(gen) % _stageSize, dis(gen) % _stageSize);
+			return;
+		}
+	}
+	// 하
+	if (bottomRow < _stageSize)
+	{
+		if (roomInfo[bottomRow][randColumn] != RoomTypes::NORMAL)
+		{
+			// 램덤수 생성
+			random_device rd;
+			mt19937 gen(rd());
+			uniform_int_distribution<int> dis(0, 99);
+
+			DeginateItemRoom(dis(gen) % _stageSize, dis(gen) % _stageSize);
+			return;
+		}
+	}
+	// 좌
+	if (leftColumn >= 0)
+	{
+		if (roomInfo[randRow][leftColumn] != RoomTypes::NORMAL)
+		{
+			// 램덤수 생성
+			random_device rd;
+			mt19937 gen(rd());
+			uniform_int_distribution<int> dis(0, 99);
+
+			DeginateItemRoom(dis(gen) % _stageSize, dis(gen) % _stageSize);
+			return;
+		}
+	}
+	// 우
+	if (rightColumn < _stageSize)
+	{
+		if (roomInfo[randRow][rightColumn] != RoomTypes::NORMAL)
+		{
+			// 램덤수 생성
+			random_device rd;
+			mt19937 gen(rd());
+			uniform_int_distribution<int> dis(0, 99);
+
+			DeginateItemRoom(dis(gen) % _stageSize, dis(gen) % _stageSize);
+			return;
+		}
+	}
+
+	// NORMAL중 BOSS맵이 아닐일 시 그 맵의 RoomType을 ItemRoom으로 설정
 	roomInfo[randRow][randColumn] = RoomTypes::ITEM;
 }
 
