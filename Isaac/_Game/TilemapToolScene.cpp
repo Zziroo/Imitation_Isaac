@@ -2,7 +2,6 @@
 #include "TilemapToolScene.h"
 
 #include "Button.h"
-#include "ButtonFunction.h"
 #include "Image.h"
 
 HRESULT TilemapToolScene::Init()
@@ -39,10 +38,8 @@ HRESULT TilemapToolScene::Init()
 	}
 
 	// Button
-	buttonFunc = new ButtonFunction;
 	button = new Button;
 	button->Init();
-	button->SetFunction(&ButtonFunction::QuitProgram, buttonFunc);
 
 	return S_OK;
 }

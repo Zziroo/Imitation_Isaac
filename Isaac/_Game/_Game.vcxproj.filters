@@ -132,9 +132,6 @@
     <ClCompile Include="Button.cpp">
       <Filter>MainGame\GameObject\Button</Filter>
     </ClCompile>
-    <ClCompile Include="ButtonFunction.cpp">
-      <Filter>MainGame\GameObject\Button</Filter>
-    </ClCompile>
     <ClCompile Include="Input.cpp">
       <Filter>FrameWork\Input</Filter>
     </ClCompile>
@@ -207,9 +204,6 @@
       <Filter>MainGame\GameObject\Weapon</Filter>
     </ClInclude>
     <ClInclude Include="Button.h">
-      <Filter>MainGame\GameObject\Button</Filter>
-    </ClInclude>
-    <ClInclude Include="ButtonFunction.h">
       <Filter>MainGame\GameObject\Button</Filter>
     </ClInclude>
     <ClInclude Include="Input.h">

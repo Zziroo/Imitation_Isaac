@@ -88,10 +88,7 @@ void Button::Update()
 		else if (Input::GetButtonUp(VK_LBUTTON) && exitBtn.buttonState == ButtonStates::DOWN)
 		{
 			exitBtn.buttonState = ButtonStates::UP;
-			if (btnFunc && pFunc) 
-			{ 
-				(btnFunc->*pFunc)();
-			}
+			PostQuitMessage(0);
 
 			return;
 		}

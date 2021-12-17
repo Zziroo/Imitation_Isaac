@@ -2,9 +2,6 @@
 
 #include "GameObject.h"
 
-class ButtonFunction;
-typedef void (ButtonFunction::* FuncPtr)();
-
 enum class ButtonStates { NONE, UP, DOWN };
 
 class Image;
@@ -48,9 +45,6 @@ private:
 	Image*				letter_Shop = nullptr;			// Shop
 	Image*				letter_Tile = nullptr;			// letter_Tile
 
-	FuncPtr				pFunc = nullptr;
-	ButtonFunction*		btnFunc = nullptr;
-
 	int					tileIndex = 0;
 	char				text[64] = {};					// Debuging
 
@@ -67,8 +61,6 @@ public:
 	void				RenderNormalButton(HDC hdc, ButtonInfo* btnInfo);
 	void				RenderUpButton(HDC hdc, ButtonInfo* btnInfo);
 	void				ShowLetter(HDC hdc, Image* img, ButtonInfo* btnInfo);
-
-	void				SetFunction(FuncPtr pFunc, ButtonFunction* btnFunc) { this->pFunc = pFunc; this->btnFunc = btnFunc; }
 
 	inline bool			GetPressLoadButton() { return this->loadBtn.clicked; }
 	inline bool			GetPressNextButton() { return this->nextBtn.clicked; }
