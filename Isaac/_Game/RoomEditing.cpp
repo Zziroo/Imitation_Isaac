@@ -82,7 +82,7 @@ void RoomEditing::DeginateItemRoom(int row, int column)
 	// »ó
 	if (topRow >= 0)
 	{
-		if (roomInfo[topRow][randColumn] != RoomTypes::NORMAL)
+		if (roomInfo[topRow][randColumn] == RoomTypes::BOSS || roomInfo[topRow][randColumn] == RoomTypes::CURSE || roomInfo[topRow][randColumn] == RoomTypes::SATAN)
 		{
 			// ·¥´ý¼ö »ý¼º
 			random_device rd;
@@ -96,7 +96,7 @@ void RoomEditing::DeginateItemRoom(int row, int column)
 	// ÇÏ
 	if (bottomRow < _stageSize)
 	{
-		if (roomInfo[bottomRow][randColumn] != RoomTypes::NORMAL)
+		if (roomInfo[bottomRow][randColumn] == RoomTypes::BOSS || roomInfo[bottomRow][randColumn] == RoomTypes::CURSE || roomInfo[bottomRow][randColumn] == RoomTypes::SATAN)
 		{
 			// ·¥´ý¼ö »ý¼º
 			random_device rd;
@@ -110,7 +110,7 @@ void RoomEditing::DeginateItemRoom(int row, int column)
 	// ÁÂ
 	if (leftColumn >= 0)
 	{
-		if (roomInfo[randRow][leftColumn] != RoomTypes::NORMAL)
+		if (roomInfo[randRow][leftColumn] == RoomTypes::BOSS || roomInfo[randRow][leftColumn] == RoomTypes::CURSE || roomInfo[randRow][leftColumn] == RoomTypes::SATAN)
 		{
 			// ·¥´ý¼ö »ý¼º
 			random_device rd;
@@ -124,7 +124,7 @@ void RoomEditing::DeginateItemRoom(int row, int column)
 	// ¿ì
 	if (rightColumn < _stageSize)
 	{
-		if (roomInfo[randRow][rightColumn] != RoomTypes::NORMAL)
+		if (roomInfo[randRow][rightColumn] == RoomTypes::BOSS || roomInfo[randRow][rightColumn] == RoomTypes::CURSE || roomInfo[randRow][rightColumn] == RoomTypes::SATAN)
 		{
 			// ·¥´ý¼ö »ý¼º
 			random_device rd;
