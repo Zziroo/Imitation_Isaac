@@ -4,7 +4,6 @@
 #include <utility>
 
 class Button;
-class ButtonFunction;
 class Image;
 class TilemapToolScene : public Scene
 {
@@ -26,7 +25,6 @@ private:
 	vector<SAMPLE_TILE_INFO>	multiSelectedSampleTile[2];								// Multi SampleTile
 
 	Button*						button = nullptr;
-	ButtonFunction*				buttonFunc = nullptr;
 
 	bool						multiSelectPoint[2] = { false };						// Multi SampleTile Point([0] : 처음, 끝 지점, [1] : 그리기 영역)
 	bool						isMultiSelect = false;									// Multi SampleTile Point 지정했는지

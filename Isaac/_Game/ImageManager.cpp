@@ -1,4 +1,5 @@
 #include "MainConfig.h"
+#include "MainConfig.h"
 #include "ImageManager.h"
 
 #include "Image.h"
@@ -9,7 +10,9 @@ void ImageManager::Init()
 	GET_SINGLETON_IMAGE->AddImage("Image/BackGround/BackGround00.bmp", 1920, 1080);
 	GET_SINGLETON_IMAGE->AddImage("Image/BackGround/BackGround01.bmp", 1920, 1080);
 	GET_SINGLETON_IMAGE->AddImage("Image/BackGround/BackGround02.bmp", 853, 480);
+	GET_SINGLETON_IMAGE->AddImage("Image/BackGround/BackGround04.bmp", 580, 580);
 	GET_SINGLETON_IMAGE->AddImage("Image/BackGround/Title.bmp", 1280, 6400, 1, 8);
+	GET_SINGLETON_IMAGE->AddImage("Image/BackGround/SampleImage.bmp", 1280, 800, 1, 1, true, MAGENTA);
 	#pragma endregion
 	#pragma region Isaac
 	GET_SINGLETON_IMAGE->AddImage("Image/Character/Body.bmp", 540, 99, 10, 3, true, MAGENTA);
@@ -38,7 +41,7 @@ void ImageManager::Init()
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Letter/Depth.bmp", 81, 20, 1, 1, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Letter/Enemy.bmp", 133, 30, 1, 1, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Letter/Exit.bmp", 82, 30, 1, 1, true, MAGENTA);
-	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Letter/Object.bmp", 150, 30, 1, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Letter/Obstacle.bmp", 150, 21, 1, 1, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Letter/Shop.bmp", 69, 20, 1, 1, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Letter/Tile.bmp", 80, 30, 1, 1, true, MAGENTA);
 	#pragma endregion
@@ -92,6 +95,18 @@ void ImageManager::Init()
 	GET_SINGLETON_IMAGE->AddImage("Image/Minimap/ItemIcon.bmp", 16, 15, 1, 1, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Minimap/PrivateIcon.bmp", 14, 15, 1, 1, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Minimap/SatanIcon.bmp", 14, 15, 1, 1, true, MAGENTA);
+	#pragma endregion
+	#pragma region Obstacle
+	GET_SINGLETON_IMAGE->AddImage("Image/Obstacle/Bonfire.bmp", 588, 645, 7, 5, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Obstacle/Brick.bmp", 80, 80, 1, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Obstacle/DDong.bmp", 336, 84, 4, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Obstacle/ItemStand.bmp", 82, 63, 1, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Obstacle/Jar.bmp", 84, 81, 1, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Obstacle/Obstacle.bmp", 483, 483, 3, 3, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Obstacle/Slider.bmp", 278, 139, 2, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Obstacle/SpiderWeb.bmp", 75, 78, 1, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Obstacle/Stone.bmp", 202, 107, 2, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Obstacle/Thorn.bmp", 80, 80, 1, 1, true, MAGENTA);
 	#pragma endregion
 	#pragma region Unused
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Sample_Image.bmp", 1280, 800);

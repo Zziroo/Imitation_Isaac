@@ -8,7 +8,7 @@ void Button::Init()
 	enemyBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index.bmp");
 	exitBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index.bmp");
 	loadBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Load.bmp");
-	objectBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index.bmp");
+	obstacleBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index.bmp");
 	sampleTileBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index.bmp");
 	saveBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Save.bmp");
 
@@ -27,7 +27,7 @@ void Button::Init()
 	letter_Depth = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Letter/Depth.bmp");
 	letter_Enemy = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Letter/Enemy.bmp");
 	letter_Exit = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Letter/Exit.bmp");
-	letter_Object = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Letter/Object.bmp");
+	letter_Obstacle = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Letter/Obstacle.bmp");
 	letter_Shop = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Letter/Shop.bmp");
 	letter_Tile = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Letter/Tile.bmp");
 
@@ -36,7 +36,7 @@ void Button::Init()
 	DeclareButtonInfo(&saveBtn, 386, 40);
 
 	DeclareButtonInfo(&enemyBtn, 835, 40);
-	DeclareButtonInfo(&objectBtn, 1061, 40);
+	DeclareButtonInfo(&obstacleBtn, 1061, 40);
 	DeclareButtonInfo(&sampleTileBtn, 1287, 40);
 
 	DeclareButtonInfo(&basementTileBtn, 722, 500);
@@ -155,23 +155,17 @@ void Button::Update()
 	{
 		enemyBtn.buttonState = ButtonStates::NONE;
 	}
-	if (PtInRect(&objectBtn.shape, g_ptMouse))
+	if (Input::GetButtonDown(VK_LBUTTON))
 	{
-		if (Input::GetButtonDown(VK_LBUTTON))
+		if (PtInRect(&obstacleBtn.shape, g_ptMouse))
 		{
-			objectBtn.buttonState = ButtonStates::DOWN;
-
-		}
-		else if (Input::GetButtonUp(VK_LBUTTON) && objectBtn.buttonState == ButtonStates::DOWN)
-		{
-			objectBtn.buttonState = ButtonStates::UP;
-
-			return;
+			obstacleBtn.clicked = !obstacleBtn.clicked;
+			sampleTileBtn.buttonState = ButtonStates::NONE;
 		}
 	}
 	else 
 	{
-		objectBtn.buttonState = ButtonStates::NONE; 
+		obstacleBtn.buttonState = ButtonStates::NONE; 
 	}
 	// SampleTile
 	if (Input::GetButtonDown(VK_LBUTTON))
@@ -179,6 +173,7 @@ void Button::Update()
 		if (PtInRect(&sampleTileBtn.shape, g_ptMouse))
 		{
 			sampleTileBtn.clicked = !sampleTileBtn.clicked;
+			obstacleBtn.buttonState = ButtonStates::NONE;
 		}
 	}
 	else
@@ -187,9 +182,9 @@ void Button::Update()
 	}
 
 
+	// 기존의 버튼 중 하나는 무조건 눌려 있어야함.
 	if (sampleTileBtn.clicked)
 	{
-		// 기존의 버튼 중 하나는 무조건 눌려 있어야함.
 		// BasementTile
 		if (PtInRect(&basementTileBtn.shape, g_ptMouse) && basementTileBtn.buttonState != ButtonStates::DOWN)
 		{
@@ -244,7 +239,25 @@ void Button::Update()
 		}
 	}
 
+
 	// 버튼 하나를 클릭하면 나머지는 UP상태로 만듦.
+	if (sampleTileBtn.clicked)
+	{
+		if (obstacleBtn.clicked && obstacleBtn.buttonState != ButtonStates::NONE)
+		{
+			sampleTileBtn.clicked = false;
+			sampleTileBtn.buttonState = ButtonStates::UP;
+		}
+	}
+	if (obstacleBtn.clicked)
+	{
+		if (sampleTileBtn.clicked && sampleTileBtn.buttonState != ButtonStates::NONE)
+		{
+			obstacleBtn.clicked = false;
+			obstacleBtn.buttonState = ButtonStates::UP;
+		}
+	}
+
 	if (basementTileBtn.clicked)
 	{
 		if (caveTileBtn.clicked && caveTileBtn.buttonState != ButtonStates::NONE)
@@ -318,7 +331,16 @@ void Button::Update()
 		}
 	}
 
-	// SampleTile 버트 클릭 돼있으면 true, 클릭이 안돼있으면 false
+	// ObstacleTile 버튼 클릭 돼있으면 true, 클릭이 안돼있으면 false
+	if (obstacleBtn.clicked)
+	{
+		obstacleBtn.buttonState = ButtonStates::DOWN;
+	}
+	else
+	{
+		obstacleBtn.buttonState = ButtonStates::UP;
+	}
+	// SampleTile 버튼 클릭 돼있으면 true, 클릭이 안돼있으면 false
 	if (sampleTileBtn.clicked)
 	{
 		sampleTileBtn.buttonState = ButtonStates::DOWN;
@@ -415,7 +437,7 @@ void Button::Render(HDC hdc)
 	ClikedButton(hdc, &saveBtn);
 
 	ClikedButton(hdc, &enemyBtn);
-	ClikedButton(hdc, &objectBtn);
+	ClikedButton(hdc, &obstacleBtn);
 	ClikedButton(hdc, &sampleTileBtn);
 
 	if (sampleTileBtn.clicked)
@@ -436,7 +458,7 @@ void Button::Render(HDC hdc)
 	}
 	ShowLetter(hdc, letter_Enemy, &enemyBtn);
 	ShowLetter(hdc, letter_Exit, &exitBtn);
-	ShowLetter(hdc, letter_Object, &objectBtn);
+	ShowLetter(hdc, letter_Obstacle, &obstacleBtn);
 	ShowLetter(hdc, letter_Tile, &sampleTileBtn);
 
 	GameObject::Render(hdc);
@@ -453,18 +475,20 @@ void Button::OnDebug(HDC hdc)
 
 	wsprintf(text, "SampleTileBtn.clicked : %d", sampleTileBtn.clicked);
 	TextOut(hdc, (TILEMAP_SIZE_X - 1390), (TILEMAP_SIZE_Y - 220), text, (INT)(strlen(text)));
-	wsprintf(text, "BasementTileBtn.clicked : %d", basementTileBtn.clicked);
-	TextOut(hdc, (TILEMAP_SIZE_X - 1390), (TILEMAP_SIZE_Y - 180), text, (INT)(strlen(text)));
-	wsprintf(text, "CaveTileBtn.clicked : %d", caveTileBtn.clicked);
-	TextOut(hdc, (TILEMAP_SIZE_X - 1390), (TILEMAP_SIZE_Y - 160), text, (INT)(strlen(text)));
-	wsprintf(text, "CellarTileBtn.clicked : %d", cellarTileBtn.clicked);
-	TextOut(hdc, (TILEMAP_SIZE_X - 1390), (TILEMAP_SIZE_Y - 140), text, (INT)(strlen(text)));
-	wsprintf(text, "DepthTileBtn.clicked : %d", depthTileBtn.clicked);
-	TextOut(hdc, (TILEMAP_SIZE_X - 1390), (TILEMAP_SIZE_Y - 120), text, (INT)(strlen(text)));
-
-	wsprintf(text, "EnemyBtn.clicked : %d", enemyBtn.clicked);
+	if (sampleTileBtn.clicked)
+	{
+		wsprintf(text, "BasementTileBtn.clicked : %d", basementTileBtn.clicked);
+		TextOut(hdc, (TILEMAP_SIZE_X - 1390), (TILEMAP_SIZE_Y - 180), text, (INT)(strlen(text)));
+		wsprintf(text, "CaveTileBtn.clicked : %d", caveTileBtn.clicked);
+		TextOut(hdc, (TILEMAP_SIZE_X - 1390), (TILEMAP_SIZE_Y - 160), text, (INT)(strlen(text)));
+		wsprintf(text, "CellarTileBtn.clicked : %d", cellarTileBtn.clicked);
+		TextOut(hdc, (TILEMAP_SIZE_X - 1390), (TILEMAP_SIZE_Y - 140), text, (INT)(strlen(text)));
+		wsprintf(text, "DepthTileBtn.clicked : %d", depthTileBtn.clicked);
+		TextOut(hdc, (TILEMAP_SIZE_X - 1390), (TILEMAP_SIZE_Y - 120), text, (INT)(strlen(text)));
+	}
+	wsprintf(text, "ObstacleBtn.clicked : %d", obstacleBtn.clicked);
 	TextOut(hdc, (TILEMAP_SIZE_X - 1164), (TILEMAP_SIZE_Y - 220), text, (INT)(strlen(text)));
-	wsprintf(text, "ObjectBtn.clicked : %d", objectBtn.clicked);
+	wsprintf(text, "EnemyBtn.clicked : %d", enemyBtn.clicked);
 	TextOut(hdc, (TILEMAP_SIZE_X - 938), (TILEMAP_SIZE_Y - 220), text, (INT)(strlen(text)));
 
 	if (debugMode)
@@ -474,7 +498,7 @@ void Button::OnDebug(HDC hdc)
 		Rectangle(hdc, saveBtn.shape.left, saveBtn.shape.top, saveBtn.shape.right, saveBtn.shape.bottom);
 
 		Rectangle(hdc, enemyBtn.shape.left, enemyBtn.shape.top, enemyBtn.shape.right, enemyBtn.shape.bottom);
-		Rectangle(hdc, objectBtn.shape.left, objectBtn.shape.top, objectBtn.shape.right, objectBtn.shape.bottom);
+		Rectangle(hdc, obstacleBtn.shape.left, obstacleBtn.shape.top, obstacleBtn.shape.right, obstacleBtn.shape.bottom);
 		Rectangle(hdc, sampleTileBtn.shape.left, sampleTileBtn.shape.top, sampleTileBtn.shape.right, sampleTileBtn.shape.bottom);
 
 		if (sampleTileBtn.clicked)

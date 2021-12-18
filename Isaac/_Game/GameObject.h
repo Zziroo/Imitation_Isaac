@@ -12,7 +12,7 @@ protected:
 	float									objectSize = 0.0f;							// 크기
 	float									moveSpeed = 0.0f;							// 속도
 	
-	int										elapsedAnime = 0;							// 애니메이션 지연
+	int										elapsedAnimeCount = 0;							// 애니메이션 지연
 
 public:
 	virtual void							Init();

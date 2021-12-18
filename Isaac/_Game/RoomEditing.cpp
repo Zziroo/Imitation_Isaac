@@ -67,11 +67,7 @@ void RoomEditing::DeginateItemRoom(int row, int column)
 	if (roomInfo[randRow][randColumn] != RoomTypes::NORMAL || roomInfo[randRow][randColumn] == RoomTypes::BOSS)
 	{
 		// ·¥´ý¼ö »ý¼º
-		random_device rd;
-		mt19937 gen(rd());
-		uniform_int_distribution<int> dis(0, 99);
-
-		DeginateItemRoom(dis(gen) % _stageSize, dis(gen) % _stageSize);
+		GenerateRandomItemRoom();
 		return;
 	}
 	const int topRow = randRow - 1;
@@ -85,11 +81,7 @@ void RoomEditing::DeginateItemRoom(int row, int column)
 		if (roomInfo[topRow][randColumn] == RoomTypes::BOSS || roomInfo[topRow][randColumn] == RoomTypes::CURSE || roomInfo[topRow][randColumn] == RoomTypes::SATAN)
 		{
 			// ·¥´ý¼ö »ý¼º
-			random_device rd;
-			mt19937 gen(rd());
-			uniform_int_distribution<int> dis(0, 99);
-
-			DeginateItemRoom(dis(gen) % _stageSize, dis(gen) % _stageSize);
+			GenerateRandomItemRoom();
 			return;
 		}
 	}
@@ -99,11 +91,7 @@ void RoomEditing::DeginateItemRoom(int row, int column)
 		if (roomInfo[bottomRow][randColumn] == RoomTypes::BOSS || roomInfo[bottomRow][randColumn] == RoomTypes::CURSE || roomInfo[bottomRow][randColumn] == RoomTypes::SATAN)
 		{
 			// ·¥´ý¼ö »ý¼º
-			random_device rd;
-			mt19937 gen(rd());
-			uniform_int_distribution<int> dis(0, 99);
-
-			DeginateItemRoom(dis(gen) % _stageSize, dis(gen) % _stageSize);
+			GenerateRandomItemRoom();
 			return;
 		}
 	}
@@ -113,11 +101,7 @@ void RoomEditing::DeginateItemRoom(int row, int column)
 		if (roomInfo[randRow][leftColumn] == RoomTypes::BOSS || roomInfo[randRow][leftColumn] == RoomTypes::CURSE || roomInfo[randRow][leftColumn] == RoomTypes::SATAN)
 		{
 			// ·¥´ý¼ö »ý¼º
-			random_device rd;
-			mt19937 gen(rd());
-			uniform_int_distribution<int> dis(0, 99);
-
-			DeginateItemRoom(dis(gen) % _stageSize, dis(gen) % _stageSize);
+			GenerateRandomItemRoom();
 			return;
 		}
 	}
@@ -127,17 +111,22 @@ void RoomEditing::DeginateItemRoom(int row, int column)
 		if (roomInfo[randRow][rightColumn] == RoomTypes::BOSS || roomInfo[randRow][rightColumn] == RoomTypes::CURSE || roomInfo[randRow][rightColumn] == RoomTypes::SATAN)
 		{
 			// ·¥´ý¼ö »ý¼º
-			random_device rd;
-			mt19937 gen(rd());
-			uniform_int_distribution<int> dis(0, 99);
-
-			DeginateItemRoom(dis(gen) % _stageSize, dis(gen) % _stageSize);
+			GenerateRandomItemRoom();
 			return;
 		}
 	}
 
 	// NORMALÁß BOSS¸ÊÀÌ ¾Æ´ÒÀÏ ½Ã ±× ¸ÊÀÇ RoomTypeÀ» ItemRoomÀ¸·Î ¼³Á¤
 	roomInfo[randRow][randColumn] = RoomTypes::ITEM;
+}
+
+void RoomEditing::GenerateRandomItemRoom()
+{
+	random_device rd;
+	mt19937 gen(rd());
+	uniform_int_distribution<int> dis(0, 99);
+
+	DeginateItemRoom(dis(gen) % _stageSize, dis(gen) % _stageSize);
 }
 
 void RoomEditing::NamingRoom(int row, int column)

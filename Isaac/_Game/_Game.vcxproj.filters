@@ -85,6 +85,12 @@
     <Filter Include="MainGame\Scene\MapTool">
       <UniqueIdentifier>{d7943b34-e74a-485c-99c0-f6564769765a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\GameObject\Obstacle">
+      <UniqueIdentifier>{97d5d534-2a54-43d2-8f04-91f135db5a0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\Scene\Practice">
+      <UniqueIdentifier>{7f66237c-e147-4e97-b3cd-615cc9c77385}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -154,6 +160,15 @@
       <Filter>MainGame\Scene\Stage</Filter>
     </ClCompile>
     <ClCompile Include="TilemapToolScene.cpp">
+      <Filter>MainGame\Scene\MapTool</Filter>
+    </ClCompile>
+    <ClCompile Include="DoodleScene.cpp">
+      <Filter>MainGame\Scene\Practice</Filter>
+    </ClCompile>
+    <ClCompile Include="Obstacle.cpp">
+      <Filter>MainGame\GameObject\Obstacle</Filter>
+    </ClCompile>
+    <ClCompile Include="ObstacleToolScene.cpp">
       <Filter>MainGame\Scene\MapTool</Filter>
     </ClCompile>
   </ItemGroup>
@@ -228,6 +243,15 @@
       <Filter>MainGame\Scene\Stage</Filter>
     </ClInclude>
     <ClInclude Include="TilemapToolScene.h">
+      <Filter>MainGame\Scene\MapTool</Filter>
+    </ClInclude>
+    <ClInclude Include="DoodleScene.h">
+      <Filter>MainGame\Scene\Practice</Filter>
+    </ClInclude>
+    <ClInclude Include="Obstacle.h">
+      <Filter>MainGame\GameObject\Obstacle</Filter>
+    </ClInclude>
+    <ClInclude Include="ObstacleToolScene.h">
       <Filter>MainGame\Scene\MapTool</Filter>
     </ClInclude>
   </ItemGroup>

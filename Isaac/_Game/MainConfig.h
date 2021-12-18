@@ -221,3 +221,6 @@ typedef struct tagDoorInfo
 	POINTFLOAT						pos = {};
 	RECT							shape = {};
 } DOOR_INFO;
+
+// Obstacle
+enum class ObstacleTypes { BONFIRE, BRICK, DDONG, ITEMSTAND, JAR, SLIDER, SPIDERWEB, STONE, THORN, NONE };

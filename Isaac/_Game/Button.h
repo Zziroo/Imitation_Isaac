@@ -21,7 +21,7 @@ private:
 	ButtonInfo			enemyBtn = {};					// Enemy
 	ButtonInfo			exitBtn = {};					// Exit
 	ButtonInfo			loadBtn = {};					// Load
-	ButtonInfo			objectBtn = {};					// Object
+	ButtonInfo			obstacleBtn = {};					// Object
 	ButtonInfo			revertBtn = {};					// Revert
 	ButtonInfo			saveBtn = {};					// Save
 	ButtonInfo			sampleTileBtn = {};				// SampleTile
@@ -41,7 +41,7 @@ private:
 	Image*				letter_Depth = nullptr;			// Depth
 	Image*				letter_Enemy = nullptr;			// Enemy
 	Image*				letter_Exit = nullptr;			// Exit
-	Image*				letter_Object = nullptr;		// Object
+	Image*				letter_Obstacle = nullptr;		// Object
 	Image*				letter_Shop = nullptr;			// Shop
 	Image*				letter_Tile = nullptr;			// letter_Tile
 
@@ -66,13 +66,15 @@ public:
 	inline bool			GetPressNextButton() { return this->nextBtn.clicked; }
 	inline bool			GetPressPrevButton() { return this->prevBtn.clicked; }
 	inline bool			GetPressSaveButton() { return this->saveBtn.clicked; }
-	inline bool			GetSelectBasementTile() { return this->basementTileBtn.clicked; }
-	inline bool			GetSelectCaveTile() { return this->caveTileBtn.clicked; }
-	inline bool			GetSelectCellarTile() { return this->cellarTileBtn.clicked; }
-	inline bool			GetSelectDepthTile() { return this->depthTileBtn.clicked; }
-	inline bool			GetSelectSampleTile() { return this->sampleTileBtn.clicked; }
+	inline bool			GetSelectBasementTileButton() { return this->basementTileBtn.clicked; }
+	inline bool			GetSelectCaveTileButton() { return this->caveTileBtn.clicked; }
+	inline bool			GetSelectCellarTileButton() { return this->cellarTileBtn.clicked; }
+	inline bool			GetSelectDepthTileButton() { return this->depthTileBtn.clicked; }
+	inline bool			GetSelectObstacleButton() { return this->obstacleBtn.clicked; }
+	inline bool			GetSelectSampleTileButton() { return this->sampleTileBtn.clicked; }
 	inline int			GetTileIndex() { return this->tileIndex; }
 
+	inline void			SetObstacleButton(bool clicked) { this->obstacleBtn.clicked = clicked; }
 	inline void			SetPressLoadButton(bool clicked) { this->loadBtn.clicked = clicked; }
 	inline void			SetPressNextButton(bool clicked) { this->nextBtn.clicked = clicked; }
 	inline void			SetPressPrevButton(bool clicked) { this->prevBtn.clicked = clicked; }

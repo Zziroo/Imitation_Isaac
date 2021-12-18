@@ -47,7 +47,6 @@ HRESULT TilemapToolScene::Init()
 void TilemapToolScene::Release()
 {
 	SAFE_RELEASE(button);
-	SAFE_DELETE(buttonFunc);
 }
 
 void TilemapToolScene::Update()
@@ -64,7 +63,7 @@ void TilemapToolScene::Update()
 	// SampleImg와 SampleTile 초기화
 	char cha[128];
 	string str = "Image/Tilemap/Tile/";
-	if (button->GetSelectBasementTile() && sampleTileType != SampleTileTypes::BASEMENT)
+	if (button->GetSelectBasementTileButton() && sampleTileType != SampleTileTypes::BASEMENT)
 	{
 		// 이미지
 		drawingAreaImg = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Tile/Basement.bmp");
@@ -124,7 +123,7 @@ void TilemapToolScene::Update()
 
 		return;
 	}
-	if (button->GetSelectCaveTile() && sampleTileType != SampleTileTypes::CAVE)
+	if (button->GetSelectCaveTileButton() && sampleTileType != SampleTileTypes::CAVE)
 	{
 		// 이미지
 		drawingAreaImg = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Tile/Cave.bmp");
@@ -184,7 +183,7 @@ void TilemapToolScene::Update()
 
 		return;
 	}
-	if (button->GetSelectCellarTile() && sampleTileType != SampleTileTypes::CELLAR)
+	if (button->GetSelectCellarTileButton() && sampleTileType != SampleTileTypes::CELLAR)
 	{
 		// 이미지
 		drawingAreaImg = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Tile/Cellar.bmp");
@@ -244,7 +243,7 @@ void TilemapToolScene::Update()
 
 		return;
 	}
-	if (button->GetSelectDepthTile() && sampleTileType != SampleTileTypes::DEPTH)
+	if (button->GetSelectDepthTileButton() && sampleTileType != SampleTileTypes::DEPTH)
 	{
 		// 이미지
 		drawingAreaImg = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Tile/Depth.bmp");
@@ -306,7 +305,7 @@ void TilemapToolScene::Update()
 	}
 
 	// Next, Prev 버튼을 누를 때마다 샘플 이미지 변화
-	if (button->GetSelectBasementTile())
+	if (button->GetSelectBasementTileButton())
 	{
 		//NextBtn 눌렀을 때
 		if (button->GetPressNextButton())
@@ -332,7 +331,7 @@ void TilemapToolScene::Update()
 			currShowIndex = sampleTileCurrIndex[0];
 		}
 	}
-	if (button->GetSelectCaveTile())
+	if (button->GetSelectCaveTileButton())
 	{
 		//NextBtn 눌렀을 때
 		if (button->GetPressNextButton())
@@ -358,7 +357,7 @@ void TilemapToolScene::Update()
 			currShowIndex = sampleTileCurrIndex[1];
 		}
 	}
-	if (button->GetSelectCellarTile())
+	if (button->GetSelectCellarTileButton())
 	{
 		//NextBtn 눌렀을 때
 		if (button->GetPressNextButton())
@@ -384,7 +383,7 @@ void TilemapToolScene::Update()
 			currShowIndex = sampleTileCurrIndex[2];
 		}
 	}
-	if (button->GetSelectDepthTile())
+	if (button->GetSelectDepthTileButton())
 	{
 		//NextBtn 눌렀을 때
 		if (button->GetPressNextButton())
@@ -453,6 +452,12 @@ void TilemapToolScene::Update()
 		button->SetPressLoadButton(false);
 		Load();
 	}
+
+	if (button->GetSelectObstacleButton())
+	{
+		initialTileBtnState = true;
+		GET_SINGLETON_SCENE->ChangeScene("ObstacleTool");
+	}
 }
 
 void TilemapToolScene::Render(HDC hdc)
@@ -518,7 +523,7 @@ void TilemapToolScene::Render(HDC hdc)
 	}
 
 	// SampleTileImage
-	if (button->GetSelectSampleTile())
+	if (button->GetSelectSampleTileButton())
 	{
 		sampleBackGround->Render(hdc, 963, 560);
 
@@ -612,7 +617,7 @@ void TilemapToolScene::OnDebug(HDC hdc)
 			break;
 		}
 
-		if (button->GetSelectSampleTile())
+		if (button->GetSelectSampleTileButton())
 		{
 			// SampleTile
 			for (int r = 0; r < SAMPLE_TILE_ROW; ++r)
@@ -751,7 +756,7 @@ void TilemapToolScene::OnDebug(HDC hdc)
 
 bool TilemapToolScene::ClickedButton()
 {
-	if (button->GetSelectSampleTile())
+	if (button->GetSelectSampleTileButton())
 	{
 		return true;
 	}
@@ -761,7 +766,7 @@ bool TilemapToolScene::ClickedButton()
 void TilemapToolScene::DrawMultiTile(RECT rc)
 {
 	// 샘플 영역 지정
-	if (button->GetSelectSampleTile())
+	if (button->GetSelectSampleTileButton())
 	{
 		SelectMultiTile(rc);
 	}
@@ -971,7 +976,7 @@ void TilemapToolScene::DrawMultiTile(RECT rc)
 void TilemapToolScene::DrawSingleTile(RECT rc)
 {
 	// 샘플 영역 지정
-	if (button->GetSelectSampleTile())
+	if (button->GetSelectSampleTileButton())
 	{
 		SelectSingleTile(rc);
 	}

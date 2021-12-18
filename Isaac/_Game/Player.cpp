@@ -32,7 +32,7 @@ void Player::Init()
     pos.x = (FLOAT)(PLAYER_HEAD_POS_X);
     pos.y = (FLOAT)((PLAYER_HEAD_POS_Y + PLAYER_BODY_POS_Y - ADJUST_SIZE_30) * DEVIDE_HALF);
     moveSpeed = PLAYER_MOVESPEED;
-    elapsedAnime = ZERO;
+    elapsedAnimeCount = ZERO;
 
     // Weapon
     weaponTear = new WeaponManager;
@@ -189,8 +189,8 @@ void Player::ChangeAnimation()
     ChangeBodyFrame();
     ChangeHeadFrame();
 
-    ++elapsedAnime;
-    if (elapsedAnime > 5)
+    ++elapsedAnimeCount;
+    if (elapsedAnimeCount > 5)
     {
         bodyInfo.image->SetCurrFrameX(bodyInfo.image->GetCurrFrameX() + ADVANCE_FRAME);
         if (bodyInfo.image->GetCurrFrameX() >= MAX_BODY_FRAME_X)
@@ -198,7 +198,7 @@ void Player::ChangeAnimation()
             bodyInfo.image->SetCurrFrameX(START_BODY_FRAME_X);
         }
 
-        elapsedAnime = ZERO;
+        elapsedAnimeCount = ZERO;
     }
 }
 
