@@ -18,11 +18,12 @@ private:
 	};
 
 private:
+	ButtonInfo			closeBtn = {};					// Close
 	ButtonInfo			enemyBtn = {};					// Enemy
-	ButtonInfo			exitBtn = {};					// Exit
 	ButtonInfo			loadBtn = {};					// Load
-	ButtonInfo			obstacleBtn = {};					// Object
-	ButtonInfo			revertBtn = {};					// Revert
+	ButtonInfo			nextBtn = {};					// Next
+	ButtonInfo			obstacleBtn = {};				// Object
+	ButtonInfo			prevBtn = {};					// Prev
 	ButtonInfo			saveBtn = {};					// Save
 	ButtonInfo			sampleTileBtn = {};				// SampleTile
 
@@ -30,20 +31,24 @@ private:
 	ButtonInfo			caveTileBtn = {};				// Tile/CAVE
 	ButtonInfo			cellarTileBtn = {};				// Tile/CELLAR
 	ButtonInfo			depthTileBtn = {};				// Tile/DEPTH
+	ButtonInfo			exitBtn = {};					// Tile/Exit
 
-	ButtonInfo			closeBtn = {};					// Close
-	ButtonInfo			nextBtn = {};					// Next
-	ButtonInfo			prevBtn = {};					// Prev
+	ButtonInfo			curseRoomObstacleBtn = {};		// Obstacle/Curse
+	ButtonInfo			itemRoomObstacleBtn = {};		// Obstacle/Item
+	ButtonInfo			normalRoomObstacleBtn = {};		// Obstacle/Normal
 
 	Image*				letter_Basement = nullptr;		// Basement
 	Image*				letter_Cave = nullptr;			// Cave
 	Image*				letter_Cellar = nullptr;		// Cellar
+	Image*				letter_Curse = nullptr;			// Curse
 	Image*				letter_Depth = nullptr;			// Depth
 	Image*				letter_Enemy = nullptr;			// Enemy
 	Image*				letter_Exit = nullptr;			// Exit
+	Image*				letter_Item = nullptr;			// Item
+	Image*				letter_Normal = nullptr;		// Normal
 	Image*				letter_Obstacle = nullptr;		// Object
 	Image*				letter_Shop = nullptr;			// Shop
-	Image*				letter_Tile = nullptr;			// letter_Tile
+	Image*				letter_Tile = nullptr;			// Tile
 
 	int					tileIndex = 0;
 	char				text[64] = {};					// Debuging

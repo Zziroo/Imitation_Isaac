@@ -5,10 +5,12 @@
 
 void Button::Init()
 {
+	closeBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Close.bmp");
 	enemyBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index.bmp");
-	exitBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index.bmp");
 	loadBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Load.bmp");
+	nextBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Next.bmp");
 	obstacleBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index.bmp");
+	prevBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Prev.bmp");
 	sampleTileBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index.bmp");
 	saveBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Save.bmp");
 
@@ -16,10 +18,11 @@ void Button::Init()
 	caveTileBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index.bmp");
 	cellarTileBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index.bmp");
 	depthTileBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index.bmp");
+	exitBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index.bmp");
 
-	closeBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Close.bmp");
-	nextBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Next.bmp");
-	prevBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Prev.bmp");
+	curseRoomObstacleBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index.bmp");
+	itemRoomObstacleBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index.bmp");
+	normalRoomObstacleBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index.bmp");
 
 	letter_Basement = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Letter/Basement.bmp");
 	letter_Cave = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Letter/Cave.bmp");
@@ -30,6 +33,10 @@ void Button::Init()
 	letter_Obstacle = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Letter/Obstacle.bmp");
 	letter_Shop = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Letter/Shop.bmp");
 	letter_Tile = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Letter/Tile.bmp");
+
+	letter_Curse = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Letter/Curse.bmp");
+	letter_Item = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Letter/Item.bmp");
+	letter_Normal = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Letter/Normal.bmp");
 
 	DeclareButtonInfo(&exitBtn, 153, 40);
 	DeclareButtonInfo(&loadBtn, 306, 40);
@@ -44,9 +51,32 @@ void Button::Init()
 	DeclareButtonInfo(&cellarTileBtn, 722, 287);
 	DeclareButtonInfo(&depthTileBtn, 722, 180);
 
-	DeclareButtonInfo(&closeBtn, 98, 550);
 	DeclareButtonInfo(&nextBtn, 98, 180);
 	DeclareButtonInfo(&prevBtn, 520, 180);
+
+	curseRoomObstacleBtn.pos = { 920.0f, 770.0f };
+	curseRoomObstacleBtn.shape = {
+		(LONG)(curseRoomObstacleBtn.pos.x - (140 * DEVIDE_HALF)),
+		(LONG)(curseRoomObstacleBtn.pos.y - (40 * DEVIDE_HALF)),
+		(LONG)(curseRoomObstacleBtn.pos.x + (140 * DEVIDE_HALF)),
+		(LONG)(curseRoomObstacleBtn.pos.y + (40 * DEVIDE_HALF)),
+	};
+
+	itemRoomObstacleBtn.pos = { 1100.0f, 770.0f };
+	itemRoomObstacleBtn.shape = {
+		(LONG)(itemRoomObstacleBtn.pos.x - (140 * DEVIDE_HALF)),
+		(LONG)(itemRoomObstacleBtn.pos.y - (40 * DEVIDE_HALF)),
+		(LONG)(itemRoomObstacleBtn.pos.x + (140 * DEVIDE_HALF)),
+		(LONG)(itemRoomObstacleBtn.pos.y + (40 * DEVIDE_HALF)),
+	};
+
+	normalRoomObstacleBtn.pos = { 1280.0f, 770.0f };
+	normalRoomObstacleBtn.shape = {
+		(LONG)(normalRoomObstacleBtn.pos.x - (140 * DEVIDE_HALF)),
+		(LONG)(normalRoomObstacleBtn.pos.y - (40 * DEVIDE_HALF)),
+		(LONG)(normalRoomObstacleBtn.pos.x + (140 * DEVIDE_HALF)),
+		(LONG)(normalRoomObstacleBtn.pos.y + (40 * DEVIDE_HALF)),
+	};
 }
 
 void Button::Release()
@@ -56,6 +86,16 @@ void Button::Release()
 void Button::Update()
 {
 	GameObject::Update();
+
+	// Close 버튼 재사용
+	if (sampleTileBtn.clicked)
+	{
+		DeclareButtonInfo(&closeBtn, 98, 550);
+	}
+	if (obstacleBtn.clicked)
+	{
+		DeclareButtonInfo(&closeBtn, 98, 630);
+	}
 
 	// 버튼을 눌렀을 때 명령 실행후 원상태로 돌아감.
 	// Close
@@ -71,6 +111,10 @@ void Button::Update()
 			if (sampleTileBtn.clicked)
 			{
 				sampleTileBtn.clicked = false;
+			}
+			if (obstacleBtn.clicked)
+			{
+				obstacleBtn.clicked = false;
 			}
 		}
 	}
@@ -155,18 +199,6 @@ void Button::Update()
 	{
 		enemyBtn.buttonState = ButtonStates::NONE;
 	}
-	if (Input::GetButtonDown(VK_LBUTTON))
-	{
-		if (PtInRect(&obstacleBtn.shape, g_ptMouse))
-		{
-			obstacleBtn.clicked = !obstacleBtn.clicked;
-			sampleTileBtn.buttonState = ButtonStates::NONE;
-		}
-	}
-	else 
-	{
-		obstacleBtn.buttonState = ButtonStates::NONE; 
-	}
 	// SampleTile
 	if (Input::GetButtonDown(VK_LBUTTON))
 	{	
@@ -180,7 +212,61 @@ void Button::Update()
 	{
 		sampleTileBtn.buttonState = ButtonStates::NONE;
 	}
-
+	// ObstacleBtn
+	if (Input::GetButtonDown(VK_LBUTTON))
+	{
+		if (PtInRect(&obstacleBtn.shape, g_ptMouse))
+		{
+			obstacleBtn.clicked = !obstacleBtn.clicked;
+			sampleTileBtn.buttonState = ButtonStates::NONE;
+		}
+	}
+	else 
+	{
+		obstacleBtn.buttonState = ButtonStates::NONE; 
+	}
+	// curseRoomObstacle
+	if (Input::GetButtonDown(VK_LBUTTON))
+	{
+		if (PtInRect(&curseRoomObstacleBtn.shape, g_ptMouse))
+		{
+			curseRoomObstacleBtn.clicked = !curseRoomObstacleBtn.clicked;
+			itemRoomObstacleBtn.buttonState = ButtonStates::NONE;
+			normalRoomObstacleBtn.buttonState = ButtonStates::NONE;
+		}
+	}
+	else
+	{
+		curseRoomObstacleBtn.buttonState = ButtonStates::NONE;
+	}
+	// itemRoomObstacle
+	if (Input::GetButtonDown(VK_LBUTTON))
+	{
+		if (PtInRect(&itemRoomObstacleBtn.shape, g_ptMouse))
+		{
+			itemRoomObstacleBtn.clicked = !itemRoomObstacleBtn.clicked;
+			curseRoomObstacleBtn.buttonState = ButtonStates::NONE;
+			normalRoomObstacleBtn.buttonState = ButtonStates::NONE;
+		}
+	}
+	else
+	{
+		itemRoomObstacleBtn.buttonState = ButtonStates::NONE;
+	}
+	// normalRoomObstacle
+	if (Input::GetButtonDown(VK_LBUTTON))
+	{
+		if (PtInRect(&normalRoomObstacleBtn.shape, g_ptMouse))
+		{
+			normalRoomObstacleBtn.clicked = !normalRoomObstacleBtn.clicked;
+			curseRoomObstacleBtn.buttonState = ButtonStates::NONE;
+			itemRoomObstacleBtn.buttonState = ButtonStates::NONE;
+		}
+	}
+	else
+	{
+		normalRoomObstacleBtn.buttonState = ButtonStates::NONE;
+	}
 
 	// 기존의 버튼 중 하나는 무조건 눌려 있어야함.
 	if (sampleTileBtn.clicked)
@@ -314,7 +400,7 @@ void Button::Update()
 	}
 	if (depthTileBtn.clicked)
 	{
-		if (basementTileBtn.clicked&& basementTileBtn.buttonState != ButtonStates::NONE)
+		if (basementTileBtn.clicked && basementTileBtn.buttonState != ButtonStates::NONE)
 		{
 			depthTileBtn.clicked = false;
 			depthTileBtn.buttonState = ButtonStates::UP;
@@ -331,15 +417,46 @@ void Button::Update()
 		}
 	}
 
-	// ObstacleTile 버튼 클릭 돼있으면 true, 클릭이 안돼있으면 false
-	if (obstacleBtn.clicked)
+	if (curseRoomObstacleBtn.clicked)
 	{
-		obstacleBtn.buttonState = ButtonStates::DOWN;
+		if (itemRoomObstacleBtn.clicked && itemRoomObstacleBtn.buttonState != ButtonStates::NONE)
+		{
+			curseRoomObstacleBtn.clicked = false;
+			curseRoomObstacleBtn.buttonState = ButtonStates::UP;
+		}
+		if (normalRoomObstacleBtn.clicked && normalRoomObstacleBtn.buttonState != ButtonStates::NONE)
+		{
+			curseRoomObstacleBtn.clicked = false;
+			curseRoomObstacleBtn.buttonState = ButtonStates::UP;
+		}
 	}
-	else
+	if (itemRoomObstacleBtn.clicked)
 	{
-		obstacleBtn.buttonState = ButtonStates::UP;
+		if (curseRoomObstacleBtn.clicked && curseRoomObstacleBtn.buttonState != ButtonStates::NONE)
+		{
+			itemRoomObstacleBtn.clicked = false;
+			itemRoomObstacleBtn.buttonState = ButtonStates::UP;
+		}
+		if (normalRoomObstacleBtn.clicked && normalRoomObstacleBtn.buttonState != ButtonStates::NONE)
+		{
+			itemRoomObstacleBtn.clicked = false;
+			itemRoomObstacleBtn.buttonState = ButtonStates::UP;
+		}
 	}
+	if (normalRoomObstacleBtn.clicked)
+	{
+		if (curseRoomObstacleBtn.clicked && curseRoomObstacleBtn.buttonState != ButtonStates::NONE)
+		{
+			normalRoomObstacleBtn.clicked = false;
+			normalRoomObstacleBtn.buttonState = ButtonStates::UP;
+		}
+		if (itemRoomObstacleBtn.clicked && itemRoomObstacleBtn.buttonState != ButtonStates::NONE)
+		{
+			normalRoomObstacleBtn.clicked = false;
+			normalRoomObstacleBtn.buttonState = ButtonStates::UP;
+		}
+	}
+
 	// SampleTile 버튼 클릭 돼있으면 true, 클릭이 안돼있으면 false
 	if (sampleTileBtn.clicked)
 	{
@@ -384,6 +501,43 @@ void Button::Update()
 	else
 	{
 		depthTileBtn.buttonState = ButtonStates::UP;
+	}
+
+	// ObstacleTile 버튼 클릭 돼있으면 true, 클릭이 안돼있으면 false
+	if (obstacleBtn.clicked)
+	{
+		obstacleBtn.buttonState = ButtonStates::DOWN;
+	}
+	else
+	{
+		obstacleBtn.buttonState = ButtonStates::UP;
+	}
+	// curseRoomObstacle 버튼 클릭 돼있으면 true, 클릭이 안돼있으면 false
+	if (curseRoomObstacleBtn.clicked)
+	{
+		curseRoomObstacleBtn.buttonState = ButtonStates::DOWN;
+	}
+	else
+	{
+		curseRoomObstacleBtn.buttonState = ButtonStates::UP;
+	}
+	// itemRoomObstacle 버튼 클릭 돼있으면 true, 클릭이 안돼있으면 false
+	if (itemRoomObstacleBtn.clicked)
+	{
+		itemRoomObstacleBtn.buttonState = ButtonStates::DOWN;
+	}
+	else
+	{
+		itemRoomObstacleBtn.buttonState = ButtonStates::UP;
+	}
+	// normalRoomObstacle 버튼 클릭 돼있으면 true, 클릭이 안돼있으면 false
+	if (normalRoomObstacleBtn.clicked)
+	{
+		normalRoomObstacleBtn.buttonState = ButtonStates::DOWN;
+	}
+	else
+	{
+		normalRoomObstacleBtn.buttonState = ButtonStates::UP;
 	}
 
 	// NextButton,PrevButton
@@ -456,6 +610,50 @@ void Button::Render(HDC hdc)
 		ShowLetter(hdc, letter_Cellar, &cellarTileBtn);
 		ShowLetter(hdc, letter_Depth, &depthTileBtn);
 	}
+
+	if (obstacleBtn.clicked)
+	{
+		RenderNormalButton(hdc, &closeBtn);
+
+		switch (curseRoomObstacleBtn.buttonState)
+		{
+		case ButtonStates::NONE:	case ButtonStates::UP:
+			curseRoomObstacleBtn.image->EnlargeSampleTile(hdc, curseRoomObstacleBtn.pos.x - 70, curseRoomObstacleBtn.pos.y - 20, 0, 0, 0.68f);
+			break;
+		case ButtonStates::DOWN:
+			curseRoomObstacleBtn.image->EnlargeSampleTile(hdc, curseRoomObstacleBtn.pos.x - 70, curseRoomObstacleBtn.pos.y - 20, 0, 1, 0.68f);
+			break;
+		default:
+			break;
+		}
+
+		switch (itemRoomObstacleBtn.buttonState)
+		{
+		case ButtonStates::NONE:	case ButtonStates::UP:
+			itemRoomObstacleBtn.image->EnlargeSampleTile(hdc, itemRoomObstacleBtn.pos.x - 70, itemRoomObstacleBtn.pos.y - 20, 0, 0, 0.68f);
+			break;
+		case ButtonStates::DOWN:
+			itemRoomObstacleBtn.image->EnlargeSampleTile(hdc, itemRoomObstacleBtn.pos.x - 70, itemRoomObstacleBtn.pos.y - 20, 0, 1, 0.68f);
+			break;
+		default:
+			break;
+		}
+		switch (normalRoomObstacleBtn.buttonState)
+		{
+		case ButtonStates::NONE:	case ButtonStates::UP:
+			normalRoomObstacleBtn.image->EnlargeSampleTile(hdc, normalRoomObstacleBtn.pos.x - 70, normalRoomObstacleBtn.pos.y - 20, 0, 0, 0.68f);
+			break;
+		case ButtonStates::DOWN:
+			normalRoomObstacleBtn.image->EnlargeSampleTile(hdc, normalRoomObstacleBtn.pos.x - 70, normalRoomObstacleBtn.pos.y - 20, 0, 1, 0.68f);
+			break;
+		default:
+			break;
+		}
+		ShowLetter(hdc, letter_Curse, &curseRoomObstacleBtn);
+		ShowLetter(hdc, letter_Item, &itemRoomObstacleBtn);
+		ShowLetter(hdc, letter_Normal, &normalRoomObstacleBtn);
+	}
+
 	ShowLetter(hdc, letter_Enemy, &enemyBtn);
 	ShowLetter(hdc, letter_Exit, &exitBtn);
 	ShowLetter(hdc, letter_Obstacle, &obstacleBtn);
@@ -511,6 +709,13 @@ void Button::OnDebug(HDC hdc)
 			Rectangle(hdc, closeBtn.shape.left, closeBtn.shape.top, closeBtn.shape.right, closeBtn.shape.bottom);
 			Rectangle(hdc, prevBtn.shape.left, prevBtn.shape.top, prevBtn.shape.right, prevBtn.shape.bottom);
 			Rectangle(hdc, nextBtn.shape.left, nextBtn.shape.top, nextBtn.shape.right, nextBtn.shape.bottom);
+		}
+
+		if (obstacleBtn.clicked)
+		{
+			Rectangle(hdc, curseRoomObstacleBtn.shape.left, curseRoomObstacleBtn.shape.top, curseRoomObstacleBtn.shape.right, curseRoomObstacleBtn.shape.bottom);
+			Rectangle(hdc, itemRoomObstacleBtn.shape.left, itemRoomObstacleBtn.shape.top, itemRoomObstacleBtn.shape.right, itemRoomObstacleBtn.shape.bottom);
+			Rectangle(hdc, normalRoomObstacleBtn.shape.left, normalRoomObstacleBtn.shape.top, normalRoomObstacleBtn.shape.right, normalRoomObstacleBtn.shape.bottom);
 		}
 	}
 }
