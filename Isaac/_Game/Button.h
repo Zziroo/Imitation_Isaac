@@ -74,7 +74,10 @@ public:
 	inline bool			GetSelectBasementTileButton() { return this->basementTileBtn.clicked; }
 	inline bool			GetSelectCaveTileButton() { return this->caveTileBtn.clicked; }
 	inline bool			GetSelectCellarTileButton() { return this->cellarTileBtn.clicked; }
+	inline bool			GetSelectCurseRoomButton() { return this->curseRoomObstacleBtn.clicked; }
 	inline bool			GetSelectDepthTileButton() { return this->depthTileBtn.clicked; }
+	inline bool			GetSelectItemRoomButton() { return this->itemRoomObstacleBtn.clicked; }
+	inline bool			GetSelectNormalRoomButton() { return this->normalRoomObstacleBtn.clicked; }
 	inline bool			GetSelectObstacleButton() { return this->obstacleBtn.clicked; }
 	inline bool			GetSelectSampleTileButton() { return this->sampleTileBtn.clicked; }
 	inline int			GetTileIndex() { return this->tileIndex; }
@@ -89,4 +92,3 @@ public:
 
 	virtual ~Button() = default;
 };
-

@@ -19,7 +19,7 @@ HRESULT ObstacleToolScene::Init()
 
 	// Sample Obstacle
 	// 초기화
-	sampleObstacle.resize(9);
+	sampleObstacleInfo.resize(9);
 	// Obstacle Type 설정
 	EstablishSampleType();
 	// 위치 설정
@@ -28,7 +28,7 @@ HRESULT ObstacleToolScene::Init()
 		for (int c = 0; c < 3; ++c)
 		{
 			int index = (r * 3) + c;
-			sampleObstacle[index].pos = { 939.0f + (161.0f * c), 349.0f + (161.0f * r) };
+			sampleObstacleInfo[index].pos = { 939.0f + (161.0f * c), 349.0f + (161.0f * r) };
 		}
 	}
 	// 선택하기 위한 RECT 설정
@@ -48,6 +48,10 @@ HRESULT ObstacleToolScene::Init()
 	{
 		obstacle[i] = new Obstacle;
 	}
+	// Obstacle의 정보를 임시 저장할 공간 초기화
+	tempStoreObstacleInfo.resize(resizeNum);
+	// 저장할 공간 초기화
+	storeObstacle.resize(roomTypeIndex);
 
 	// Button
 	button = new Button;
@@ -76,72 +80,8 @@ void ObstacleToolScene::Update()
 	// SampleObstacleImg를 클릭
 	ClickedObstacle();
 
-	// 우클릭 시 장애물의 pos, type이 저장되며 화면에 보여줌
-	if (button->GetSelectObstacleButton() == false && clickedSampleObstacle)
-	{
-		if (Input::GetButtonDown(VK_RBUTTON))
-		{
-			long posX = g_ptMouse.x;
-			long posY = g_ptMouse.y;
-
-			if (obstacleImg == GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/ItemStand.bmp"))
-			{
-				obstacle[storeIndex]->SetObstacleType(sampleObstacle[0].sampleType);
-			}
-			if (obstacleImg == GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/DDong.bmp"))
-			{
-				obstacle[storeIndex]->SetObstacleType(sampleObstacle[1].sampleType);
-			}
-			if (obstacleImg == GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/Brick.bmp"))
-			{
-				obstacle[storeIndex]->SetObstacleType(sampleObstacle[2].sampleType);
-			}
-			if (obstacleImg == GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/SpiderWeb.bmp"))
-			{
-				obstacle[storeIndex]->SetObstacleType(sampleObstacle[3].sampleType);
-			}
-			if (obstacleImg == GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/Thorn.bmp"))
-			{
-				obstacle[storeIndex]->SetObstacleType(sampleObstacle[4].sampleType);
-			}
-			if (obstacleImg == GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/Jar.bmp"))
-			{
-				obstacle[storeIndex]->SetObstacleType(sampleObstacle[5].sampleType);
-			}
-			if (obstacleImg == GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/Stone.bmp"))
-			{
-				obstacle[storeIndex]->SetObstacleType(sampleObstacle[6].sampleType);
-			}
-			if (obstacleImg == GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/Bonfire.bmp"))
-			{
-				obstacle[storeIndex]->SetObstacleType(sampleObstacle[7].sampleType);
-			}
-			if (obstacleImg == GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/Slider.bmp"))
-			{
-				obstacle[storeIndex]->SetObstacleType(sampleObstacle[8].sampleType);
-			}
-
-			obstacle[storeIndex]->SetObstaclePosX((FLOAT)posX);
-			obstacle[storeIndex]->SetObstaclePosY((FLOAT)posY);
-			obstacle[storeIndex]->Init();
-
-			++storeIndex;
-
-			// 저장용량이 다 차면 용량을 두 배로 늘려준다.
-			if (storeIndex >= resizeNum)
-			{
-				int originSize = resizeNum;
-				resizeNum *= 2;
-				obstacle.resize(resizeNum);
-				for (size_t i = originSize; i < obstacle.size(); ++i)
-				{
-					obstacle[i] = new Obstacle;
-				}
-			}
-
-			clickedSampleObstacle = false;
-		}
-	}
+	// Obstacle 그리기
+	DrawObstacle();
 
 	// Obstacle Update
 	for (size_t i = 0; i < obstacle.size(); ++i)
@@ -151,12 +91,14 @@ void ObstacleToolScene::Update()
 			obstacle[i]->Update();
 		}
 	}
-
+#ifdef _DEBUG
 	// 클릭 해제
 	if (Input::GetButtonDown('X'))
 	{
 		clickedSampleObstacle = false;
 	}
+#endif
+	StoreObstacle();
 
 	// Button
 	button->Update();
@@ -186,6 +128,14 @@ void ObstacleToolScene::Render(HDC hdc)
 	}
 	SelectObject(hdc, oldBrush);
 	DeleteObject(myBrush);
+	// Obstacle Render
+	for (size_t i = 0; i < obstacle.size(); ++i)
+	{
+		if (obstacle[i]->GetObstacleType() != ObstacleTypes::NONE)
+		{
+			obstacle[i]->Render(hdc);
+		}
+	}
 	// Obstacle Button을 클릭했을 때
 	if (button->GetSelectObstacleButton())
 	{
@@ -198,7 +148,7 @@ void ObstacleToolScene::Render(HDC hdc)
 		HBRUSH oldBrush = (HBRUSH)SelectObject(hdc, myBrush);
 		for (int i = 0; i < 9; ++i)
 		{
-			Rectangle(hdc, sampleObstacle[i].shape.left, sampleObstacle[i].shape.top, sampleObstacle[i].shape.right, sampleObstacle[i].shape.bottom);
+			Rectangle(hdc, sampleObstacleInfo[i].shape.left, sampleObstacleInfo[i].shape.top, sampleObstacleInfo[i].shape.right, sampleObstacleInfo[i].shape.bottom);
 		}
 		SelectObject(hdc, oldBrush);
 		DeleteObject(myBrush);
@@ -207,14 +157,6 @@ void ObstacleToolScene::Render(HDC hdc)
 	if (clickedSampleObstacle)
 	{
 		obstacleImg->Render(hdc, g_ptMouse.x, g_ptMouse.y, obstacleImg->GetCurrFrameX(), obstacleImg->GetCurrFrameY());
-	}
-	// Obstacle Render
-	for (size_t i = 0; i < obstacle.size(); ++i)
-	{
-		if (obstacle[i]->GetObstacleType() != ObstacleTypes::NONE)
-		{
-			obstacle[i]->Render(hdc);
-		}
 	}
 
 	// MousePointer
@@ -231,7 +173,7 @@ void ObstacleToolScene::ClickedObstacle()
 {
 	if (button->GetSelectObstacleButton())
 	{
-		if (PtInRect(&sampleObstacle[0].shape, g_ptMouse))
+		if (PtInRect(&sampleObstacleInfo[0].shape, g_ptMouse))
 		{
 			if (Input::GetButtonDown(VK_LBUTTON))
 			{
@@ -239,7 +181,7 @@ void ObstacleToolScene::ClickedObstacle()
 				obstacleImg = GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/ItemStand.bmp");
 			}
 		}
-		if (PtInRect(&sampleObstacle[1].shape, g_ptMouse))
+		if (PtInRect(&sampleObstacleInfo[1].shape, g_ptMouse))
 		{
 			if (Input::GetButtonDown(VK_LBUTTON))
 			{
@@ -247,7 +189,7 @@ void ObstacleToolScene::ClickedObstacle()
 				obstacleImg = GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/DDong.bmp");
 			}
 		}
-		if (PtInRect(&sampleObstacle[2].shape, g_ptMouse))
+		if (PtInRect(&sampleObstacleInfo[2].shape, g_ptMouse))
 		{
 			if (Input::GetButtonDown(VK_LBUTTON))
 			{
@@ -255,7 +197,7 @@ void ObstacleToolScene::ClickedObstacle()
 				obstacleImg = GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/Brick.bmp");
 			}
 		}
-		if (PtInRect(&sampleObstacle[3].shape, g_ptMouse))
+		if (PtInRect(&sampleObstacleInfo[3].shape, g_ptMouse))
 		{
 			if (Input::GetButtonDown(VK_LBUTTON))
 			{
@@ -263,7 +205,7 @@ void ObstacleToolScene::ClickedObstacle()
 				obstacleImg = GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/SpiderWeb.bmp");
 			}
 		}
-		if (PtInRect(&sampleObstacle[4].shape, g_ptMouse))
+		if (PtInRect(&sampleObstacleInfo[4].shape, g_ptMouse))
 		{
 			if (Input::GetButtonDown(VK_LBUTTON))
 			{
@@ -271,7 +213,7 @@ void ObstacleToolScene::ClickedObstacle()
 				obstacleImg = GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/Thorn.bmp");
 			}
 		}
-		if (PtInRect(&sampleObstacle[5].shape, g_ptMouse))
+		if (PtInRect(&sampleObstacleInfo[5].shape, g_ptMouse))
 		{
 			if (Input::GetButtonDown(VK_LBUTTON))
 			{
@@ -279,7 +221,7 @@ void ObstacleToolScene::ClickedObstacle()
 				obstacleImg = GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/Jar.bmp");
 			}
 		}
-		if (PtInRect(&sampleObstacle[6].shape, g_ptMouse))
+		if (PtInRect(&sampleObstacleInfo[6].shape, g_ptMouse))
 		{
 			if (Input::GetButtonDown(VK_LBUTTON))
 			{
@@ -287,7 +229,7 @@ void ObstacleToolScene::ClickedObstacle()
 				obstacleImg = GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/Stone.bmp");
 			}
 		}
-		if (PtInRect(&sampleObstacle[7].shape, g_ptMouse))
+		if (PtInRect(&sampleObstacleInfo[7].shape, g_ptMouse))
 		{
 			if (Input::GetButtonDown(VK_LBUTTON))
 			{
@@ -295,7 +237,7 @@ void ObstacleToolScene::ClickedObstacle()
 				obstacleImg = GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/Bonfire.bmp");
 			}
 		}
-		if (PtInRect(&sampleObstacle[8].shape, g_ptMouse))
+		if (PtInRect(&sampleObstacleInfo[8].shape, g_ptMouse))
 		{
 			if (Input::GetButtonDown(VK_LBUTTON))
 			{
@@ -306,26 +248,266 @@ void ObstacleToolScene::ClickedObstacle()
 	}
 }
 
+void ObstacleToolScene::DrawObstacle()
+{
+	// 우클릭 시 장애물의 pos, type이 저장되며 화면에 보여줌
+	if (button->GetSelectObstacleButton() == false && clickedSampleObstacle)
+	{
+		if (Input::GetButtonDown(VK_RBUTTON))
+		{
+			long posX = g_ptMouse.x;
+			long posY = g_ptMouse.y;
+
+			if (obstacleImg == GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/ItemStand.bmp"))
+			{
+				obstacle[storeIndex]->SetObstacleType(sampleObstacleInfo[0].sampleType);
+				tempStoreObstacleInfo[storeIndex].sampleType = sampleObstacleInfo[0].sampleType;
+			}
+			if (obstacleImg == GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/DDong.bmp"))
+			{
+				obstacle[storeIndex]->SetObstacleType(sampleObstacleInfo[1].sampleType);
+				tempStoreObstacleInfo[storeIndex].sampleType = sampleObstacleInfo[1].sampleType;
+			}
+			if (obstacleImg == GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/Brick.bmp"))
+			{
+				obstacle[storeIndex]->SetObstacleType(sampleObstacleInfo[2].sampleType);
+				tempStoreObstacleInfo[storeIndex].sampleType = sampleObstacleInfo[2].sampleType;
+			}
+			if (obstacleImg == GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/SpiderWeb.bmp"))
+			{
+				obstacle[storeIndex]->SetObstacleType(sampleObstacleInfo[3].sampleType);
+				tempStoreObstacleInfo[storeIndex].sampleType = sampleObstacleInfo[3].sampleType;
+			}
+			if (obstacleImg == GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/Thorn.bmp"))
+			{
+				obstacle[storeIndex]->SetObstacleType(sampleObstacleInfo[4].sampleType);
+				tempStoreObstacleInfo[storeIndex].sampleType = sampleObstacleInfo[4].sampleType;
+			}
+			if (obstacleImg == GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/Jar.bmp"))
+			{
+				obstacle[storeIndex]->SetObstacleType(sampleObstacleInfo[5].sampleType);
+				tempStoreObstacleInfo[storeIndex].sampleType = sampleObstacleInfo[5].sampleType;
+			}
+			if (obstacleImg == GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/Stone.bmp"))
+			{
+				obstacle[storeIndex]->SetObstacleType(sampleObstacleInfo[6].sampleType);
+				tempStoreObstacleInfo[storeIndex].sampleType = sampleObstacleInfo[6].sampleType;
+			}
+			if (obstacleImg == GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/Bonfire.bmp"))
+			{
+				obstacle[storeIndex]->SetObstacleType(sampleObstacleInfo[7].sampleType);
+				tempStoreObstacleInfo[storeIndex].sampleType = sampleObstacleInfo[7].sampleType;
+			}
+			if (obstacleImg == GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/Slider.bmp"))
+			{
+				obstacle[storeIndex]->SetObstacleType(sampleObstacleInfo[8].sampleType);
+				tempStoreObstacleInfo[storeIndex].sampleType = sampleObstacleInfo[8].sampleType;
+			}
+
+			obstacle[storeIndex]->SetObstaclePosX((FLOAT)posX);
+			obstacle[storeIndex]->SetObstaclePosY((FLOAT)posY);
+			obstacle[storeIndex]->Init();
+
+			tempStoreObstacleInfo[storeIndex].pos = { (FLOAT)posX, (FLOAT)posY };
+
+			++storeIndex;
+
+			// 저장용량이 다 차면 용량을 두 배로 늘려준다.
+			if (storeIndex >= resizeNum)
+			{
+				int originSize = resizeNum;
+				resizeNum *= 2;
+				// Obstacle* 크기 증가
+				obstacle.resize(resizeNum);
+				// Obstacle* 동적 할당
+				for (size_t i = originSize; i < obstacle.size(); ++i)
+				{
+					obstacle[i] = new Obstacle;
+				}
+				// tempStoreObstacle 크기 증가
+				tempStoreObstacleInfo.resize(resizeNum);
+			}
+
+			clickedSampleObstacle = false;
+		}
+	}
+}
+
 void ObstacleToolScene::DrawSampleRect(int index, float sizeX, float sizeY)
 {
-	float posX = sampleObstacle[index].pos.x;
-	float posY = sampleObstacle[index].pos.y;
+	float posX = sampleObstacleInfo[index].pos.x;
+	float posY = sampleObstacleInfo[index].pos.y;
 
-	sampleObstacle[index].shape.left = posX - (sizeX * DEVIDE_HALF);
-	sampleObstacle[index].shape.top = posY - (sizeY * DEVIDE_HALF);
-	sampleObstacle[index].shape.right = posX + (sizeX * DEVIDE_HALF);
-	sampleObstacle[index].shape.bottom = posY + (sizeY * DEVIDE_HALF);
+	sampleObstacleInfo[index].shape.left = posX - (sizeX * DEVIDE_HALF);
+	sampleObstacleInfo[index].shape.top = posY - (sizeY * DEVIDE_HALF);
+	sampleObstacleInfo[index].shape.right = posX + (sizeX * DEVIDE_HALF);
+	sampleObstacleInfo[index].shape.bottom = posY + (sizeY * DEVIDE_HALF);
 }
 
 void ObstacleToolScene::EstablishSampleType()
 {
-	sampleObstacle[0].sampleType = ObstacleTypes::ITEMSTAND;
-	sampleObstacle[1].sampleType = ObstacleTypes::DDONG;
-	sampleObstacle[2].sampleType = ObstacleTypes::BRICK;
-	sampleObstacle[3].sampleType = ObstacleTypes::SPIDERWEB;
-	sampleObstacle[4].sampleType = ObstacleTypes::THORN;
-	sampleObstacle[5].sampleType = ObstacleTypes::JAR;
-	sampleObstacle[6].sampleType = ObstacleTypes::STONE;
-	sampleObstacle[7].sampleType = ObstacleTypes::BONFIRE;
-	sampleObstacle[8].sampleType = ObstacleTypes::SLIDER;
+	sampleObstacleInfo[0].sampleType = ObstacleTypes::ITEMSTAND;
+	sampleObstacleInfo[1].sampleType = ObstacleTypes::DDONG;
+	sampleObstacleInfo[2].sampleType = ObstacleTypes::BRICK;
+	sampleObstacleInfo[3].sampleType = ObstacleTypes::SPIDERWEB;
+	sampleObstacleInfo[4].sampleType = ObstacleTypes::THORN;
+	sampleObstacleInfo[5].sampleType = ObstacleTypes::JAR;
+	sampleObstacleInfo[6].sampleType = ObstacleTypes::STONE;
+	sampleObstacleInfo[7].sampleType = ObstacleTypes::BONFIRE;
+	sampleObstacleInfo[8].sampleType = ObstacleTypes::SLIDER;
+}
+
+void ObstacleToolScene::InitializeStoreSpace()
+{
+	resizeNum = 4;
+	// tempStoreObstacleInfo clear()
+	tempStoreObstacleInfo.clear();
+	tempStoreObstacleInfo.resize(resizeNum);
+	storeIndex = 0;
+	// 화면에 보여지는 Obstacle clear()
+	obstacle.clear();
+	obstacle.resize(resizeNum);
+	for (size_t i = 0; i < obstacle.size(); ++i)
+	{
+		obstacle[i] = new Obstacle;
+	}
+}
+
+void ObstacleToolScene::Save(int roomType, int saveIndex, int obstacleCount)
+{
+	string saveFileName = "Save/";
+	switch (roomType)
+	{
+	case 0:
+		saveFileName += "CURSE";
+		break;
+	case 1:
+		saveFileName += "ITEM";
+		break;
+	case 2:
+		saveFileName += "NORMAL";
+		break;
+	default:
+		break;
+	}
+	if (saveIndex < 10)
+	{
+		saveFileName += "0";
+	}
+	saveFileName += to_string(saveIndex) + ".obstacle";
+
+	HANDLE hFile = CreateFile(saveFileName.c_str(), GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	DWORD byteSize = sizeof(tagStoreSampleInfo) * obstacleCount;
+
+	DWORD writtenByte = 0;
+	switch (roomType)
+	{
+	case 0:
+		if (WriteFile(hFile, &storeObstacle[0], byteSize, &writtenByte, NULL) == false)
+		{
+			MessageBox(g_hWnd, "storeObstacle[0] 맵 데이터 저장에 실패! !", "에러", MB_OK);
+		}
+		break;
+	case 1:
+		if (WriteFile(hFile, &storeObstacle[1], byteSize, &writtenByte, NULL) == false)
+		{
+			MessageBox(g_hWnd, "storeObstacle[1] 맵 데이터 저장에 실패! !", "에러", MB_OK);
+		}
+		break;
+	case 2:
+		if (WriteFile(hFile, &storeObstacle[2], byteSize, &writtenByte, NULL) == false)
+		{
+			MessageBox(g_hWnd, "storeObstacle[2] 맵 데이터 저장에 실패! !", "에러", MB_OK);
+		}
+		break;
+	default:
+		break;
+	}
+
+	CloseHandle(hFile);
+}
+
+void ObstacleToolScene::StoreObstacle()
+{
+	// Save Button 클릭 시 storeObstacle에 저장 후 파일 생성
+	if (button->GetSelectObstacleButton() == false && clickedSampleObstacle == false)		// ObstacleBtn과 저장할 목록이 없고
+	{
+		if (button->GetPressSaveButton())													// SaveBtn을 눌렀을 때
+		{
+			button->SetPressSaveButton(false);
+			// 임시 저장 장소에 얼마나 저장됐는지의 변수
+			int index = 0;
+			for (size_t i = 0; i < tempStoreObstacleInfo.size(); ++i)
+			{
+				if (tempStoreObstacleInfo[i].sampleType != ObstacleTypes::NONE)
+				{
+					++index;
+				}
+			}
+			// CurseRoom이 눌려져 있다면 storeObstacle[0]에 저장
+			if (button->GetSelectCurseRoomButton())
+			{
+				StoreCurseRoomObstacle(index);
+			}
+			// ItemRoom이 눌려져 있다면 storeObstacle[1]에 저장
+			if (button->GetSelectItemRoomButton())
+			{
+				StoreItemRoomObstacle(index);
+			}
+			// NormalRoom이 눌려져 있다면 storeObstacle[2]에 저장
+			if (button->GetSelectNormalRoomButton())
+			{
+				StoreNormalRoomObstacle(index);
+			}
+		}
+	}
+}
+
+void ObstacleToolScene::StoreCurseRoomObstacle(int totalSize)
+{
+	// index만큼 초기화 시키고
+	storeObstacle[0].resize(totalSize);
+	for (size_t i = 0; i < storeObstacle[0].size(); ++i)
+	{
+		storeObstacle[0][i].pos = tempStoreObstacleInfo[i].pos;
+		storeObstacle[0][i].sampleType = tempStoreObstacleInfo[i].sampleType;
+	}
+	// 파일로 저장
+	Save(0, saveIndex[0], totalSize);
+	++saveIndex[0];
+
+	InitializeStoreSpace();
+}
+
+void ObstacleToolScene::StoreItemRoomObstacle(int totalSize)
+{
+	// index만큼 초기화 시키고
+	storeObstacle[1].resize(totalSize);
+	for (size_t i = 0; i < storeObstacle[1].size(); ++i)
+	{
+		storeObstacle[1][i].pos = tempStoreObstacleInfo[i].pos;
+		storeObstacle[1][i].sampleType = tempStoreObstacleInfo[i].sampleType;
+	}
+	// 파일로 저장
+	Save(1, saveIndex[1], totalSize);
+	++saveIndex[1];
+
+	InitializeStoreSpace();
+}
+
+void ObstacleToolScene::StoreNormalRoomObstacle(int totalSize)
+{
+	// index만큼 초기화 시키고
+	storeObstacle[2].resize(totalSize);
+	for (size_t i = 0; i < storeObstacle[2].size(); ++i)
+	{
+		storeObstacle[2][i].pos = tempStoreObstacleInfo[i].pos;
+		storeObstacle[2][i].sampleType = tempStoreObstacleInfo[i].sampleType;
+	}
+	// 파일로 저장
+	Save(2, saveIndex[2], totalSize);
+	++saveIndex[2];
+
+	InitializeStoreSpace();
 }
