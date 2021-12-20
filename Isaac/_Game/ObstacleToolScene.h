@@ -35,6 +35,7 @@ private:
 	RoomTypes							roomInfo = RoomTypes::NONE;
 
 	vector<Obstacle*>					obstacle;
+	vector<Obstacle*>					loadObstacle;
 	vector<SAMPLE_INFO>					sampleObstacleInfo;				// SampleObstacleInfo
 	vector<STORE_SAMPLE_INFO>			tempStoreObstacleInfo;			// 임시로 ObstacleInfo를 저장해두는 공간 => Save Button 클릭 시 storeObstacle에 전부 저장
 	vector<vector<STORE_SAMPLE_INFO>>	storeObstacle;					// Obstacle의 pos와 type을 저장하는 공간 => vector<> : Roomtype, vector<vector<> : Obstacle의 pos와 type을  안에 저장>
@@ -48,7 +49,6 @@ private:
 	int									roomTypeIndex = 3;				// 필요한 RoomTypes 만큼 vector<vector<STORE_SAMPLE_INFO>> 크기 설정 => 현재 CURSE, ITEM, NORMAL
 	int									saveIndex[3] = {};
 	int									storeIndex = 0;					// MainBoard에 보여주며 저장하는 Index
-
 
 public:
 	virtual HRESULT						Init() override;
@@ -66,6 +66,8 @@ public:
 	void								StoreCurseRoomObstacle(int totalSize);
 	void								StoreItemRoomObstacle(int totalSize);
 	void								StoreNormalRoomObstacle(int totalSize);
+
+	void								Load(int roomType, int loadIndex);
 
 	virtual ~ObstacleToolScene() = default;
 };

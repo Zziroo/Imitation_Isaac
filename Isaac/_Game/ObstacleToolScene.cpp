@@ -63,9 +63,15 @@ HRESULT ObstacleToolScene::Init()
 void ObstacleToolScene::Release()
 {
 	SAFE_RELEASE(button);
+
 	for (size_t i = 0; i < obstacle.size(); ++i)
 	{
 		SAFE_RELEASE(obstacle[i]);
+	}
+
+	for (size_t i = 0; i < loadObstacle.size(); ++i)
+	{
+		SAFE_RELEASE(loadObstacle[i]);
 	}
 }
 
@@ -98,7 +104,38 @@ void ObstacleToolScene::Update()
 		clickedSampleObstacle = false;
 	}
 #endif
+
+	// Obstacle 저장
 	StoreObstacle();
+
+	// Load
+	if (button->GetPressLoadButton() && button->GetSelectObstacleButton() == false)
+	{
+		button->SetPressSaveButton(false);
+		// Curse
+		if (button->GetSelectCurseRoomButton() && saveIndex[0] > 0)
+		{
+			Load(0, saveIndex[0] - 1);
+		}
+		// Item
+		if (button->GetSelectItemRoomButton() && saveIndex[1] > 0)
+		{
+			Load(1, saveIndex[1] - 1);
+		}
+		// Normal
+		if (button->GetSelectNormalRoomButton() && saveIndex[2] > 0)
+		{
+			Load(2, saveIndex[2] - 1);
+		}
+	}
+	// LoadObstacle
+	for (size_t i = 0; i < loadObstacle.size(); ++i)
+	{
+		if (loadObstacle[i]->GetObstacleType() != ObstacleTypes::NONE)
+		{
+			loadObstacle[i]->Update();
+		}
+	}
 
 	// Button
 	button->Update();
@@ -115,7 +152,7 @@ void ObstacleToolScene::Render(HDC hdc)
 	// BackGround
 	backGroundImg->Render(hdc);
 	// 그릴 때 도움줄 Image
-	indicativeAreaImg->TransparentRender(hdc, WIN_SIZE_X * DEVIDE_HALF, WIN_SIZE_Y * DEVIDE_HALF, indicativeAreaImg->GetCurrFrameX(), indicativeAreaImg->GetCurrFrameY(), 150.0f);
+	indicativeAreaImg->TransparentRender(hdc, (INT)(WIN_SIZE_X * DEVIDE_HALF), (INT)(WIN_SIZE_Y * DEVIDE_HALF), indicativeAreaImg->GetCurrFrameX(), indicativeAreaImg->GetCurrFrameY(), 150.0f);
 	// 그려져야할 영역을 표시
 	HBRUSH myBrush = (HBRUSH)GetStockObject(NULL_BRUSH);
 	HBRUSH oldBrush = (HBRUSH)SelectObject(hdc, myBrush);
@@ -128,6 +165,7 @@ void ObstacleToolScene::Render(HDC hdc)
 	}
 	SelectObject(hdc, oldBrush);
 	DeleteObject(myBrush);
+
 	// Obstacle Render
 	for (size_t i = 0; i < obstacle.size(); ++i)
 	{
@@ -136,6 +174,16 @@ void ObstacleToolScene::Render(HDC hdc)
 			obstacle[i]->Render(hdc);
 		}
 	}
+
+	// LoadObstacle
+	for (size_t i = 0; i < loadObstacle.size(); ++i)
+	{
+		if (loadObstacle[i]->GetObstacleType() != ObstacleTypes::NONE)
+		{
+			loadObstacle[i]->Render(hdc);
+		}
+	}
+
 	// Obstacle Button을 클릭했을 때
 	if (button->GetSelectObstacleButton())
 	{
@@ -153,6 +201,7 @@ void ObstacleToolScene::Render(HDC hdc)
 		SelectObject(hdc, oldBrush);
 		DeleteObject(myBrush);
 	}
+
 	// 장애물들을 클릭했을 때 이미지만 띄어주기
 	if (clickedSampleObstacle)
 	{
@@ -173,6 +222,16 @@ void ObstacleToolScene::ClickedObstacle()
 {
 	if (button->GetSelectObstacleButton())
 	{
+		// loadObstacle 초기화
+		if (loadObstacle.empty() == false)
+		{
+			for (size_t i = 0; i < loadObstacle.size(); ++i)
+			{
+				SAFE_RELEASE(loadObstacle[i]);
+			}
+			loadObstacle.clear();
+		}
+
 		if (PtInRect(&sampleObstacleInfo[0].shape, g_ptMouse))
 		{
 			if (Input::GetButtonDown(VK_LBUTTON))
@@ -338,10 +397,10 @@ void ObstacleToolScene::DrawSampleRect(int index, float sizeX, float sizeY)
 	float posX = sampleObstacleInfo[index].pos.x;
 	float posY = sampleObstacleInfo[index].pos.y;
 
-	sampleObstacleInfo[index].shape.left = posX - (sizeX * DEVIDE_HALF);
-	sampleObstacleInfo[index].shape.top = posY - (sizeY * DEVIDE_HALF);
-	sampleObstacleInfo[index].shape.right = posX + (sizeX * DEVIDE_HALF);
-	sampleObstacleInfo[index].shape.bottom = posY + (sizeY * DEVIDE_HALF);
+	sampleObstacleInfo[index].shape.left = (LONG)(posX - (sizeX * DEVIDE_HALF));
+	sampleObstacleInfo[index].shape.top = (LONG)(posY - (sizeY * DEVIDE_HALF));
+	sampleObstacleInfo[index].shape.right = (LONG)(posX + (sizeX * DEVIDE_HALF));
+	sampleObstacleInfo[index].shape.bottom = (LONG)(posY + (sizeY * DEVIDE_HALF));
 }
 
 void ObstacleToolScene::EstablishSampleType()
@@ -365,6 +424,10 @@ void ObstacleToolScene::InitializeStoreSpace()
 	tempStoreObstacleInfo.resize(resizeNum);
 	storeIndex = 0;
 	// 화면에 보여지는 Obstacle clear()
+	for (size_t i = 0; i < obstacle.size(); ++i)
+	{
+		SAFE_RELEASE(obstacle[i]);
+	}
 	obstacle.clear();
 	obstacle.resize(resizeNum);
 	for (size_t i = 0; i < obstacle.size(); ++i)
@@ -510,4 +573,106 @@ void ObstacleToolScene::StoreNormalRoomObstacle(int totalSize)
 	++saveIndex[2];
 
 	InitializeStoreSpace();
+}
+
+void ObstacleToolScene::Load(int roomType, int loadIndex)
+{
+	string loadFileName = "Save/";
+	int obstacleCount = 0;
+	switch (roomType)
+	{
+	case 0:
+		loadFileName += "Curse";
+		obstacleCount = (INT)storeObstacle[0].size();
+		break;
+	case 1:
+		loadFileName += "Item";
+		obstacleCount = (INT)storeObstacle[1].size();
+		break;
+	case 2:
+		loadFileName += "Normal";
+		obstacleCount = (INT)storeObstacle[2].size();
+		break;
+	default:
+		break;
+	}
+	if (loadIndex < 10)
+	{
+		loadFileName += "0";
+	}
+	loadFileName += to_string(loadIndex) + ".obstacle";
+
+	HANDLE hFile = CreateFile(loadFileName.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	if (hFile == INVALID_HANDLE_VALUE)
+	{
+		cout << GetLastError();
+	}
+
+	DWORD mapLoadFileInfo = sizeof(tagStoreSampleInfo) * obstacleCount;
+
+	DWORD readByte = 0;
+
+	switch (roomType)
+	{
+	case 0:
+		if (ReadFile(hFile, &storeObstacle[0], mapLoadFileInfo, &readByte, NULL) == false)
+		{
+			MessageBox(g_hWnd, "storeObstacle[0] 맵 데이터 로드에 실패! !", "에러", MB_OK);
+		}
+		break;
+	case 1:
+		if (ReadFile(hFile, &storeObstacle[1], mapLoadFileInfo, &readByte, NULL) == false)
+		{
+			MessageBox(g_hWnd, "storeObstacle[1] 맵 데이터 로드에 실패! !", "에러", MB_OK);
+		}
+		break;
+	case 2:
+		if (ReadFile(hFile, &storeObstacle[2], mapLoadFileInfo, &readByte, NULL) == false)
+		{
+			MessageBox(g_hWnd, "storeObstacle[2] 맵 데이터 로드에 실패! !", "에러", MB_OK);
+		}
+		break;
+	default:
+		break;
+	}
+
+	if (loadObstacle.size() == 0)
+	{
+		loadObstacle.resize(obstacleCount);		// 메모리 누수 => 왜 두 번 들어오는지 모르겠습니다.
+		switch (roomType)
+		{
+		case 0:
+			for (size_t i = 0; i < loadObstacle.size(); ++i)
+			{
+				loadObstacle[i] = new Obstacle;
+				loadObstacle[i]->SetObstaclePos(storeObstacle[0][i].pos);
+				loadObstacle[i]->SetObstacleType(storeObstacle[0][i].sampleType);
+				loadObstacle[i]->Init();
+			}
+			break;
+		case 1:
+			for (size_t i = 0; i < loadObstacle.size(); ++i)
+			{
+				loadObstacle[i] = new Obstacle;
+				loadObstacle[i]->SetObstaclePos(storeObstacle[1][i].pos);
+				loadObstacle[i]->SetObstacleType(storeObstacle[1][i].sampleType);
+				loadObstacle[i]->Init();
+			}
+			break;
+		case 2:
+			for (size_t i = 0; i < loadObstacle.size(); ++i)
+			{
+				loadObstacle[i] = new Obstacle;
+				loadObstacle[i]->SetObstaclePos(storeObstacle[2][i].pos);
+				loadObstacle[i]->SetObstacleType(storeObstacle[2][i].sampleType);
+				loadObstacle[i]->Init();
+			}
+			break;
+		default:
+			break;
+		}
+	}
+
+	CloseHandle(hFile);
 }
