@@ -107,7 +107,7 @@ enum class PlayerStates { IDLE, WALK, ATTACK, HURT, ITEMPICKUP, JUMP, STAT };
 // Weapon
 #define WEAPON_MAX_COUNT		100
 
-// Tilemap
+// TilemapTool
 enum class TileTypes { CLIFF, DOOR, ROAD, WALL, NOTHINGNESS }; 
 enum class SampleTileTypes { BASEMENT, CAVE, CELLAR, DEPTH, NONE };
 
@@ -224,3 +224,10 @@ typedef struct tagDoorInfo
 
 // Obstacle
 enum class ObstacleTypes { BONFIRE, BRICK, DDONG, ITEMSTAND, JAR, SLIDER, SPIDERWEB, STONE, THORN, NONE };
+
+// ObstacleTool
+typedef struct tagStoreSampleInfo
+{
+	ObstacleTypes					sampleType = ObstacleTypes::NONE;
+	POINTFLOAT						pos = {};
+} STORE_OBSTACLE_INFO;

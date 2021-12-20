@@ -419,7 +419,7 @@ void ObstacleToolScene::EstablishSampleType()
 void ObstacleToolScene::InitializeStoreSpace()
 {
 	resizeNum = 4;
-	// tempStoreObstacleInfo clear()
+	// tempStoreObstacleInfo clear
 	tempStoreObstacleInfo.clear();
 	tempStoreObstacleInfo.resize(resizeNum);
 	storeIndex = 0;
@@ -587,15 +587,15 @@ void ObstacleToolScene::Load(int roomType, int loadIndex)
 	switch (roomType)
 	{
 	case 0:
-		loadFileName += "Curse";
+		loadFileName += "CURSE";
 		obstacleCount = (INT)storeObstacle[0].size();
 		break;
 	case 1:
-		loadFileName += "Item";
+		loadFileName += "ITEM";
 		obstacleCount = (INT)storeObstacle[1].size();
 		break;
 	case 2:
-		loadFileName += "Normal";
+		loadFileName += "NORMAL";
 		obstacleCount = (INT)storeObstacle[2].size();
 		break;
 	default:

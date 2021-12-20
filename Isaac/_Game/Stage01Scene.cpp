@@ -4,10 +4,14 @@
 #include "DoorEditing.h"
 #include "Image.h"
 #include "Minimap.h"
+#include "Obstacle.h"
 #include "Player.h"
+
+using namespace std;
 
 HRESULT Stage01Scene::Init()
 {
+	// Initialize Map Image
 	switch (stageNum)
 	{
 	case 0:
@@ -25,38 +29,43 @@ HRESULT Stage01Scene::Init()
 	// Door
 	door = new DoorEditing;
 	door->Init(stageNum);
+
 	// Stage01의 Size를 받기
-	_stageSize = door->GetStageSize();
+	stageSize = door->GetStageSize();
+
 	// Start Point를 받기
-	_startPoint = door->GetStartPoint();
-	currColumn = _startPoint;
-	currRow = _startPoint;
+	startPoint = door->GetStartPoint();
+	currColumn = startPoint;
+	currRow = startPoint;
+
 	// Stage Size만큼 resize하고
-	stage01Index.resize(_stageSize);
-	for (size_t i = 0; i < stage01Index.size(); ++i)
+	stageIndex.resize(stageSize);
+	for (size_t i = 0; i < stageIndex.size(); ++i)
 	{
-		stage01Index[i].resize(_stageSize);
-		for (size_t j = 0; j < stage01Index[i].size(); ++j)
+		stageIndex[i].resize(stageSize);
+		for (size_t j = 0; j < stageIndex[i].size(); ++j)
 		{
 			// Stage 정보를 받아오기
-			stage01Index[i][j] = door->GetStage()[i][j];
+			stageIndex[i][j] = door->GetStage()[i][j];
 		}
 	}
+
 	// Room Size만큼 resize하고
-	roomInfo.resize(_stageSize);
+	roomInfo.resize(stageSize);
 	for (size_t i = 0; i < roomInfo.size(); ++i)
 	{
-		roomInfo[i].resize(_stageSize);
+		roomInfo[i].resize(stageSize);
 		for (size_t j = 0; j < roomInfo[i].size(); ++j)
 		{
 			roomInfo[i][j] = door->GetRoomType()[i][j];
 		}
 	}
+
 	// DOOR_INFO 를 저장
-	doorInfo.resize(_stageSize);
+	doorInfo.resize(stageSize);
 	for (size_t i = 0; i < doorInfo.size(); ++i)
 	{
-		doorInfo[i].resize(_stageSize);
+		doorInfo[i].resize(stageSize);
 		for (size_t j = 0; j < doorInfo[i].size(); ++j)
 		{
 			for (int k = 0; k < 4; ++k)
@@ -67,10 +76,10 @@ HRESULT Stage01Scene::Init()
 	}
 
 	// Load Map
-	LoadMap(stage01Index[_startPoint][_startPoint]);
+	LoadMap(stageIndex[startPoint][startPoint]);
 
 #ifdef _DEBUG RoomInfo
-	std::cout << "Stage01Scene => DoorEditing => RoomInfo\n";
+	cout << "Stage01Scene => DoorEditing => RoomInfo\n";
 	for (size_t i = 0; i < roomInfo.size(); ++i)
 	{
 		for (size_t j = 0; j < roomInfo[i].size(); ++j)
@@ -78,41 +87,40 @@ HRESULT Stage01Scene::Init()
 			switch (roomInfo[i][j])
 			{
 			case RoomTypes::BOSS:
-				std::cout << "BOSS\t";
+				cout << "BOSS\t";
 				break;
 			case RoomTypes::CURSE:
-				std::cout << "COURSE\t";
+				cout << "COURSE\t";
 				break;
 			case RoomTypes::ITEM:
-				std::cout << "ITEM\t";
+				cout << "ITEM\t";
 				break;
 			case RoomTypes::NORMAL:
-				std::cout << "NORMAL\t";
+				cout << "NORMAL\t";
 				break;
 			case RoomTypes::PRIVATE:
-				std::cout << "PRIVATE\t";
+				cout << "PRIVATE\t";
 				break;
 			case RoomTypes::SATAN:
-				std::cout << "SATAN\t";
+				cout << "SATAN\t";
 				break;
 			case RoomTypes::START:
-				std::cout << "START\t";
+				cout << "START\t";
 				break;
 			case RoomTypes::NONE:
-				std::cout << "NONE\t";
+				cout << "NONE\t";
 				break;
 			default:
-				std::cout << "####\t";
+				cout << "####\t";
 			}
 		}
-		std::cout << "\n";
+		cout << "\n";
 	}
-	std::cout << "\n";
+	cout << "\n";
 #endif
 
 	// Player
 	player = new Player;
-	player->Init();
 	switch (sampleTileType)
 	{
 	case SampleTileTypes::BASEMENT:
@@ -158,17 +166,122 @@ HRESULT Stage01Scene::Init()
 	}
 	player->SetTileInfo(colliderTileInfo);
 	player->SetDoorInfo(&doorInfo);
-	player->SetStageSize(_stageSize);
+	player->SetStageSize(stageSize);
+	player->Init();
 
 	// Minimap
 	minimap = new Minimap;
 	minimap->SetRoomInfo(&roomInfo);
-	minimap->SetStageSize(_stageSize);
+	minimap->SetStageSize(stageSize);
 	minimap->SetStartPointRow(currRow);
 	minimap->SetStartPointColumn(currColumn);
 	minimap->Init();
 
 	// Obstacle
+	obstacleFileInfo.resize(stageSize);
+	for (size_t i = 0; i < obstacleFileInfo.size(); ++i)
+	{
+		obstacleFileInfo[i].resize(stageSize);
+		for (size_t j = 0; j < obstacleFileInfo[i].size(); ++j)
+		{
+			if (roomInfo[i][j] == RoomTypes::CURSE)
+			{
+				// string 저장
+				NamingObstacleInfo(i, j, "CURSE", 0);
+			}
+			if (roomInfo[i][j] == RoomTypes::ITEM)
+			{
+				// string 저장
+				NamingObstacleInfo(i, j, "ITEM", 1);
+			}
+			if (roomInfo[i][j] == RoomTypes::NORMAL)
+			{
+				// string 저장
+				NamingObstacleInfo(i, j, "NORMAL", 2);
+			}
+		}
+	}
+
+	int maxRow = stageSize - 1;
+	int maxColumn = stageSize - 1;
+	sumObstacleCount.resize(stageSize);
+	for (size_t i = 0; i < sumObstacleCount.size(); ++i)
+	{
+		sumObstacleCount[i].resize(stageSize);
+		for (size_t j = 0; j < sumObstacleCount[i].size(); ++j)
+		{
+			// 배열의 첫 index
+			if (i == 0 && j == 0)
+			{
+				sumObstacleCount[i][j] = obstacleFileInfo[i][j].count;
+				continue;
+			}
+			// 각 가로줄의 첫 행의 index
+			if (j == 0)
+			{
+				sumObstacleCount[i][j] = sumObstacleCount[i - 1][maxColumn] + obstacleFileInfo[i][j].count;
+				continue;
+			}
+			sumObstacleCount[i][j] = sumObstacleCount[i][j - 1] + obstacleFileInfo[i][j].count;
+		}
+	}
+
+	// Obstacle 총 개수
+	totalObstacleCount = sumObstacleCount[maxRow][maxColumn];
+
+	// 저장되어있는 파일을 Load할 이중 벡터의 Size 초기화
+	storeObstacle.resize(roomTypeCount);
+
+	// Stage에 Obstacle 생성
+	obstacle.resize(stageSize);
+	for (size_t i = 0; i < obstacle.size(); ++i)
+	{
+		obstacle[i].resize(stageSize);
+		for (size_t j = 0; j < obstacle[i].size(); ++j)
+		{
+			LoadObstacle(i, j, obstacleFileInfo[i][j].index, obstacleFileInfo[i][j].count);
+		}
+	}
+
+#ifdef _DEBUG ObstacleCount
+	cout << "obstacleFileInfo.index\n";
+	for (size_t i = 0; i < obstacleFileInfo.size(); ++i)
+	{
+		for (size_t j = 0; j < obstacleFileInfo[i].size(); ++j)
+		{
+			cout << obstacleFileInfo[i][j].index << "\t";
+
+			if (obstacleFileInfo[i][j].index == "")
+			{
+				cout << "########\t";
+			}
+		}
+		cout << "\n";
+	}
+	cout << "\n";
+
+	cout << "obstacleFileInfo.count\n";
+	for (size_t i = 0; i < obstacleFileInfo.size(); ++i)
+	{
+		for (size_t j = 0; j < obstacleFileInfo[i].size(); ++j)
+		{
+			cout << obstacleFileInfo[i][j].count << "\t";
+		}
+		cout << "\n";
+	}
+	cout << "\n";
+
+	cout << "sumObstacleCount\n";
+	for (size_t i = 0; i < sumObstacleCount.size(); ++i)
+	{
+		for (size_t j = 0; j < sumObstacleCount[i].size(); ++j)
+		{
+			cout << sumObstacleCount[i][j] << "\t";
+		}
+		cout << "\n";
+	}
+	cout << "\n";
+#endif
 
 	return S_OK;
 }
@@ -201,9 +314,9 @@ void Stage01Scene::Update()
 		if (doorInfo[currRow][currColumn][1].roomType != RoomTypes::NONE || doorInfo[currRow][currColumn][1].img != nullptr)
 		{
 			++currRow;
-			if (currRow >= _stageSize)
+			if (currRow >= stageSize)
 			{
-				currRow = _stageSize - 1;
+				currRow = stageSize - 1;
 			}
 		}
 		SelectMapImage();
@@ -225,9 +338,9 @@ void Stage01Scene::Update()
 		if (doorInfo[currRow][currColumn][3].roomType != RoomTypes::NONE || doorInfo[currRow][currColumn][3].img != nullptr)
 		{
 			++currColumn;
-			if (currColumn >= _stageSize)
+			if (currColumn >= stageSize)
 			{
-				currColumn = _stageSize - 1;
+				currColumn = stageSize - 1;
 			}
 		}
 		SelectMapImage();
@@ -273,9 +386,9 @@ void Stage01Scene::Update()
 		if (doorInfo[currRow][currColumn][1].roomType != RoomTypes::NONE || doorInfo[currRow][currColumn][1].img != nullptr)
 		{
 			++currRow;
-			if (currRow >= _stageSize)
+			if (currRow >= stageSize)
 			{
-				currRow = _stageSize - 1;
+				currRow = stageSize - 1;
 			}
 		}
 		SelectMapImage();
@@ -301,16 +414,26 @@ void Stage01Scene::Update()
 		if (doorInfo[currRow][currColumn][3].roomType != RoomTypes::NONE || doorInfo[currRow][currColumn][3].img != nullptr)
 		{
 			++currColumn;
-			if (currColumn >= _stageSize)
+			if (currColumn >= stageSize)
 			{
-				currColumn = _stageSize - 1;
+				currColumn = stageSize - 1;
 			}
 		}
 		SelectMapImage();
 		player->SetEnterNextRightDoor(false);
 	}
 
-	// Obstacle Init과 동시에 Update
+	// Obstacle Update
+	for (size_t i = 0; i < obstacle.size(); ++i)
+	{
+		for (size_t j = 0; j < obstacle[i].size(); ++j)
+		{
+			for (int k = 0; k < obstacleFileInfo[i][j].count; ++k)
+			{
+				obstacle[i][j][k]->Update();
+			}
+		}
+	}
 
 	// DoorEditing Update
 	door->SetLocatedColumn(currColumn);
@@ -329,13 +452,16 @@ void Stage01Scene::Render(HDC hdc)
 	TileRender(hdc);
 
 	// Start Map에 Image Render
-	if (currRow == _startPoint && currColumn == _startPoint)
+	if (currRow == startPoint && currColumn == startPoint)
 	{
 		infomationStartImg->Render(hdc, (INT)(WIN_SIZE_X * DEVIDE_HALF), (INT)(WIN_SIZE_Y * DEVIDE_HALF));
 	}
 
 	// Obstacle Render
-
+	for (int i = 0; i < obstacleFileInfo[currRow][currColumn].count; ++i)
+	{
+		obstacle[currRow][currColumn][i]->Render(hdc);
+	}
 
 	// Door Render
 	door->Render(hdc);
@@ -347,9 +473,98 @@ void Stage01Scene::Render(HDC hdc)
 	minimap->Render(hdc);
 }
 
-void Stage01Scene::LoadMap(string loadFileName)
+void Stage01Scene::NamingObstacleInfo(int row, int column, string loadObstacleFileName, int obstacleIndex)
 {
-	HANDLE hFile = CreateFile(loadFileName.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	string fileName = "Save/";
+
+	fileName += loadObstacleFileName;
+	// .obstacle 랜덤 설정
+	int index = 0;
+
+	random_device rd;
+	mt19937 gen(rd());
+	uniform_int_distribution<int> dis(0, 99);
+
+	index = dis(gen) % obstacleMaxIndex[obstacleIndex];
+
+	if (index < 10)
+	{
+		fileName += "0";
+	}
+
+	fileName += to_string(index) + "_";
+
+	int count = 0;
+
+	switch (obstacleIndex)
+	{
+	case 0:
+		switch (index)
+		{
+		case 0:
+			count = 1;
+			break;
+		default:
+			break;
+		}
+		break;
+	case 1:
+		switch (index)
+		{
+		case 0:
+			count = 1;
+			break;
+		case 1: case 2:
+			count = 3;
+			break;
+		default:
+			break;
+		}
+		break;
+	case 2:
+		switch (index)
+		{
+		case 9: case 12:
+			count = 2;
+			break;
+		case 0: case 1: case 2: case 5: case 6: case 7: case 8: case 10: case 11:
+			count = 4;
+			break;
+		case 14:
+			count = 6;
+			break;
+		case 13:
+			count = 8;
+			break;
+		case 3:
+			count = 19;
+			break;
+		case 4:
+			count = 20;
+			break;
+		default:
+			break;
+		}
+		break;
+	default:
+		break;
+	}
+
+	if (count < 10)
+	{
+		fileName += "0";
+	}
+
+	fileName += to_string(count) + ".obstacle";
+
+	obstacleFileInfo[row][column].index = fileName;
+	obstacleFileInfo[row][column].count = count;
+}
+
+void Stage01Scene::LoadMap(string loadTilemapFileName)
+{
+	HANDLE hFile = CreateFile(loadTilemapFileName.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 #ifdef _DEBUG
 	if (hFile == INVALID_HANDLE_VALUE)
 	{
@@ -394,37 +609,113 @@ void Stage01Scene::LoadMap(string loadFileName)
 	CloseHandle(hFile);
 }
 
+void Stage01Scene::LoadObstacle(int row, int column, string loadObstacleFileName, int obstacleCount)
+{
+	if (loadObstacleFileName == "")
+	{
+		return;
+	}
+
+	string loadFileName = loadObstacleFileName;
+
+	HANDLE hFile = CreateFile(loadFileName.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	if (hFile == INVALID_HANDLE_VALUE)
+	{
+		cout << GetLastError();
+	}
+
+	DWORD mapLoadFileInfo = sizeof(tagStoreSampleInfo) * obstacleCount;
+
+	DWORD readByte = 0;
+
+	if (loadFileName.substr(5, 1) == "C")
+	{
+		if(ReadFile(hFile, &storeObstacle[0], mapLoadFileInfo, &readByte, NULL) == false)
+		{
+			MessageBox(g_hWnd, "storeObstacle[0] 맵 데이터 로드에 실패! !", "에러", MB_OK);
+		}
+	}
+	if (loadFileName.substr(5, 1) == "I")
+	{
+		if (ReadFile(hFile, &storeObstacle[1], mapLoadFileInfo, &readByte, NULL) == false)
+		{
+			MessageBox(g_hWnd, "storeObstacle[1] 맵 데이터 로드에 실패! !", "에러", MB_OK);
+		}
+	}
+	if (loadFileName.substr(5, 1) == "N")
+	{
+		if (ReadFile(hFile, &storeObstacle[2], mapLoadFileInfo, &readByte, NULL) == false)
+		{
+			MessageBox(g_hWnd, "storeObstacle[2] 맵 데이터 로드에 실패! !", "에러", MB_OK);
+		}
+	}
+
+	obstacle[row][column].resize(obstacleCount);
+
+	if (loadFileName.substr(5, 1) == "C")
+	{
+		for (size_t i = 0; i < obstacle[row][column].size(); ++i)
+		{
+			obstacle[row][column][i] = new Obstacle;
+			obstacle[row][column][i]->SetObstaclePos(storeObstacle[0][i].pos);
+			obstacle[row][column][i]->SetObstacleType(storeObstacle[0][i].sampleType);
+			obstacle[row][column][i]->Init();
+		}
+	}
+	if (loadFileName.substr(5, 1) == "I")
+	{
+		for (size_t i = 0; i < obstacle[row][column].size(); ++i)
+		{
+			obstacle[row][column][i] = new Obstacle;
+			obstacle[row][column][i]->SetObstaclePos(storeObstacle[1][i].pos);
+			obstacle[row][column][i]->SetObstacleType(storeObstacle[1][i].sampleType);
+			obstacle[row][column][i]->Init();
+		}
+	}
+	if (loadFileName.substr(5, 1) == "N")
+	{
+		for (size_t i = 0; i < obstacle[row][column].size(); ++i)
+		{
+			obstacle[row][column][i] = new Obstacle;
+			obstacle[row][column][i]->SetObstaclePos(storeObstacle[2][i].pos);
+			obstacle[row][column][i]->SetObstacleType(storeObstacle[2][i].sampleType);
+			obstacle[row][column][i]->Init();
+		}
+	}
+}
+
 void Stage01Scene::SelectMapImage()
 {
 	// Stage01Index가 비어있으면 가면 안됨.
-	if (stage01Index[currRow][currColumn].empty() == false)
+	if (stageIndex[currRow][currColumn].empty() == false)
 	{
 		// SampleTileType 속성을 바꿔줘야함
-		if (stage01Index[currRow][currColumn].substr(5, 1) == "B")
+		if (stageIndex[currRow][currColumn].substr(5, 1) == "B")
 		{
 			sampleTileType = SampleTileTypes::BASEMENT;
 			drawingAreaImg = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Tile/Basement.bmp");
 		}
-		if (stage01Index[currRow][currColumn].substr(5, 1) == "C")
+		if (stageIndex[currRow][currColumn].substr(5, 1) == "C")
 		{
-			if (stage01Index[currRow][currColumn].substr(6, 1) == "A")
+			if (stageIndex[currRow][currColumn].substr(6, 1) == "A")
 			{
 				sampleTileType = SampleTileTypes::CAVE;
 				drawingAreaImg = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Tile/Cave.bmp");
 			}
-			if (stage01Index[currRow][currColumn].substr(6, 1) == "E")
+			if (stageIndex[currRow][currColumn].substr(6, 1) == "E")
 			{
 				sampleTileType = SampleTileTypes::CELLAR;
 				drawingAreaImg = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Tile/Cellar.bmp");		// 문제 발생 => CELLAR00.map Load()시 readByte = 0 이 돼버림.
 			}
 		}
-		if (stage01Index[currRow][currColumn].substr(5, 1) == "D")
+		if (stageIndex[currRow][currColumn].substr(5, 1) == "D")
 		{
 			sampleTileType = SampleTileTypes::DEPTH;
 			drawingAreaImg = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Tile/Depth.bmp");			// 문제 발생 => DEPTH00.map Load()시 readByte = 0 이 돼버림.
 		}
 		// Load
-		LoadMap(stage01Index[currRow][currColumn]);
+		LoadMap(stageIndex[currRow][currColumn]);
 	}
 }
 
