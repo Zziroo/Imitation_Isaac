@@ -39,7 +39,7 @@ private:
 
 	int									resizeNum = 4;					// 초기 Obstacle* 크기
 	int									roomTypeIndex = 3;				// 필요한 RoomTypes 만큼 vector<vector<STORE_SAMPLE_INFO>> 크기 설정 => 현재 CURSE, ITEM, NORMAL
-	int									saveIndex[3] = {};
+	int									saveIndex[3] = { 20, 20, 20 };
 	int									storeIndex = 0;					// MainBoard에 보여주며 저장하는 Index
 
 public:

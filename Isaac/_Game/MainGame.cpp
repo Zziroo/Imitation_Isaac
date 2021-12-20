@@ -4,7 +4,7 @@
 #include "Image.h"
 
 #ifdef _DEBUG
-//#define MAPTOOL
+#define MAPTOOL
 #endif
 
 void MainGame::Init()

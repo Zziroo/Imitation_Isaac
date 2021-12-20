@@ -205,17 +205,17 @@ HRESULT Stage01Scene::Init()
 	// 저장되어있는 파일을 Load할 이중 벡터의 Size 초기화
 	storeObstacle.resize(roomTypeCount);
 
-	//// Stage에 Obstacle 생성
-	//obstacle.resize(stageSize);
-	//for (size_t i = 0; i < obstacle.size(); ++i)
-	//{
-	//	obstacle[i].resize(stageSize);
-	//	for (size_t j = 0; j < obstacle[i].size(); ++j)
-	//	{
-	//		// 문제 발생! ! => 현재 파일 안의 정보가 이상해 pos, type값을 정확히 가져오지 못한다.
-	//		LoadObstacle(i, j, obstacleFileInfo[i][j].index, obstacleFileInfo[i][j].count);
-	//	}
-	//}
+	// Stage에 Obstacle 생성
+	obstacle.resize(stageSize);
+	for (size_t i = 0; i < obstacle.size(); ++i)
+	{
+		obstacle[i].resize(stageSize);
+		for (size_t j = 0; j < obstacle[i].size(); ++j)
+		{
+			// 문제 발생! ! => 현재 파일 안의 정보가 이상해 pos, type값을 정확히 가져오지 못한다.
+			LoadObstacle(i, j, obstacleFileInfo[i][j].index, obstacleFileInfo[i][j].count);
+		}
+	}
 
 #ifdef _DEBUG ObstacleCount
 	cout << "obstacleFileInfo.index\n";
@@ -447,95 +447,6 @@ void Stage01Scene::Render(HDC hdc)
 	minimap->Render(hdc);
 }
 
-void Stage01Scene::NamingObstacleInfo(int row, int column, string loadObstacleFileName, int obstacleIndex)
-{
-
-	string fileName = "Save/";
-
-	fileName += loadObstacleFileName;
-	// .obstacle 랜덤 설정
-	int index = 0;
-
-	random_device rd;
-	mt19937 gen(rd());
-	uniform_int_distribution<int> dis(0, 99);
-
-	index = dis(gen) % obstacleMaxIndex[obstacleIndex];
-
-	if (index < 10)
-	{
-		fileName += "0";
-	}
-
-	fileName += to_string(index) + "_";
-
-	int count = 0;
-
-	switch (obstacleIndex)
-	{
-	case 0:
-		switch (index)
-		{
-		case 0:
-			count = 1;
-			break;
-		default:
-			break;
-		}
-		break;
-	case 1:
-		switch (index)
-		{
-		case 0:
-			count = 1;
-			break;
-		case 1: case 2:
-			count = 3;
-			break;
-		default:
-			break;
-		}
-		break;
-	case 2:
-		switch (index)
-		{
-		case 9: case 12:
-			count = 2;
-			break;
-		case 0: case 1: case 2: case 5: case 6: case 7: case 8: case 10: case 11:
-			count = 4;
-			break;
-		case 14:
-			count = 6;
-			break;
-		case 13:
-			count = 8;
-			break;
-		case 3:
-			count = 19;
-			break;
-		case 4:
-			count = 20;
-			break;
-		default:
-			break;
-		}
-		break;
-	default:
-		break;
-	}
-
-	if (count < 10)
-	{
-		fileName += "0";
-	}
-
-	fileName += to_string(count) + ".obstacle";
-
-	obstacleFileInfo[row][column].index = fileName;
-	obstacleFileInfo[row][column].count = count;
-}
-
 void Stage01Scene::LoadMap(string loadTilemapFileName)
 {
 	HANDLE hFile = CreateFile(loadTilemapFileName.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
@@ -658,6 +569,95 @@ void Stage01Scene::LoadObstacle(int row, int column, string loadObstacleFileName
 			obstacle[row][column][i]->Init();
 		}
 	}
+}
+
+void Stage01Scene::NamingObstacleInfo(int row, int column, string loadObstacleFileName, int obstacleIndex)
+{
+
+	string fileName = "Save/";
+
+	fileName += loadObstacleFileName;
+	// .obstacle 랜덤 설정
+	int index = 0;
+
+	random_device rd;
+	mt19937 gen(rd());
+	uniform_int_distribution<int> dis(0, 99);
+
+	index = dis(gen) % obstacleMaxIndex[obstacleIndex];
+
+	if (index < 10)
+	{
+		fileName += "0";
+	}
+
+	fileName += to_string(index) + "_";
+
+	int count = 0;
+
+	switch (obstacleIndex)
+	{
+	case 0:
+		switch (index)
+		{
+		case 0:
+			count = 1;
+			break;
+		default:
+			break;
+		}
+		break;
+	case 1:
+		switch (index)
+		{
+		case 0:
+			count = 1;
+			break;
+		case 1: case 2:
+			count = 3;
+			break;
+		default:
+			break;
+		}
+		break;
+	case 2:
+		switch (index)
+		{
+		case 9: case 12:
+			count = 2;
+			break;
+		case 0: case 1: case 2: case 5: case 6: case 7: case 8: case 10: case 11:
+			count = 4;
+			break;
+		case 14:
+			count = 6;
+			break;
+		case 13:
+			count = 8;
+			break;
+		case 3:
+			count = 19;
+			break;
+		case 4:
+			count = 20;
+			break;
+		default:
+			break;
+		}
+		break;
+	default:
+		break;
+	}
+
+	if (count < 10)
+	{
+		fileName += "0";
+	}
+
+	fileName += to_string(count) + ".obstacle";
+
+	obstacleFileInfo[row][column].index = fileName;
+	obstacleFileInfo[row][column].count = count;
 }
 
 void Stage01Scene::SelectMapImage()

@@ -31,8 +31,8 @@ private:
 	TILE_INFO								mainCellarTileInfo[CELLAR_TILE_ROW][TILE_COLUMN];
 	TILE_INFO								mainDepthTileInfo[DEPTH_TILE_ROW][TILE_COLUMN];
 
-	vector<vector<RoomTypes>>				roomInfo;
 	vector<vector<array<DOOR_INFO, 4>>>		doorInfo;
+	vector<vector<RoomTypes>>				roomInfo;
 
 	vector<vector<string>>					stageIndex;
 
@@ -55,9 +55,9 @@ public:
 	virtual void							Update() override;
 	virtual void							Render(HDC hdc) override;
 
-	void									NamingObstacleInfo(int row, int column, string loadObstacleFileName, int obstacleIndex);
 	void									LoadMap(string loadTilemapFileName);
 	void									LoadObstacle(int row, int column, string loadObstacleFileName, int obstacleCount);
+	void									NamingObstacleInfo(int row, int column, string loadObstacleFileName, int obstacleIndex);
 	void									SelectMapImage();
 	void									TileRender(HDC hdc);
 
