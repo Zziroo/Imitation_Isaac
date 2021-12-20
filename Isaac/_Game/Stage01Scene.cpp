@@ -202,46 +202,20 @@ HRESULT Stage01Scene::Init()
 		}
 	}
 
-	int maxRow = stageSize - 1;
-	int maxColumn = stageSize - 1;
-	sumObstacleCount.resize(stageSize);
-	for (size_t i = 0; i < sumObstacleCount.size(); ++i)
-	{
-		sumObstacleCount[i].resize(stageSize);
-		for (size_t j = 0; j < sumObstacleCount[i].size(); ++j)
-		{
-			// 배열의 첫 index
-			if (i == 0 && j == 0)
-			{
-				sumObstacleCount[i][j] = obstacleFileInfo[i][j].count;
-				continue;
-			}
-			// 각 가로줄의 첫 행의 index
-			if (j == 0)
-			{
-				sumObstacleCount[i][j] = sumObstacleCount[i - 1][maxColumn] + obstacleFileInfo[i][j].count;
-				continue;
-			}
-			sumObstacleCount[i][j] = sumObstacleCount[i][j - 1] + obstacleFileInfo[i][j].count;
-		}
-	}
-
-	// Obstacle 총 개수
-	totalObstacleCount = sumObstacleCount[maxRow][maxColumn];
-
 	// 저장되어있는 파일을 Load할 이중 벡터의 Size 초기화
 	storeObstacle.resize(roomTypeCount);
 
-	// Stage에 Obstacle 생성
-	obstacle.resize(stageSize);
-	for (size_t i = 0; i < obstacle.size(); ++i)
-	{
-		obstacle[i].resize(stageSize);
-		for (size_t j = 0; j < obstacle[i].size(); ++j)
-		{
-			LoadObstacle(i, j, obstacleFileInfo[i][j].index, obstacleFileInfo[i][j].count);
-		}
-	}
+	//// Stage에 Obstacle 생성
+	//obstacle.resize(stageSize);
+	//for (size_t i = 0; i < obstacle.size(); ++i)
+	//{
+	//	obstacle[i].resize(stageSize);
+	//	for (size_t j = 0; j < obstacle[i].size(); ++j)
+	//	{
+	//		// 문제 발생! ! => 현재 파일 안의 정보가 이상해 pos, type값을 정확히 가져오지 못한다.
+	//		LoadObstacle(i, j, obstacleFileInfo[i][j].index, obstacleFileInfo[i][j].count);
+	//	}
+	//}
 
 #ifdef _DEBUG ObstacleCount
 	cout << "obstacleFileInfo.index\n";
@@ -270,17 +244,6 @@ HRESULT Stage01Scene::Init()
 		cout << "\n";
 	}
 	cout << "\n";
-
-	cout << "sumObstacleCount\n";
-	for (size_t i = 0; i < sumObstacleCount.size(); ++i)
-	{
-		for (size_t j = 0; j < sumObstacleCount[i].size(); ++j)
-		{
-			cout << sumObstacleCount[i][j] << "\t";
-		}
-		cout << "\n";
-	}
-	cout << "\n";
 #endif
 
 	return S_OK;
@@ -291,6 +254,17 @@ void Stage01Scene::Release()
 	SAFE_RELEASE(door);
 	SAFE_RELEASE(minimap);
 	SAFE_RELEASE(player);
+
+	for (size_t i = 0; i < obstacle.size(); ++i)
+	{
+		for (size_t j = 0; j < obstacle[i].size(); ++j)
+		{
+			for (size_t k = 0; k < obstacle[i][j].size(); ++k)
+			{
+				SAFE_RELEASE(obstacle[i][j][k]);
+			}
+		}
+	}
 }
 
 void Stage01Scene::Update()
@@ -574,6 +548,7 @@ void Stage01Scene::LoadMap(string loadTilemapFileName)
 	DWORD mapLoadFileInfo = sizeof(tagTile) * TILE_ROW * TILE_COLUMN;
 
 	DWORD readByte = 0;
+
 	switch (sampleTileType)
 	{
 	case SampleTileTypes::BASEMENT:

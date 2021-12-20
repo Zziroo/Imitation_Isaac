@@ -46,9 +46,7 @@ private:
 	vector<vector<vector<Obstacle*>>>		obstacle;											// Obstacle
 	vector<vector<OBSTACLE_FILE_INFO>>		obstacleFileInfo;									// .obstacle 파일의 파일명과 파일 안에 들어있는 obstacle의 개수를 저장하는 이중 벡터
 	vector<vector<STORE_OBSTACLE_INFO>>		storeObstacle;
-	vector<vector<int>>						sumObstacleCount;									// 저장한 obstacleFileInfo의 count들을 각각 더하여 총 몇개를 할당 받을 건지 Render할 때 얼마만큼 보여줄지 정하기 위한 이중 벡터
 	int										obstacleMaxIndex[3] = { 1, 3, 15 };
-	int										totalObstacleCount = 0;
 	int										roomTypeCount = 3;
 
 public:
