@@ -53,14 +53,13 @@ public:
 	void								DrawSampleRect(int index, float sizeX, float sizeY);
 	void								EstablishSampleType();
 	void								InitializeStoreSpace();
+	void								Load(int roomType, int loadIndex);
 	void								Save(int roomType, int saveIndex, int obstacleCount);
 	void								StoreObstacle();
 	void								StoreCurseRoomObstacle(int totalSize);
 	void								StoreItemRoomObstacle(int totalSize);
 	void								StoreNormalRoomObstacle(int totalSize);
 	
-	void								Load(int roomType, int loadIndex);
-
 	virtual ~ObstacleToolScene() = default;
 };
 
