@@ -23,15 +23,16 @@ private:
 	TILE_INFO								mainCellarTileInfo[CELLAR_TILE_ROW][TILE_COLUMN];
 	TILE_INFO								mainDepthTileInfo[DEPTH_TILE_ROW][TILE_COLUMN];
 
+	vector<vector<RoomTypes>>				roomInfo;
 	vector<vector<array<DOOR_INFO, 4>>>		doorInfo;
 	vector<vector<string>>					stage01Index;
-	vector<vector<RoomTypes>>				roomInfo;
 
 	int										_stageSize = 0;
 	int										_startPoint = 0;
 	int										currColumn = 0;										// 진행하려는 행
 	int										currRow = 0;										// 진행하려는 열
 	int										sampleTileMaxIndex[4] = { 4, 5, 4, 3 };
+	int										stageNum = 0;
 
 public:
 	virtual HRESULT							Init() override;
@@ -39,8 +40,8 @@ public:
 	virtual void							Update() override;
 	virtual void							Render(HDC hdc) override;
 
-	void									Load(string loadFileName);
-	void									LoadMap();
+	void									LoadMap(string loadFileName);
+	void									SelectMapImage();
 	void									TileRender(HDC hdc);
 
 	virtual ~Stage01Scene() = default;

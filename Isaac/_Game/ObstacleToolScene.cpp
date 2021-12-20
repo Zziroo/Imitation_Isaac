@@ -457,7 +457,7 @@ void ObstacleToolScene::Save(int roomType, int saveIndex, int obstacleCount)
 	{
 		saveFileName += "0";
 	}
-	saveFileName += to_string(saveIndex) + ".obstacle";
+	saveFileName += to_string(saveIndex) + "_" + to_string(obstacleCount) + ".obstacle";
 
 	HANDLE hFile = CreateFile(saveFileName.c_str(), GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
@@ -600,7 +600,7 @@ void ObstacleToolScene::Load(int roomType, int loadIndex)
 	{
 		loadFileName += "0";
 	}
-	loadFileName += to_string(loadIndex) + ".obstacle";
+	loadFileName += to_string(loadIndex) + "_" + to_string(obstacleCount) + ".obstacle";
 
 	HANDLE hFile = CreateFile(loadFileName.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 

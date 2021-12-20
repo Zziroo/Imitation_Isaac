@@ -66,16 +66,6 @@ void MapEditing::ArrangeStageIndex(SampleTileTypes sampleType, int loadIndex, in
 	default:
 		break;
 	}
-
-	//// 중복 불가 처리
-	//for (size_t i = 0; i < ThinOutMapInfo.size(); ++i)
-	//{
-	//	if (ThinOutMapInfo[i] == loadFileName)
-	//	{
-	//		CloseHandle(hFile);
-	//		return;
-	//	}
-	//}
 	
 	// stage[0]에 삽입
 	if (stageNum == 0)

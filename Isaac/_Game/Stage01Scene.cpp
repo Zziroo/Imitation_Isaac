@@ -8,14 +8,23 @@
 
 HRESULT Stage01Scene::Init()
 {
-	// Tilemap Image
-	drawingAreaImg = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Tile/Basement.bmp");
+	switch (stageNum)
+	{
+	case 0:
+		// Tilemap Image
+		drawingAreaImg = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Tile/Basement.bmp");
+		break;
+	case 1:
+		// Tilemap Image
+		drawingAreaImg = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Tile/Cave.bmp");
+		break;
+	}
 	// StartPoint Infomation Image
 	infomationStartImg = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Tile/Info.bmp");
 
 	// Door
 	door = new DoorEditing;
-	door->Init();
+	door->Init(stageNum);
 	// Stage01의 Size를 받기
 	_stageSize = door->GetStageSize();
 	// Start Point를 받기
@@ -57,8 +66,8 @@ HRESULT Stage01Scene::Init()
 		}
 	}
 
-	// Load
-	Load(stage01Index[_startPoint][_startPoint]);
+	// Load Map
+	LoadMap(stage01Index[_startPoint][_startPoint]);
 
 #ifdef _DEBUG RoomInfo
 	std::cout << "Stage01Scene => DoorEditing => RoomInfo\n";
@@ -159,6 +168,8 @@ HRESULT Stage01Scene::Init()
 	minimap->SetStartPointColumn(currColumn);
 	minimap->Init();
 
+	// Obstacle
+
 	return S_OK;
 }
 
@@ -171,6 +182,7 @@ void Stage01Scene::Release()
 
 void Stage01Scene::Update()
 {
+#ifdef _DEBUG
 	// 예시) 상,하,좌,우 키를 입력해서 맵을 바꿈.(맵의 종류를 알아서 보여줘야함)
 	if (Input::GetButtonDown(VK_UP))
 	{
@@ -182,7 +194,7 @@ void Stage01Scene::Update()
 				currRow = 0;
 			}
 		}
-		LoadMap();
+		SelectMapImage();
 	}
 	if (Input::GetButtonDown(VK_DOWN))
 	{
@@ -194,7 +206,7 @@ void Stage01Scene::Update()
 				currRow = _stageSize - 1;
 			}
 		}
-		LoadMap();
+		SelectMapImage();
 	}
 	if (Input::GetButtonDown(VK_LEFT))
 	{
@@ -206,7 +218,7 @@ void Stage01Scene::Update()
 				currColumn = 0;
 			}
 		}
-		LoadMap();
+		SelectMapImage();
 	}
 	if (Input::GetButtonDown(VK_RIGHT))
 	{
@@ -218,8 +230,9 @@ void Stage01Scene::Update()
 				currColumn = _stageSize - 1;
 			}
 		}
-		LoadMap();
+		SelectMapImage();
 	}
+#endif
 
 	// Door의 정보를 Update
 	for (size_t i = 0; i < doorInfo.size(); ++i)
@@ -232,11 +245,13 @@ void Stage01Scene::Update()
 			}
 		}
 	}
+
 	// Player Update
 	player->SetCurrCloumn(currColumn);
 	player->SetCurrRow(currRow);
 	player->SetDoorInfo(&doorInfo);
 	player->Update();
+
 	// Map Update
 	if (player->GetEnterNextDoor()[0])
 	{
@@ -249,7 +264,7 @@ void Stage01Scene::Update()
 				currRow = 0;
 			}
 		}
-		LoadMap();
+		SelectMapImage();
 		player->SetEnterNextUpDoor(false);
 	}
 	if (player->GetEnterNextDoor()[1])
@@ -263,7 +278,7 @@ void Stage01Scene::Update()
 				currRow = _stageSize - 1;
 			}
 		}
-		LoadMap();
+		SelectMapImage();
 		player->SetEnterNextDownDoor(false);
 	}
 	if (player->GetEnterNextDoor()[2])
@@ -277,7 +292,7 @@ void Stage01Scene::Update()
 				currColumn = 0;
 			}
 		}
-		LoadMap();
+		SelectMapImage();
 		player->SetEnterNextLeftDoor(false);
 	}
 	if (player->GetEnterNextDoor()[3])
@@ -291,13 +306,17 @@ void Stage01Scene::Update()
 				currColumn = _stageSize - 1;
 			}
 		}
-		LoadMap();
+		SelectMapImage();
 		player->SetEnterNextRightDoor(false);
 	}
+
+	// Obstacle Init과 동시에 Update
+
 	// DoorEditing Update
 	door->SetLocatedColumn(currColumn);
 	door->SetLocatedRow(currRow);
 	door->Update();
+
 	// Minimap Update
 	minimap->SetCurrCloumn(currColumn);
 	minimap->SetCurrRow(currRow);
@@ -306,17 +325,29 @@ void Stage01Scene::Update()
 
 void Stage01Scene::Render(HDC hdc)
 {
+	// Map Render
 	TileRender(hdc);
+
+	// Start Map에 Image Render
 	if (currRow == _startPoint && currColumn == _startPoint)
 	{
 		infomationStartImg->Render(hdc, (INT)(WIN_SIZE_X * DEVIDE_HALF), (INT)(WIN_SIZE_Y * DEVIDE_HALF));
 	}
+
+	// Obstacle Render
+
+
+	// Door Render
 	door->Render(hdc);
+
+	// Player Render
 	player->Render(hdc);
+
+	// Minimap Render
 	minimap->Render(hdc);
 }
 
-void Stage01Scene::Load(string loadFileName)
+void Stage01Scene::LoadMap(string loadFileName)
 {
 	HANDLE hFile = CreateFile(loadFileName.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 #ifdef _DEBUG
@@ -345,7 +376,6 @@ void Stage01Scene::Load(string loadFileName)
 	case SampleTileTypes::CELLAR:
 		if (ReadFile(hFile, mainCellarTileInfo, mapLoadFileInfo, &readByte, NULL) == false)
 		{
-			cout << GetLastError();
 			MessageBox(g_hWnd, "Basement 맵 데이터 로드에 실패! !", "에러", MB_OK);
 		}
 		break;
@@ -364,7 +394,7 @@ void Stage01Scene::Load(string loadFileName)
 	CloseHandle(hFile);
 }
 
-void Stage01Scene::LoadMap()
+void Stage01Scene::SelectMapImage()
 {
 	// Stage01Index가 비어있으면 가면 안됨.
 	if (stage01Index[currRow][currColumn].empty() == false)
@@ -394,7 +424,7 @@ void Stage01Scene::LoadMap()
 			drawingAreaImg = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Tile/Depth.bmp");			// 문제 발생 => DEPTH00.map Load()시 readByte = 0 이 돼버림.
 		}
 		// Load
-		Load(stage01Index[currRow][currColumn]);
+		LoadMap(stage01Index[currRow][currColumn]);
 	}
 }
 
