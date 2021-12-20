@@ -41,12 +41,12 @@ public:
 	void							MoveMinimap();
 	void							VisitedMapIcon(int row, int column);
 
-	inline void						SetCurrCloumn(int column) { this->currColumn = column; }
-	inline void						SetCurrRow(int row) { this->currRow = row; }
-	inline void						SetRoomInfo(vector<vector<RoomTypes>>* roomType) { this->roomInfo = roomType; }
-	inline void						SetStageSize(int size) { this->stageSize = size; }
-	inline void						SetStartPointRow(int row) { this->startPointRow = row; }
-	inline void						SetStartPointColumn(int column) { this->startPointColumn = column; }
+	void							SetCurrCloumn(int column) { this->currColumn = column; }
+	void							SetCurrRow(int row) { this->currRow = row; }
+	void							SetRoomInfo(vector<vector<RoomTypes>>* roomType) { this->roomInfo = roomType; }
+	void							SetStageSize(int size) { this->stageSize = size; }
+	void							SetStartPointRow(int row) { this->startPointRow = row; }
+	void							SetStartPointColumn(int column) { this->startPointColumn = column; }
 
 	virtual ~Minimap() = default;
 };

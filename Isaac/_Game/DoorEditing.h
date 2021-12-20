@@ -34,16 +34,16 @@ public:
 	void										Init(int stageNum = 0);
 	void										StoreRoomType(int row, int column);
 
-	inline int									GetLocatedRow() { return this->currLocatedRow; }
-	inline int									GetLocatedColumn() { return this->currLocatedColumn; }
-	inline vector<vector<array<DOOR_INFO, 4>>>	GetDoorInfo() { return this->door; }
-	inline vector<vector<RoomTypes>>			GetRoomType() { return this->roomInfo; }
-	inline vector<vector<string>>				GetStage() { return this->stage01Index; }
-	inline int									GetStageSize() { return this->_stageSize; }
-	inline int									GetStartPoint() { return this->_startPoint; }
+	int											GetLocatedRow() { return this->currLocatedRow; }
+	int											GetLocatedColumn() { return this->currLocatedColumn; }
+	vector<vector<array<DOOR_INFO, 4>>>			GetDoorInfo() { return this->door; }
+	vector<vector<RoomTypes>>					GetRoomType() { return this->roomInfo; }
+	vector<vector<string>>						GetStage() { return this->stage01Index; }
+	int											GetStageSize() { return this->_stageSize; }
+	int											GetStartPoint() { return this->_startPoint; }
 
-	inline void									SetLocatedRow(int row) { this->currLocatedRow = row; }
-	inline void									SetLocatedColumn(int column) { this->currLocatedColumn = column; }
+	void										SetLocatedRow(int row) { this->currLocatedRow = row; }
+	void										SetLocatedColumn(int column) { this->currLocatedColumn = column; }
 
 	virtual ~DoorEditing() = default;
 };

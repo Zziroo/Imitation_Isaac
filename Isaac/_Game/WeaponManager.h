@@ -21,7 +21,7 @@ public:
 
 	void			WeaponFire();
 
-	inline void		SetOwner(Player* owner) { this->owner = owner;}
+	void			SetOwner(Player* owner) { this->owner = owner;}
 
 	virtual			~WeaponManager() noexcept;
 };

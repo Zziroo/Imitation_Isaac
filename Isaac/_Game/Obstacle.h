@@ -30,13 +30,13 @@ public:
 
 	void					SubstituteObstacleShape(float posX, float posY, float size, float adjustSizeLeft = 0.0f, float adjustSizeTop = 0.0f, float adjustSizeRight = 0.0f, float adjustSizeBottom = 0.0f);
 
-	inline float			GetObjecMoveSpeed() {};		// 오브젝트들의 이동 속도를 느리게 하기 위해 받아와야할 값
-	inline ObstacleTypes	GetObstacleType() { return this->obstacleInfo.type; }
+	float					GetObjecMoveSpeed() {};		// 오브젝트들의 이동 속도를 느리게 하기 위해 받아와야할 값
+	ObstacleTypes			GetObstacleType() { return this->obstacleInfo.type; }
 
-	inline void				SetObstaclePos(POINTFLOAT pos) { this->pos = pos; }
-	inline void				SetObstaclePosX(float pos) { this->pos.x = pos; }
-	inline void				SetObstaclePosY(float pos) { this->pos.y = pos; }
-	inline void				SetObstacleType(ObstacleTypes type) { this->obstacleInfo.type = type ; }
+	void					SetObstaclePos(POINTFLOAT pos) { this->pos = pos; }
+	void					SetObstaclePosX(float pos) { this->pos.x = pos; }
+	void					SetObstaclePosY(float pos) { this->pos.y = pos; }
+	void					SetObstacleType(ObstacleTypes type) { this->obstacleInfo.type = type ; }
 
 	virtual ~Obstacle() = default;
 };

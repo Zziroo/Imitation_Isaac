@@ -28,10 +28,10 @@ public:
 	void								NamingRoom(int row, int column);
 	void								Init(int stageNum = 0);
 
-	inline vector<vector<string>>		GetStage() { return this->stageIndex; }
-	inline vector<vector<RoomTypes>>	GetRoomType() { return this->roomInfo; }
-	inline int							GetStageSize() { return this->_stageSize; }
-	inline int							GetStartPoint() { return this->_startPoint; }
+	vector<vector<string>>				GetStage() { return this->stageIndex; }
+	vector<vector<RoomTypes>>			GetRoomType() { return this->roomInfo; }
+	int									GetStageSize() { return this->_stageSize; }
+	int									GetStartPoint() { return this->_startPoint; }
 
 	virtual	~RoomEditing() = default;
 };

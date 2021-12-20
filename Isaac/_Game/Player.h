@@ -85,28 +85,28 @@ public:
 
 	float									CalculateSlope(RECT rc);										// ±â¿ï±â
 
-	inline void								SetCurrCloumn(int column) { this->currColumn = column; }
-	inline void								SetCurrRow(int row) { this->currRow = row; }
-	inline void								SetEnterNextUpDoor(bool enterNextDoor) { this->enterNextDoor[0] = enterNextDoor; }
-	inline void								SetEnterNextDownDoor(bool enterNextDoor) { this->enterNextDoor[1] = enterNextDoor; }
-	inline void								SetEnterNextLeftDoor(bool enterNextDoor) { this->enterNextDoor[2] = enterNextDoor; }
-	inline void								SetEnterNextRightDoor(bool enterNextDoor) { this->enterNextDoor[3] = enterNextDoor; }
-	inline void								SetDoorInfo(vector<vector<array<DOOR_INFO, 4 >>>* doorInfo) { this->doorInfo = doorInfo; }
-	inline void								SetIsFire(bool isFire) { this->isFire = isFire; }
-	inline void								SetPlayerBodyPos(POINTFLOAT pos) { this->bodyInfo.pos = pos; }
-	inline void								SetPlayerBodyShape(RECT rc) { this->bodyInfo.shape = rc; }
-	inline void								SetPlayerHeadPos(POINTFLOAT pos) { this->headInfo.pos = pos; }
-	inline void								SetPlayerHeadShape(RECT rc) { this->headInfo.shape = rc; }
-	inline void								SetPlayerHeadMoveDir(ObjectDir moveDir) { this->headInfo.moveDir = moveDir; }
-	inline void								SetStageSize(int stageSize) { this->_stageSize = stageSize; }
+	array<bool, 4>							GetEnterNextDoor() { return this->enterNextDoor; }
+	bool									GetIsFire() { return this->isFire; }
+	POINTFLOAT								GetPlayerBodyPos() { return this->bodyInfo.pos; }
+	RECT									GetPlayerBodyShape() { return this->bodyInfo.shape; }
+	POINTFLOAT								GetPlayerHeadPos() { return this->headInfo.pos; }
+	RECT									GetPlayerHeadShape() { return this->headInfo.shape; }
+	ObjectDir								GetPlayerHeadMoveDir() { return this->headInfo.moveDir; }
 
-	inline array<bool, 4>					GetEnterNextDoor() { return this->enterNextDoor; }
-	inline bool								GetIsFire() { return this->isFire; }
-	inline POINTFLOAT						GetPlayerBodyPos() { return this->bodyInfo.pos; }
-	inline RECT								GetPlayerBodyShape() { return this->bodyInfo.shape; }
-	inline POINTFLOAT						GetPlayerHeadPos() { return this->headInfo.pos; }
-	inline RECT								GetPlayerHeadShape() { return this->headInfo.shape; }
-	inline ObjectDir						GetPlayerHeadMoveDir() { return this->headInfo.moveDir; }
+	void									SetCurrCloumn(int column) { this->currColumn = column; }
+	void									SetCurrRow(int row) { this->currRow = row; }
+	void									SetEnterNextUpDoor(bool enterNextDoor) { this->enterNextDoor[0] = enterNextDoor; }
+	void									SetEnterNextDownDoor(bool enterNextDoor) { this->enterNextDoor[1] = enterNextDoor; }
+	void									SetEnterNextLeftDoor(bool enterNextDoor) { this->enterNextDoor[2] = enterNextDoor; }
+	void									SetEnterNextRightDoor(bool enterNextDoor) { this->enterNextDoor[3] = enterNextDoor; }
+	void									SetDoorInfo(vector<vector<array<DOOR_INFO, 4 >>>* doorInfo) { this->doorInfo = doorInfo; }
+	void									SetIsFire(bool isFire) { this->isFire = isFire; }
+	void									SetPlayerBodyPos(POINTFLOAT pos) { this->bodyInfo.pos = pos; }
+	void									SetPlayerBodyShape(RECT rc) { this->bodyInfo.shape = rc; }
+	void									SetPlayerHeadPos(POINTFLOAT pos) { this->headInfo.pos = pos; }
+	void									SetPlayerHeadShape(RECT rc) { this->headInfo.shape = rc; }
+	void									SetPlayerHeadMoveDir(ObjectDir moveDir) { this->headInfo.moveDir = moveDir; }
+	void									SetStageSize(int stageSize) { this->_stageSize = stageSize; }
 
 	virtual ~Player() = default;
 };

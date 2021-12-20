@@ -21,11 +21,11 @@ public:
 
 	void				InitializeWeapon();
 
-	inline void			SetIsFire(bool isFire) { this->isFire = isFire; }
-	inline void			SetMoveDir(ObjectDir weaponDir) { this->weaponDir = weaponDir; }
+	void				SetIsFire(bool isFire) { this->isFire = isFire; }
+	void				SetMoveDir(ObjectDir weaponDir) { this->weaponDir = weaponDir; }
 
-	inline bool			GetIsFire() { return this->isFire; }
-	inline ObjectDir	GetMoveDir() { return this->weaponDir; }
+	bool				GetIsFire() { return this->isFire; }
+	ObjectDir			GetMoveDir() { return this->weaponDir; }
 
 	virtual	~Weapon() = default;
 };

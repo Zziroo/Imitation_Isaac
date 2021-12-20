@@ -28,9 +28,9 @@ public:
 	void							Init(int stageNum = 0);
 	void							SettingStageSize();
 
-	inline vector<vector<string>>	GetStage() { return this->stage; }
-	inline int						GetStageSize() { return this->stageSize; }
-	inline int						GetStartPoint() { return this->startPoint; }
+	vector<vector<string>>			GetStage() { return this->stage; }
+	int								GetStageSize() { return this->stageSize; }
+	int								GetStartPoint() { return this->startPoint; }
 
 	virtual ~MapEditing() = default;
 };

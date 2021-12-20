@@ -50,9 +50,9 @@ void Minimap::Init()
 			default:
 				break;
 			}
-			//// debuging
-			//minimap[i][j].exploreSurroundingMap = true;
-			//minimap[i][j].isVisitedMap = true;
+			// debuging
+			minimap[i][j].exploreSurroundingMap = true;
+			minimap[i][j].isVisitedMap = true;
 		}
 	}
 	// 현재 위치한 Map의 Image

@@ -67,28 +67,28 @@ public:
 	void				RenderUpButton(HDC hdc, ButtonInfo* btnInfo);
 	void				ShowLetter(HDC hdc, Image* img, ButtonInfo* btnInfo);
 
-	inline bool			GetPressLoadButton() { return this->loadBtn.clicked; }
-	inline bool			GetPressNextButton() { return this->nextBtn.clicked; }
-	inline bool			GetPressPrevButton() { return this->prevBtn.clicked; }
-	inline bool			GetPressSaveButton() { return this->saveBtn.clicked; }
-	inline bool			GetSelectBasementTileButton() { return this->basementTileBtn.clicked; }
-	inline bool			GetSelectCaveTileButton() { return this->caveTileBtn.clicked; }
-	inline bool			GetSelectCellarTileButton() { return this->cellarTileBtn.clicked; }
-	inline bool			GetSelectCurseRoomButton() { return this->curseRoomObstacleBtn.clicked; }
-	inline bool			GetSelectDepthTileButton() { return this->depthTileBtn.clicked; }
-	inline bool			GetSelectItemRoomButton() { return this->itemRoomObstacleBtn.clicked; }
-	inline bool			GetSelectNormalRoomButton() { return this->normalRoomObstacleBtn.clicked; }
-	inline bool			GetSelectObstacleButton() { return this->obstacleBtn.clicked; }
-	inline bool			GetSelectSampleTileButton() { return this->sampleTileBtn.clicked; }
-	inline int			GetTileIndex() { return this->tileIndex; }
+	bool				GetPressLoadButton() { return this->loadBtn.clicked; }
+	bool				GetPressNextButton() { return this->nextBtn.clicked; }
+	bool				GetPressPrevButton() { return this->prevBtn.clicked; }
+	bool				GetPressSaveButton() { return this->saveBtn.clicked; }
+	bool				GetSelectBasementTileButton() { return this->basementTileBtn.clicked; }
+	bool				GetSelectCaveTileButton() { return this->caveTileBtn.clicked; }
+	bool				GetSelectCellarTileButton() { return this->cellarTileBtn.clicked; }
+	bool				GetSelectCurseRoomButton() { return this->curseRoomObstacleBtn.clicked; }
+	bool				GetSelectDepthTileButton() { return this->depthTileBtn.clicked; }
+	bool				GetSelectItemRoomButton() { return this->itemRoomObstacleBtn.clicked; }
+	bool				GetSelectNormalRoomButton() { return this->normalRoomObstacleBtn.clicked; }
+	bool				GetSelectObstacleButton() { return this->obstacleBtn.clicked; }
+	bool				GetSelectSampleTileButton() { return this->sampleTileBtn.clicked; }
+	int					GetTileIndex() { return this->tileIndex; }
 
-	inline void			SetObstacleButton(bool clicked) { this->obstacleBtn.clicked = clicked; }
-	inline void			SetPressLoadButton(bool clicked) { this->loadBtn.clicked = clicked; }
-	inline void			SetPressNextButton(bool clicked) { this->nextBtn.clicked = clicked; }
-	inline void			SetPressPrevButton(bool clicked) { this->prevBtn.clicked = clicked; }
-	inline void			SetPressSaveButton(bool clicked) { this->saveBtn.clicked = clicked; }
-	inline void			SetSelecteBasementTile(bool clicked) { this->basementTileBtn.clicked = clicked; }
-	inline void			SetTileIndex(int tileIndex) { this->tileIndex = tileIndex; }
+	void				SetObstacleButton(bool clicked) { this->obstacleBtn.clicked = clicked; }
+	void				SetPressLoadButton(bool clicked) { this->loadBtn.clicked = clicked; }
+	void				SetPressNextButton(bool clicked) { this->nextBtn.clicked = clicked; }
+	void				SetPressPrevButton(bool clicked) { this->prevBtn.clicked = clicked; }
+	void				SetPressSaveButton(bool clicked) { this->saveBtn.clicked = clicked; }
+	void				SetSelecteBasementTile(bool clicked) { this->basementTileBtn.clicked = clicked; }
+	void				SetTileIndex(int tileIndex) { this->tileIndex = tileIndex; }
 
 	virtual ~Button() = default;
 };
