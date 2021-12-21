@@ -119,64 +119,6 @@ HRESULT Stage01Scene::Init()
 	cout << "\n";
 #endif
 
-	// Player
-	player = new Player;
-	switch (sampleTileType)
-	{
-	case SampleTileTypes::BASEMENT:
-		for (int r = 0; r < TILE_ROW; ++r)
-		{
-			for (int c = 0; c < TILE_COLUMN; ++c)
-			{
-				colliderTileInfo[r * TILE_COLUMN + c] = mainBasementTileInfo[r][c];
-			}
-		};
-		break;
-	case SampleTileTypes::CAVE:
-		for (int r = 0; r < TILE_ROW; ++r)
-		{
-			for (int c = 0; c < TILE_COLUMN; ++c)
-			{
-				colliderTileInfo[r * TILE_COLUMN + c] = mainCaveTileInfo[r][c];
-			}
-		};
-		break;
-	case SampleTileTypes::CELLAR:
-		for (int r = 0; r < TILE_ROW; ++r)
-		{
-			for (int c = 0; c < TILE_COLUMN; ++c)
-			{
-				colliderTileInfo[r * TILE_COLUMN + c] = mainCellarTileInfo[r][c];
-			}
-		};
-		break;
-	case SampleTileTypes::DEPTH:
-		for (int r = 0; r < TILE_ROW; ++r)
-		{
-			for (int c = 0; c < TILE_COLUMN; ++c)
-			{
-				colliderTileInfo[r * TILE_COLUMN + c] = mainDepthTileInfo[r][c];
-			}
-		};
-		break;
-	case SampleTileTypes::NONE:
-		break;
-	default:
-		break;
-	}
-	player->SetTileInfo(colliderTileInfo);
-	player->SetDoorInfo(&doorInfo);
-	player->SetStageSize(stageSize);
-	player->Init();
-
-	// Minimap
-	minimap = new Minimap;
-	minimap->SetRoomInfo(&roomInfo);
-	minimap->SetStageSize(stageSize);
-	minimap->SetStartPointRow(currRow);
-	minimap->SetStartPointColumn(currColumn);
-	minimap->Init();
-
 	// Obstacle
 	obstacleFileInfo.resize(stageSize);
 	for (size_t i = 0; i < obstacleFileInfo.size(); ++i)
@@ -245,6 +187,66 @@ HRESULT Stage01Scene::Init()
 			LoadObstacle((INT)i, (INT)j, obstacleFileInfo[i][j].index, obstacleFileInfo[i][j].count);
 		}
 	}
+
+	// Player
+	player = new Player;
+	switch (sampleTileType)
+	{
+	case SampleTileTypes::BASEMENT:
+		for (int r = 0; r < TILE_ROW; ++r)
+		{
+			for (int c = 0; c < TILE_COLUMN; ++c)
+			{
+				colliderTileInfo[r * TILE_COLUMN + c] = mainBasementTileInfo[r][c];
+			}
+		};
+		break;
+	case SampleTileTypes::CAVE:
+		for (int r = 0; r < TILE_ROW; ++r)
+		{
+			for (int c = 0; c < TILE_COLUMN; ++c)
+			{
+				colliderTileInfo[r * TILE_COLUMN + c] = mainCaveTileInfo[r][c];
+			}
+		};
+		break;
+	case SampleTileTypes::CELLAR:
+		for (int r = 0; r < TILE_ROW; ++r)
+		{
+			for (int c = 0; c < TILE_COLUMN; ++c)
+			{
+				colliderTileInfo[r * TILE_COLUMN + c] = mainCellarTileInfo[r][c];
+			}
+		};
+		break;
+	case SampleTileTypes::DEPTH:
+		for (int r = 0; r < TILE_ROW; ++r)
+		{
+			for (int c = 0; c < TILE_COLUMN; ++c)
+			{
+				colliderTileInfo[r * TILE_COLUMN + c] = mainDepthTileInfo[r][c];
+			}
+		};
+		break;
+	case SampleTileTypes::NONE:
+		break;
+	default:
+		break;
+	}
+	player->SetTileInfo(colliderTileInfo);
+	player->SetDoorInfo(&doorInfo);
+	player->SetObstacleInfo(&obstacle);
+	player->SetObstacleCountInfo(obstacleFileInfo);
+	player->SetStageSize(stageSize);
+	player->Init();
+
+	// Minimap
+	minimap = new Minimap;
+	minimap->SetRoomInfo(&roomInfo);
+	minimap->SetStageSize(stageSize);
+	minimap->SetStartPointRow(currRow);
+	minimap->SetStartPointColumn(currColumn);
+	minimap->Init();
 
 	return S_OK;
 }
@@ -336,8 +338,21 @@ void Stage01Scene::Update()
 	// Player Update
 	player->SetCurrCloumn(currColumn);
 	player->SetCurrRow(currRow);
-	player->SetDoorInfo(&doorInfo);
+	//player->SetDoorInfo(&doorInfo);					// 업데이트에서 계속 해줘야 하는지??
+	//player->SetObstacleInfo(&obstacle);				// 업데이트에서 계속 해줘야 하는지??
 	player->Update();
+
+	// Obstacle Update									// 전부 돌면서 업데이트 시켜야 할까??		// 문제 발생! ! => 가끔씩 Bonfire의 업데이트가 되지 않는다.
+	for (size_t i = 0; i < obstacle.size(); ++i)
+	{
+		for (size_t j = 0; j < obstacle[i].size(); ++j)
+		{
+			for (int k = 0; k < obstacleFileInfo[i][j].count; ++k)
+			{
+				obstacle[i][j][k]->Update();
+			}
+		}
+	}
 
 	// Map Update
 	if (player->GetEnterNextDoor()[0])
@@ -395,18 +410,6 @@ void Stage01Scene::Update()
 		}
 		SelectMapImage();
 		player->SetEnterNextRightDoor(false);
-	}
-
-	// Obstacle Update
-	for (size_t i = 0; i < obstacle.size(); ++i)
-	{
-		for (size_t j = 0; j < obstacle[i].size(); ++j)
-		{
-			for (int k = 0; k < obstacleFileInfo[i][j].count; ++k)
-			{
-				obstacle[i][j][k]->Update();
-			}
-		}
 	}
 
 	// DoorEditing Update

@@ -10,13 +10,6 @@ class Player;
 class Stage01Scene : public Scene
 {
 private:
-	typedef struct tagObstacleFileInfo
-	{
-		string								index;					// roomType마다 파일의 이름을 기억
-		int									count = 0;				// roomType마다 obstacle의 개수를 기억
-	} OBSTACLE_FILE_INFO;
-
-private:
 	DoorEditing*							door = nullptr;
 	Image*									drawingAreaImg = nullptr;
 	Image*									infomationStartImg = nullptr;
@@ -45,7 +38,7 @@ private:
 
 	vector<vector<vector<Obstacle*>>>		obstacle;											// Obstacle
 	vector<vector<OBSTACLE_FILE_INFO>>		obstacleFileInfo;									// .obstacle 파일의 파일명과 파일 안에 들어있는 obstacle의 개수를 저장하는 이중 벡터
-	vector<vector<STORE_OBSTACLE_INFO>>		storeObstacle;
+	vector<vector<STORE_OBSTACLE_INFO>>		storeObstacle;										// Obstacle의 정보들을 저장하는 이중 벡터
 	int										obstacleMaxIndex[3] = { 1, 3, 18 };
 	int										roomTypeCount = 3;
 

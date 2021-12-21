@@ -108,7 +108,7 @@ void ImageManager::Init()
 	GET_SINGLETON_IMAGE->AddImage("Image/Obstacle/Obstacle.bmp", 483, 483, 3, 3, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Obstacle/Slider.bmp", 278, 139, 2, 1, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Obstacle/SpiderWeb.bmp", 75, 78, 1, 1, true, MAGENTA);
-	GET_SINGLETON_IMAGE->AddImage("Image/Obstacle/Stone.bmp", 202, 107, 2, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Obstacle/Stone.bmp", 101, 107, 1, 1, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Obstacle/Thorn.bmp", 80, 80, 1, 1, true, MAGENTA);
 	#pragma endregion
 #pragma region Monster

@@ -241,3 +241,10 @@ typedef struct tagStoreSampleInfo
 	ObstacleTypes				sampleType = ObstacleTypes::NONE;
 	POINTFLOAT					pos = {};
 } STORE_OBSTACLE_INFO;
+
+// StageScene
+typedef struct tagObstacleFileInfo
+{
+	string								index;					// roomType마다 파일의 이름을 기억
+	int									count = 0;				// roomType마다 obstacle의 개수를 기억
+} OBSTACLE_FILE_INFO;
