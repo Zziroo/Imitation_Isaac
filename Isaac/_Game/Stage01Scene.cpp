@@ -202,20 +202,20 @@ HRESULT Stage01Scene::Init()
 		}
 	}
 
-	// 저장되어있는 파일을 Load할 이중 벡터의 Size 초기화
+	// 저장되어있는 파일을 Load할 벡터의 Size 초기화
 	storeObstacle.resize(roomTypeCount);
 
-	// Stage에 Obstacle 생성
-	obstacle.resize(stageSize);
-	for (size_t i = 0; i < obstacle.size(); ++i)
-	{
-		obstacle[i].resize(stageSize);
-		for (size_t j = 0; j < obstacle[i].size(); ++j)
-		{
-			// 문제 발생! ! => 현재 파일 안의 정보가 이상해 pos, type값을 정확히 가져오지 못한다.
-			LoadObstacle(i, j, obstacleFileInfo[i][j].index, obstacleFileInfo[i][j].count);
-		}
-	}
+	//// Stage에 Obstacle 생성
+	//obstacle.resize(stageSize);
+	//for (size_t i = 0; i < obstacle.size(); ++i)
+	//{
+	//	obstacle[i].resize(stageSize);
+	//	for (size_t j = 0; j < obstacle[i].size(); ++j)
+	//	{
+	//		// 문제 발생! ! => 현재 파일 안의 정보가 이상해 pos, type값을 정확히 가져오지 못한다.
+	//		LoadObstacle(i, j, obstacleFileInfo[i][j].index, obstacleFileInfo[i][j].count);
+	//	}
+	//}
 
 #ifdef _DEBUG ObstacleCount
 	cout << "obstacleFileInfo.index\n";
@@ -517,6 +517,7 @@ void Stage01Scene::LoadObstacle(int row, int column, string loadObstacleFileName
 
 	if (loadFileName.substr(5, 1) == "C")
 	{
+		storeObstacle[0].resize(obstacleCount);
 		if(ReadFile(hFile, &storeObstacle[0], mapLoadFileInfo, &readByte, NULL) == false)
 		{
 			MessageBox(g_hWnd, "storeObstacle[0] 맵 데이터 로드에 실패! !", "에러", MB_OK);
@@ -524,6 +525,7 @@ void Stage01Scene::LoadObstacle(int row, int column, string loadObstacleFileName
 	}
 	if (loadFileName.substr(5, 1) == "I")
 	{
+		storeObstacle[1].resize(obstacleCount);
 		if (ReadFile(hFile, &storeObstacle[1], mapLoadFileInfo, &readByte, NULL) == false)
 		{
 			MessageBox(g_hWnd, "storeObstacle[1] 맵 데이터 로드에 실패! !", "에러", MB_OK);
@@ -531,6 +533,7 @@ void Stage01Scene::LoadObstacle(int row, int column, string loadObstacleFileName
 	}
 	if (loadFileName.substr(5, 1) == "N")
 	{
+		storeObstacle[2].resize(obstacleCount);
 		if (ReadFile(hFile, &storeObstacle[2], mapLoadFileInfo, &readByte, NULL) == false)
 		{
 			MessageBox(g_hWnd, "storeObstacle[2] 맵 데이터 로드에 실패! !", "에러", MB_OK);
@@ -548,6 +551,8 @@ void Stage01Scene::LoadObstacle(int row, int column, string loadObstacleFileName
 			obstacle[row][column][i]->SetObstacleType(storeObstacle[0][i].sampleType);
 			obstacle[row][column][i]->Init();
 		}
+
+		storeObstacle[0].clear();
 	}
 	if (loadFileName.substr(5, 1) == "I")
 	{
@@ -558,6 +563,8 @@ void Stage01Scene::LoadObstacle(int row, int column, string loadObstacleFileName
 			obstacle[row][column][i]->SetObstacleType(storeObstacle[1][i].sampleType);
 			obstacle[row][column][i]->Init();
 		}
+
+		storeObstacle[1].clear();
 	}
 	if (loadFileName.substr(5, 1) == "N")
 	{
@@ -568,6 +575,8 @@ void Stage01Scene::LoadObstacle(int row, int column, string loadObstacleFileName
 			obstacle[row][column][i]->SetObstacleType(storeObstacle[2][i].sampleType);
 			obstacle[row][column][i]->Init();
 		}
+
+		storeObstacle[2].clear();
 	}
 }
 
