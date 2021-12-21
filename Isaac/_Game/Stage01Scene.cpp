@@ -205,17 +205,17 @@ HRESULT Stage01Scene::Init()
 	// 저장되어있는 파일을 Load할 벡터의 Size 초기화
 	storeObstacle.resize(roomTypeCount);
 
-	//// Stage에 Obstacle 생성
-	//obstacle.resize(stageSize);
-	//for (size_t i = 0; i < obstacle.size(); ++i)
-	//{
-	//	obstacle[i].resize(stageSize);
-	//	for (size_t j = 0; j < obstacle[i].size(); ++j)
-	//	{
-	//		// 문제 발생! ! => 현재 파일 안의 정보가 이상해 pos, type값을 정확히 가져오지 못한다.
-	//		LoadObstacle(i, j, obstacleFileInfo[i][j].index, obstacleFileInfo[i][j].count);
-	//	}
-	//}
+	// Stage에 Obstacle 생성
+	obstacle.resize(stageSize);
+	for (size_t i = 0; i < obstacle.size(); ++i)
+	{
+		obstacle[i].resize(stageSize);
+		for (size_t j = 0; j < obstacle[i].size(); ++j)
+		{
+			// 문제 발생! ! => 현재 파일 안의 정보가 이상해 pos, type값을 정확히 가져오지 못한다.
+			LoadObstacle(i, j, obstacleFileInfo[i][j].index, obstacleFileInfo[i][j].count);
+		}
+	}
 
 #ifdef _DEBUG ObstacleCount
 	cout << "obstacleFileInfo.index\n";
