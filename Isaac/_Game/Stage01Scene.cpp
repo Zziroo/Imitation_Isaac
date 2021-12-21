@@ -202,21 +202,6 @@ HRESULT Stage01Scene::Init()
 		}
 	}
 
-	// 저장되어있는 파일을 Load할 벡터의 Size 초기화
-	storeObstacle.resize(roomTypeCount);
-
-	// Stage에 Obstacle 생성
-	obstacle.resize(stageSize);
-	for (size_t i = 0; i < obstacle.size(); ++i)
-	{
-		obstacle[i].resize(stageSize);
-		for (size_t j = 0; j < obstacle[i].size(); ++j)
-		{
-			// 문제 발생! ! => 현재 파일 안의 정보가 이상해 pos, type값을 정확히 가져오지 못한다.
-			LoadObstacle(i, j, obstacleFileInfo[i][j].index, obstacleFileInfo[i][j].count);
-		}
-	}
-
 #ifdef _DEBUG ObstacleCount
 	cout << "obstacleFileInfo.index\n";
 	for (size_t i = 0; i < obstacleFileInfo.size(); ++i)
@@ -245,6 +230,21 @@ HRESULT Stage01Scene::Init()
 	}
 	cout << "\n";
 #endif
+
+	// 저장되어있는 파일을 Load할 벡터의 Size 초기화
+	storeObstacle.resize(roomTypeCount);
+
+	// Stage에 Obstacle 생성
+	obstacle.resize(stageSize);
+	for (size_t i = 0; i < obstacle.size(); ++i)
+	{
+		obstacle[i].resize(stageSize);
+		for (size_t j = 0; j < obstacle[i].size(); ++j)
+		{
+			// 문제 발생! ! => 현재 파일 안의 정보가 이상해 pos, type값을 정확히 가져오지 못한다.
+			LoadObstacle(i, j, obstacleFileInfo[i][j].index, obstacleFileInfo[i][j].count);
+		}
+	}
 
 	return S_OK;
 }
@@ -518,25 +518,34 @@ void Stage01Scene::LoadObstacle(int row, int column, string loadObstacleFileName
 	if (loadFileName.substr(5, 1) == "C")
 	{
 		storeObstacle[0].resize(obstacleCount);
-		if(ReadFile(hFile, &storeObstacle[0], mapLoadFileInfo, &readByte, NULL) == false)
+		for (size_t i = 0; i < obstacleCount; ++i)
 		{
-			MessageBox(g_hWnd, "storeObstacle[0] 맵 데이터 로드에 실패! !", "에러", MB_OK);
+			if (ReadFile(hFile, &storeObstacle[0][i], sizeof(tagStoreSampleInfo), &readByte, NULL) == false)
+			{
+				MessageBox(g_hWnd, "storeObstacle[0] Obstacle 데이터 로드에 실패! !", "에러", MB_OK);
+			}
 		}
 	}
 	if (loadFileName.substr(5, 1) == "I")
 	{
 		storeObstacle[1].resize(obstacleCount);
-		if (ReadFile(hFile, &storeObstacle[1], mapLoadFileInfo, &readByte, NULL) == false)
+		for (size_t i = 0; i < obstacleCount; ++i)
 		{
-			MessageBox(g_hWnd, "storeObstacle[1] 맵 데이터 로드에 실패! !", "에러", MB_OK);
+			if (ReadFile(hFile, &storeObstacle[1][i], sizeof(tagStoreSampleInfo), &readByte, NULL) == false)
+			{
+				MessageBox(g_hWnd, "storeObstacle[1] Obstacle 데이터 로드에 실패! !", "에러", MB_OK);
+			}
 		}
 	}
 	if (loadFileName.substr(5, 1) == "N")
 	{
 		storeObstacle[2].resize(obstacleCount);
-		if (ReadFile(hFile, &storeObstacle[2], mapLoadFileInfo, &readByte, NULL) == false)
+		for (size_t i = 0; i < obstacleCount; ++i)
 		{
-			MessageBox(g_hWnd, "storeObstacle[2] 맵 데이터 로드에 실패! !", "에러", MB_OK);
+			if (ReadFile(hFile, &storeObstacle[2][i], sizeof(tagStoreSampleInfo), &readByte, NULL) == false)
+			{
+				MessageBox(g_hWnd, "storeObstacle[2] Obstacle 데이터 로드에 실패! !", "에러", MB_OK);
+			}
 		}
 	}
 
@@ -578,6 +587,8 @@ void Stage01Scene::LoadObstacle(int row, int column, string loadObstacleFileName
 
 		storeObstacle[2].clear();
 	}
+
+	CloseHandle(hFile);
 }
 
 void Stage01Scene::NamingObstacleInfo(int row, int column, string loadObstacleFileName, int obstacleIndex)
@@ -632,23 +643,23 @@ void Stage01Scene::NamingObstacleInfo(int row, int column, string loadObstacleFi
 	case 2:
 		switch (index)
 		{
-		case 9: case 12:
-			count = 2;
+		case 16: case 17:
+			count = 0;
 			break;
-		case 0: case 1: case 2: case 5: case 6: case 7: case 8: case 10: case 11:
+		case 12: case 13: case 14:
+			count = 1;
+			break;
+		case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7: case 9:
 			count = 4;
 			break;
-		case 14:
-			count = 6;
+		case 10: case 15:
+			count = 5;
 			break;
-		case 13:
-			count = 8;
-			break;
-		case 3:
-			count = 19;
-			break;
-		case 4:
+		case 8:
 			count = 20;
+			break;
+		case 11:
+			count = 24;
 			break;
 		default:
 			break;

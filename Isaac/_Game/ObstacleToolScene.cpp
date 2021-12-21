@@ -438,69 +438,59 @@ void ObstacleToolScene::InitializeStoreSpace()
 
 void ObstacleToolScene::Load(int roomType, int loadIndex)
 {
-	string loadFileName = "Save/";
+	char loadFileName[MAX_PATH];
+	char roomTypeName[32];
 	int obstacleCount = 0;
 	switch (roomType)
 	{
 	case 0:
-		loadFileName += "CURSE";
+		strcpy_s(roomTypeName, "CURSE");
 		obstacleCount = (INT)storeObstacle[0].size();
 		break;
 	case 1:
-		loadFileName += "ITEM";
+		strcpy_s(roomTypeName, "ITEM");
 		obstacleCount = (INT)storeObstacle[1].size();
 		break;
 	case 2:
-		loadFileName += "NORMAL";
+		strcpy_s(roomTypeName, "NORMAL");
 		obstacleCount = (INT)storeObstacle[2].size();
 		break;
 	default:
 		break;
 	}
-	if (loadIndex < 10)
-	{
-		loadFileName += "0";
-	}
-	loadFileName += to_string(loadIndex) + "_";
-	if (obstacleCount < 10)
-	{
-		loadFileName += "0";
-	}
-	loadFileName += to_string(obstacleCount) + ".obstacle";
 
-	HANDLE hFile = CreateFile(loadFileName.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	sprintf_s(loadFileName, "Save/%s%02d_%02d.obstacle", roomTypeName, loadIndex, obstacleCount);
+
+	HANDLE hFile = CreateFile(loadFileName, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
 	if (hFile == INVALID_HANDLE_VALUE)
 	{
 		cout << GetLastError();
 	}
 
-	DWORD mapLoadFileInfo = sizeof(tagStoreSampleInfo) * obstacleCount;
+	DWORD obstacleLoadFileInfo = sizeof(tagStoreSampleInfo) * obstacleCount;
 
 	DWORD readByte = 0;
 
-	switch (roomType)
+	for (size_t i = 0; i < obstacleCount; ++i)
 	{
-	case 0:
-		if (ReadFile(hFile, &storeObstacle[0], mapLoadFileInfo, &readByte, NULL) == false)
+		if (ReadFile(hFile, &storeObstacle[roomType][i], sizeof(tagStoreSampleInfo), &readByte, NULL) == false)
 		{
-			MessageBox(g_hWnd, "storeObstacle[0] 맵 데이터 로드에 실패! !", "에러", MB_OK);
+			switch (roomType)
+			{
+			case 0:
+				MessageBox(g_hWnd, "storeObstacle[0] Obstacle 데이터 로드에 실패! !", "에러", MB_OK);
+				break;
+			case 1:
+				MessageBox(g_hWnd, "storeObstacle[1] Obstacle 데이터 로드에 실패! !", "에러", MB_OK);
+				break;
+			case 2:
+				MessageBox(g_hWnd, "storeObstacle[2] Obstacle 데이터 로드에 실패! !", "에러", MB_OK);
+				break;
+			default:
+				break;
+			}
 		}
-		break;
-	case 1:
-		if (ReadFile(hFile, &storeObstacle[1], mapLoadFileInfo, &readByte, NULL) == false)
-		{
-			MessageBox(g_hWnd, "storeObstacle[1] 맵 데이터 로드에 실패! !", "에러", MB_OK);
-		}
-		break;
-	case 2:
-		if (ReadFile(hFile, &storeObstacle[2], mapLoadFileInfo, &readByte, NULL) == false)
-		{
-			MessageBox(g_hWnd, "storeObstacle[2] 맵 데이터 로드에 실패! !", "에러", MB_OK);
-		}
-		break;
-	default:
-		break;
 	}
 
 	if (loadObstacle.size() == 0)
@@ -545,60 +535,48 @@ void ObstacleToolScene::Load(int roomType, int loadIndex)
 
 void ObstacleToolScene::Save(int roomType, int saveIndex, int obstacleCount)
 {
-	string saveFileName = "Save/";
+	char saveFileName[MAX_PATH];
+	char roomTypeName[32];
+
 	switch (roomType)
 	{
 	case 0:
-		saveFileName += "CURSE";
+		strcpy_s(roomTypeName, "CURSE");
 		break;
 	case 1:
-		saveFileName += "ITEM";
+		strcpy_s(roomTypeName, "ITEM");
 		break;
 	case 2:
-		saveFileName += "NORMAL";
-		break;
-	default:
+		strcpy_s(roomTypeName, "NORMAL");
 		break;
 	}
-	if (saveIndex < 10)
-	{
-		saveFileName += "0";
-	}
-	saveFileName += to_string(saveIndex) + "_";
-	if (obstacleCount < 10)
-	{
-		saveFileName += "0";
-	}
-	saveFileName += to_string(obstacleCount) + ".obstacle";
+	sprintf_s(saveFileName, "Save/%s%02d_%02d.obstacle", roomTypeName, saveIndex, obstacleCount);
 
-	HANDLE hFile = CreateFile(saveFileName.c_str(), GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	HANDLE hFile = CreateFile(saveFileName, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
 	DWORD byteSize = sizeof(tagStoreSampleInfo) * obstacleCount;
 
 	DWORD writtenByte = 0;
 
-	switch (roomType)
+	for (size_t i = 0; i < obstacleCount; ++i)
 	{
-	case 0:
-		if (WriteFile(hFile, &storeObstacle[0], byteSize, &writtenByte, NULL) == false)
+		if (WriteFile(hFile, &storeObstacle[roomType][i], sizeof(tagStoreSampleInfo), &writtenByte, NULL) == false)
 		{
-			MessageBox(g_hWnd, "storeObstacle[0] 맵 데이터 저장에 실패! !", "에러", MB_OK);
+			switch (roomType)
+			{
+			case 0:
+				MessageBox(g_hWnd, "storeObstacle[0] Obstacle 데이터 저장에 실패! !", "에러", MB_OK);
+				break;
+			case 1:
+				MessageBox(g_hWnd, "storeObstacle[1] Obstacle 데이터 저장에 실패! !", "에러", MB_OK);
+				break;
+			case 2:
+				MessageBox(g_hWnd, "storeObstacle[2] Obstacle 데이터 저장에 실패! !", "에러", MB_OK);
+				break;
+			default:
+				break;
+			}
 		}
-		break;
-	case 1:
-		if (WriteFile(hFile, &storeObstacle[1], byteSize, &writtenByte, NULL) == false)
-		{
-			MessageBox(g_hWnd, "storeObstacle[1] 맵 데이터 저장에 실패! !", "에러", MB_OK);
-		}
-		break;
-	case 2:
-		if (WriteFile(hFile, &storeObstacle[2], byteSize, &writtenByte, NULL) == false)
-		{
-			MessageBox(g_hWnd, "storeObstacle[2] 맵 데이터 저장에 실패! !", "에러", MB_OK);
-		}
-		break;
-	default:
-		break;
 	}
 
 	CloseHandle(hFile);

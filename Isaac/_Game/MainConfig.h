@@ -6,6 +6,7 @@
 #include <list>
 #include <map>
 #include <random>
+#include <stdio.h>
 #include <string>
 #include <vector>
 #include <Windows.h>
