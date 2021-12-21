@@ -37,18 +37,18 @@ private:
 	ButtonInfo			itemRoomObstacleBtn = {};		// Obstacle/Item
 	ButtonInfo			normalRoomObstacleBtn = {};		// Obstacle/Normal
 
-	Image*				letter_Basement = nullptr;		// Basement
-	Image*				letter_Cave = nullptr;			// Cave
-	Image*				letter_Cellar = nullptr;		// Cellar
-	Image*				letter_Curse = nullptr;			// Curse
-	Image*				letter_Depth = nullptr;			// Depth
-	Image*				letter_Enemy = nullptr;			// Enemy
-	Image*				letter_Exit = nullptr;			// Exit
-	Image*				letter_Item = nullptr;			// Item
-	Image*				letter_Normal = nullptr;		// Normal
-	Image*				letter_Obstacle = nullptr;		// Object
-	Image*				letter_Shop = nullptr;			// Shop
-	Image*				letter_Tile = nullptr;			// Tile
+	Image*				basementLetter = nullptr;		// Basement
+	Image*				caveLetter = nullptr;			// Cave
+	Image*				cellarLetter = nullptr;			// Cellar
+	Image*				curseLetter = nullptr;			// Curse
+	Image*				depthLetter = nullptr;			// Depth
+	Image*				enemyLetter = nullptr;			// Enemy
+	Image*				exitLetter = nullptr;			// Exit
+	Image*				itemLetter = nullptr;			// Item
+	Image*				normalLetter = nullptr;			// Normal
+	Image*				obstacleLetter = nullptr;		// Object
+	Image*				shopLetter = nullptr;			// Shop
+	Image*				tileLetter = nullptr;			// Tile
 
 	int					tileIndex = 0;
 	char				text[64] = {};					// Debuging
@@ -60,8 +60,8 @@ public:
 	virtual void		Render(HDC hdc) override;
 	virtual void		OnDebug(HDC hdc) override;
 
-	void				DeclareButtonInfo(ButtonInfo* btnInfo, int width, int height);
 	void				ClikedButton(HDC hdc, ButtonInfo* btnInfo);
+	void				DeclareButtonInfo(ButtonInfo* btnInfo, int width, int height);
 	void				RenderDownButton(HDC hdc, ButtonInfo* btnInfo);
 	void				RenderNormalButton(HDC hdc, ButtonInfo* btnInfo);
 	void				RenderUpButton(HDC hdc, ButtonInfo* btnInfo);

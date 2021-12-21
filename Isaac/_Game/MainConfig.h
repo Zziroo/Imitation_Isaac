@@ -80,8 +80,11 @@ enum class PlayerStates { IDLE, WALK, ATTACK, HURT, ITEMPICKUP, JUMP, STAT };
 
 #define ADJUST_SIZE_05			5
 #define ADJUST_SIZE_09			9
+#define ADJUST_SIZE_13			13
 #define ADJUST_SIZE_14			14
+#define ADJUST_SIZE_15			15
 #define ADJUST_SIZE_30			30
+#define ADJUST_SIZE_40			40
 
 #define PLAYER_BODY_POS_X		PLAYER_HEAD_POS_X
 #define PLAYER_BODY_POS_Y		PLAYER_HEAD_POS_Y + 42.5f
@@ -215,13 +218,20 @@ enum class DoorStates { OPENED, CLOSED, LOCKED, NONE };
 typedef struct tagDoorInfo
 {
 	Image* img = nullptr;
-	DoorStates						doorState = DoorStates::NONE;
-	ObjectDir						doorDir = ObjectDir::NONE;
-	RoomTypes						roomType = RoomTypes::NONE;
+	DoorStates					doorState = DoorStates::NONE;
+	ObjectDir					doorDir = ObjectDir::NONE;
+	RoomTypes					roomType = RoomTypes::NONE;
 
-	POINTFLOAT						pos = {};
-	RECT							shape = {};
+	POINTFLOAT					pos = {};
+	RECT						shape = {};
 } DOOR_INFO;
+
+#define DOOR_UPSTATE			0
+#define DOOR_DOWNSTATE			1
+#define	DOOR_LEFTSTATE			2
+#define	DOOR_RIGHTSTATE			3
+
+#define OUT_OF_STAGE			0
 
 // Obstacle
 enum class ObstacleTypes { BONFIRE, BRICK, DDONG, ITEMSTAND, JAR, SLIDER, SPIDERWEB, STONE, THORN, NONE };
@@ -229,6 +239,6 @@ enum class ObstacleTypes { BONFIRE, BRICK, DDONG, ITEMSTAND, JAR, SLIDER, SPIDER
 // ObstacleTool
 typedef struct tagStoreSampleInfo
 {
-	ObstacleTypes					sampleType = ObstacleTypes::NONE;
-	POINTFLOAT						pos = {};
+	ObstacleTypes				sampleType = ObstacleTypes::NONE;
+	POINTFLOAT					pos = {};
 } STORE_OBSTACLE_INFO;

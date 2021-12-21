@@ -187,17 +187,17 @@ HRESULT Stage01Scene::Init()
 			if (roomInfo[i][j] == RoomTypes::CURSE)
 			{
 				// string 저장
-				NamingObstacleInfo(i, j, "CURSE", 0);
+				NamingObstacleInfo((INT)i, (INT)j, "CURSE", 0);
 			}
 			if (roomInfo[i][j] == RoomTypes::ITEM)
 			{
 				// string 저장
-				NamingObstacleInfo(i, j, "ITEM", 1);
+				NamingObstacleInfo((INT)i, (INT)j, "ITEM", 1);
 			}
 			if (roomInfo[i][j] == RoomTypes::NORMAL)
 			{
 				// string 저장
-				NamingObstacleInfo(i, j, "NORMAL", 2);
+				NamingObstacleInfo((INT)i, (INT)j, "NORMAL", 2);
 			}
 		}
 	}
@@ -242,7 +242,7 @@ HRESULT Stage01Scene::Init()
 		for (size_t j = 0; j < obstacle[i].size(); ++j)
 		{
 			// 문제 발생! ! => 현재 파일 안의 정보가 이상해 pos, type값을 정확히 가져오지 못한다.
-			LoadObstacle(i, j, obstacleFileInfo[i][j].index, obstacleFileInfo[i][j].count);
+			LoadObstacle((INT)i, (INT)j, obstacleFileInfo[i][j].index, obstacleFileInfo[i][j].count);
 		}
 	}
 

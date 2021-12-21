@@ -5,38 +5,35 @@
 
 void Button::Init()
 {
+	basementTileBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index.bmp");
+	caveTileBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index.bmp");
+	cellarTileBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index.bmp");
 	closeBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Close.bmp");
+	curseRoomObstacleBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index.bmp");
+	depthTileBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index.bmp");
 	enemyBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index.bmp");
+	exitBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index.bmp");
+	itemRoomObstacleBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index.bmp");
 	loadBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Load.bmp");
 	nextBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Next.bmp");
+	normalRoomObstacleBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index.bmp");
 	obstacleBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index.bmp");
 	prevBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Prev.bmp");
 	sampleTileBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index.bmp");
 	saveBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Save.bmp");
 
-	basementTileBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index.bmp");
-	caveTileBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index.bmp");
-	cellarTileBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index.bmp");
-	depthTileBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index.bmp");
-	exitBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index.bmp");
-
-	curseRoomObstacleBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index.bmp");
-	itemRoomObstacleBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index.bmp");
-	normalRoomObstacleBtn.image = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/UI/Index.bmp");
-
-	letter_Basement = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Letter/Basement.bmp");
-	letter_Cave = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Letter/Cave.bmp");
-	letter_Cellar = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Letter/Cellar.bmp");
-	letter_Depth = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Letter/Depth.bmp");
-	letter_Enemy = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Letter/Enemy.bmp");
-	letter_Exit = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Letter/Exit.bmp");
-	letter_Obstacle = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Letter/Obstacle.bmp");
-	letter_Shop = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Letter/Shop.bmp");
-	letter_Tile = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Letter/Tile.bmp");
-
-	letter_Curse = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Letter/Curse.bmp");
-	letter_Item = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Letter/Item.bmp");
-	letter_Normal = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Letter/Normal.bmp");
+	basementLetter = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Letter/Basement.bmp");
+	caveLetter = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Letter/Cave.bmp");
+	cellarLetter = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Letter/Cellar.bmp");
+	curseLetter = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Letter/Curse.bmp");
+	depthLetter = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Letter/Depth.bmp");
+	enemyLetter = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Letter/Enemy.bmp");
+	exitLetter = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Letter/Exit.bmp");
+	itemLetter = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Letter/Item.bmp");
+	normalLetter = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Letter/Normal.bmp");
+	obstacleLetter = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Letter/Obstacle.bmp");
+	shopLetter = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Letter/Shop.bmp");
+	tileLetter = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Letter/Tile.bmp");
 
 	DeclareButtonInfo(&exitBtn, 153, 40);
 	DeclareButtonInfo(&loadBtn, 306, 40);
@@ -605,10 +602,10 @@ void Button::Render(HDC hdc)
 		RenderNormalButton(hdc, &prevBtn);
 		RenderNormalButton(hdc, &nextBtn);
 
-		ShowLetter(hdc, letter_Basement, &basementTileBtn);
-		ShowLetter(hdc, letter_Cave, &caveTileBtn);
-		ShowLetter(hdc, letter_Cellar, &cellarTileBtn);
-		ShowLetter(hdc, letter_Depth, &depthTileBtn);
+		ShowLetter(hdc, basementLetter, &basementTileBtn);
+		ShowLetter(hdc, caveLetter, &caveTileBtn);
+		ShowLetter(hdc, cellarLetter, &cellarTileBtn);
+		ShowLetter(hdc, depthLetter, &depthTileBtn);
 	}
 
 	if (obstacleBtn.clicked)
@@ -618,10 +615,10 @@ void Button::Render(HDC hdc)
 		switch (curseRoomObstacleBtn.buttonState)
 		{
 		case ButtonStates::NONE:	case ButtonStates::UP:
-			curseRoomObstacleBtn.image->EnlargeSampleTile(hdc, curseRoomObstacleBtn.pos.x - 70, curseRoomObstacleBtn.pos.y - 20, 0, 0, 0.68f);
+			curseRoomObstacleBtn.image->EnlargeSampleTile(hdc, (INT)(curseRoomObstacleBtn.pos.x - 70), (INT)(curseRoomObstacleBtn.pos.y - 20), 0, 0, 0.68f);
 			break;
 		case ButtonStates::DOWN:
-			curseRoomObstacleBtn.image->EnlargeSampleTile(hdc, curseRoomObstacleBtn.pos.x - 70, curseRoomObstacleBtn.pos.y - 20, 0, 1, 0.68f);
+			curseRoomObstacleBtn.image->EnlargeSampleTile(hdc, (INT)(curseRoomObstacleBtn.pos.x - 70), (INT)(curseRoomObstacleBtn.pos.y - 20), 0, 1, 0.68f);
 			break;
 		default:
 			break;
@@ -630,10 +627,10 @@ void Button::Render(HDC hdc)
 		switch (itemRoomObstacleBtn.buttonState)
 		{
 		case ButtonStates::NONE:	case ButtonStates::UP:
-			itemRoomObstacleBtn.image->EnlargeSampleTile(hdc, itemRoomObstacleBtn.pos.x - 70, itemRoomObstacleBtn.pos.y - 20, 0, 0, 0.68f);
+			itemRoomObstacleBtn.image->EnlargeSampleTile(hdc, (INT)(itemRoomObstacleBtn.pos.x - 70), (INT)(itemRoomObstacleBtn.pos.y - 20), 0, 0, 0.68f);
 			break;
 		case ButtonStates::DOWN:
-			itemRoomObstacleBtn.image->EnlargeSampleTile(hdc, itemRoomObstacleBtn.pos.x - 70, itemRoomObstacleBtn.pos.y - 20, 0, 1, 0.68f);
+			itemRoomObstacleBtn.image->EnlargeSampleTile(hdc, (INT)(itemRoomObstacleBtn.pos.x - 70), (INT)(itemRoomObstacleBtn.pos.y - 20), 0, 1, 0.68f);
 			break;
 		default:
 			break;
@@ -641,23 +638,23 @@ void Button::Render(HDC hdc)
 		switch (normalRoomObstacleBtn.buttonState)
 		{
 		case ButtonStates::NONE:	case ButtonStates::UP:
-			normalRoomObstacleBtn.image->EnlargeSampleTile(hdc, normalRoomObstacleBtn.pos.x - 70, normalRoomObstacleBtn.pos.y - 20, 0, 0, 0.68f);
+			normalRoomObstacleBtn.image->EnlargeSampleTile(hdc, (INT)(normalRoomObstacleBtn.pos.x - 70), (INT)(normalRoomObstacleBtn.pos.y - 20), 0, 0, 0.68f);
 			break;
 		case ButtonStates::DOWN:
-			normalRoomObstacleBtn.image->EnlargeSampleTile(hdc, normalRoomObstacleBtn.pos.x - 70, normalRoomObstacleBtn.pos.y - 20, 0, 1, 0.68f);
+			normalRoomObstacleBtn.image->EnlargeSampleTile(hdc, (INT)(normalRoomObstacleBtn.pos.x - 70), (INT)(normalRoomObstacleBtn.pos.y - 20), 0, 1, 0.68f);
 			break;
 		default:
 			break;
 		}
-		ShowLetter(hdc, letter_Curse, &curseRoomObstacleBtn);
-		ShowLetter(hdc, letter_Item, &itemRoomObstacleBtn);
-		ShowLetter(hdc, letter_Normal, &normalRoomObstacleBtn);
+		ShowLetter(hdc, curseLetter, &curseRoomObstacleBtn);
+		ShowLetter(hdc, itemLetter, &itemRoomObstacleBtn);
+		ShowLetter(hdc, normalLetter, &normalRoomObstacleBtn);
 	}
 
-	ShowLetter(hdc, letter_Enemy, &enemyBtn);
-	ShowLetter(hdc, letter_Exit, &exitBtn);
-	ShowLetter(hdc, letter_Obstacle, &obstacleBtn);
-	ShowLetter(hdc, letter_Tile, &sampleTileBtn);
+	ShowLetter(hdc, enemyLetter, &enemyBtn);
+	ShowLetter(hdc, exitLetter, &exitBtn);
+	ShowLetter(hdc, obstacleLetter, &obstacleBtn);
+	ShowLetter(hdc, tileLetter, &sampleTileBtn);
 
 	GameObject::Render(hdc);
 }
@@ -720,16 +717,6 @@ void Button::OnDebug(HDC hdc)
 	}
 }
 
-void Button::DeclareButtonInfo(ButtonInfo* btnInfo, int width, int height)
-{
-	btnInfo->pos.x = (FLOAT)(TILEMAP_SIZE_X - width);
-	btnInfo->pos.y = (FLOAT)(TILEMAP_SIZE_Y - height);
-	btnInfo->shape.left = (LONG)(btnInfo->pos.x - (btnInfo->image->GetFrameWidth() * DEVIDE_HALF));
-	btnInfo->shape.top = (LONG)(btnInfo->pos.y - (btnInfo->image->GetFrameHeight() * DEVIDE_HALF));
-	btnInfo->shape.right = (LONG)(btnInfo->pos.x + (btnInfo->image->GetFrameWidth() * DEVIDE_HALF));
-	btnInfo->shape.bottom = (LONG)(btnInfo->pos.y + (btnInfo->image->GetFrameHeight() * DEVIDE_HALF));
-}
-
 void Button::ClikedButton(HDC hdc, ButtonInfo* btnInfo)
 {
 	switch (btnInfo->buttonState)
@@ -743,6 +730,16 @@ void Button::ClikedButton(HDC hdc, ButtonInfo* btnInfo)
 	default:
 		break;
 	}
+}
+
+void Button::DeclareButtonInfo(ButtonInfo* btnInfo, int width, int height)
+{
+	btnInfo->pos.x = (FLOAT)(TILEMAP_SIZE_X - width);
+	btnInfo->pos.y = (FLOAT)(TILEMAP_SIZE_Y - height);
+	btnInfo->shape.left = (LONG)(btnInfo->pos.x - (btnInfo->image->GetFrameWidth() * DEVIDE_HALF));
+	btnInfo->shape.top = (LONG)(btnInfo->pos.y - (btnInfo->image->GetFrameHeight() * DEVIDE_HALF));
+	btnInfo->shape.right = (LONG)(btnInfo->pos.x + (btnInfo->image->GetFrameWidth() * DEVIDE_HALF));
+	btnInfo->shape.bottom = (LONG)(btnInfo->pos.y + (btnInfo->image->GetFrameHeight() * DEVIDE_HALF));
 }
 
 void Button::RenderDownButton(HDC hdc, ButtonInfo* btnInfo)

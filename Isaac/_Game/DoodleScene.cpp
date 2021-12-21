@@ -92,7 +92,7 @@ void DoodleScene::Render(HDC hdc)
 	SelectObject(hdc, oldBrush);
 	DeleteObject(myBrush);
 
-	samplePlayerImg->Render(hdc, pos.x, pos.y);
+	samplePlayerImg->Render(hdc, (INT)pos.x, (INT)pos.y);
 
 	myBrush = (HBRUSH)GetStockObject(NULL_BRUSH);
 	oldBrush = (HBRUSH)SelectObject(hdc, myBrush);

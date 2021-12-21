@@ -26,7 +26,6 @@
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="ImageManager.cpp" />
     <ClCompile Include="Input.cpp" />
-    <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="MapEditing.cpp" />
@@ -55,7 +54,6 @@
     <ClInclude Include="Image.h" />
     <ClInclude Include="ImageManager.h" />
     <ClInclude Include="Input.h" />
-    <ClInclude Include="KeyManager.h" />
     <ClInclude Include="MainConfig.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="MapEditing.h" />

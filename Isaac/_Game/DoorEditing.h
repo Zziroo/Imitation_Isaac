@@ -14,8 +14,8 @@ private:
 	vector<vector<bool>>						isTransitMap;			// 맵을 경유했는지 확인하기 위한 이중 벡터
 	vector<vector<string>>						stage01Index;			// Stage01의 Map 정보를 가져오는 이중 벡터
 
-	int											_stageSize = 0;
-	int											_startPoint = 0;
+	int											stageSize = 0;
+	int											startPoint = 0;
 	int											currLocatedRow = 0;
 	int											currLocatedColumn = 0;
 
@@ -39,8 +39,8 @@ public:
 	vector<vector<array<DOOR_INFO, 4>>>			GetDoorInfo() { return this->door; }
 	vector<vector<RoomTypes>>					GetRoomType() { return this->roomInfo; }
 	vector<vector<string>>						GetStage() { return this->stage01Index; }
-	int											GetStageSize() { return this->_stageSize; }
-	int											GetStartPoint() { return this->_startPoint; }
+	int											GetStageSize() { return this->stageSize; }
+	int											GetStartPoint() { return this->startPoint; }
 
 	void										SetLocatedRow(int row) { this->currLocatedRow = row; }
 	void										SetLocatedColumn(int column) { this->currLocatedColumn = column; }
