@@ -111,6 +111,13 @@ void ImageManager::Init()
 	GET_SINGLETON_IMAGE->AddImage("Image/Obstacle/Stone.bmp", 202, 107, 2, 1, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Obstacle/Thorn.bmp", 80, 80, 1, 1, true, MAGENTA);
 	#pragma endregion
+#pragma region Monster
+	GET_SINGLETON_IMAGE->AddImage("Image/Monster/Attack_Fly.bmp", 42, 128, 1, 4, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Monster/Fly.bmp", 42, 64, 1, 2, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Monster/Pooter_Attack.bmp", 128, 256, 2, 4, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Monster/Pooter_Dead.bmp", 128, 512, 2, 8, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Monster/Pooter_Idle.bmp", 128, 256, 2, 4, true, MAGENTA);
+#pragma endregion
 	#pragma region Unused
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/Sample_Image.bmp", 1280, 800);
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/UI/On_Off.bmp", 60, 60, 1, 2, true, MAGENTA);

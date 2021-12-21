@@ -2,6 +2,7 @@
 #include "DoodleScene.h"
 
 #include "Image.h"
+#include "NormalMonster.h"
 #include "Obstacle.h"
 
 HRESULT DoodleScene::Init()
@@ -27,6 +28,20 @@ HRESULT DoodleScene::Init()
 		obstacle[i]->Init();
 	}
 
+	for (int i = 0; i < 3; ++i)
+	{
+		normalMonster[i] = new NormalMonster;
+	}
+	normalMonster[0]->SetNormalMonsterType(NormalMonsterTypes::ATTACKFLY);
+	normalMonster[1]->SetNormalMonsterType(NormalMonsterTypes::FLY);
+	normalMonster[2]->SetNormalMonsterType(NormalMonsterTypes::POOTER);
+	for (int i = 0; i < 3; ++i)
+	{
+		normalMonster[i]->SetNormalMonsterPosX(250.0f + (i * 150));
+		normalMonster[i]->SetNormalMonsterPosY(300.0f);
+		normalMonster[i]->Init();
+	}
+
 	samplePlayerImg = GET_SINGLETON_IMAGE->FindImage("Image/Character/ItemPickUp.bmp");
 
 	return S_OK;
@@ -38,6 +53,11 @@ void DoodleScene::Release()
 	{
 		SAFE_RELEASE(obstacle[i]);
 	}
+
+	for (int i = 0; i < 3; ++i)
+	{
+		SAFE_RELEASE(normalMonster[i]);
+	}
 }
 
 void DoodleScene::Update()
@@ -45,6 +65,11 @@ void DoodleScene::Update()
 	for (int i = 0; i < 9; ++i)
 	{
 		obstacle[i]->Update();
+	}
+	
+	for (int i = 0; i < 3; ++i)
+	{
+		normalMonster[i]->Update();
 	}
 
 	Move();
@@ -59,6 +84,10 @@ void DoodleScene::Render(HDC hdc)
 	for (int i = 0; i < 9; ++i)
 	{
 		obstacle[i]->Render(hdc);
+	}
+	for (int i = 0; i < 3; ++i)
+	{
+		normalMonster[i]->Render(hdc);
 	}
 	SelectObject(hdc, oldBrush);
 	DeleteObject(myBrush);

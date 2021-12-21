@@ -3,12 +3,14 @@
 #include "Scene.h"
 
 class Image;
+class NormalMonster;
 class Obstacle;
 class DoodleScene : public Scene
 {
 private:
 	Image*					sampleObstacleImg = nullptr;
 	Image*					samplePlayerImg = nullptr;
+	NormalMonster*			normalMonster[3] = { nullptr };
 	Obstacle*				obstacle[9] = { nullptr };
 
 	POINTFLOAT				pos = { 640.0f, 250.0f };

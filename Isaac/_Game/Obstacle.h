@@ -28,9 +28,8 @@ public:
 	virtual void			Render(HDC hdc) override;
 	virtual void			OnDebug(HDC hdc) override;
 
-	void					SubstituteObstacleShape(float posX, float posY, float size, float adjustSizeLeft = 0.0f, float adjustSizeTop = 0.0f, float adjustSizeRight = 0.0f, float adjustSizeBottom = 0.0f);
+	void					DeginateObstacleShape(float posX, float posY, float size, float adjustSizeLeft = 0.0f, float adjustSizeTop = 0.0f, float adjustSizeRight = 0.0f, float adjustSizeBottom = 0.0f);
 
-	float					GetObjecMoveSpeed() {};		// 오브젝트들의 이동 속도를 느리게 하기 위해 받아와야할 값
 	ObstacleTypes			GetObstacleType() { return this->obstacleInfo.type; }
 
 	void					SetObstaclePos(POINTFLOAT pos) { this->pos = pos; }

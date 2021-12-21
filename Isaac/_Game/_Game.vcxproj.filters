@@ -171,6 +171,9 @@
     <ClCompile Include="ObstacleToolScene.cpp">
       <Filter>MainGame\Scene\MapTool</Filter>
     </ClCompile>
+    <ClCompile Include="NormalMonster.cpp">
+      <Filter>MainGame\GameObject\Enemy\Normal Monster</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainConfig.h">
@@ -253,6 +256,9 @@
     </ClInclude>
     <ClInclude Include="ObstacleToolScene.h">
       <Filter>MainGame\Scene\MapTool</Filter>
+    </ClInclude>
+    <ClInclude Include="NormalMonster.h">
+      <Filter>MainGame\GameObject\Enemy\Normal Monster</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
