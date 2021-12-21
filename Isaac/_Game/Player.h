@@ -45,20 +45,20 @@ private:
 	Image*									otherStateImg = nullptr;
 	WeaponManager*							weaponTear = nullptr;
 
-	vector<vector<array<DOOR_INFO, 4 >>>*	doorInfo = nullptr;												// 문의 정보
+	vector<vector<array<DOOR_INFO, 4 >>>*	doorInfo = nullptr;																			// 문의 정보
 
-	PlayerStates							playerState = PlayerStates::IDLE;								// 상태
-	RECT									colliderRect = {};												// 충돌 처리용
+	PlayerStates							playerState = PlayerStates::IDLE;															// 상태
+	RECT									colliderRect = {};																			// 충돌 처리용
 
 	array<bool, 4>							enterNextDoor = { false };
-	bool									isFire = false;													// 무기 발사
+	bool									isFire = false;																				// 무기 발사
 
 	char									text[64] = {};
 
-	int										_stageSize = 0;													// Stage Size
+	int										_stageSize = 0;																				// Stage Size
 	int										currColumn = 0;
 	int										currRow = 0;
-	int										fireDelay = 0;													// 무기 발사 지연
+	int										fireDelay = 0;																				// 무기 발사 지연
 
 public:
 	virtual void							Init() override;
@@ -68,22 +68,25 @@ public:
 	virtual void							OnDebug(HDC hdc) override;
 
 	void									ApplyAttackFrame(int attackFrame, int usuallyFrame);
-	void									ApplyBodyFrame(ObjectDir moveDir, int bodyFrameY);				// Body 프레임 변화
-	void									ApplyHeadFrame(ObjectDir moveDir, int headFrameX);				// Head 프레임 변화
-	void									ApplyHeadDir(ObjectDir moveDir, int attckFrame);				// Head 방향 변화
-	void									BlinkEye();														// 눈 깜빡임
-	void									ChangeAnimation();												// 애니메이션 변화
+	void									ApplyBodyFrame(ObjectDir moveDir, int bodyFrameY);											// Body 프레임 변화
+	void									ApplyHeadFrame(ObjectDir moveDir, int headFrameX);											// Head 프레임 변화
+	void									ApplyHeadDir(ObjectDir moveDir, int attckFrame);											// Head 방향 변화
+	void									BlinkEye();																					// 눈 깜빡임
+	float									CalculateSlope(RECT rc);																	// 기울기
+	void									ChangeAnimation();																			// 애니메이션 변화
 	void									ChangeAttackFrame();
-	void									ChangeBodyFrame();												
-	void									ChangeHeadFrame();												
-	void									ChangeHeadDir();												
-	bool									ClosedEye();													// 눈이 감긴 상태
-	void									DevideHeadDir(int pointY, float section, int dir1, int dir2);	// 입력한 위치 바라보기
-	void									FireWeapon(int x, int y);										// weapon 발사
-	void									Move();															// 움직임
-	void									TakeAction();													// 입력키
+	void									ChangeBodyFrame();
+	void									ChangeHeadFrame();
+	void									ChangeHeadDir();
+	bool									ClosedEye();																				// 눈이 감긴 상태
+	void									CollideWithDoor(POINTFLOAT bosyPos, RECT bodyShape, POINTFLOAT headPos, RECT headShape);
+	void									CollideWithTilemap(POINTFLOAT bosyPos, RECT bodyShape, POINTFLOAT headPos, RECT headShape);
+	void									DevideHeadDir(int pointY, float section, int dir1, int dir2);								// 입력한 위치 바라보기
+	void									FireWeapon(int x, int y);																	// weapon 발사
+	void									Move();																						// 움직임
+	void									TakeAction();																				// 입력키
+	void									WeaponDelay();
 
-	float									CalculateSlope(RECT rc);										// 기울기
 
 	array<bool, 4>							GetEnterNextDoor() { return this->enterNextDoor; }
 	bool									GetIsFire() { return this->isFire; }

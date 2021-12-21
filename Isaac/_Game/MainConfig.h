@@ -80,7 +80,6 @@ enum class PlayerStates { IDLE, WALK, ATTACK, HURT, ITEMPICKUP, JUMP, STAT };
 
 #define ADJUST_SIZE_05			5
 #define ADJUST_SIZE_09			9
-#define ADJUST_SIZE_13			13
 #define ADJUST_SIZE_14			14
 #define ADJUST_SIZE_15			15
 #define ADJUST_SIZE_30			30
@@ -226,10 +225,10 @@ typedef struct tagDoorInfo
 	RECT						shape = {};
 } DOOR_INFO;
 
-#define DOOR_UPSTATE			0
-#define DOOR_DOWNSTATE			1
-#define	DOOR_LEFTSTATE			2
-#define	DOOR_RIGHTSTATE			3
+#define UPPER_DOOR				0
+#define LOWER_DOOR				1
+#define	LEFT_DOOR				2
+#define	RIGHT_DOOR				3
 
 #define OUT_OF_STAGE			0
 
