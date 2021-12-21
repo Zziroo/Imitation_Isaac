@@ -2,6 +2,7 @@
 #include "Player.h"
 
 #include "Image.h"
+#include "Obstacle.h"
 #include "WeaponManager.h"
 
 void Player::Init()
@@ -509,6 +510,25 @@ void Player::Move()
     #pragma region DoorCollider
     // 문과의 충돌 처리
     CollideWithDoor(buffBodyPos, buffBodyShape, buffHeadPos, buffHeadShape);
+    #pragma endregion
+
+    #pragma region Obstacle
+    // Obstacle과의 충돌 처리
+    // 현재 맵에 Obstacle이 있다면 실행
+    if (obstacleFileInfo[currRow][currColumn].count != ZERO)
+    {
+        for (int i = 0; i < obstacleFileInfo[currRow][currColumn].count; ++i)
+        {
+            RECT ObstacleShape = obstacle[0][currRow][currColumn][i]->GetObstacleShape();
+            if (IntersectRect(&colliderRect, &bodyInfo.shape, &ObstacleShape))
+            {
+                bodyInfo.pos = buffBodyPos;
+                bodyInfo.shape = buffBodyShape;
+                headInfo.pos = buffHeadPos;
+                headInfo.shape = buffHeadShape;
+            }
+        }
+    }
     #pragma endregion
 }
 

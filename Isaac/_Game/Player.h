@@ -3,6 +3,7 @@
 #include "GameObject.h"
 
 class Image;
+class Obstacle;
 class WeaponManager;
 class Player : public GameObject
 {
@@ -45,7 +46,9 @@ private:
 	Image*									otherStateImg = nullptr;
 	WeaponManager*							weaponTear = nullptr;
 
-	vector<vector<array<DOOR_INFO, 4 >>>*	doorInfo = nullptr;																			// 문의 정보
+	vector<vector<array<DOOR_INFO, 4>>>*	doorInfo = nullptr;																			// 문의 정보
+	vector<vector<vector<Obstacle*>>>*		obstacle = nullptr; 
+	vector<vector<OBSTACLE_FILE_INFO>>		obstacleFileInfo;
 
 	PlayerStates							playerState = PlayerStates::IDLE;															// 상태
 	RECT									colliderRect = {};																			// 충돌 처리용
@@ -55,7 +58,7 @@ private:
 
 	char									text[64] = {};
 
-	int										_stageSize = 0;																				// Stage Size
+	int										stageSize = 0;																				// Stage Size
 	int										currColumn = 0;
 	int										currRow = 0;
 	int										fireDelay = 0;																				// 무기 발사 지연
@@ -104,12 +107,14 @@ public:
 	void									SetEnterNextRightDoor(bool enterNextDoor) { this->enterNextDoor[3] = enterNextDoor; }
 	void									SetDoorInfo(vector<vector<array<DOOR_INFO, 4 >>>* doorInfo) { this->doorInfo = doorInfo; }
 	void									SetIsFire(bool isFire) { this->isFire = isFire; }
+	void									SetObstacleInfo(vector<vector<vector<Obstacle*>>>* obstacle) { this->obstacle = obstacle; }
+	void									SetObstacleCountInfo(vector<vector<OBSTACLE_FILE_INFO>> obstacleFileInfo) { this->obstacleFileInfo = obstacleFileInfo; }
 	void									SetPlayerBodyPos(POINTFLOAT pos) { this->bodyInfo.pos = pos; }
 	void									SetPlayerBodyShape(RECT rc) { this->bodyInfo.shape = rc; }
 	void									SetPlayerHeadPos(POINTFLOAT pos) { this->headInfo.pos = pos; }
 	void									SetPlayerHeadShape(RECT rc) { this->headInfo.shape = rc; }
 	void									SetPlayerHeadMoveDir(ObjectDir moveDir) { this->headInfo.moveDir = moveDir; }
-	void									SetStageSize(int stageSize) { this->_stageSize = stageSize; }
+	void									SetStageSize(int stageSize) { this->stageSize = stageSize; }
 
 	virtual ~Player() = default;
 };

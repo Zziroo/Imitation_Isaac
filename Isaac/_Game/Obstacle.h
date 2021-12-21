@@ -14,6 +14,8 @@ private:
 		bool				doDamage = false;
 		bool				isExistItem = false;
 		bool				isSlowed = false;
+
+		int					elapsedAnimeCount = 0;
 	} OBSTACLE_INFO;
 
 private:
@@ -31,6 +33,7 @@ public:
 	void					DeginateObstacleShape(float posX, float posY, float size, float adjustSizeLeft = 0.0f, float adjustSizeTop = 0.0f, float adjustSizeRight = 0.0f, float adjustSizeBottom = 0.0f);
 
 	ObstacleTypes			GetObstacleType() { return this->obstacleInfo.type; }
+	RECT					GetObstacleShape() { return this->shape; }
 
 	void					SetObstaclePos(POINTFLOAT pos) { this->pos = pos; }
 	void					SetObstaclePosX(float pos) { this->pos.x = pos; }

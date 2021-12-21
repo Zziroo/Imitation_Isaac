@@ -11,7 +11,7 @@ void Obstacle::Init()
 		obstacleInfo.type = ObstacleTypes::BONFIRE;
 		obstacleInfo.img = GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/Bonfire.bmp");
 		objectSize = 68.0f;
-		DeginateObstacleShape(pos.x, pos.y, objectSize);
+		DeginateObstacleShape(pos.x, pos.y, objectSize, 0.0f, 0.0f, 0.0f, 15.0f);
 		obstacleInfo.doDamage = true;
 		break;
 	case ObstacleTypes::BRICK:
@@ -23,7 +23,7 @@ void Obstacle::Init()
 	case ObstacleTypes::DDONG:								// 이미지의 프레임 X값 : 애니메이션
 		obstacleInfo.type = ObstacleTypes::DDONG;
 		obstacleInfo.img = GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/DDong.bmp");
-		objectSize = 84.0f;
+		objectSize = 70.0f;
 		DeginateObstacleShape(pos.x, pos.y, objectSize);
 		break;
 	case ObstacleTypes::ITEMSTAND:
@@ -44,7 +44,7 @@ void Obstacle::Init()
 		obstacleInfo.img = GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/Slider.bmp");
 		if (obstacleInfo.img->GetCurrFrameX() == 0)
 		{
-			objectSize = 80.0f;
+			objectSize = 60.0f;
 		}
 		if (obstacleInfo.img->GetCurrFrameX() == 1)
 		{
@@ -63,14 +63,7 @@ void Obstacle::Init()
 	case ObstacleTypes::STONE:								// 이미지의 프레임 X값 : 종류
 		obstacleInfo.type = ObstacleTypes::STONE;
 		obstacleInfo.img = GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/Stone.bmp");
-		if (obstacleInfo.img->GetCurrFrameX() == 0)
-		{
-			objectSize = 75.0f;	
-		}
-		if (obstacleInfo.img->GetCurrFrameX() == 1)
-		{
-			objectSize = 80.0f;
-		}
+		objectSize = 70.0f;	
 		DeginateObstacleShape(pos.x, pos.y, objectSize);
 		break;
 	case ObstacleTypes::THORN:
@@ -92,17 +85,32 @@ void Obstacle::Release()
 void Obstacle::Update()
 {
 	// 애니메이션 변화
+	// Bonfire
 	if (obstacleInfo.type == ObstacleTypes::BONFIRE)
 	{
-		++elapsedAnimeCount;
-		if (elapsedAnimeCount > 10)
+		++obstacleInfo.elapsedAnimeCount;
+		if (obstacleInfo.elapsedAnimeCount > 10)
 		{
 			obstacleInfo.img->SetCurrFrameX(obstacleInfo.img->GetCurrFrameX() + ADVANCE_FRAME);
 			if (obstacleInfo.img->GetCurrFrameX() >= obstacleInfo.img->GetMaxFrameX())
 			{
 				obstacleInfo.img->SetCurrFrameX(ZERO);
 			}
-			elapsedAnimeCount = 0;
+			obstacleInfo.elapsedAnimeCount = 0;
+		}
+	}
+	// Slider
+	if (obstacleInfo.type == ObstacleTypes::SLIDER)
+	{
+		++obstacleInfo.elapsedAnimeCount;
+		if (obstacleInfo.elapsedAnimeCount > 40)
+		{
+			obstacleInfo.img->SetCurrFrameX(1);
+		}
+		if (obstacleInfo.elapsedAnimeCount > 100)
+		{
+			obstacleInfo.img->SetCurrFrameX(ZERO);
+			obstacleInfo.elapsedAnimeCount = 0;
 		}
 	}
 
