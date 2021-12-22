@@ -89,7 +89,7 @@ void Button::Update()
 	{
 		DeclareButtonInfo(&closeBtn, 98, 550);
 	}
-	if (obstacleBtn.clicked)
+	if (obstacleBtn.clicked || enemyBtn.clicked)
 	{
 		DeclareButtonInfo(&closeBtn, 98, 630);
 	}
@@ -112,6 +112,10 @@ void Button::Update()
 			if (obstacleBtn.clicked)
 			{
 				obstacleBtn.clicked = false;
+			}
+			if (enemyBtn.clicked)
+			{
+				enemyBtn.clicked = false;
 			}
 		}
 	}
@@ -178,36 +182,19 @@ void Button::Update()
 	}
 
 	// 버튼을 끄고 키고 할 수 있음
-	if (PtInRect(&enemyBtn.shape, g_ptMouse))
+	// EnemyBtn
+	if (Input::GetButtonDown(VK_LBUTTON))
 	{
-		if (Input::GetButtonDown(VK_LBUTTON))
+		if (PtInRect(&enemyBtn.shape, g_ptMouse))
 		{
-			enemyBtn.buttonState = ButtonStates::DOWN;
-
-		}
-		else if (Input::GetButtonUp(VK_LBUTTON) && enemyBtn.buttonState == ButtonStates::DOWN)
-		{
-			enemyBtn.buttonState = ButtonStates::UP;
-
-			return;
+			enemyBtn.clicked = !enemyBtn.clicked;
+			obstacleBtn.buttonState = ButtonStates::NONE;
+			sampleTileBtn.buttonState = ButtonStates::NONE;
 		}
 	}
 	else 
 	{
 		enemyBtn.buttonState = ButtonStates::NONE;
-	}
-	// SampleTile
-	if (Input::GetButtonDown(VK_LBUTTON))
-	{	
-		if (PtInRect(&sampleTileBtn.shape, g_ptMouse))
-		{
-			sampleTileBtn.clicked = !sampleTileBtn.clicked;
-			obstacleBtn.buttonState = ButtonStates::NONE;
-		}
-	}
-	else
-	{
-		sampleTileBtn.buttonState = ButtonStates::NONE;
 	}
 	// ObstacleBtn
 	if (Input::GetButtonDown(VK_LBUTTON))
@@ -215,6 +202,7 @@ void Button::Update()
 		if (PtInRect(&obstacleBtn.shape, g_ptMouse))
 		{
 			obstacleBtn.clicked = !obstacleBtn.clicked;
+			enemyBtn.buttonState = ButtonStates::NONE;
 			sampleTileBtn.buttonState = ButtonStates::NONE;
 		}
 	}
@@ -222,6 +210,21 @@ void Button::Update()
 	{
 		obstacleBtn.buttonState = ButtonStates::NONE; 
 	}
+	// SampleTile
+	if (Input::GetButtonDown(VK_LBUTTON))
+	{	
+		if (PtInRect(&sampleTileBtn.shape, g_ptMouse))
+		{
+			sampleTileBtn.clicked = !sampleTileBtn.clicked;
+			enemyBtn.buttonState = ButtonStates::NONE;
+			obstacleBtn.buttonState = ButtonStates::NONE;
+		}
+	}
+	else
+	{
+		sampleTileBtn.buttonState = ButtonStates::NONE;
+	}
+
 	// curseRoomObstacle
 	if (Input::GetButtonDown(VK_LBUTTON))
 	{
@@ -324,20 +327,43 @@ void Button::Update()
 
 
 	// 버튼 하나를 클릭하면 나머지는 UP상태로 만듦.
-	if (sampleTileBtn.clicked)
+	if (enemyBtn.clicked)
 	{
 		if (obstacleBtn.clicked && obstacleBtn.buttonState != ButtonStates::NONE)
 		{
-			sampleTileBtn.clicked = false;
-			sampleTileBtn.buttonState = ButtonStates::UP;
+			enemyBtn.clicked = false;
+			enemyBtn.buttonState = ButtonStates::UP;
+		}
+		if (sampleTileBtn.clicked && sampleTileBtn.buttonState != ButtonStates::NONE)
+		{
+			enemyBtn.clicked = false;
+			enemyBtn.buttonState = ButtonStates::UP;
 		}
 	}
 	if (obstacleBtn.clicked)
 	{
+		if (enemyBtn.clicked && enemyBtn.buttonState != ButtonStates::NONE)
+		{
+			obstacleBtn.clicked = false;
+			obstacleBtn.buttonState = ButtonStates::UP;
+		}
 		if (sampleTileBtn.clicked && sampleTileBtn.buttonState != ButtonStates::NONE)
 		{
 			obstacleBtn.clicked = false;
 			obstacleBtn.buttonState = ButtonStates::UP;
+		}
+	}
+	if (sampleTileBtn.clicked)
+	{
+		if (enemyBtn.clicked && enemyBtn.buttonState != ButtonStates::NONE)
+		{
+			sampleTileBtn.clicked = false;
+			sampleTileBtn.buttonState = ButtonStates::UP;
+		}
+		if (obstacleBtn.clicked && obstacleBtn.buttonState != ButtonStates::NONE)
+		{
+			sampleTileBtn.clicked = false;
+			sampleTileBtn.buttonState = ButtonStates::UP;
 		}
 	}
 
@@ -537,6 +563,16 @@ void Button::Update()
 		normalRoomObstacleBtn.buttonState = ButtonStates::UP;
 	}
 
+	// Enemy 버튼 클릭 돼있으면 true, 클릭이 안돼있으면 false
+	if (enemyBtn.clicked)
+	{
+		enemyBtn.buttonState = ButtonStates::DOWN;
+	}
+	else
+	{
+		enemyBtn.buttonState = ButtonStates::UP;
+	}
+
 	// NextButton,PrevButton
 	if (sampleTileBtn.clicked)
 	{
@@ -649,6 +685,11 @@ void Button::Render(HDC hdc)
 		ShowLetter(hdc, curseLetter, &curseRoomObstacleBtn);
 		ShowLetter(hdc, itemLetter, &itemRoomObstacleBtn);
 		ShowLetter(hdc, normalLetter, &normalRoomObstacleBtn);
+	}
+
+	if (enemyBtn.clicked)
+	{
+		RenderNormalButton(hdc, &closeBtn);
 	}
 
 	ShowLetter(hdc, enemyLetter, &enemyBtn);

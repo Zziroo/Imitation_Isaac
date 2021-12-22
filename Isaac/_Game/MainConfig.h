@@ -236,7 +236,7 @@ typedef struct tagDoorInfo
 enum class ObstacleTypes { BONFIRE, BRICK, DDONG, ITEMSTAND, JAR, SLIDER, SPIDERWEB, STONE, THORN, NONE };
 
 // ObstacleTool
-typedef struct tagStoreSampleInfo
+typedef struct storeObstacleInfo
 {
 	ObstacleTypes				sampleType = ObstacleTypes::NONE;
 	POINTFLOAT					pos = {};
@@ -248,3 +248,6 @@ typedef struct tagObstacleFileInfo
 	string								index;					// roomType마다 파일의 이름을 기억
 	int									count = 0;				// roomType마다 obstacle의 개수를 기억
 } OBSTACLE_FILE_INFO;
+
+// NormalMonster
+enum class NormalMonsterTypes { FLY, ATTACKFLY, POOTER, NONE };

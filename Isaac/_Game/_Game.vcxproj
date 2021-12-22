@@ -22,6 +22,7 @@
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="DoodleScene.cpp" />
     <ClCompile Include="DoorEditing.cpp" />
+    <ClCompile Include="EnemyToolScene.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="ImageManager.cpp" />
@@ -50,6 +51,7 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="DoodleScene.h" />
     <ClInclude Include="DoorEditing.h" />
+    <ClInclude Include="EnemyToolScene.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="ImageManager.h" />

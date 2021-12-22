@@ -3,6 +3,7 @@
 #include "Scene.h"
 
 #include "DoodleScene.h"
+#include "EnemyToolScene.h"
 #include "ObstacleToolScene.h"
 #include "Stage01Scene.h"
 #include "TilemapToolScene.h"
@@ -28,7 +29,8 @@ DWORD CALLBACK LoadingThread(LPVOID pvParam)
 void SceneManager::Init()
 {
 	GET_SINGLETON_SCENE->AddScene("Doodle", new DoodleScene);						// Doodle
-	GET_SINGLETON_SCENE->AddScene("ObstacleTool", new ObstacleToolScene);			// Doodle
+	GET_SINGLETON_SCENE->AddScene("EnemyTool", new EnemyToolScene);					// EnemyTool
+	GET_SINGLETON_SCENE->AddScene("ObstacleTool", new ObstacleToolScene);			// ObstacleTool
 	GET_SINGLETON_SCENE->AddScene("Stage01", new Stage01Scene);						// Stage01
 	GET_SINGLETON_SCENE->AddScene("Title", new TitleScene);							// Title
 	GET_SINGLETON_SCENE->AddScene("TilemapTool", new TilemapToolScene);				// TilemapTool

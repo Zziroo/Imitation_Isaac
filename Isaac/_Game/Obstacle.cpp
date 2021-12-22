@@ -89,7 +89,7 @@ void Obstacle::Update()
 	if (obstacleInfo.type == ObstacleTypes::BONFIRE)
 	{
 		++obstacleInfo.elapsedAnimeCount;
-		if (obstacleInfo.elapsedAnimeCount > 10)
+		if (obstacleInfo.elapsedAnimeCount > 11)
 		{
 			obstacleInfo.img->SetCurrFrameX(obstacleInfo.img->GetCurrFrameX() + ADVANCE_FRAME);
 			if (obstacleInfo.img->GetCurrFrameX() >= obstacleInfo.img->GetMaxFrameX())

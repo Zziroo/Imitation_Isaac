@@ -514,7 +514,7 @@ void Stage01Scene::LoadObstacle(int row, int column, string loadObstacleFileName
 		cout << GetLastError();
 	}
 
-	DWORD mapLoadFileInfo = sizeof(tagStoreSampleInfo) * obstacleCount;
+	DWORD mapLoadFileInfo = sizeof(storeObstacleInfo) * obstacleCount;
 
 	DWORD readByte = 0;
 
@@ -523,7 +523,7 @@ void Stage01Scene::LoadObstacle(int row, int column, string loadObstacleFileName
 		storeObstacle[0].resize(obstacleCount);
 		for (size_t i = 0; i < obstacleCount; ++i)
 		{
-			if (ReadFile(hFile, &storeObstacle[0][i], sizeof(tagStoreSampleInfo), &readByte, NULL) == false)
+			if (ReadFile(hFile, &storeObstacle[0][i], sizeof(storeObstacleInfo), &readByte, NULL) == false)
 			{
 				MessageBox(g_hWnd, "storeObstacle[0] Obstacle 데이터 로드에 실패! !", "에러", MB_OK);
 			}
@@ -534,7 +534,7 @@ void Stage01Scene::LoadObstacle(int row, int column, string loadObstacleFileName
 		storeObstacle[1].resize(obstacleCount);
 		for (size_t i = 0; i < obstacleCount; ++i)
 		{
-			if (ReadFile(hFile, &storeObstacle[1][i], sizeof(tagStoreSampleInfo), &readByte, NULL) == false)
+			if (ReadFile(hFile, &storeObstacle[1][i], sizeof(storeObstacleInfo), &readByte, NULL) == false)
 			{
 				MessageBox(g_hWnd, "storeObstacle[1] Obstacle 데이터 로드에 실패! !", "에러", MB_OK);
 			}
@@ -545,7 +545,7 @@ void Stage01Scene::LoadObstacle(int row, int column, string loadObstacleFileName
 		storeObstacle[2].resize(obstacleCount);
 		for (size_t i = 0; i < obstacleCount; ++i)
 		{
-			if (ReadFile(hFile, &storeObstacle[2][i], sizeof(tagStoreSampleInfo), &readByte, NULL) == false)
+			if (ReadFile(hFile, &storeObstacle[2][i], sizeof(storeObstacleInfo), &readByte, NULL) == false)
 			{
 				MessageBox(g_hWnd, "storeObstacle[2] Obstacle 데이터 로드에 실패! !", "에러", MB_OK);
 			}

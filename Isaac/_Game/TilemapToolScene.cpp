@@ -13,6 +13,10 @@ HRESULT TilemapToolScene::Init()
 	sampleBackGround = GET_SINGLETON_IMAGE->FindImage("Image/BackGround/BackGround02.bmp");
 	// Drawing Area
 	drawingAreaImg = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Tile/Nothingness.bmp");
+	// 씬 전환 후 다시 TilemapTool에 왔을 때 sampleTileBtn 눌렀을 때 Main영역에 Render
+	initialTileBtnState = true;
+	// 씬 전환 후 다시 TilemapTool에 왔을 때 NONE -> BASEMENT
+	sampleTileType = SampleTileTypes::NONE;
 
 	// MainTile
 	for (int r = 0; r < TILE_ROW; ++r)
@@ -453,10 +457,15 @@ void TilemapToolScene::Update()
 		Load();
 	}
 
+	// Obstacle Button을 누르면 ObstacleToolScene으로 이동
 	if (button->GetSelectObstacleButton())
 	{
-		initialTileBtnState = true;
 		GET_SINGLETON_SCENE->ChangeScene("ObstacleTool");
+	}
+	// Enemy Button을 누르면 EnemyToolScene으로 이동
+	else if (button->GetSelectEnemyBtnButton())
+	{
+		GET_SINGLETON_SCENE->ChangeScene("EnemyTool");
 	}
 }
 

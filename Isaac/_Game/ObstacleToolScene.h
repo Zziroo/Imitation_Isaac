@@ -8,12 +8,12 @@ class Obstacle;
 class ObstacleToolScene : public Scene
 {
 private:
-	typedef struct tagSampleInfo
+	typedef struct obstacleSampleInfo
 	{
 		ObstacleTypes					sampleType = ObstacleTypes::NONE;
 		POINTFLOAT						pos = {};
 		RECT							shape = {};
-	} SAMPLE_INFO;
+	} SAMPLE_OBSTACLE_INFO;
 
 private:
 	Button*								button = nullptr;
@@ -28,7 +28,7 @@ private:
 
 	vector<Obstacle*>					obstacle;
 	vector<Obstacle*>					loadObstacle;
-	vector<SAMPLE_INFO>					sampleObstacleInfo;				// SampleObstacleInfo
+	vector<SAMPLE_OBSTACLE_INFO>		sampleObstacleInfo;				// SampleObstacleInfo
 	vector<STORE_OBSTACLE_INFO>			tempStoreObstacleInfo;			// 임시로 ObstacleInfo를 저장해두는 공간 => Save Button 클릭 시 storeObstacle에 전부 저장
 	vector<vector<STORE_OBSTACLE_INFO>>	storeObstacle;					// Obstacle의 pos와 type을 저장하는 공간 => vector<> : Roomtype, vector<vector<> : Obstacle의 pos와 type을  안에 저장>
 

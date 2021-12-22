@@ -36,16 +36,21 @@ void NormalMonster::Release()
 
 void NormalMonster::Update()
 {
+	cout << monsterInfo.elapsedAnimeCount << "\n";
+
 	// Idle
-	++elapsedAnimeCount;
-	if (elapsedAnimeCount >= 10)
+	if (monsterInfo.state == MonsterStates::IDLE)
 	{
-		monsterInfo.img->SetCurrFrameY(monsterInfo.img->GetCurrFrameY() + ADVANCE_FRAME);
-		if (monsterInfo.img->GetCurrFrameY() >= monsterInfo.img->GetMaxFrameY())
+		++monsterInfo.elapsedAnimeCount;
+		if (monsterInfo.elapsedAnimeCount > 11)
 		{
-			monsterInfo.img->SetCurrFrameY(ZERO);
+			monsterInfo.img->SetCurrFrameY(monsterInfo.img->GetCurrFrameY() + ADVANCE_FRAME);
+			if (monsterInfo.img->GetCurrFrameY() >= monsterInfo.img->GetMaxFrameY())
+			{
+				monsterInfo.img->SetCurrFrameY(ZERO);
+			}
+			monsterInfo.elapsedAnimeCount = 0;
 		}
-		elapsedAnimeCount = 0;
 	}
 
 	// Debug

@@ -4,7 +4,7 @@
 #include "Image.h"
 
 #ifdef _DEBUG
-//#define MAPTOOL
+#define MAPTOOL
 #endif
 
 void MainGame::Init()
@@ -22,7 +22,7 @@ void MainGame::Init()
 	backBuffer = new Image;
 
 #ifdef MAPTOOL
-	GET_SINGLETON_SCENE->ChangeScene("ObstacleTool");	// TilemapTool / ObstacleTool
+	GET_SINGLETON_SCENE->ChangeScene("EnemyTool");			// TilemapTool / EnemyTool / ObstacleTool
 	maxSizeX = TILEMAP_SIZE_X;
 	maxSizeY = TILEMAP_SIZE_Y;
 #else

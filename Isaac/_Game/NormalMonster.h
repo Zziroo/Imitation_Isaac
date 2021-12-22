@@ -2,8 +2,6 @@
 
 #include "Monster.h"
 
-enum class NormalMonsterTypes { FLY, ATTACKFLY, POOTER, NONE };
-
 class Image;
 class NormalMonster : public Monster
 {
@@ -11,8 +9,11 @@ private:
 	typedef struct NormalMonsterInfo
 	{
 		Image*				img = nullptr;
-		ObjectDir			moveDir = ObjectDir::NONE;
+		MonsterStates		state = MonsterStates::IDLE;
 		NormalMonsterTypes	type = NormalMonsterTypes::NONE;
+		ObjectDir			moveDir = ObjectDir::NONE;
+
+		int					elapsedAnimeCount = 0;
 	} NORMAL_MONSTER_INFO;
 
 private:

@@ -48,8 +48,10 @@ HRESULT ObstacleToolScene::Init()
 	{
 		obstacle[i] = new Obstacle;
 	}
+
 	// Obstacle의 정보를 임시 저장할 공간 초기화
 	tempStoreObstacleInfo.resize(resizeNum);
+
 	// 저장할 공간 초기화
 	storeObstacle.resize(roomTypeIndex);
 
@@ -97,6 +99,7 @@ void ObstacleToolScene::Update()
 			obstacle[i]->Update();
 		}
 	}
+
 #ifdef _DEBUG
 	// 클릭 해제
 	if (Input::GetButtonDown('X'))
@@ -128,6 +131,7 @@ void ObstacleToolScene::Update()
 			Load(2, saveIndex[2] - 1);
 		}
 	}
+
 	// LoadObstacle
 	for (size_t i = 0; i < loadObstacle.size(); ++i)
 	{
@@ -140,10 +144,15 @@ void ObstacleToolScene::Update()
 	// Button
 	button->Update();
 
-	// SampleTile Button을 누르면 tilemapToolScene으로 이동
+	// SampleTile Button을 누르면 TilemapToolScene으로 이동
 	if (button->GetSelectSampleTileButton())
 	{
 		GET_SINGLETON_SCENE->ChangeScene("TilemapTool");
+	}
+	// Enemy Button을 누르면 EnemyToolScene으로 이동
+	else if (button->GetSelectEnemyBtnButton())
+	{
+		GET_SINGLETON_SCENE->ChangeScene("EnemyTool");
 	}
 }
 
@@ -383,6 +392,7 @@ void ObstacleToolScene::DrawObstacle()
 				{
 					obstacle[i] = new Obstacle;
 				}
+
 				// tempStoreObstacle 크기 증가
 				tempStoreObstacleInfo.resize(resizeNum);
 			}
@@ -463,18 +473,13 @@ void ObstacleToolScene::Load(int roomType, int loadIndex)
 
 	HANDLE hFile = CreateFile(loadFileName, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
-	if (hFile == INVALID_HANDLE_VALUE)
-	{
-		cout << GetLastError();
-	}
-
-	DWORD obstacleLoadFileInfo = sizeof(tagStoreSampleInfo) * obstacleCount;
+	DWORD obstacleLoadFileInfo = sizeof(storeObstacleInfo) * obstacleCount;
 
 	DWORD readByte = 0;
 
 	for (size_t i = 0; i < obstacleCount; ++i)
 	{
-		if (ReadFile(hFile, &storeObstacle[roomType][i], sizeof(tagStoreSampleInfo), &readByte, NULL) == false)
+		if (ReadFile(hFile, &storeObstacle[roomType][i], sizeof(storeObstacleInfo), &readByte, NULL) == false)
 		{
 			switch (roomType)
 			{
@@ -550,17 +555,18 @@ void ObstacleToolScene::Save(int roomType, int saveIndex, int obstacleCount)
 		strcpy_s(roomTypeName, "NORMAL");
 		break;
 	}
+
 	sprintf_s(saveFileName, "Save/%s%02d_%02d.obstacle", roomTypeName, saveIndex, obstacleCount);
 
 	HANDLE hFile = CreateFile(saveFileName, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
-	DWORD byteSize = sizeof(tagStoreSampleInfo) * obstacleCount;
+	DWORD byteSize = sizeof(storeObstacleInfo) * obstacleCount;
 
 	DWORD writtenByte = 0;
 
 	for (size_t i = 0; i < obstacleCount; ++i)
 	{
-		if (WriteFile(hFile, &storeObstacle[roomType][i], sizeof(tagStoreSampleInfo), &writtenByte, NULL) == false)
+		if (WriteFile(hFile, &storeObstacle[roomType][i], sizeof(storeObstacleInfo), &writtenByte, NULL) == false)
 		{
 			switch (roomType)
 			{
@@ -627,6 +633,7 @@ void ObstacleToolScene::StoreCurseRoomObstacle(int totalSize)
 		storeObstacle[0][i].pos = tempStoreObstacleInfo[i].pos;
 		storeObstacle[0][i].sampleType = tempStoreObstacleInfo[i].sampleType;
 	}
+
 	// 파일로 저장
 	Save(0, saveIndex[0], totalSize);
 	++saveIndex[0];

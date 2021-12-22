@@ -76,6 +76,7 @@ public:
 	bool				GetSelectCellarTileButton() { return this->cellarTileBtn.clicked; }
 	bool				GetSelectCurseRoomButton() { return this->curseRoomObstacleBtn.clicked; }
 	bool				GetSelectDepthTileButton() { return this->depthTileBtn.clicked; }
+	bool				GetSelectEnemyBtnButton() { return this->enemyBtn.clicked; }
 	bool				GetSelectItemRoomButton() { return this->itemRoomObstacleBtn.clicked; }
 	bool				GetSelectNormalRoomButton() { return this->normalRoomObstacleBtn.clicked; }
 	bool				GetSelectObstacleButton() { return this->obstacleBtn.clicked; }

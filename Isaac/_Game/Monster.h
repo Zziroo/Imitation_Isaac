@@ -2,6 +2,8 @@
 
 #include "GameObject.h"
 
+enum class MonsterStates { IDLE, ATTACK, DEAD, NONE };
+
 class Monster : public GameObject
 {
 private:
