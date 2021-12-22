@@ -340,19 +340,19 @@ void Stage01Scene::Update()
 	// 예시) 상,하,좌,우 키를 입력해서 맵을 바꿈.(맵의 종류를 알아서 보여줘야함)
 	if (Input::GetButtonDown(VK_UP))
 	{
-		if (doorInfo[currRow][currColumn][0].roomType != RoomTypes::NONE || doorInfo[currRow][currColumn][0].img != nullptr)
+		if (doorInfo[currRow][currColumn][UPPER_DOOR].roomType != RoomTypes::NONE || doorInfo[currRow][currColumn][UPPER_DOOR].img != nullptr)
 		{
 			--currRow;
-			if (currRow < 0)
+			if (currRow < OUT_OF_STAGE)
 			{
-				currRow = 0;
+				currRow = OUT_OF_STAGE;
 			}
 		}
 		SelectMapImage();
 	}
 	if (Input::GetButtonDown(VK_DOWN))
 	{
-		if (doorInfo[currRow][currColumn][1].roomType != RoomTypes::NONE || doorInfo[currRow][currColumn][1].img != nullptr)
+		if (doorInfo[currRow][currColumn][LOWER_DOOR].roomType != RoomTypes::NONE || doorInfo[currRow][currColumn][LOWER_DOOR].img != nullptr)
 		{
 			++currRow;
 			if (currRow >= stageSize)
@@ -364,19 +364,19 @@ void Stage01Scene::Update()
 	}
 	if (Input::GetButtonDown(VK_LEFT))
 	{
-		if (doorInfo[currRow][currColumn][2].roomType != RoomTypes::NONE || doorInfo[currRow][currColumn][2].img != nullptr)
+		if (doorInfo[currRow][currColumn][LEFT_DOOR].roomType != RoomTypes::NONE || doorInfo[currRow][currColumn][LEFT_DOOR].img != nullptr)
 		{
 			--currColumn;
-			if (currColumn < 0)
+			if (currColumn < OUT_OF_STAGE)
 			{
-				currColumn = 0;
+				currColumn = OUT_OF_STAGE;
 			}
 		}
 		SelectMapImage();
 	}
 	if (Input::GetButtonDown(VK_RIGHT))
 	{
-		if (doorInfo[currRow][currColumn][3].roomType != RoomTypes::NONE || doorInfo[currRow][currColumn][3].img != nullptr)
+		if (doorInfo[currRow][currColumn][RIGHT_DOOR].roomType != RoomTypes::NONE || doorInfo[currRow][currColumn][RIGHT_DOOR].img != nullptr)
 		{
 			++currColumn;
 			if (currColumn >= stageSize)
@@ -432,24 +432,24 @@ void Stage01Scene::Update()
 	}
 
 	// Map Update
-	if (player->GetEnterNextDoor()[0])
+	if (player->GetEnterNextDoor()[UPPER_DOOR])
 	{
 		// 상
-		if (doorInfo[currRow][currColumn][0].roomType != RoomTypes::NONE || doorInfo[currRow][currColumn][0].img != nullptr)
+		if (doorInfo[currRow][currColumn][UPPER_DOOR].roomType != RoomTypes::NONE || doorInfo[currRow][currColumn][UPPER_DOOR].img != nullptr)
 		{
 			--currRow;
-			if (currRow < 0)
+			if (currRow < OUT_OF_STAGE)
 			{
-				currRow = 0;
+				currRow = OUT_OF_STAGE;
 			}
 		}
 		SelectMapImage();
 		player->SetEnterNextUpDoor(false);
 	}
-	if (player->GetEnterNextDoor()[1])
+	if (player->GetEnterNextDoor()[LOWER_DOOR])
 	{
 		// 하
-		if (doorInfo[currRow][currColumn][1].roomType != RoomTypes::NONE || doorInfo[currRow][currColumn][1].img != nullptr)
+		if (doorInfo[currRow][currColumn][LOWER_DOOR].roomType != RoomTypes::NONE || doorInfo[currRow][currColumn][LOWER_DOOR].img != nullptr)
 		{
 			++currRow;
 			if (currRow >= stageSize)
@@ -460,24 +460,24 @@ void Stage01Scene::Update()
 		SelectMapImage();
 		player->SetEnterNextDownDoor(false);
 	}
-	if (player->GetEnterNextDoor()[2])
+	if (player->GetEnterNextDoor()[LEFT_DOOR])
 	{
 		// 좌
-		if (doorInfo[currRow][currColumn][2].roomType != RoomTypes::NONE || doorInfo[currRow][currColumn][2].img != nullptr)
+		if (doorInfo[currRow][currColumn][LEFT_DOOR].roomType != RoomTypes::NONE || doorInfo[currRow][currColumn][LEFT_DOOR].img != nullptr)
 		{
 			--currColumn;
-			if (currColumn < 0)
+			if (currColumn < OUT_OF_STAGE)
 			{
-				currColumn = 0;
+				currColumn = OUT_OF_STAGE;
 			}
 		}
 		SelectMapImage();
 		player->SetEnterNextLeftDoor(false);
 	}
-	if (player->GetEnterNextDoor()[3])
+	if (player->GetEnterNextDoor()[RIGHT_DOOR])
 	{
 		// 우
-		if (doorInfo[currRow][currColumn][3].roomType != RoomTypes::NONE || doorInfo[currRow][currColumn][3].img != nullptr)
+		if (doorInfo[currRow][currColumn][RIGHT_DOOR].roomType != RoomTypes::NONE || doorInfo[currRow][currColumn][RIGHT_DOOR].img != nullptr)
 		{
 			++currColumn;
 			if (currColumn >= stageSize)

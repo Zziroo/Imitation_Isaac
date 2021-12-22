@@ -542,7 +542,6 @@ void Player::TakeAction()
         headInfo.moveDir = ObjectDir::DOWN;
         bodyInfo.image->SetCurrFrameX(START_BODY_FRAME_X);
         bodyInfo.image->SetCurrFrameY(BODY_DEFAULT_DIR);
-        
         headInfo.image->SetCurrFrameX(HEAD_LOOK_DOWN);
     }
     // 공격키 땠을 때

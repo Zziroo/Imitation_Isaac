@@ -48,7 +48,7 @@ private:
 
 	vector<vector<array<DOOR_INFO, 4>>>*	doorInfo = nullptr;																			// 문의 정보
 	vector<vector<vector<Obstacle*>>>*		obstacle = nullptr; 
-	vector<vector<FILE_INFO>>		obstacleFileInfo;
+	vector<vector<FILE_INFO>>				obstacleFileInfo;
 
 	PlayerStates							playerState = PlayerStates::IDLE;															// 상태
 	RECT									colliderRect = {};																			// 충돌 처리용
@@ -89,7 +89,6 @@ public:
 	void									Move();																						// 움직임
 	void									TakeAction();																				// 입력키
 	void									WeaponDelay();
-
 
 	array<bool, 4>							GetEnterNextDoor() { return this->enterNextDoor; }
 	bool									GetIsFire() { return this->isFire; }
