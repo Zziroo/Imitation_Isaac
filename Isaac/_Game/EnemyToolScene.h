@@ -16,12 +16,6 @@ private:
 		RECT								shape = {};
 	} SAMPLE_NORMAL_MONSTER_INFO;
 
-	typedef struct storeNormalMonsterInfo
-	{
-		NormalMonsterTypes					sampleType = NormalMonsterTypes::NONE;
-		POINTFLOAT							pos = {};
-	} STORE_NORMAL_MONSTER_INFO;
-
 private:
 	Button*									button = nullptr;
 

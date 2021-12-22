@@ -243,11 +243,18 @@ typedef struct storeObstacleInfo
 } STORE_OBSTACLE_INFO;
 
 // StageScene
-typedef struct tagObstacleFileInfo
+typedef struct fileInfo
 {
 	string								index;					// roomType마다 파일의 이름을 기억
 	int									count = 0;				// roomType마다 obstacle의 개수를 기억
-} OBSTACLE_FILE_INFO;
+} FILE_INFO;
 
 // NormalMonster
 enum class NormalMonsterTypes { FLY, ATTACKFLY, POOTER, NONE };
+
+// EnemtTool
+typedef struct storeNormalMonsterInfo
+{
+	NormalMonsterTypes					sampleType = NormalMonsterTypes::NONE;
+	POINTFLOAT							pos = {};
+} STORE_NORMAL_MONSTER_INFO;

@@ -48,7 +48,7 @@ private:
 
 	vector<vector<array<DOOR_INFO, 4>>>*	doorInfo = nullptr;																			// 문의 정보
 	vector<vector<vector<Obstacle*>>>*		obstacle = nullptr; 
-	vector<vector<OBSTACLE_FILE_INFO>>		obstacleFileInfo;
+	vector<vector<FILE_INFO>>		obstacleFileInfo;
 
 	PlayerStates							playerState = PlayerStates::IDLE;															// 상태
 	RECT									colliderRect = {};																			// 충돌 처리용
@@ -108,7 +108,7 @@ public:
 	void									SetDoorInfo(vector<vector<array<DOOR_INFO, 4 >>>* doorInfo) { this->doorInfo = doorInfo; }
 	void									SetIsFire(bool isFire) { this->isFire = isFire; }
 	void									SetObstacleInfo(vector<vector<vector<Obstacle*>>>* obstacle) { this->obstacle = obstacle; }
-	void									SetObstacleCountInfo(vector<vector<OBSTACLE_FILE_INFO>> obstacleFileInfo) { this->obstacleFileInfo = obstacleFileInfo; }
+	void									SetObstacleCountInfo(vector<vector<FILE_INFO>> obstacleFileInfo) { this->obstacleFileInfo = obstacleFileInfo; }
 	void									SetPlayerBodyPos(POINTFLOAT pos) { this->bodyInfo.pos = pos; }
 	void									SetPlayerBodyShape(RECT rc) { this->bodyInfo.shape = rc; }
 	void									SetPlayerHeadPos(POINTFLOAT pos) { this->headInfo.pos = pos; }

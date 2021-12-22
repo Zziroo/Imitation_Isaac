@@ -36,8 +36,6 @@ void NormalMonster::Release()
 
 void NormalMonster::Update()
 {
-	cout << monsterInfo.elapsedAnimeCount << "\n";
-
 	// Idle
 	if (monsterInfo.state == MonsterStates::IDLE)
 	{

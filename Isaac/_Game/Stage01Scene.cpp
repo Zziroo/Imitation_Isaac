@@ -4,6 +4,7 @@
 #include "DoorEditing.h"
 #include "Image.h"
 #include "Minimap.h"
+#include "NormalMonster.h"
 #include "Obstacle.h"
 #include "Player.h"
 
@@ -144,7 +145,7 @@ HRESULT Stage01Scene::Init()
 		}
 	}
 
-#ifdef _DEBUG ObstacleCount
+#ifdef _DEBUG obstacleFileInfo
 	cout << "obstacleFileInfo.index\n";
 	for (size_t i = 0; i < obstacleFileInfo.size(); ++i)
 	{
@@ -183,8 +184,61 @@ HRESULT Stage01Scene::Init()
 		obstacle[i].resize(stageSize);
 		for (size_t j = 0; j < obstacle[i].size(); ++j)
 		{
-			// 문제 발생! ! => 현재 파일 안의 정보가 이상해 pos, type값을 정확히 가져오지 못한다.
 			LoadObstacle((INT)i, (INT)j, obstacleFileInfo[i][j].index, obstacleFileInfo[i][j].count);
+		}
+	}
+
+	// NormalMonster
+	normalMonsterFileInfo.resize(stageSize);
+	for (size_t i = 0; i < normalMonsterFileInfo.size(); ++i)
+	{
+		normalMonsterFileInfo[i].resize(stageSize);
+		for (size_t j = 0; j < normalMonsterFileInfo[i].size(); ++j)
+		{
+			if (roomInfo[i][j] == RoomTypes::NORMAL)
+			{
+				NamingNormalMonsterInfo((INT)i, (INT)j);
+			}
+		}
+	}
+
+#ifdef _DEBUG NormalMonsterFileInfo
+	cout << "NormalMonsterFileInfo.index\n";
+	for (size_t i = 0; i < normalMonsterFileInfo.size(); ++i)
+	{
+		for (size_t j = 0; j < normalMonsterFileInfo[i].size(); ++j)
+		{
+			cout << normalMonsterFileInfo[i][j].index << "\t";
+
+			if (normalMonsterFileInfo[i][j].index == "")
+			{
+				cout << "#########\t";
+			}
+		}
+		cout << "\n";
+	}
+	cout << "\n";
+
+	cout << "NormalMonsterFileInfo.count\n";
+	for (size_t i = 0; i < normalMonsterFileInfo.size(); ++i)
+	{
+		for (size_t j = 0; j < normalMonsterFileInfo[i].size(); ++j)
+		{
+			cout << normalMonsterFileInfo[i][j].count << "\t";
+		}
+		cout << "\n";
+	}
+	cout << "\n";
+#endif
+
+	// Stage에 NormalMonster 생성
+	normalMonster.resize(stageSize);
+	for (size_t i = 0; i < normalMonster.size(); ++i)
+	{
+		normalMonster[i].resize(stageSize);
+		for (size_t j = 0; j < normalMonster[i].size(); ++j)
+		{
+			LoadNormalMonster((INT)i, (INT)j, normalMonsterFileInfo[i][j].index, normalMonsterFileInfo[i][j].count);
 		}
 	}
 
@@ -264,6 +318,17 @@ void Stage01Scene::Release()
 			for (size_t k = 0; k < obstacle[i][j].size(); ++k)
 			{
 				SAFE_RELEASE(obstacle[i][j][k]);
+			}
+		}
+	}
+
+	for (size_t i = 0; i < normalMonster.size(); ++i)
+	{
+		for (size_t j = 0; j < normalMonster[i].size(); ++j)
+		{
+			for (size_t k = 0; k < normalMonster[i][j].size(); ++k)
+			{
+				SAFE_RELEASE(normalMonster[i][j][k]);
 			}
 		}
 	}
@@ -354,6 +419,18 @@ void Stage01Scene::Update()
 		}
 	}
 
+	// NormalMonster Update
+	for (size_t i = 0; i < normalMonster.size(); ++i)
+	{
+		for (size_t j = 0; j < normalMonster[i].size(); ++j)
+		{
+			for (int k = 0; k < normalMonsterFileInfo[i][j].count; ++k)
+			{
+				normalMonster[i][j][k]->Update();
+			}
+		}
+	}
+
 	// Map Update
 	if (player->GetEnterNextDoor()[0])
 	{
@@ -440,6 +517,12 @@ void Stage01Scene::Render(HDC hdc)
 		obstacle[currRow][currColumn][i]->Render(hdc);
 	}
 
+	// NormalMonster Render
+	for (int i = 0; i < normalMonsterFileInfo[currRow][currColumn].count; ++i)
+	{
+		normalMonster[currRow][currColumn][i]->Render(hdc);
+	}
+
 	// Door Render
 	door->Render(hdc);
 
@@ -498,6 +581,89 @@ void Stage01Scene::LoadMap(string loadTilemapFileName)
 	CloseHandle(hFile);
 }
 
+void Stage01Scene::LoadNormalMonster(int row, int column, string loadNormalMonsterFileName, int normalMonsterCount)
+{
+	if (loadNormalMonsterFileName == "" || normalMonsterCount == 0)
+	{
+		return;
+	}
+
+	string loadFileName = loadNormalMonsterFileName;
+
+	HANDLE hFile = CreateFile(loadFileName.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	DWORD mapLoadFileInfo = sizeof(storeNormalMonsterInfo) * normalMonsterCount;
+
+	DWORD readByte = 0;
+
+	storeNormalMonster.resize(normalMonsterCount);
+	for (int i = 0; i < normalMonsterCount; ++i)
+	{
+		if (ReadFile(hFile, &storeNormalMonster[i], sizeof(storeNormalMonsterInfo), &readByte, NULL) == false)
+		{
+			MessageBox(g_hWnd, "Normal Monster 데이터 로드에 실패! !", "에러", MB_OK);
+		}
+	}
+
+	normalMonster[row][column].resize(normalMonsterCount);
+	for (size_t i = 0; i < normalMonster[row][column].size(); ++i)
+	{
+		normalMonster[row][column][i] = new NormalMonster;
+		normalMonster[row][column][i]->SetNormalMonsterPos(storeNormalMonster[i].pos);
+		normalMonster[row][column][i]->SetNormalMonsterType(storeNormalMonster[i].sampleType);
+		normalMonster[row][column][i]->Init();
+	}
+
+	storeNormalMonster.clear();
+
+	CloseHandle(hFile);
+}
+
+void Stage01Scene::NamingNormalMonsterInfo(int row, int column)
+{
+	string fileName = "Save/MONSTER";
+	// .monster 랜덤 설정
+	int index = 0;
+
+	random_device rd;
+	mt19937 gen(rd());
+	uniform_int_distribution<int> dis(0, 99);
+
+	index = dis(gen) % normalMonsterMaxIndex;
+
+	if (index < 10)
+	{
+		fileName += "0";
+	}
+
+	fileName += to_string(index) + "_";
+
+	int count = 0;
+
+	switch (index)
+	{
+	case 3:
+		count = 0;
+		break;
+	case 2:
+		count = 3;
+		break;
+	case 0: case 1:
+		count = 6;
+		break;
+	}
+
+	if (count < 10)
+	{
+		fileName += "0";
+	}
+
+	fileName += to_string(count) + ".monster";
+
+	normalMonsterFileInfo[row][column].index = fileName;
+	normalMonsterFileInfo[row][column].count = count;
+}
+
 void Stage01Scene::LoadObstacle(int row, int column, string loadObstacleFileName, int obstacleCount)
 {
 	if (loadObstacleFileName == "")
@@ -509,11 +675,6 @@ void Stage01Scene::LoadObstacle(int row, int column, string loadObstacleFileName
 
 	HANDLE hFile = CreateFile(loadFileName.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
-	if (hFile == INVALID_HANDLE_VALUE)
-	{
-		cout << GetLastError();
-	}
-
 	DWORD mapLoadFileInfo = sizeof(storeObstacleInfo) * obstacleCount;
 
 	DWORD readByte = 0;
@@ -521,7 +682,7 @@ void Stage01Scene::LoadObstacle(int row, int column, string loadObstacleFileName
 	if (loadFileName.substr(5, 1) == "C")
 	{
 		storeObstacle[0].resize(obstacleCount);
-		for (size_t i = 0; i < obstacleCount; ++i)
+		for (int i = 0; i < obstacleCount; ++i)
 		{
 			if (ReadFile(hFile, &storeObstacle[0][i], sizeof(storeObstacleInfo), &readByte, NULL) == false)
 			{
@@ -532,7 +693,7 @@ void Stage01Scene::LoadObstacle(int row, int column, string loadObstacleFileName
 	if (loadFileName.substr(5, 1) == "I")
 	{
 		storeObstacle[1].resize(obstacleCount);
-		for (size_t i = 0; i < obstacleCount; ++i)
+		for (int i = 0; i < obstacleCount; ++i)
 		{
 			if (ReadFile(hFile, &storeObstacle[1][i], sizeof(storeObstacleInfo), &readByte, NULL) == false)
 			{
@@ -543,7 +704,7 @@ void Stage01Scene::LoadObstacle(int row, int column, string loadObstacleFileName
 	if (loadFileName.substr(5, 1) == "N")
 	{
 		storeObstacle[2].resize(obstacleCount);
-		for (size_t i = 0; i < obstacleCount; ++i)
+		for (int i = 0; i < obstacleCount; ++i)
 		{
 			if (ReadFile(hFile, &storeObstacle[2][i], sizeof(storeObstacleInfo), &readByte, NULL) == false)
 			{
@@ -596,7 +757,6 @@ void Stage01Scene::LoadObstacle(int row, int column, string loadObstacleFileName
 
 void Stage01Scene::NamingObstacleInfo(int row, int column, string loadObstacleFileName, int obstacleIndex)
 {
-
 	string fileName = "Save/";
 
 	fileName += loadObstacleFileName;
