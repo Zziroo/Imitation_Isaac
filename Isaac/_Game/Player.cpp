@@ -3,7 +3,6 @@
 
 #include "Image.h"
 #include "Obstacle.h"
-#include "WeaponManager.h"
 
 void Player::Init()
 {
@@ -13,16 +12,10 @@ void Player::Init()
     pos.y = (FLOAT)((headInfo.pos.y + bodyInfo.pos.y - ADJUST_SIZE_30) * DEVIDE_HALF);
     moveSpeed = PLAYER_MOVESPEED;
     elapsedAnimeCount = ZERO;
-
-    // Weapon
-    weaponTear = new WeaponManager;
-    weaponTear->Init();
-    weaponTear->SetOwner(this);
 }
 
 void Player::Release()
 {
-    SAFE_RELEASE(weaponTear);
 }
 
 void Player::Update()
@@ -45,8 +38,7 @@ void Player::Update()
     // 무적 상태
     Invisibility();
 
-    // Weapon
-    weaponTear->Update();
+    // 장전 delay
     WeaponDelay();
 }
 
@@ -74,9 +66,6 @@ void Player::Render(HDC hdc)
     default:
         break;
     }
-
-    // Weapon
-    weaponTear->Render(hdc);
 
     // Debug
     GameObject::Render(hdc);
@@ -233,7 +222,7 @@ void Player::ChangeBodyFrame()
 
 void Player::ChangeHeadFrame()
 {
-    if (!ClosedEye())
+    if (ClosedEye() == false)
     {
         ApplyHeadFrame(ObjectDir::UP, HEAD_LOOK_UP);
         ApplyHeadFrame(ObjectDir::DOWN, HEAD_LOOK_DOWN);
@@ -537,7 +526,6 @@ void Player::FireWeapon(int x, int y)
     }
 
     isFire = true;
-    weaponTear->WeaponFire();
 }
 
 void Player::Invisibility()
@@ -743,7 +731,7 @@ void Player::WeaponDelay()
     if (isFire)
     {
         ++fireDelay;
-        if (fireDelay > 30)
+        if (fireDelay > 45)
         {
             isFire = false;
             fireDelay = 0;

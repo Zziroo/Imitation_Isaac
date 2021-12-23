@@ -91,6 +91,9 @@
     <Filter Include="MainGame\Scene\Practice">
       <UniqueIdentifier>{7f66237c-e147-4e97-b3cd-615cc9c77385}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FrameWork\GameObject\Weapon">
+      <UniqueIdentifier>{1d8aaec5-5ce9-4faa-9e5f-c76328790c87}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -125,12 +128,6 @@
     </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>MainGame\GameObject\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="Weapon.cpp">
-      <Filter>MainGame\GameObject\Weapon</Filter>
-    </ClCompile>
-    <ClCompile Include="WeaponManager.cpp">
-      <Filter>MainGame\GameObject\Weapon</Filter>
     </ClCompile>
     <ClCompile Include="Button.cpp">
       <Filter>MainGame\GameObject\Button</Filter>
@@ -174,6 +171,12 @@
     <ClCompile Include="EnemyToolScene.cpp">
       <Filter>MainGame\Scene\MapTool</Filter>
     </ClCompile>
+    <ClCompile Include="Tear.cpp">
+      <Filter>MainGame\GameObject\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="Weapon.cpp">
+      <Filter>FrameWork\GameObject\Weapon</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainConfig.h">
@@ -211,12 +214,6 @@
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>MainGame\GameObject\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="Weapon.h">
-      <Filter>MainGame\GameObject\Weapon</Filter>
-    </ClInclude>
-    <ClInclude Include="WeaponManager.h">
-      <Filter>MainGame\GameObject\Weapon</Filter>
     </ClInclude>
     <ClInclude Include="Button.h">
       <Filter>MainGame\GameObject\Button</Filter>
@@ -259,6 +256,12 @@
     </ClInclude>
     <ClInclude Include="EnemyToolScene.h">
       <Filter>MainGame\Scene\MapTool</Filter>
+    </ClInclude>
+    <ClInclude Include="Tear.h">
+      <Filter>MainGame\GameObject\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="Weapon.h">
+      <Filter>FrameWork\GameObject\Weapon</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
