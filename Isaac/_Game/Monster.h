@@ -2,7 +2,7 @@
 
 #include "GameObject.h"
 
-enum class MonsterStates { IDLE, ATTACK, DEAD, NONE };
+enum class MonsterStates { IDLE, MOVE, ATTACK, DEAD, NONE };
 
 class Monster : public GameObject
 {

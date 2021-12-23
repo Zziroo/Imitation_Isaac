@@ -138,15 +138,19 @@ void MapEditing::CreateStage()
 	random_device rd;
 	mt19937 gen(rd());
 	uniform_int_distribution<int> dis(0, 99);
+
 	// 보스맵을 Start맵과 겹치지 않게 설정
 	DeginateBossMap(dis(gen) % stageSize, dis(gen) % stageSize);
+
 	// 나머지 방들을 삽입(시작 지점, 보스 지점 제외)
 	for (size_t i = 1; i < (ThinOutMapInfo.size() - 1); ++i)
 	{
 		DeginateMap(dis(gen) % stageSize, dis(gen) % stageSize, i);
 	}
+
 	// 한 Stage안에 맵들이 연결돼어있는지 확인하기 위한 변수
 	countLinkedMap = 1;
+
 	// 통과했는지의 여부를 알기 위해 vector<vector<bool>> 생성
 	isTransitMap.resize(stageSize);
 	for (size_t i = 0; i < isTransitMap.size(); ++i)
@@ -157,10 +161,13 @@ void MapEditing::CreateStage()
 			isTransitMap[i][j] = false;
 		}
 	}
+
 	// Start지점은 true
 	isTransitMap[startPoint][startPoint] = true;
+
 	// Start지점부터 상하좌우 한칸씩 진입해 비어있는지 아닌지 확인 하면서 수를 셈. 총 수가 stage[0].size()와 다르면 다시 처음부터 돌림
 	CountLinkedMap(startPoint, startPoint);
+
 	// 연결된 맵의 개수와 Stage[0].size() 다르면 다시 Stage01 구성
 	if (countLinkedMap != ThinOutMapInfo.size())
 	{
@@ -172,13 +179,14 @@ void MapEditing::CreateStage()
 
 		CreateStage();
 	}
+
 	// 서로 붙지 말아야할 타일 지정
 	for (size_t i = 0; i < stage.size(); ++i)
 	{
 		for (size_t j = 0; j < stage[i].size(); ++j)
 		{
-			// BossMap(BASEMENT01.map) 주면에 DEPTH Tilemap이면 다시 구성
-			if (stage[i][j] == "Save/BASEMENT01.map")
+			// BossMap(BASEMENT01.map 또는 CAVE01.map) 주면에 DEPTH Tilemap이면 다시 구성
+			if (stage[i][j] == "Save/BASEMENT01.map" || stage[i][j] == "Save/CAVE01.map")
 			{
 				int topRow = (INT)(i - 1);
 				int bottomRow = (INT)(i + 1);
@@ -233,6 +241,7 @@ void MapEditing::CreateStage()
 					return;
 				}
 			}
+
 			// DEPTH00.map 과 DEPTH01.map 서로 붙어 있으면 다시 구성
 			if (stage[i][j] == "Save/DEPTH00.map")
 			{
@@ -290,6 +299,34 @@ void MapEditing::CreateStage()
 				}
 			}
 		}
+	}
+}
+
+void MapEditing::CreateStageSize()
+{
+	if (ThinOutMapInfo[0].size() < ((4 - 1) * (4 - 1)) - 2)
+	{
+		stageSize = 3;
+	}
+	if (((4 - 1) * (4 - 1)) - 2 <= ThinOutMapInfo[0].size() && ThinOutMapInfo[0].size() < ((5 - 1) * (5 - 1)) - 2)
+	{
+		stageSize = 4;
+	}
+	if (((5 - 1) * (5 - 1)) - 2 <= ThinOutMapInfo[0].size() && ThinOutMapInfo[0].size() < ((6 - 1) * (6 - 1)) - 2)
+	{
+		stageSize = 5;
+	}
+	if (((6 - 1) * (6 - 1)) - 2 <= ThinOutMapInfo[0].size() && ThinOutMapInfo[0].size() < ((7 - 1) * (7 - 1)) - 2)
+	{
+		stageSize = 6;
+	}
+	if (((7 - 1) * (7 - 1)) - 2 <= ThinOutMapInfo[0].size() && ThinOutMapInfo[0].size() < ((8 - 1) * (8 - 1)) - 2)
+	{
+		stageSize = 7;
+	}
+	if (((8 - 1) * (8 - 1)) - 2 <= ThinOutMapInfo[0].size() && ThinOutMapInfo[0].size() < ((9 - 1) * (9 - 1)) - 2)
+	{
+		stageSize = 8;
 	}
 }
 
@@ -435,7 +472,7 @@ void MapEditing::Init(int stageNum)
 	}
 
 	// 맵의 개수로 stage 크기 결정
-	SettingStageSize();
+	CreateStageSize();
 	// Stage 중앙의 Index
 	startPoint = (INT)(stageSize * DEVIDE_HALF);
 	// Stage 초기화
@@ -458,32 +495,4 @@ void MapEditing::Init(int stageNum)
 	}
 	cout << "\n";
 #endif
-}
-
-void MapEditing::SettingStageSize()
-{
-	if (ThinOutMapInfo[0].size() < ((4 - 1) * (4 - 1)) - 2)
-	{
-		stageSize = 3;
-	}
-	if (((4 - 1) * (4 - 1)) - 2 <= ThinOutMapInfo[0].size() && ThinOutMapInfo[0].size() < ((5 - 1) * (5 - 1)) - 2)
-	{
-		stageSize = 4;
-	}
-	if (((5 - 1) * (5 - 1)) - 2 <= ThinOutMapInfo[0].size() && ThinOutMapInfo[0].size() < ((6 - 1) * (6 - 1)) - 2)
-	{
-		stageSize = 5;
-	}
-	if (((6 - 1) * (6 - 1)) - 2 <= ThinOutMapInfo[0].size() && ThinOutMapInfo[0].size() < ((7 - 1) * (7 - 1)) - 2)
-	{
-		stageSize = 6;
-	}
-	if (((7 - 1) * (7 - 1)) - 2 <= ThinOutMapInfo[0].size() && ThinOutMapInfo[0].size() < ((8 - 1) * (8 - 1)) - 2)
-	{
-		stageSize = 7;
-	}
-	if (((8 - 1) * (8 - 1)) - 2 <= ThinOutMapInfo[0].size() && ThinOutMapInfo[0].size() < ((9 - 1) * (9 - 1)) - 2)
-	{
-		stageSize = 8;
-	}
 }

@@ -17,7 +17,7 @@ private:
 	Minimap*									minimap = nullptr;
 	Player*										player = nullptr;
 
-	SampleTileTypes								sampleTileType = SampleTileTypes::BASEMENT;
+	SampleTileTypes								sampleTileType = SampleTileTypes::NONE;
 
 	TILE_INFO									colliderTileInfo[TILE_ROW * TILE_COLUMN];
 	TILE_INFO									mainBasementTileInfo[BASEMENT_TILE_ROW][TILE_COLUMN];

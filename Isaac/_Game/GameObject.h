@@ -6,6 +6,7 @@ protected:
 	TILE_INFO*								tile = nullptr;								// 타일의 정보
 	POINTFLOAT								pos = {};									// 위치
 	RECT									shape = {};									// 모양
+	RECT									colliderRect = {};
 
 	bool									debugMode = false;							// 디버깅용
 

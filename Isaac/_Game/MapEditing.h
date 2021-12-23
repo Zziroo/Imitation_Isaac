@@ -23,10 +23,10 @@ public:
 	void							ArrangeStageIndex(SampleTileTypes sampleType, int loadIndex, int stageNum);
 	void							CountLinkedMap(int row, int column);
 	void							CreateStage();
+	void							CreateStageSize();
 	void							DeginateBossMap(int row, int column);
 	void							DeginateMap(int row, int column, size_t index);
 	void							Init(int stageNum = 0);
-	void							SettingStageSize();
 
 	vector<vector<string>>			GetStage() { return this->stage; }
 	int								GetStageSize() { return this->stageSize; }
