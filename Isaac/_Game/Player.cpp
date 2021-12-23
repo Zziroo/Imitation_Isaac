@@ -2,6 +2,7 @@
 #include "Player.h"
 
 #include "Image.h"
+#include "NormalMonster.h"
 #include "Obstacle.h"
 
 void Player::Init()
@@ -33,7 +34,7 @@ void Player::Update()
     ChangeImagePlayerState();
 
     // Hurt 상태일 때 애니메이션 변화
-    ChageAnimationHurt();
+    ChangeAnimationHurt();
 
     // 무적 상태
     Invisibility();
@@ -170,25 +171,7 @@ void Player::ChangeAnimationAttack()
     ApplyAnimationAttack(ATTACKING_RIGHTSIDE, HEAD_LOOK_RIGHT);
 }
 
-void Player::ChangeAnimationWalk()
-{
-    ChangeBodyFrame();
-    ChangeHeadFrame();
-
-    ++bodyInfo.elapsedAnimeCount;
-    if (bodyInfo.elapsedAnimeCount > 5)
-    {
-        bodyInfo.image->SetCurrFrameX(bodyInfo.image->GetCurrFrameX() + ADVANCE_FRAME);
-        if (bodyInfo.image->GetCurrFrameX() >= MAX_BODY_FRAME_X)
-        { 
-            bodyInfo.image->SetCurrFrameX(START_BODY_FRAME_X);
-        }
-
-        bodyInfo.elapsedAnimeCount = ZERO;
-    }
-}
-
-void Player::ChageAnimationHurt()
+void Player::ChangeAnimationHurt()
 {
     if (otherStateImg != nullptr)
     {
@@ -209,6 +192,24 @@ void Player::ChageAnimationHurt()
                 hurtDurationTime = 0;
             }
         }
+    }
+}
+
+void Player::ChangeAnimationWalk()
+{
+    ChangeBodyFrame();
+    ChangeHeadFrame();
+
+    ++bodyInfo.elapsedAnimeCount;
+    if (bodyInfo.elapsedAnimeCount > 5)
+    {
+        bodyInfo.image->SetCurrFrameX(bodyInfo.image->GetCurrFrameX() + ADVANCE_FRAME);
+        if (bodyInfo.image->GetCurrFrameX() >= MAX_BODY_FRAME_X)
+        {
+            bodyInfo.image->SetCurrFrameX(START_BODY_FRAME_X);
+        }
+
+        bodyInfo.elapsedAnimeCount = ZERO;
     }
 }
 
@@ -295,6 +296,8 @@ void Player::CollideWithDoor(POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT head
                 (LONG)(bodyInfo.pos.x + (PLAYER_BODYSIZE * DEVIDE_HALF) + ADJUST_SIZE_14),
                 (LONG)(bodyInfo.pos.y + (PLAYER_BODYSIZE * DEVIDE_HALF))
             };
+            pos.x = (FLOAT)(headInfo.pos.x);
+            pos.y = (FLOAT)((headInfo.pos.y + bodyInfo.pos.y - ADJUST_SIZE_30) * DEVIDE_HALF);
         }
     }
     // 아래쪽 문이 몸통 부분과 겹치고
@@ -304,7 +307,7 @@ void Player::CollideWithDoor(POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT head
         if (doorInfo[0][currRow][currColumn][LOWER_DOOR].doorState == DoorStates::OPENED && doorInfo[0][currRow][currColumn][LOWER_DOOR].img != nullptr)
         {
             enterNextDoor[LOWER_DOOR] = true;
-            headInfo.pos = { 640.0f, 95.0f };
+            headInfo.pos = { 640.0f, 120.0f };
             headInfo.shape = {
                 (LONG)(headInfo.pos.x - (PLAYER_HEADSIZE * DEVIDE_HALF) - ADJUST_SIZE_05),
                 (LONG)(headInfo.pos.y - (PLAYER_HEADSIZE * DEVIDE_HALF)),
@@ -318,6 +321,8 @@ void Player::CollideWithDoor(POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT head
                 (LONG)(bodyInfo.pos.x + (PLAYER_BODYSIZE * DEVIDE_HALF) + ADJUST_SIZE_14),
                 (LONG)(bodyInfo.pos.y + (PLAYER_BODYSIZE * DEVIDE_HALF))
             };
+            pos.x = (FLOAT)(headInfo.pos.x);
+            pos.y = (FLOAT)((headInfo.pos.y + bodyInfo.pos.y - ADJUST_SIZE_30) * DEVIDE_HALF);
         }
     }
     // 왼쪽 문이 머리 부분 또는 몸통 부분과 겹치고
@@ -341,6 +346,8 @@ void Player::CollideWithDoor(POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT head
                 (LONG)(bodyInfo.pos.x + (PLAYER_BODYSIZE * DEVIDE_HALF) + ADJUST_SIZE_14),
                 (LONG)(bodyInfo.pos.y + (PLAYER_BODYSIZE * DEVIDE_HALF))
             };
+            pos.x = (FLOAT)(headInfo.pos.x);
+            pos.y = (FLOAT)((headInfo.pos.y + bodyInfo.pos.y - ADJUST_SIZE_30) * DEVIDE_HALF);
         }
     }
     // 오른쪽 문이 머리 부분 또는 몸통 부분과 겹치고
@@ -364,6 +371,8 @@ void Player::CollideWithDoor(POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT head
                 (LONG)(bodyInfo.pos.x + (PLAYER_BODYSIZE * DEVIDE_HALF) + ADJUST_SIZE_14),
                 (LONG)(bodyInfo.pos.y + (PLAYER_BODYSIZE * DEVIDE_HALF))
             };
+            pos.x = (FLOAT)(headInfo.pos.x);
+            pos.y = (FLOAT)((headInfo.pos.y + bodyInfo.pos.y - ADJUST_SIZE_30) * DEVIDE_HALF);
         }
     }
 #pragma endregion
@@ -421,6 +430,28 @@ void Player::CollideWithDoor(POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT head
 #pragma endregion
 }
 
+void Player::CollideWithObstacle(POINTFLOAT buffPos, POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT headPos, RECT headShape)
+{
+    // Obstacle과의 충돌 처리
+    for (size_t i = 0; i < obstacle[0][currRow][currColumn].size(); ++i)
+    {
+        RECT obstacleShape = obstacle[0][currRow][currColumn][i]->GetObstacleShape();
+        // Obstacle이 Bonfire일 때
+        DamagedByBonfire((INT)i, obstacleShape, buffPos, bodyPos, bodyShape, headPos, headShape);
+        // 특정 Obstacle이 아닐 때
+        if (obstacle[0][currRow][currColumn][i]->GetObstacleType() != ObstacleTypes::BONFIRE && obstacle[0][currRow][currColumn][i]->GetObstacleType() != ObstacleTypes::THORN)
+        {
+            if (IntersectRect(&colliderRect, &bodyInfo.shape, &obstacleShape))
+            {
+                bodyInfo.pos = bodyPos;
+                bodyInfo.shape = bodyShape;
+                headInfo.pos = headPos;
+                headInfo.shape = headShape;
+            }
+        }
+    }
+}
+
 void Player::CollideWithTilemap(POINTFLOAT buffPos, POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT headPos, RECT headShape)
 {
     for (int i = 0; i < (TILE_ROW * TILE_COLUMN); ++i)
@@ -437,11 +468,50 @@ void Player::CollideWithTilemap(POINTFLOAT buffPos, POINTFLOAT bodyPos, RECT bod
     }
 }
 
-void Player::DamagedByDoor(int doorDir, RECT playerShape)
+void Player::DamagedByBonfire(int obstacleIndex, RECT obstacleShape, POINTFLOAT buffPos, POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT headPos, RECT headShape)
 {
-    if (isinvincible == false && doorInfo[0][currRow][currColumn][doorDir].img == GET_SINGLETON_IMAGE->FindImage("Image/Door/Curse_Room_Door.bmp"))
+    if (obstacle[0][currRow][currColumn][obstacleIndex]->GetObstacleType() == ObstacleTypes::BONFIRE && obstacle[0][currRow][currColumn][obstacleIndex]->GetObstacleDamaged())
     {
-        if (IntersectRect(&colliderRect, &playerShape, &doorInfo[0][currRow][currColumn][doorDir].shape))
+        if (IntersectRect(&colliderRect, &bodyInfo.shape, &obstacleShape))
+        {
+            playerState = PlayerStates::HURT;
+
+            pos.x = buffPos.x;
+            pos.y = buffPos.y;
+            bodyInfo.pos = bodyPos;
+            bodyInfo.shape = bodyShape;
+            headInfo.pos = headPos;
+            headInfo.shape = headShape;
+        }
+    }
+}
+
+void Player::DamagedByDoor()
+{
+    if (isinvincible == false && doorInfo[0][currRow][currColumn][UPPER_DOOR].img == GET_SINGLETON_IMAGE->FindImage("Image/Door/Curse_Room_Door.bmp"))
+    {
+        if (IntersectRect(&colliderRect, &headInfo.shape, &doorInfo[0][currRow][currColumn][UPPER_DOOR].shape))
+        {
+            playerState = PlayerStates::HURT;
+        }
+    }
+    if (isinvincible == false && doorInfo[0][currRow][currColumn][LOWER_DOOR].img == GET_SINGLETON_IMAGE->FindImage("Image/Door/Curse_Room_Door.bmp"))
+    {
+        if (IntersectRect(&colliderRect, &bodyInfo.shape, &doorInfo[0][currRow][currColumn][LOWER_DOOR].shape))
+        {
+            playerState = PlayerStates::HURT;
+        }
+    }
+    if (isinvincible == false && doorInfo[0][currRow][currColumn][LEFT_DOOR].img == GET_SINGLETON_IMAGE->FindImage("Image/Door/Curse_Room_Door.bmp"))
+    {
+        if (IntersectRect(&colliderRect, &headInfo.shape, &doorInfo[0][currRow][currColumn][LEFT_DOOR].shape))
+        {
+            playerState = PlayerStates::HURT;
+        }
+    }
+    if (isinvincible == false && doorInfo[0][currRow][currColumn][RIGHT_DOOR].img == GET_SINGLETON_IMAGE->FindImage("Image/Door/Curse_Room_Door.bmp"))
+    {
+        if (IntersectRect(&colliderRect, &headInfo.shape, &doorInfo[0][currRow][currColumn][RIGHT_DOOR].shape))
         {
             playerState = PlayerStates::HURT;
         }
@@ -450,7 +520,7 @@ void Player::DamagedByDoor(int doorDir, RECT playerShape)
 
 void Player::DamagedBySlider()
 {
-    for (int i = 0; i < obstacleFileInfo[currRow][currColumn].count; ++i)
+    for (size_t i = 0; i < obstacle[0][currRow][currColumn].size(); ++i)
     {
         RECT obstacleShape = {
             obstacle[0][currRow][currColumn][i]->GetObstacleShape().left - ADJUST_SIZE_10,
@@ -458,11 +528,12 @@ void Player::DamagedBySlider()
             obstacle[0][currRow][currColumn][i]->GetObstacleShape().right + ADJUST_SIZE_10,
             obstacle[0][currRow][currColumn][i]->GetObstacleShape().bottom + ADJUST_SIZE_10
         };
+
         if (isinvincible == false && obstacle[0][currRow][currColumn][i]->GetObstacleType() == ObstacleTypes::SLIDER && obstacle[0][currRow][currColumn][i]->GetObstacleDamaged())
         {
             if (IntersectRect(&colliderRect, &bodyInfo.shape, &obstacleShape))
             {
-                playerState = PlayerStates::HURT;                                       // 오류 수정 필요! ! => 플레이어 부들 거림.
+                playerState = PlayerStates::HURT;                                       // 수정 필요! ! => 플레이어 부들 거림.
             }
         }
     }
@@ -470,7 +541,7 @@ void Player::DamagedBySlider()
 
 void Player::DamagedByThorn()
 {
-    for (int i = 0; i < obstacleFileInfo[currRow][currColumn].count; ++i)
+    for (size_t i = 0; i < obstacle[0][currRow][currColumn].size(); ++i)
     {
         RECT obstacleShape = obstacle[0][currRow][currColumn][i]->GetObstacleShape();
         if (isinvincible == false && obstacle[0][currRow][currColumn][i]->GetObstacleType() == ObstacleTypes::THORN)
@@ -485,10 +556,7 @@ void Player::DamagedByThorn()
 
 void Player::DamagedPlayer()
 {
-    DamagedByDoor(UPPER_DOOR, headInfo.shape);
-    DamagedByDoor(LOWER_DOOR, bodyInfo.shape);
-    DamagedByDoor(LEFT_DOOR, headInfo.shape);
-    DamagedByDoor(RIGHT_DOOR, headInfo.shape);
+    DamagedByDoor();
 
     DamagedBySlider();
     DamagedByThorn();
@@ -525,7 +593,7 @@ void Player::FireWeapon(int x, int y)
         DevideHeadDir(y, section02, ATTACKING_RIGHTSIDE, ATTACKING_UPSIDE);
     }
 
-    isFire = true;
+    isFireTear = true;
 }
 
 void Player::Invisibility()
@@ -613,36 +681,39 @@ void Player::Move()
     CollideWithDoor(buffBodyPos, buffBodyShape, buffHeadPos, buffHeadShape);
     #pragma endregion
 
-    #pragma region Obstacle
-    // Obstacle과의 충돌 처리
-    for (int i = 0; i < obstacleFileInfo[currRow][currColumn].count; ++i)
+    #pragma region ObstacleCollider
+    // 장애물과의 충돌 처리
+    CollideWithObstacle(buffPos, buffBodyPos, buffBodyShape, buffHeadPos, buffHeadShape);
+    #pragma endregion
+
+    #pragma region NormalMonsterCollider
+    // 장애물과의 충돌 처리
+    for (size_t i = 0; i < normalMonster[0][currRow][currColumn].size(); ++i)
     {
-        RECT obstacleShape = obstacle[0][currRow][currColumn][i]->GetObstacleShape();
-        // Obstacle이 Bonfire일 때
-        if (obstacle[0][currRow][currColumn][i]->GetObstacleType() == ObstacleTypes::BONFIRE && obstacle[0][currRow][currColumn][i]->GetObstacleDamaged())
+        RECT normalMonsterShape = normalMonster[0][currRow][currColumn][i]->GetNormalMonsterShape();
+        if (normalMonster[0][currRow][currColumn][i]->GetNormalMonsterType() != NormalMonsterTypes::FLY)
         {
-            if (IntersectRect(&colliderRect, &bodyInfo.shape, &obstacleShape))
+            if (isinvincible == false && (IntersectRect(&colliderRect, &bodyInfo.shape, &normalMonsterShape) || IntersectRect(&colliderRect, &headInfo.shape, &normalMonsterShape)))
             {
+                playerState = PlayerStates::HURT;
+
                 pos.x = buffPos.x;
                 pos.y = buffPos.y;
                 bodyInfo.pos = buffBodyPos;
                 bodyInfo.shape = buffBodyShape;
                 headInfo.pos = buffHeadPos;
                 headInfo.shape = buffHeadShape;
-
-                playerState = PlayerStates::HURT;
             }
         }
-        // 특정 Obstacle이 아닐 때
-        if (obstacle[0][currRow][currColumn][i]->GetObstacleType() != ObstacleTypes::BONFIRE && obstacle[0][currRow][currColumn][i]->GetObstacleType() != ObstacleTypes::THORN)
+
+        if (IntersectRect(&colliderRect, &bodyInfo.shape, &normalMonsterShape) || IntersectRect(&colliderRect, &headInfo.shape, &normalMonsterShape))
         {
-            if (IntersectRect(&colliderRect, &bodyInfo.shape, &obstacleShape))
-            {
-                bodyInfo.pos = buffBodyPos;
-                bodyInfo.shape = buffBodyShape;
-                headInfo.pos = buffHeadPos;
-                headInfo.shape = buffHeadShape;
-            }
+            pos.x = buffPos.x;
+            pos.y = buffPos.y;
+            bodyInfo.pos = buffBodyPos;
+            bodyInfo.shape = buffBodyShape;
+            headInfo.pos = buffHeadPos;
+            headInfo.shape = buffHeadShape;
         }
     }
     #pragma endregion
@@ -716,7 +787,7 @@ void Player::TakeAction()
     }
 
     // 공격키
-    if (Input::GetButton(VK_LBUTTON) && !isFire)
+    if (Input::GetButton(VK_LBUTTON) && !isFireTear)
     {
         if (playerState != PlayerStates::HURT)
         {
@@ -728,12 +799,12 @@ void Player::TakeAction()
 
 void Player::WeaponDelay()
 {
-    if (isFire)
+    if (isFireTear)
     {
         ++fireDelay;
         if (fireDelay > 45)
         {
-            isFire = false;
+            isFireTear = false;
             fireDelay = 0;
         }
     }

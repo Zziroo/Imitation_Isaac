@@ -8,22 +8,25 @@ void NormalMonster::Init()
 	switch (monsterInfo.type)
 	{
 	case NormalMonsterTypes::ATTACKFLY:
-		monsterInfo.type = NormalMonsterTypes::ATTACKFLY;
 		monsterInfo.img = GET_SINGLETON_IMAGE->FindImage("Image/Monster/Attack_Fly.bmp");
-		objectSize = 20.0f;
-		DeginateNorMalMonsterShape(pos.x, pos.y, objectSize);
+		monsterInfo.moveSpeed = 200.0f;
+		monsterInfo.type = NormalMonsterTypes::ATTACKFLY;
+		monsterInfo.objectSize = 20.0f;
+		DeginateNorMalMonsterShape(monsterInfo.pos.x, monsterInfo.pos.y, monsterInfo.objectSize);
 		break;
 	case NormalMonsterTypes::FLY:
-		monsterInfo.type = NormalMonsterTypes::FLY;
 		monsterInfo.img = GET_SINGLETON_IMAGE->FindImage("Image/Monster/Fly.bmp");
-		objectSize = 20.0f;
-		DeginateNorMalMonsterShape(pos.x, pos.y, objectSize);
+		monsterInfo.type = NormalMonsterTypes::FLY;
+		monsterInfo.moveSpeed = 100.0f;
+		monsterInfo.objectSize = 20.0f;
+		DeginateNorMalMonsterShape(monsterInfo.pos.x, monsterInfo.pos.y, monsterInfo.objectSize);
 		break;
 	case NormalMonsterTypes::POOTER:
-		monsterInfo.type = NormalMonsterTypes::POOTER;
 		monsterInfo.img = GET_SINGLETON_IMAGE->FindImage("Image/Monster/Pooter_Idle.bmp");
-		objectSize = 26.0f;
-		DeginateNorMalMonsterShape(pos.x, pos.y, objectSize, -3.0f, 1.0f, -3.0f, 1.0f);
+		monsterInfo.type = NormalMonsterTypes::POOTER;
+		monsterInfo.moveSpeed = 100.0f;
+		monsterInfo.objectSize = 26.0f;
+		DeginateNorMalMonsterShape(monsterInfo.pos.x, monsterInfo.pos.y, monsterInfo.objectSize, -3.0f, 1.0f, -3.0f, 1.0f);
 		break;
 	default:
 		break;
@@ -36,8 +39,39 @@ void NormalMonster::Release()
 
 void NormalMonster::Update()
 {
-	// Idle
-	if (monsterInfo.state == MonsterStates::IDLE)
+	ChangeAnimation();
+
+	Move();
+
+	// Debug
+	Monster::Update();
+}
+
+void NormalMonster::Render(HDC hdc)
+{
+	monsterInfo.img->Render(hdc, (INT)monsterInfo.pos.x, (INT)monsterInfo.pos.y, monsterInfo.img->GetCurrFrameX(), monsterInfo.img->GetCurrFrameY());
+
+	// Debug
+	Monster::Render(hdc);
+}
+
+void NormalMonster::OnDebug(HDC hdc)
+{
+#ifdef _DEBUG
+	if (debugMode)
+	{
+		Ellipse(hdc, monsterInfo.shape.left, monsterInfo.shape.top, monsterInfo.shape.right, monsterInfo.shape.bottom);
+	}
+#endif
+}
+
+void NormalMonster::Move()
+{
+}
+
+void NormalMonster::ChangeAnimation()
+{
+	if (monsterInfo.type != NormalMonsterTypes::NONE)
 	{
 		++monsterInfo.elapsedAnimeCount;
 		if (monsterInfo.elapsedAnimeCount > 11)
@@ -50,33 +84,12 @@ void NormalMonster::Update()
 			monsterInfo.elapsedAnimeCount = 0;
 		}
 	}
-
-	// Debug
-	Monster::Update();
-}
-
-void NormalMonster::Render(HDC hdc)
-{
-	monsterInfo.img->Render(hdc, (INT)pos.x, (INT)pos.y, monsterInfo.img->GetCurrFrameX(), monsterInfo.img->GetCurrFrameY());
-
-	// Debug
-	Monster::Render(hdc);
-}
-
-void NormalMonster::OnDebug(HDC hdc)
-{
-#ifdef _DEBUG
-	if (debugMode)
-	{
-		Ellipse(hdc, shape.left, shape.top, shape.right, shape.bottom);
-	}
-#endif
 }
 
 void NormalMonster::DeginateNorMalMonsterShape(float posX, float posY, float size, float adjustSizeLeft, float adjustSizeTop, float adjustSizeRight, float adjustSizeBottom)
 {
-	shape.left = (LONG)(posX - (size * DEVIDE_HALF) - adjustSizeLeft);
-	shape.top = (LONG)(posY - (size * DEVIDE_HALF) - adjustSizeTop);
-	shape.right = (LONG)(posX + (size * DEVIDE_HALF) + adjustSizeRight);
-	shape.bottom = (LONG)(posY + (size * DEVIDE_HALF) + adjustSizeBottom);
+	monsterInfo.shape.left = (LONG)(posX - (size * DEVIDE_HALF) - adjustSizeLeft);
+	monsterInfo.shape.top = (LONG)(posY - (size * DEVIDE_HALF) - adjustSizeTop);
+	monsterInfo.shape.right = (LONG)(posX + (size * DEVIDE_HALF) + adjustSizeRight);
+	monsterInfo.shape.bottom = (LONG)(posY + (size * DEVIDE_HALF) + adjustSizeBottom);
 }

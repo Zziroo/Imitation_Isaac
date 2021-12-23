@@ -16,10 +16,14 @@ HRESULT Stage01Scene::Init()
 	switch (stageNum)
 	{
 	case 0:
+		// TileType
+		sampleTileType = SampleTileTypes::BASEMENT;
 		// Tilemap Image
 		drawingAreaImg = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Tile/Basement.bmp");
 		break;
 	case 1:
+		// TileType
+		sampleTileType = SampleTileTypes::CAVE;
 		// Tilemap Image
 		drawingAreaImg = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Tile/Cave.bmp");
 		break;
@@ -289,8 +293,8 @@ HRESULT Stage01Scene::Init()
 	}
 	player->SetTileInfo(colliderTileInfo);
 	player->SetDoorInfo(&doorInfo);
+	player->SetNormalMonsterInfo(&normalMonster);
 	player->SetObstacleInfo(&obstacle);
-	player->SetObstacleCountInfo(obstacleFileInfo);
 	player->SetStageSize(stageSize);
 	player->Init();
 
@@ -420,11 +424,16 @@ void Stage01Scene::Update()
 	}
 
 	// NormalMonster Update
+	for (int i = 0; i < normalMonsterFileInfo[currRow][currColumn].count; ++i)
+	{
+		normalMonster[currRow][currColumn][i]->SetTargetPos(player->GetPlayerBodyPos());
+	}
+
 	for (size_t i = 0; i < normalMonster.size(); ++i)
 	{
 		for (size_t j = 0; j < normalMonster[i].size(); ++j)
 		{
-			for (int k = 0; k < normalMonsterFileInfo[i][j].count; ++k)
+			for (size_t k = 0; k < normalMonster[i][j].size(); ++k)
 			{
 				normalMonster[i][j][k]->Update();
 			}

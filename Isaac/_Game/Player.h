@@ -3,6 +3,7 @@
 #include "GameObject.h"
 
 class Image;
+class NormalMonster;
 class Obstacle;
 class WeaponManager;
 class Player : public GameObject
@@ -49,24 +50,25 @@ private:
 	WeaponManager*							weaponTear = nullptr;
 
 	vector<vector<array<DOOR_INFO, 4>>>*	doorInfo = nullptr;																			// 문의 정보
-	vector<vector<vector<Obstacle*>>>*		obstacle = nullptr; 
-	vector<vector<FILE_INFO>>				obstacleFileInfo;
+	vector<vector<vector<NormalMonster*>>>* normalMonster = nullptr;																	// Normal Monster 정보
+	vector<vector<vector<Obstacle*>>>*		obstacle = nullptr;																			// 장애물 정보
 
 	PlayerStates							playerState = PlayerStates::IDLE;															// 상태
-	RECT									colliderRect = {};																			// 충돌 처리용
 
 	array<bool, 4>							enterNextDoor = { false };
-	bool									isFire = false;																				// 무기 발사
+	bool									isFireTear = false;																			// 무기 발사
 	bool									isinvincible = false;																		// 무적 상태
 
 	char									text[64] = {};
 
 	int										stageSize = 0;																				// Stage Size
-	int										currColumn = 0;
-	int										currRow = 0;
+	int										currColumn = 0;																				// 현재 맵의 column
+	int										currRow = 0;																				// 현재 맵의 row
 	int										fireDelay = 0;																				// 무기 발사 지연
 
-	int										hurtDurationTime = 0;
+	int										hurtDurationTime = 0;																		// 피해를 입었을 때 지속 시간(무적 상태)
+
+	vector<vector<FILE_INFO>>				normalMonsterInfo;
 
 public:
 	virtual void							Init() override;
@@ -82,28 +84,30 @@ public:
 	void									BlinkEye();																					// 눈 깜빡임
 	float									CalculateSlope(RECT rc);																	// 기울기
 	void									ChangeAnimationAttack();																	// 애니메이션 변화(Attack)
+	void									ChangeAnimationHurt();																		// 애니메이션 변화(Hurt)
 	void									ChangeAnimationWalk();																		// 애니메이션 변화(Walk)
-	void									ChageAnimationHurt();																		// 애니메이션 변화(Hurt)
 	void									ChangeBodyFrame();
 	void									ChangeHeadFrame();
 	void									ChangeHeadDir();
 	void									ChangeImagePlayerState();
 	bool									ClosedEye();																				// 눈이 감긴 상태
 	void									CollideWithDoor(POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT headPos, RECT headShape);
+	void									CollideWithObstacle(POINTFLOAT buffPos, POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT headPos, RECT headShape);
 	void									CollideWithTilemap(POINTFLOAT buffPos, POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT headPos, RECT headShape);
-	void									DamagedByDoor(int doorDir, RECT playerShape);
+	void									DamagedByBonfire(int obstacleIndex, RECT obstacleShape, POINTFLOAT buffPos, POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT headPos, RECT headShape);
+	void									DamagedByDoor();
 	void									DamagedBySlider();
 	void									DamagedByThorn();
 	void									DamagedPlayer();
 	void									DevideHeadDir(int pointY, float section, int dir1, int dir2);								// 입력한 위치 바라보기
 	void									FireWeapon(int x, int y);																	// weapon 발사
-	void									Invisibility();
+	void									Invisibility();																				// 무적 상태
 	void									Move();																						// 움직임
 	void									TakeAction();																				// 입력키
 	void									WeaponDelay();
 
 	array<bool, 4>							GetEnterNextDoor() { return this->enterNextDoor; }
-	bool									GetIsFire() { return this->isFire; }
+	bool									GetIsFire() { return this->isFireTear; }
 	POINTFLOAT								GetPlayerBodyPos() { return this->bodyInfo.pos; }
 	RECT									GetPlayerBodyShape() { return this->bodyInfo.shape; }
 	POINTFLOAT								GetPlayerHeadPos() { return this->headInfo.pos; }
@@ -117,9 +121,9 @@ public:
 	void									SetEnterNextLeftDoor(bool enterNextDoor) { this->enterNextDoor[2] = enterNextDoor; }
 	void									SetEnterNextRightDoor(bool enterNextDoor) { this->enterNextDoor[3] = enterNextDoor; }
 	void									SetDoorInfo(vector<vector<array<DOOR_INFO, 4 >>>* doorInfo) { this->doorInfo = doorInfo; }
-	void									SetIsFire(bool isFire) { this->isFire = isFire; }
+	void									SetIsFire(bool isFireTear) { this->isFireTear = isFireTear; }
+	void									SetNormalMonsterInfo(vector<vector<vector<NormalMonster*>>>* normalMonster) { this->normalMonster = normalMonster; }
 	void									SetObstacleInfo(vector<vector<vector<Obstacle*>>>* obstacle) { this->obstacle = obstacle; }
-	void									SetObstacleCountInfo(vector<vector<FILE_INFO>> obstacleFileInfo) { this->obstacleFileInfo = obstacleFileInfo; }
 	void									SetPlayerBodyPos(POINTFLOAT pos) { this->bodyInfo.pos = pos; }
 	void									SetPlayerBodyShape(RECT rc) { this->bodyInfo.shape = rc; }
 	void									SetPlayerHeadPos(POINTFLOAT pos) { this->headInfo.pos = pos; }
