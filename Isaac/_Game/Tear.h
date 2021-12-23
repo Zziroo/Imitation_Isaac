@@ -21,7 +21,7 @@ public:
 	virtual void		Render(HDC hdc) override;
 	virtual void		OnDebug(HDC hdc) override;
 
-	void Init(GameObject* owner);
+	void				Init(GameObject* owner);
 	void				InitializeWeapon();
 
 	bool				GetIsFire() { return this->isFire; }

@@ -33,7 +33,7 @@ public:
 	void										FixSatanDoor();
 	void										FixStartDoor();
 	void										Init(int stageNum = 0);
-	void										OpenTheDoor();
+	void										OpenTheDoor();								// Map에 Monster가 없으면 OpenState
 	void										StoreRoomType(int row, int column);
 
 	int											GetLocatedRow() { return this->currRow; }
