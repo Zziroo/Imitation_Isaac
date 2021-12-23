@@ -21,12 +21,15 @@ private:
 	Image*							minimapBackGround[2] = { nullptr };		// ¹Ì´Ï¸Ê ¹è°æ
 
 	POINTFLOAT						minimapSitePos = {};
+	POINTFLOAT						currSitePos = {};
 
 	vector<vector<MinimapInfo>>		minimap;
 	vector<vector<RoomTypes>>*		roomInfo = nullptr;
 
 	int								currColumn = 0;
 	int								currRow = 0;
+	int								originColumn = 0;
+	int								originRow = 0;
 	int								stageSize = 0;
 	int								startPointColumn = 0;
 	int								startPointRow = 0;
@@ -38,7 +41,7 @@ public:
 	virtual void					Render(HDC hdc) override;
 
 	void							ExploreSurroundingMap(int row, int column);
-	void							MoveMinimap();
+	void							MoveMinimap(int row, int column);
 	void							VisitedMapIcon(int row, int column);
 
 	void							SetCurrCloumn(int column) { this->currColumn = column; }

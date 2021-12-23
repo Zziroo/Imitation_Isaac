@@ -8,10 +8,17 @@ void Minimap::Init()
 	// Minimap 배경
 	minimapBackGround[0] = GET_SINGLETON_IMAGE->FindImage("Image/Minimap/MinimapBackGround00.bmp");
 	minimapBackGround[1] = GET_SINGLETON_IMAGE->FindImage("Image/Minimap/MinimapBackGround01.bmp");
+
 	// Minimap 배경의 Position
 	pos = { 1120, 110 };
+
+	// StartPoint를 저장
+	originColumn = startPointColumn;
+	originRow = startPointRow;
+
 	// Minimap Site들의 첫번째 요소의 Position
 	minimapSitePos = { pos.x - (startPointRow * 25), pos.y - (startPointColumn * 22) };
+
 	// RoomInfo를 받아서 MinimapInfo 갱신
 	minimap.resize(stageSize);
 	for (size_t i = 0; i < minimap.size(); ++i)
@@ -23,7 +30,7 @@ void Minimap::Init()
 			minimap[i][j].pos.x = (j * 25) + minimapSitePos.x;
 			minimap[i][j].pos.y = (i * 22) + minimapSitePos.y;
 			// RoomType 받아오기
-			minimap[i][j].roomType = roomInfo[0][i][j];			// 궁금? => Player.cpp에서 tile값을 받아올때랑 다르다.
+			minimap[i][j].roomType = roomInfo[0][i][j];
 			// RoomTypes::NONE이 아니라면(map이 존재한다면) Image 추가
 			if (minimap[i][j].roomType != RoomTypes::NONE)
 			{
@@ -50,15 +57,21 @@ void Minimap::Init()
 			default:
 				break;
 			}
+			#ifdef _DEBUG
 			// debuging
 			minimap[i][j].exploreSurroundingMap = true;
 			minimap[i][j].isVisitedMap = true;
+			#endif
 		}
 	}
+
 	// 현재 위치한 Map의 Image
 	currSiteImg = GET_SINGLETON_IMAGE->FindImage("Image/Minimap/LocatedSite.bmp");
+	currSitePos = { pos.x, pos.y };
+
 	// StartPoint 와 주변 지역을 탐색하여 Minimap에 표시하기 위한 bool값
 	ExploreSurroundingMap(startPointRow, startPointColumn);
+
 	// 특정 방을 방문하면 Minimap에 Icon 표시하기 위한 bool값
 	VisitedMapIcon(startPointRow, startPointColumn);
 }
@@ -70,9 +83,14 @@ void Minimap::Release()
 void Minimap::Update()
 {
 	// Map 이동 시 Minimap 이동
-	MoveMinimap();
+	if (originRow != currRow || originColumn != currColumn)
+	{
+		MoveMinimap(currRow, currColumn);
+	}
+
 	// CurrPoint와 주변 지역을 탐색하여 Minimap에 표시
 	ExploreSurroundingMap(currRow, currColumn);
+	
 	// 특정 방을 방문하면 Minimap에 Icon 표시하기 위한 bool값
 	VisitedMapIcon(currRow, currColumn);
 }
@@ -99,7 +117,7 @@ void Minimap::Render(HDC hdc)
 	}
 	
 	// 현재 위치의 맵을 Minimap에 Render
-	currSiteImg->Render(hdc, (INT)pos.x, (INT)pos.y);
+	currSiteImg->Render(hdc, (INT)currSitePos.x, (INT)currSitePos.y);
 
 	// 전체 Minimap 조건을 걸어 Render
 	for (size_t i = 0; i < minimap.size(); ++i)
@@ -125,6 +143,7 @@ void Minimap::ExploreSurroundingMap(int row, int column)
 	int NextDownRow = row + 1;
 	int NextLeftColumn = column - 1;
 	int NextRightColumn = column + 1;
+
 	// StartPoint의 위쪽 Minimap Image를 Render 시키기 위해  bool값 true
 	if (NextUpRow >= 0)
 	{
@@ -147,23 +166,30 @@ void Minimap::ExploreSurroundingMap(int row, int column)
 	}
 }
 
-void Minimap::MoveMinimap()
+void Minimap::MoveMinimap(int row, int column)
 {
 	// 상
-
-	// 하
-
-	// 좌
-
-	// 우
-
-
-	for (size_t i = 0; i < minimap.size(); ++i)
+	if (originRow > row && originColumn == column)
 	{
-		for (size_t j = 0; j < minimap[i].size(); ++j)
-		{
-		}
+		currSitePos.y -= 22.0f;
 	}
+	// 하
+	if (originRow < row && originColumn == column)
+	{
+		currSitePos.y += 22.0f;
+	}
+	// 좌
+	if (originRow == row && originColumn > column)
+	{
+		currSitePos.x -= 25.0f;
+	}
+	// 우
+	if (originRow == row && originColumn < column)
+	{
+		currSitePos.x += 25.0f;
+	}
+	originRow = row;
+	originColumn = column;
 }
 
 void Minimap::VisitedMapIcon(int row, int column)
