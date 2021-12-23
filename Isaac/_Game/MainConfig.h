@@ -80,6 +80,7 @@ enum class PlayerStates { IDLE, WALK, ATTACK, HURT, ITEMPICKUP, JUMP, STAT };
 
 #define ADJUST_SIZE_05			5
 #define ADJUST_SIZE_09			9
+#define ADJUST_SIZE_10			10
 #define ADJUST_SIZE_14			14
 #define ADJUST_SIZE_15			15
 #define ADJUST_SIZE_30			30

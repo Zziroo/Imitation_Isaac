@@ -461,23 +461,19 @@ void Player::DamagedByDoor(int doorDir, RECT playerShape)
 
 void Player::DamagedBySlider()
 {
-    POINTFLOAT buffPos = { pos.x, pos.y };
     for (int i = 0; i < obstacleFileInfo[currRow][currColumn].count; ++i)
     {
         RECT obstacleShape = {
-            obstacle[0][currRow][currColumn][i]->GetObstacleShape().left - 10.0f,
-            obstacle[0][currRow][currColumn][i]->GetObstacleShape().top - 10.0f,
-            obstacle[0][currRow][currColumn][i]->GetObstacleShape().right + 10.0f,
-            obstacle[0][currRow][currColumn][i]->GetObstacleShape().bottom + 10.0f
+            obstacle[0][currRow][currColumn][i]->GetObstacleShape().left - ADJUST_SIZE_10,
+            obstacle[0][currRow][currColumn][i]->GetObstacleShape().top - ADJUST_SIZE_10,
+            obstacle[0][currRow][currColumn][i]->GetObstacleShape().right + ADJUST_SIZE_10,
+            obstacle[0][currRow][currColumn][i]->GetObstacleShape().bottom + ADJUST_SIZE_10
         };
         if (isinvincible == false && obstacle[0][currRow][currColumn][i]->GetObstacleType() == ObstacleTypes::SLIDER && obstacle[0][currRow][currColumn][i]->GetObstacleDamaged())
         {
             if (IntersectRect(&colliderRect, &bodyInfo.shape, &obstacleShape))
             {
-                pos.x = buffPos.x;
-                pos.y = buffPos.y;
-
-                playerState = PlayerStates::HURT;
+                playerState = PlayerStates::HURT;                                       // 오류 수정 필요! ! => 플레이어 부들 거림.
             }
         }
     }
@@ -647,17 +643,6 @@ void Player::Move()
                 headInfo.shape = buffHeadShape;
 
                 playerState = PlayerStates::HURT;
-            }
-        }
-        // Obstacledl Slider일 때
-        if (obstacle[0][currRow][currColumn][i]->GetObstacleType() == ObstacleTypes::SLIDER && obstacle[0][currRow][currColumn][i]->GetObstacleDamaged() == false)
-        {
-            if (IntersectRect(&colliderRect, &bodyInfo.shape, &obstacleShape))
-            {
-                bodyInfo.pos = buffBodyPos;
-                bodyInfo.shape = buffBodyShape;
-                headInfo.pos = buffHeadPos;
-                headInfo.shape = buffHeadShape;
             }
         }
         // 특정 Obstacle이 아닐 때
