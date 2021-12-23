@@ -15,79 +15,84 @@ void DoorEditing::Update()
 	GameObject::Update();
 #endif
 
+	// Door의 상태에 따른 이미지 변화
 	ChangeImageDoorState();
 
+	// 현재 Map에 Monster가 없으면 Door Open State
+	OpenTheDoor();
+
+	// Door이 Open 상태 일 때 크기 변화
 	ChangeShapeOpenDoor();
 }
 
 void DoorEditing::Render(HDC hdc)
 {
 	// 상
-	if (door[currLocatedRow][currLocatedColumn][UPPER_DOOR].img != nullptr)
+	if (door[currRow][currColumn][UPPER_DOOR].img != nullptr)
 	{
-		switch (door[currLocatedRow][currLocatedColumn][UPPER_DOOR].roomType)
+		switch (door[currRow][currColumn][UPPER_DOOR].roomType)
 		{
 		case RoomTypes::BOSS: 
-			door[currLocatedRow][currLocatedColumn][UPPER_DOOR].img->Render(hdc, (INT)door[currLocatedRow][currLocatedColumn][UPPER_DOOR].pos.x, (INT)door[currLocatedRow][currLocatedColumn][UPPER_DOOR].pos.y + 5, UPPER_DOOR, door[currLocatedRow][currLocatedColumn][UPPER_DOOR].img->GetCurrFrameY());
+			door[currRow][currColumn][UPPER_DOOR].img->Render(hdc, (INT)door[currRow][currColumn][UPPER_DOOR].pos.x, (INT)door[currRow][currColumn][UPPER_DOOR].pos.y + 5, UPPER_DOOR, door[currRow][currColumn][UPPER_DOOR].img->GetCurrFrameY());
 			break;
 		case RoomTypes::CURSE: case RoomTypes::ITEM: case RoomTypes::NORMAL: case RoomTypes::PRIVATE: case RoomTypes::START:
-			door[currLocatedRow][currLocatedColumn][UPPER_DOOR].img->Render(hdc, (INT)door[currLocatedRow][currLocatedColumn][UPPER_DOOR].pos.x, (INT)door[currLocatedRow][currLocatedColumn][UPPER_DOOR].pos.y, UPPER_DOOR, door[currLocatedRow][currLocatedColumn][UPPER_DOOR].img->GetCurrFrameY());
+			door[currRow][currColumn][UPPER_DOOR].img->Render(hdc, (INT)door[currRow][currColumn][UPPER_DOOR].pos.x, (INT)door[currRow][currColumn][UPPER_DOOR].pos.y, UPPER_DOOR, door[currRow][currColumn][UPPER_DOOR].img->GetCurrFrameY());
 			break;
 		case RoomTypes::SATAN:
-			door[currLocatedRow][currLocatedColumn][UPPER_DOOR].img->Render(hdc, (INT)door[currLocatedRow][currLocatedColumn][UPPER_DOOR].pos.x, (INT)door[currLocatedRow][currLocatedColumn][UPPER_DOOR].pos.y - 13, UPPER_DOOR, door[currLocatedRow][currLocatedColumn][UPPER_DOOR].img->GetCurrFrameY());
+			door[currRow][currColumn][UPPER_DOOR].img->Render(hdc, (INT)door[currRow][currColumn][UPPER_DOOR].pos.x, (INT)door[currRow][currColumn][UPPER_DOOR].pos.y - 13, UPPER_DOOR, door[currRow][currColumn][UPPER_DOOR].img->GetCurrFrameY());
 			break;
 		default:
 			break;
 		}
 	}
 	// 하
-	if (door[currLocatedRow][currLocatedColumn][LOWER_DOOR].img != nullptr) 
+	if (door[currRow][currColumn][LOWER_DOOR].img != nullptr) 
 	{
-		switch (door[currLocatedRow][currLocatedColumn][LOWER_DOOR].roomType)
+		switch (door[currRow][currColumn][LOWER_DOOR].roomType)
 		{
 		case RoomTypes::BOSS:
-			door[currLocatedRow][currLocatedColumn][LOWER_DOOR].img->Render(hdc, (INT)door[currLocatedRow][currLocatedColumn][LOWER_DOOR].pos.x, (INT)door[currLocatedRow][currLocatedColumn][LOWER_DOOR].pos.y - 5, LOWER_DOOR, door[currLocatedRow][currLocatedColumn][LOWER_DOOR].img->GetCurrFrameY());
+			door[currRow][currColumn][LOWER_DOOR].img->Render(hdc, (INT)door[currRow][currColumn][LOWER_DOOR].pos.x, (INT)door[currRow][currColumn][LOWER_DOOR].pos.y - 5, LOWER_DOOR, door[currRow][currColumn][LOWER_DOOR].img->GetCurrFrameY());
 			break;
 		case RoomTypes::CURSE: case RoomTypes::ITEM: case RoomTypes::NORMAL: case RoomTypes::PRIVATE: case RoomTypes::START:
-			door[currLocatedRow][currLocatedColumn][LOWER_DOOR].img->Render(hdc, (INT)door[currLocatedRow][currLocatedColumn][LOWER_DOOR].pos.x, (INT)door[currLocatedRow][currLocatedColumn][LOWER_DOOR].pos.y, LOWER_DOOR, door[currLocatedRow][currLocatedColumn][LOWER_DOOR].img->GetCurrFrameY());
+			door[currRow][currColumn][LOWER_DOOR].img->Render(hdc, (INT)door[currRow][currColumn][LOWER_DOOR].pos.x, (INT)door[currRow][currColumn][LOWER_DOOR].pos.y, LOWER_DOOR, door[currRow][currColumn][LOWER_DOOR].img->GetCurrFrameY());
 			break;
 		case RoomTypes::SATAN:
-			door[currLocatedRow][currLocatedColumn][LOWER_DOOR].img->Render(hdc, (INT)door[currLocatedRow][currLocatedColumn][LOWER_DOOR].pos.x, (INT)door[currLocatedRow][currLocatedColumn][LOWER_DOOR].pos.y + 13, LOWER_DOOR, door[currLocatedRow][currLocatedColumn][LOWER_DOOR].img->GetCurrFrameY());
+			door[currRow][currColumn][LOWER_DOOR].img->Render(hdc, (INT)door[currRow][currColumn][LOWER_DOOR].pos.x, (INT)door[currRow][currColumn][LOWER_DOOR].pos.y + 13, LOWER_DOOR, door[currRow][currColumn][LOWER_DOOR].img->GetCurrFrameY());
 			break;
 		default:
 			break;
 		}
 	}
 	// 좌
-	if (door[currLocatedRow][currLocatedColumn][LEFT_DOOR].img != nullptr) 
+	if (door[currRow][currColumn][LEFT_DOOR].img != nullptr) 
 	{
-		switch (door[currLocatedRow][currLocatedColumn][LEFT_DOOR].roomType)
+		switch (door[currRow][currColumn][LEFT_DOOR].roomType)
 		{
 		case RoomTypes::BOSS:
-			door[currLocatedRow][currLocatedColumn][LEFT_DOOR].img->Render(hdc, (INT)door[currLocatedRow][currLocatedColumn][LEFT_DOOR].pos.x + 15, (INT)door[currLocatedRow][currLocatedColumn][LEFT_DOOR].pos.y, LEFT_DOOR, door[currLocatedRow][currLocatedColumn][LEFT_DOOR].img->GetCurrFrameY());
+			door[currRow][currColumn][LEFT_DOOR].img->Render(hdc, (INT)door[currRow][currColumn][LEFT_DOOR].pos.x + 15, (INT)door[currRow][currColumn][LEFT_DOOR].pos.y, LEFT_DOOR, door[currRow][currColumn][LEFT_DOOR].img->GetCurrFrameY());
 		break; case RoomTypes::CURSE: case RoomTypes::ITEM: case RoomTypes::NORMAL: case RoomTypes::PRIVATE: case RoomTypes::START:
-			door[currLocatedRow][currLocatedColumn][LEFT_DOOR].img->Render(hdc, (INT)door[currLocatedRow][currLocatedColumn][LEFT_DOOR].pos.x + 10, (INT)door[currLocatedRow][currLocatedColumn][LEFT_DOOR].pos.y, LEFT_DOOR, door[currLocatedRow][currLocatedColumn][LEFT_DOOR].img->GetCurrFrameY());
+			door[currRow][currColumn][LEFT_DOOR].img->Render(hdc, (INT)door[currRow][currColumn][LEFT_DOOR].pos.x + 10, (INT)door[currRow][currColumn][LEFT_DOOR].pos.y, LEFT_DOOR, door[currRow][currColumn][LEFT_DOOR].img->GetCurrFrameY());
 			break;
 		case RoomTypes::SATAN:
-			door[currLocatedRow][currLocatedColumn][LEFT_DOOR].img->Render(hdc, (INT)door[currLocatedRow][currLocatedColumn][LEFT_DOOR].pos.x, (INT)door[currLocatedRow][currLocatedColumn][LEFT_DOOR].pos.y, LEFT_DOOR, door[currLocatedRow][currLocatedColumn][LEFT_DOOR].img->GetCurrFrameY());
+			door[currRow][currColumn][LEFT_DOOR].img->Render(hdc, (INT)door[currRow][currColumn][LEFT_DOOR].pos.x, (INT)door[currRow][currColumn][LEFT_DOOR].pos.y, LEFT_DOOR, door[currRow][currColumn][LEFT_DOOR].img->GetCurrFrameY());
 			break;
 		default:
 			break;
 		}
 	}
 	// 우
-	if (door[currLocatedRow][currLocatedColumn][RIGHT_DOOR].img != nullptr) 
+	if (door[currRow][currColumn][RIGHT_DOOR].img != nullptr) 
 	{
-		switch (door[currLocatedRow][currLocatedColumn][RIGHT_DOOR].roomType)
+		switch (door[currRow][currColumn][RIGHT_DOOR].roomType)
 		{
 		case RoomTypes::BOSS:
-			door[currLocatedRow][currLocatedColumn][RIGHT_DOOR].img->Render(hdc, (INT)door[currLocatedRow][currLocatedColumn][RIGHT_DOOR].pos.x - 15, (INT)door[currLocatedRow][currLocatedColumn][RIGHT_DOOR].pos.y, RIGHT_DOOR, door[currLocatedRow][currLocatedColumn][RIGHT_DOOR].img->GetCurrFrameY());
+			door[currRow][currColumn][RIGHT_DOOR].img->Render(hdc, (INT)door[currRow][currColumn][RIGHT_DOOR].pos.x - 15, (INT)door[currRow][currColumn][RIGHT_DOOR].pos.y, RIGHT_DOOR, door[currRow][currColumn][RIGHT_DOOR].img->GetCurrFrameY());
 		break; 
 		case RoomTypes::CURSE: case RoomTypes::ITEM: case RoomTypes::NORMAL: case RoomTypes::PRIVATE: case RoomTypes::START:
-			door[currLocatedRow][currLocatedColumn][RIGHT_DOOR].img->Render(hdc, (INT)door[currLocatedRow][currLocatedColumn][RIGHT_DOOR].pos.x - 10, (INT)door[currLocatedRow][currLocatedColumn][RIGHT_DOOR].pos.y, RIGHT_DOOR, door[currLocatedRow][currLocatedColumn][RIGHT_DOOR].img->GetCurrFrameY());
+			door[currRow][currColumn][RIGHT_DOOR].img->Render(hdc, (INT)door[currRow][currColumn][RIGHT_DOOR].pos.x - 10, (INT)door[currRow][currColumn][RIGHT_DOOR].pos.y, RIGHT_DOOR, door[currRow][currColumn][RIGHT_DOOR].img->GetCurrFrameY());
 			break;
 		case RoomTypes::SATAN:
-			door[currLocatedRow][currLocatedColumn][RIGHT_DOOR].img->Render(hdc, (INT)door[currLocatedRow][currLocatedColumn][RIGHT_DOOR].pos.x, (INT)door[currLocatedRow][currLocatedColumn][RIGHT_DOOR].pos.y, RIGHT_DOOR, door[currLocatedRow][currLocatedColumn][RIGHT_DOOR].img->GetCurrFrameY());
+			door[currRow][currColumn][RIGHT_DOOR].img->Render(hdc, (INT)door[currRow][currColumn][RIGHT_DOOR].pos.x, (INT)door[currRow][currColumn][RIGHT_DOOR].pos.y, RIGHT_DOOR, door[currRow][currColumn][RIGHT_DOOR].img->GetCurrFrameY());
 			break;
 		default:
 			break;
@@ -106,78 +111,78 @@ void DoorEditing::OnDebug(HDC hdc)
 	{
 		for (int i = 0; i < 4; ++i)
 		{
-			if (door[currLocatedRow][currLocatedColumn][i].img != nullptr)
+			if (door[currRow][currColumn][i].img != nullptr)
 			{
-				door[currLocatedRow][currLocatedColumn][i].doorState = DoorStates::OPENED;
+				door[currRow][currColumn][i].doorState = DoorStates::OPENED;
 			}
 		}
 	}
 	if (Input::GetButtonDown('C'))
 	{
-		door[currLocatedRow][currLocatedColumn][UPPER_DOOR].doorState = DoorStates::CLOSED;
-		door[currLocatedRow][currLocatedColumn][LOWER_DOOR].doorState = DoorStates::CLOSED;
-		door[currLocatedRow][currLocatedColumn][LEFT_DOOR].doorState = DoorStates::CLOSED;
-		door[currLocatedRow][currLocatedColumn][RIGHT_DOOR].doorState = DoorStates::CLOSED;
+		door[currRow][currColumn][UPPER_DOOR].doorState = DoorStates::CLOSED;
+		door[currRow][currColumn][LOWER_DOOR].doorState = DoorStates::CLOSED;
+		door[currRow][currColumn][LEFT_DOOR].doorState = DoorStates::CLOSED;
+		door[currRow][currColumn][RIGHT_DOOR].doorState = DoorStates::CLOSED;
 	}
 	#pragma endregion
 	#pragma region SampleChangeMap
 	// 예시) 상,하,좌,우 키를 입력해서 맵을 바꿈.(문을 알아서 보여줘야함)
 	if (Input::GetButtonDown(VK_UP))
 	{
-		int nextUpRow = currLocatedRow - 1;
-		if (nextUpRow >= OUT_OF_STAGE && roomInfo[nextUpRow][currLocatedColumn] != RoomTypes::NONE)
+		int nextUpRow = currRow - 1;
+		if (nextUpRow >= OUT_OF_STAGE && roomInfo[nextUpRow][currColumn] != RoomTypes::NONE)
 		{
-			--currLocatedRow;
+			--currRow;
 		}
-		if (currLocatedRow < OUT_OF_STAGE)
+		if (currRow < OUT_OF_STAGE)
 		{
-			currLocatedRow = OUT_OF_STAGE;
+			currRow = OUT_OF_STAGE;
 		}
 	}
 	if (Input::GetButtonDown(VK_DOWN))
 	{
-		int nextDownRow = currLocatedRow + 1;
-		if (nextDownRow < stageSize && roomInfo[nextDownRow][currLocatedColumn] != RoomTypes::NONE)
+		int nextDownRow = currRow + 1;
+		if (nextDownRow < stageSize && roomInfo[nextDownRow][currColumn] != RoomTypes::NONE)
 		{
-			++currLocatedRow;
+			++currRow;
 		}
-		if (currLocatedRow >= stageSize)
+		if (currRow >= stageSize)
 		{
-			currLocatedRow = stageSize - 1;
+			currRow = stageSize - 1;
 		}
 	}
 	if (Input::GetButtonDown(VK_LEFT))
 	{
-		int nextLeftColumn = currLocatedColumn - 1;
-		if (nextLeftColumn >= OUT_OF_STAGE && roomInfo[currLocatedRow][nextLeftColumn] != RoomTypes::NONE)
+		int nextLeftColumn = currColumn - 1;
+		if (nextLeftColumn >= OUT_OF_STAGE && roomInfo[currRow][nextLeftColumn] != RoomTypes::NONE)
 		{
-			--currLocatedColumn;
+			--currColumn;
 		}
-		if (currLocatedColumn < OUT_OF_STAGE)
+		if (currColumn < OUT_OF_STAGE)
 		{
-			currLocatedColumn = OUT_OF_STAGE;
+			currColumn = OUT_OF_STAGE;
 		}
 	}
 	if (Input::GetButtonDown(VK_RIGHT))
 	{
-		int nextRightColumn = currLocatedColumn + 1;
-		if (nextRightColumn < stageSize && roomInfo[currLocatedRow][nextRightColumn] != RoomTypes::NONE)
+		int nextRightColumn = currColumn + 1;
+		if (nextRightColumn < stageSize && roomInfo[currRow][nextRightColumn] != RoomTypes::NONE)
 		{
-			++currLocatedColumn;
+			++currColumn;
 		}
-		if (currLocatedColumn >= stageSize)
+		if (currColumn >= stageSize)
 		{
-			currLocatedColumn = stageSize - 1;
+			currColumn = stageSize - 1;
 		}
 	}
 	#pragma endregion
 #endif
 	if (debugMode)
 	{
-		Rectangle(hdc, door[currLocatedRow][currLocatedColumn][UPPER_DOOR].shape.left, door[currLocatedRow][currLocatedColumn][UPPER_DOOR].shape.top, door[currLocatedRow][currLocatedColumn][UPPER_DOOR].shape.right, door[currLocatedRow][currLocatedColumn][UPPER_DOOR].shape.bottom);
-		Rectangle(hdc, door[currLocatedRow][currLocatedColumn][LOWER_DOOR].shape.left, door[currLocatedRow][currLocatedColumn][LOWER_DOOR].shape.top, door[currLocatedRow][currLocatedColumn][LOWER_DOOR].shape.right, door[currLocatedRow][currLocatedColumn][LOWER_DOOR].shape.bottom);
-		Rectangle(hdc, door[currLocatedRow][currLocatedColumn][LEFT_DOOR].shape.left, door[currLocatedRow][currLocatedColumn][LEFT_DOOR].shape.top, door[currLocatedRow][currLocatedColumn][LEFT_DOOR].shape.right, door[currLocatedRow][currLocatedColumn][LEFT_DOOR].shape.bottom);
-		Rectangle(hdc, door[currLocatedRow][currLocatedColumn][RIGHT_DOOR].shape.left, door[currLocatedRow][currLocatedColumn][RIGHT_DOOR].shape.top, door[currLocatedRow][currLocatedColumn][RIGHT_DOOR].shape.right, door[currLocatedRow][currLocatedColumn][RIGHT_DOOR].shape.bottom);
+		Rectangle(hdc, door[currRow][currColumn][UPPER_DOOR].shape.left, door[currRow][currColumn][UPPER_DOOR].shape.top, door[currRow][currColumn][UPPER_DOOR].shape.right, door[currRow][currColumn][UPPER_DOOR].shape.bottom);
+		Rectangle(hdc, door[currRow][currColumn][LOWER_DOOR].shape.left, door[currRow][currColumn][LOWER_DOOR].shape.top, door[currRow][currColumn][LOWER_DOOR].shape.right, door[currRow][currColumn][LOWER_DOOR].shape.bottom);
+		Rectangle(hdc, door[currRow][currColumn][LEFT_DOOR].shape.left, door[currRow][currColumn][LEFT_DOOR].shape.top, door[currRow][currColumn][LEFT_DOOR].shape.right, door[currRow][currColumn][LEFT_DOOR].shape.bottom);
+		Rectangle(hdc, door[currRow][currColumn][RIGHT_DOOR].shape.left, door[currRow][currColumn][RIGHT_DOOR].shape.top, door[currRow][currColumn][RIGHT_DOOR].shape.right, door[currRow][currColumn][RIGHT_DOOR].shape.bottom);
 	}
 }
 
@@ -226,19 +231,19 @@ void DoorEditing::ChangeImageDoorState()
 	// DoorState 마다 문의 이미지 변화
 	for (int i = 0; i < 4; ++i)
 	{
-		if (door[currLocatedRow][currLocatedColumn][i].img != nullptr)
+		if (door[currRow][currColumn][i].img != nullptr)
 		{
-			if (door[currLocatedRow][currLocatedColumn][i].doorState == DoorStates::OPENED)
+			if (door[currRow][currColumn][i].doorState == DoorStates::OPENED)
 			{
-				door[currLocatedRow][currLocatedColumn][i].img->SetCurrFrameY(OPENED_STATE_DOOR);
+				door[currRow][currColumn][i].img->SetCurrFrameY(OPENED_STATE_DOOR);
 			}
-			if (door[currLocatedRow][currLocatedColumn][i].img->GetMaxFrameY() >= CLOSED_STATE_DOOR && door[currLocatedRow][currLocatedColumn][i].doorState == DoorStates::CLOSED)
+			if (door[currRow][currColumn][i].img->GetMaxFrameY() >= CLOSED_STATE_DOOR && door[currRow][currColumn][i].doorState == DoorStates::CLOSED)
 			{
-				door[currLocatedRow][currLocatedColumn][i].img->SetCurrFrameY(CLOSED_STATE_DOOR);
+				door[currRow][currColumn][i].img->SetCurrFrameY(CLOSED_STATE_DOOR);
 			}
-			if (door[currLocatedRow][currLocatedColumn][i].img->GetMaxFrameY() >= LOCKED_STATE_DOOR && door[currLocatedRow][currLocatedColumn][i].doorState == DoorStates::LOCKED)
+			if (door[currRow][currColumn][i].img->GetMaxFrameY() >= LOCKED_STATE_DOOR && door[currRow][currColumn][i].doorState == DoorStates::LOCKED)
 			{
-				door[currLocatedRow][currLocatedColumn][i].img->SetCurrFrameY(LOCKED_STATE_DOOR);
+				door[currRow][currColumn][i].img->SetCurrFrameY(LOCKED_STATE_DOOR);
 			}
 		}
 	}
@@ -248,47 +253,47 @@ void DoorEditing::ChangeShapeOpenDoor()
 {
 	// DoorStates::OPENED 이고, 이미지가 있다면 shape을 작게 만든다.
 	// 상
-	if (door[currLocatedRow][currLocatedColumn][UPPER_DOOR].doorState == DoorStates::OPENED && door[currLocatedRow][currLocatedColumn][UPPER_DOOR].img != nullptr)
+	if (door[currRow][currColumn][UPPER_DOOR].doorState == DoorStates::OPENED && door[currRow][currColumn][UPPER_DOOR].img != nullptr)
 	{
 		objectSize = 10.0f;
-		door[currLocatedRow][currLocatedColumn][UPPER_DOOR].shape = {
-			(LONG)(door[currLocatedRow][currLocatedColumn][UPPER_DOOR].pos.x - (objectSize * DEVIDE_HALF)),							// shape.left
-			(LONG)(door[currLocatedRow][currLocatedColumn][UPPER_DOOR].pos.y - (objectSize * DEVIDE_HALF)),							// shape.top
-			(LONG)(door[currLocatedRow][currLocatedColumn][UPPER_DOOR].pos.x + (objectSize * DEVIDE_HALF)),							// shape.right
-			(LONG)(door[currLocatedRow][currLocatedColumn][UPPER_DOOR].pos.y + (objectSize * DEVIDE_HALF))							// shape.bottom
+		door[currRow][currColumn][UPPER_DOOR].shape = {
+			(LONG)(door[currRow][currColumn][UPPER_DOOR].pos.x - (objectSize * DEVIDE_HALF)),							// shape.left
+			(LONG)(door[currRow][currColumn][UPPER_DOOR].pos.y - (objectSize * DEVIDE_HALF)),							// shape.top
+			(LONG)(door[currRow][currColumn][UPPER_DOOR].pos.x + (objectSize * DEVIDE_HALF)),							// shape.right
+			(LONG)(door[currRow][currColumn][UPPER_DOOR].pos.y + (objectSize * DEVIDE_HALF))							// shape.bottom
 		};
 	}
 	// 하
-	if (door[currLocatedRow][currLocatedColumn][LOWER_DOOR].doorState == DoorStates::OPENED && door[currLocatedRow][currLocatedColumn][LOWER_DOOR].img != nullptr)
+	if (door[currRow][currColumn][LOWER_DOOR].doorState == DoorStates::OPENED && door[currRow][currColumn][LOWER_DOOR].img != nullptr)
 	{
 		objectSize = 10.0f;
-		door[currLocatedRow][currLocatedColumn][LOWER_DOOR].shape = {
-			(LONG)(door[currLocatedRow][currLocatedColumn][LOWER_DOOR].pos.x - (objectSize * DEVIDE_HALF)),							// shape.left
-			(LONG)(door[currLocatedRow][currLocatedColumn][LOWER_DOOR].pos.y - (objectSize * DEVIDE_HALF)),							// shape.top
-			(LONG)(door[currLocatedRow][currLocatedColumn][LOWER_DOOR].pos.x + (objectSize * DEVIDE_HALF)),							// shape.right
-			(LONG)(door[currLocatedRow][currLocatedColumn][LOWER_DOOR].pos.y + (objectSize * DEVIDE_HALF))							// shape.bottom
+		door[currRow][currColumn][LOWER_DOOR].shape = {
+			(LONG)(door[currRow][currColumn][LOWER_DOOR].pos.x - (objectSize * DEVIDE_HALF)),							// shape.left
+			(LONG)(door[currRow][currColumn][LOWER_DOOR].pos.y - (objectSize * DEVIDE_HALF)),							// shape.top
+			(LONG)(door[currRow][currColumn][LOWER_DOOR].pos.x + (objectSize * DEVIDE_HALF)),							// shape.right
+			(LONG)(door[currRow][currColumn][LOWER_DOOR].pos.y + (objectSize * DEVIDE_HALF))							// shape.bottom
 		};
 	}
 	// 좌
-	if (door[currLocatedRow][currLocatedColumn][LEFT_DOOR].doorState == DoorStates::OPENED && door[currLocatedRow][currLocatedColumn][LEFT_DOOR].img != nullptr)
+	if (door[currRow][currColumn][LEFT_DOOR].doorState == DoorStates::OPENED && door[currRow][currColumn][LEFT_DOOR].img != nullptr)
 	{
 		objectSize = 10.0f;
-		door[currLocatedRow][currLocatedColumn][LEFT_DOOR].shape = {
-			(LONG)(door[currLocatedRow][currLocatedColumn][LEFT_DOOR].pos.x - (objectSize * DEVIDE_HALF)),							// shape.left
-			(LONG)(door[currLocatedRow][currLocatedColumn][LEFT_DOOR].pos.y - (objectSize * DEVIDE_HALF) - ADJUST_SIZE_15),			// shape.top
-			(LONG)(door[currLocatedRow][currLocatedColumn][LEFT_DOOR].pos.x + (objectSize * DEVIDE_HALF)),							// shape.right
-			(LONG)(door[currLocatedRow][currLocatedColumn][LEFT_DOOR].pos.y + (objectSize * DEVIDE_HALF) + ADJUST_SIZE_15)			// shape.bottom
+		door[currRow][currColumn][LEFT_DOOR].shape = {
+			(LONG)(door[currRow][currColumn][LEFT_DOOR].pos.x - (objectSize * DEVIDE_HALF)),							// shape.left
+			(LONG)(door[currRow][currColumn][LEFT_DOOR].pos.y - (objectSize * DEVIDE_HALF) - ADJUST_SIZE_15),			// shape.top
+			(LONG)(door[currRow][currColumn][LEFT_DOOR].pos.x + (objectSize * DEVIDE_HALF)),							// shape.right
+			(LONG)(door[currRow][currColumn][LEFT_DOOR].pos.y + (objectSize * DEVIDE_HALF) + ADJUST_SIZE_15)			// shape.bottom
 		};
 	}
 	// 우
-	if (door[currLocatedRow][currLocatedColumn][RIGHT_DOOR].doorState == DoorStates::OPENED && door[currLocatedRow][currLocatedColumn][RIGHT_DOOR].img != nullptr)
+	if (door[currRow][currColumn][RIGHT_DOOR].doorState == DoorStates::OPENED && door[currRow][currColumn][RIGHT_DOOR].img != nullptr)
 	{
 		objectSize = 10.0f;
-		door[currLocatedRow][currLocatedColumn][RIGHT_DOOR].shape = {
-			(LONG)(door[currLocatedRow][currLocatedColumn][RIGHT_DOOR].pos.x - (objectSize * DEVIDE_HALF)),							// shape.left
-			(LONG)(door[currLocatedRow][currLocatedColumn][RIGHT_DOOR].pos.y - (objectSize * DEVIDE_HALF) - ADJUST_SIZE_15),		// shape.top
-			(LONG)(door[currLocatedRow][currLocatedColumn][RIGHT_DOOR].pos.x + (objectSize * DEVIDE_HALF)),							// shape.right
-			(LONG)(door[currLocatedRow][currLocatedColumn][RIGHT_DOOR].pos.y + (objectSize * DEVIDE_HALF) + ADJUST_SIZE_15)			// shape.bottom
+		door[currRow][currColumn][RIGHT_DOOR].shape = {
+			(LONG)(door[currRow][currColumn][RIGHT_DOOR].pos.x - (objectSize * DEVIDE_HALF)),							// shape.left
+			(LONG)(door[currRow][currColumn][RIGHT_DOOR].pos.y - (objectSize * DEVIDE_HALF) - ADJUST_SIZE_15),		// shape.top
+			(LONG)(door[currRow][currColumn][RIGHT_DOOR].pos.x + (objectSize * DEVIDE_HALF)),							// shape.right
+			(LONG)(door[currRow][currColumn][RIGHT_DOOR].pos.y + (objectSize * DEVIDE_HALF) + ADJUST_SIZE_15)			// shape.bottom
 		};
 	}
 }
@@ -494,26 +499,26 @@ void DoorEditing::FixSatanDoor()
 
 void DoorEditing::FixStartDoor()
 {
-	int topRow = (INT)(currLocatedRow - 1);
-	int bottomRow = (INT)(currLocatedRow + 1);
-	int leftColumn = (INT)(currLocatedColumn - 1);
-	int rightColumn = (INT)(currLocatedColumn + 1);
+	int topRow = (INT)(currRow - 1);
+	int bottomRow = (INT)(currRow + 1);
+	int leftColumn = (INT)(currColumn - 1);
+	int rightColumn = (INT)(currColumn + 1);
 	// 다음 방이 있는지 확인하여 문을 개방
-	if (topRow >= OUT_OF_STAGE && roomInfo[topRow][currLocatedColumn] != RoomTypes::NONE)
+	if (topRow >= OUT_OF_STAGE && roomInfo[topRow][currColumn] != RoomTypes::NONE)
 	{
-		door[currLocatedRow][currLocatedColumn][UPPER_DOOR].doorState = DoorStates::OPENED;
+		door[currRow][currColumn][UPPER_DOOR].doorState = DoorStates::OPENED;
 	}
-	if (bottomRow < stageSize && roomInfo[bottomRow][currLocatedColumn] != RoomTypes::NONE)
+	if (bottomRow < stageSize && roomInfo[bottomRow][currColumn] != RoomTypes::NONE)
 	{
-		door[currLocatedRow][currLocatedColumn][LOWER_DOOR].doorState = DoorStates::OPENED;
+		door[currRow][currColumn][LOWER_DOOR].doorState = DoorStates::OPENED;
 	}
-	if (leftColumn >= OUT_OF_STAGE && roomInfo[currLocatedRow][leftColumn] != RoomTypes::NONE)
+	if (leftColumn >= OUT_OF_STAGE && roomInfo[currRow][leftColumn] != RoomTypes::NONE)
 	{
-		door[currLocatedRow][currLocatedColumn][LEFT_DOOR].doorState = DoorStates::OPENED;
+		door[currRow][currColumn][LEFT_DOOR].doorState = DoorStates::OPENED;
 	}
-	if (rightColumn < stageSize && roomInfo[currLocatedRow][rightColumn] != RoomTypes::NONE)
+	if (rightColumn < stageSize && roomInfo[currRow][rightColumn] != RoomTypes::NONE)
 	{
-		door[currLocatedRow][currLocatedColumn][RIGHT_DOOR].doorState = DoorStates::OPENED;
+		door[currRow][currColumn][RIGHT_DOOR].doorState = DoorStates::OPENED;
 	}
 }
 
@@ -630,8 +635,8 @@ void DoorEditing::Init(int stageNum)
 	StoreRoomType(startPoint, startPoint);
 
 	// 현재 맵의 위치
-	currLocatedRow = startPoint;
-	currLocatedColumn = startPoint;
+	currColumn = startPoint;
+	currRow = startPoint;
 
 	// 특정 방들은 자기 방에 맞는 이미지를 가지게 함
 	FixBossDoor();									// BossRoom
@@ -669,10 +674,35 @@ void DoorEditing::Init(int stageNum)
 	}
 }
 
+void DoorEditing::OpenTheDoor()
+{
+	if (normalMonster[0][currRow][currColumn].empty())
+	{
+		// 상
+		if (door[currRow][currColumn][UPPER_DOOR].img != nullptr)
+		{
+			door[currRow][currColumn][UPPER_DOOR].doorState = DoorStates::OPENED;
+		}
+		// 하
+		if (door[currRow][currColumn][LOWER_DOOR].img != nullptr)
+		{
+			door[currRow][currColumn][LOWER_DOOR].doorState = DoorStates::OPENED;
+		}
+		// 좌
+		if (door[currRow][currColumn][LEFT_DOOR].img != nullptr)
+		{
+			door[currRow][currColumn][LEFT_DOOR].doorState = DoorStates::OPENED;
+		}
+		// 우
+		if (door[currRow][currColumn][RIGHT_DOOR].img != nullptr)
+		{
+			door[currRow][currColumn][RIGHT_DOOR].doorState = DoorStates::OPENED;
+		}
+	}
+}
+
 void DoorEditing::StoreRoomType(int row, int column)
 {
-	int currRow = row;
-	int currColumn = column;
 	// 상, 하, 좌, 우 의 방으로 진입하기 위한 변수
 	int topRow = row - 1;
 	int bottomRow = row + 1;
@@ -683,46 +713,46 @@ void DoorEditing::StoreRoomType(int row, int column)
 	// 상
 	if (topRow >= OUT_OF_STAGE)
 	{
-		ApplyDoorInfo(topRow, currColumn, currRow, currColumn, UPPER_DOOR);
+		ApplyDoorInfo(topRow, column, row, column, UPPER_DOOR);
 	}
 	// 하
 	if (bottomRow < stageSize)
 	{
-		ApplyDoorInfo(bottomRow, currColumn, currRow, currColumn, LOWER_DOOR);
+		ApplyDoorInfo(bottomRow, column, row, column, LOWER_DOOR);
 	}
 	// 좌
 	if (leftColumn >= OUT_OF_STAGE)
 	{
-		ApplyDoorInfo(currRow, leftColumn, currRow, currColumn, LEFT_DOOR);
+		ApplyDoorInfo(row, leftColumn, row, column, LEFT_DOOR);
 	}
 	// 우
 	if (rightColumn < stageSize)
 	{
-		ApplyDoorInfo(currRow, rightColumn, currRow, currColumn, RIGHT_DOOR);
+		ApplyDoorInfo(row, rightColumn, row, column, RIGHT_DOOR);
 	}
 
 	// 방문 확인
-	isTransitMap[currRow][currColumn] = true;
+	isTransitMap[row][column] = true;
 
 	// 다음 맵으로 이동
 	// 상
-	if (topRow >= OUT_OF_STAGE && roomInfo[topRow][currColumn] != RoomTypes::NONE && isTransitMap[topRow][currColumn] == false)
+	if (topRow >= OUT_OF_STAGE && roomInfo[topRow][column] != RoomTypes::NONE && isTransitMap[topRow][column] == false)
 	{
-		StoreRoomType(topRow, currColumn);
+		StoreRoomType(topRow, column);
 	}
 	// 하
-	if (bottomRow < stageSize && roomInfo[bottomRow][currColumn] != RoomTypes::NONE && isTransitMap[bottomRow][currColumn] == false)
+	if (bottomRow < stageSize && roomInfo[bottomRow][column] != RoomTypes::NONE && isTransitMap[bottomRow][column] == false)
 	{
-		StoreRoomType(bottomRow, currColumn);
+		StoreRoomType(bottomRow, column);
 	}
 	// 좌
-	if (leftColumn >= OUT_OF_STAGE && roomInfo[currRow][leftColumn] != RoomTypes::NONE && isTransitMap[currRow][leftColumn] == false)
+	if (leftColumn >= OUT_OF_STAGE && roomInfo[row][leftColumn] != RoomTypes::NONE && isTransitMap[row][leftColumn] == false)
 	{
-		StoreRoomType(currRow, leftColumn);
+		StoreRoomType(row, leftColumn);
 	}
 	// 우
-	if (rightColumn < stageSize && roomInfo[currRow][rightColumn] != RoomTypes::NONE && isTransitMap[currRow][rightColumn] == false)
+	if (rightColumn < stageSize && roomInfo[row][rightColumn] != RoomTypes::NONE && isTransitMap[row][rightColumn] == false)
 	{
-		StoreRoomType(currRow, rightColumn);
+		StoreRoomType(row, rightColumn);
 	}
 }

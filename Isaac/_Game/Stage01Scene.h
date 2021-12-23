@@ -53,11 +53,12 @@ public:
 	virtual void								Update() override;
 	virtual void								Render(HDC hdc) override;
 
+	void										MoveToNextMap();
+	void										NamingNormalMonsterInfo(int row, int column);
+	void										NamingObstacleInfo(int row, int column, string loadObstacleFileName, int obstacleIndex);
 	void										LoadMap(string loadTilemapFileName);
 	void										LoadNormalMonster(int row, int column, string loadNormalMonsterFileName, int normalMonsterCount);
-	void										NamingNormalMonsterInfo(int row, int column);
 	void										LoadObstacle(int row, int column, string loadObstacleFileName, int obstacleCount);
-	void										NamingObstacleInfo(int row, int column, string loadObstacleFileName, int obstacleIndex);
 	void										SelectMapImage();
 	void										TileRender(HDC hdc);
 

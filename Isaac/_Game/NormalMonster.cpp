@@ -51,6 +51,18 @@ void NormalMonster::Render(HDC hdc)
 {
 	monsterInfo.img->Render(hdc, (INT)monsterInfo.pos.x, (INT)monsterInfo.pos.y, monsterInfo.img->GetCurrFrameX(), monsterInfo.img->GetCurrFrameY());
 
+	HBRUSH myBrush = (HBRUSH)GetStockObject(NULL_BRUSH);
+	HBRUSH oldBrush = (HBRUSH)SelectObject(hdc, myBrush);
+	for (int r = 0; r < 14; ++r)
+	{
+		for (int c = 0; c < 26; ++c)
+		{
+			Rectangle(hdc, 120 + (c * 40), 120 + (r * 40), 120 + ((c + 1) * 40), 120 + ((r + 1) * 40));
+		}
+	}
+	SelectObject(hdc, oldBrush);
+	DeleteObject(myBrush);
+
 	// Debug
 	Monster::Render(hdc);
 }

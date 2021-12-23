@@ -16,8 +16,6 @@ private:
 
 	int											stageSize = 0;
 	int											startPoint = 0;
-	int											currLocatedRow = 0;
-	int											currLocatedColumn = 0;
 
 public:
 	virtual void								Release() override;
@@ -35,18 +33,16 @@ public:
 	void										FixSatanDoor();
 	void										FixStartDoor();
 	void										Init(int stageNum = 0);
+	void										OpenTheDoor();
 	void										StoreRoomType(int row, int column);
 
-	int											GetLocatedRow() { return this->currLocatedRow; }
-	int											GetLocatedColumn() { return this->currLocatedColumn; }
+	int											GetLocatedRow() { return this->currRow; }
+	int											GetLocatedColumn() { return this->currColumn; }
 	vector<vector<array<DOOR_INFO, 4>>>			GetDoorInfo() { return this->door; }
 	vector<vector<RoomTypes>>					GetRoomType() { return this->roomInfo; }
 	vector<vector<string>>						GetStage() { return this->stage01Index; }
 	int											GetStageSize() { return this->stageSize; }
 	int											GetStartPoint() { return this->startPoint; }
-
-	void										SetLocatedRow(int row) { this->currLocatedRow = row; }
-	void										SetLocatedColumn(int column) { this->currLocatedColumn = column; }
 
 	virtual ~DoorEditing() = default;
 };

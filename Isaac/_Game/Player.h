@@ -3,9 +3,6 @@
 #include "GameObject.h"
 
 class Image;
-class NormalMonster;
-class Obstacle;
-class WeaponManager;
 class Player : public GameObject
 {
 private:
@@ -47,11 +44,8 @@ private:
 
 private:
 	Image*									otherStateImg = nullptr;
-	WeaponManager*							weaponTear = nullptr;
 
 	vector<vector<array<DOOR_INFO, 4>>>*	doorInfo = nullptr;																			// 문의 정보
-	vector<vector<vector<NormalMonster*>>>* normalMonster = nullptr;																	// Normal Monster 정보
-	vector<vector<vector<Obstacle*>>>*		obstacle = nullptr;																			// 장애물 정보
 
 	PlayerStates							playerState = PlayerStates::IDLE;															// 상태
 
@@ -62,13 +56,9 @@ private:
 	char									text[64] = {};
 
 	int										stageSize = 0;																				// Stage Size
-	int										currColumn = 0;																				// 현재 맵의 column
-	int										currRow = 0;																				// 현재 맵의 row
 	int										fireDelay = 0;																				// 무기 발사 지연
 
 	int										hurtDurationTime = 0;																		// 피해를 입었을 때 지속 시간(무적 상태)
-
-	vector<vector<FILE_INFO>>				normalMonsterInfo;
 
 public:
 	virtual void							Init() override;
@@ -114,16 +104,12 @@ public:
 	RECT									GetPlayerHeadShape() { return this->headInfo.shape; }
 	ObjectDir								GetPlayerHeadMoveDir() { return this->headInfo.moveDir; }
 
-	void									SetCurrCloumn(int column) { this->currColumn = column; }
-	void									SetCurrRow(int row) { this->currRow = row; }
 	void									SetEnterNextUpDoor(bool enterNextDoor) { this->enterNextDoor[0] = enterNextDoor; }
 	void									SetEnterNextDownDoor(bool enterNextDoor) { this->enterNextDoor[1] = enterNextDoor; }
 	void									SetEnterNextLeftDoor(bool enterNextDoor) { this->enterNextDoor[2] = enterNextDoor; }
 	void									SetEnterNextRightDoor(bool enterNextDoor) { this->enterNextDoor[3] = enterNextDoor; }
 	void									SetDoorInfo(vector<vector<array<DOOR_INFO, 4 >>>* doorInfo) { this->doorInfo = doorInfo; }
 	void									SetIsFire(bool isFireTear) { this->isFireTear = isFireTear; }
-	void									SetNormalMonsterInfo(vector<vector<vector<NormalMonster*>>>* normalMonster) { this->normalMonster = normalMonster; }
-	void									SetObstacleInfo(vector<vector<vector<Obstacle*>>>* obstacle) { this->obstacle = obstacle; }
 	void									SetPlayerBodyPos(POINTFLOAT pos) { this->bodyInfo.pos = pos; }
 	void									SetPlayerBodyShape(RECT rc) { this->bodyInfo.shape = rc; }
 	void									SetPlayerHeadPos(POINTFLOAT pos) { this->headInfo.pos = pos; }

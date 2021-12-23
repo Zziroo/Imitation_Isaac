@@ -26,8 +26,6 @@ private:
 	vector<vector<MinimapInfo>>		minimap;
 	vector<vector<RoomTypes>>*		roomInfo = nullptr;
 
-	int								currColumn = 0;
-	int								currRow = 0;
 	int								originColumn = 0;
 	int								originRow = 0;
 	int								stageSize = 0;
@@ -44,8 +42,6 @@ public:
 	void							MoveMinimap(int row, int column);
 	void							VisitedMapIcon(int row, int column);
 
-	void							SetCurrCloumn(int column) { this->currColumn = column; }
-	void							SetCurrRow(int row) { this->currRow = row; }
 	void							SetRoomInfo(vector<vector<RoomTypes>>* roomType) { this->roomInfo = roomType; }
 	void							SetStageSize(int size) { this->stageSize = size; }
 	void							SetStartPointRow(int row) { this->startPointRow = row; }

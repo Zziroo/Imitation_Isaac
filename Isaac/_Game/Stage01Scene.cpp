@@ -149,7 +149,7 @@ HRESULT Stage01Scene::Init()
 		}
 	}
 
-#ifdef _DEBUG obstacleFileInfo
+#ifdef _DEBUG ObstacleFileInfo
 	cout << "obstacleFileInfo.index\n";
 	for (size_t i = 0; i < obstacleFileInfo.size(); ++i)
 	{
@@ -340,58 +340,6 @@ void Stage01Scene::Release()
 
 void Stage01Scene::Update()
 {
-#ifdef _DEBUG
-	// 예시) 상,하,좌,우 키를 입력해서 맵을 바꿈.(맵의 종류를 알아서 보여줘야함)
-	if (Input::GetButtonDown(VK_UP))
-	{
-		if (doorInfo[currRow][currColumn][UPPER_DOOR].roomType != RoomTypes::NONE || doorInfo[currRow][currColumn][UPPER_DOOR].img != nullptr)
-		{
-			--currRow;
-			if (currRow < OUT_OF_STAGE)
-			{
-				currRow = OUT_OF_STAGE;
-			}
-		}
-		SelectMapImage();
-	}
-	if (Input::GetButtonDown(VK_DOWN))
-	{
-		if (doorInfo[currRow][currColumn][LOWER_DOOR].roomType != RoomTypes::NONE || doorInfo[currRow][currColumn][LOWER_DOOR].img != nullptr)
-		{
-			++currRow;
-			if (currRow >= stageSize)
-			{
-				currRow = stageSize - 1;
-			}
-		}
-		SelectMapImage();
-	}
-	if (Input::GetButtonDown(VK_LEFT))
-	{
-		if (doorInfo[currRow][currColumn][LEFT_DOOR].roomType != RoomTypes::NONE || doorInfo[currRow][currColumn][LEFT_DOOR].img != nullptr)
-		{
-			--currColumn;
-			if (currColumn < OUT_OF_STAGE)
-			{
-				currColumn = OUT_OF_STAGE;
-			}
-		}
-		SelectMapImage();
-	}
-	if (Input::GetButtonDown(VK_RIGHT))
-	{
-		if (doorInfo[currRow][currColumn][RIGHT_DOOR].roomType != RoomTypes::NONE || doorInfo[currRow][currColumn][RIGHT_DOOR].img != nullptr)
-		{
-			++currColumn;
-			if (currColumn >= stageSize)
-			{
-				currColumn = stageSize - 1;
-			}
-		}
-		SelectMapImage();
-	}
-#endif
-
 	// Door의 정보를 Update
 	for (size_t i = 0; i < doorInfo.size(); ++i)
 	{
@@ -411,7 +359,11 @@ void Stage01Scene::Update()
 	//player->SetObstacleInfo(&obstacle);				// 업데이트에서 계속 해줘야 하는지??
 	player->Update();
 
-	// Obstacle Update									// 전부 돌면서 업데이트 시켜야 할까??		// 문제 발생! ! => 가끔씩 Bonfire의 업데이트가 되지 않는다.
+														// 전부 돌면서 업데이트 시켜야 할까??											// 문제 발생! ! => 가끔씩 Bonfire의 업데이트가 되지 않는다.
+														//for (int k = 0; k < obstacleFileInfo[currRow][currColumn].count; ++k)
+														//{
+														//	obstacle[currRow][currColumn][k]->Update();
+	// Obstacle Update									//}
 	for (size_t i = 0; i < obstacle.size(); ++i)
 	{
 		for (size_t j = 0; j < obstacle[i].size(); ++j)
@@ -423,12 +375,13 @@ void Stage01Scene::Update()
 		}
 	}
 
-	// NormalMonster Update
+	// NormalMonster에게 Player의 위치 정보 줌.
 	for (int i = 0; i < normalMonsterFileInfo[currRow][currColumn].count; ++i)
 	{
 		normalMonster[currRow][currColumn][i]->SetTargetPos(player->GetPlayerBodyPos());
 	}
 
+	// NormalMonster Update								// 문제 발생! ! => 가끔씩 Monster의 업데이트가 되지 않는다.
 	for (size_t i = 0; i < normalMonster.size(); ++i)
 	{
 		for (size_t j = 0; j < normalMonster[i].size(); ++j)
@@ -441,6 +394,55 @@ void Stage01Scene::Update()
 	}
 
 	// Map Update
+	MoveToNextMap();
+
+	// DoorEditing Update
+	door->SetCurrCloumn(currColumn);
+	door->SetCurrRow(currRow);
+	door->SetNormalMonsterInfo(&normalMonster);
+	door->Update();
+
+	// Minimap Update
+	minimap->SetCurrCloumn(currColumn);
+	minimap->SetCurrRow(currRow);
+	minimap->Update();
+}
+
+void Stage01Scene::Render(HDC hdc)
+{
+	// Map Render
+	TileRender(hdc);
+
+	// Start Map에 Image Render
+	if (currRow == startPoint && currColumn == startPoint)
+	{
+		infomationStartImg->Render(hdc, (INT)(WIN_SIZE_X * DEVIDE_HALF), (INT)(WIN_SIZE_Y * DEVIDE_HALF));
+	}
+
+	// Obstacle Render
+	for (int i = 0; i < obstacleFileInfo[currRow][currColumn].count; ++i)
+	{
+		obstacle[currRow][currColumn][i]->Render(hdc);
+	}
+
+	// NormalMonster Render
+	for (int i = 0; i < normalMonsterFileInfo[currRow][currColumn].count; ++i)
+	{
+		normalMonster[currRow][currColumn][i]->Render(hdc);
+	}
+
+	// Door Render
+	door->Render(hdc);
+
+	// Player Render
+	player->Render(hdc);
+
+	// Minimap Render
+	minimap->Render(hdc);
+}
+
+void Stage01Scene::MoveToNextMap()
+{
 	if (player->GetEnterNextDoor()[UPPER_DOOR])
 	{
 		// 상
@@ -497,49 +499,190 @@ void Stage01Scene::Update()
 		SelectMapImage();
 		player->SetEnterNextRightDoor(false);
 	}
-
-	// DoorEditing Update
-	door->SetLocatedColumn(currColumn);
-	door->SetLocatedRow(currRow);
-	door->Update();
-
-	// Minimap Update
-	minimap->SetCurrCloumn(currColumn);
-	minimap->SetCurrRow(currRow);
-	minimap->Update();
+	
+	#ifdef _DEBUG MoveToNextMap
+	if (Input::GetButtonDown(VK_UP))
+	{
+		if (doorInfo[currRow][currColumn][UPPER_DOOR].roomType != RoomTypes::NONE || doorInfo[currRow][currColumn][UPPER_DOOR].img != nullptr)
+		{
+			--currRow;
+			if (currRow < OUT_OF_STAGE)
+			{
+				currRow = OUT_OF_STAGE;
+			}
+		}
+		SelectMapImage();
+	}
+	if (Input::GetButtonDown(VK_DOWN))
+	{
+		if (doorInfo[currRow][currColumn][LOWER_DOOR].roomType != RoomTypes::NONE || doorInfo[currRow][currColumn][LOWER_DOOR].img != nullptr)
+		{
+			++currRow;
+			if (currRow >= stageSize)
+			{
+				currRow = stageSize - 1;
+			}
+		}
+		SelectMapImage();
+	}
+	if (Input::GetButtonDown(VK_LEFT))
+	{
+		if (doorInfo[currRow][currColumn][LEFT_DOOR].roomType != RoomTypes::NONE || doorInfo[currRow][currColumn][LEFT_DOOR].img != nullptr)
+		{
+			--currColumn;
+			if (currColumn < OUT_OF_STAGE)
+			{
+				currColumn = OUT_OF_STAGE;
+			}
+		}
+		SelectMapImage();
+	}
+	if (Input::GetButtonDown(VK_RIGHT))
+	{
+		if (doorInfo[currRow][currColumn][RIGHT_DOOR].roomType != RoomTypes::NONE || doorInfo[currRow][currColumn][RIGHT_DOOR].img != nullptr)
+		{
+			++currColumn;
+			if (currColumn >= stageSize)
+			{
+				currColumn = stageSize - 1;
+			}
+		}
+		SelectMapImage();
+	}
+	#endif
 }
 
-void Stage01Scene::Render(HDC hdc)
+void Stage01Scene::NamingNormalMonsterInfo(int row, int column)
 {
-	// Map Render
-	TileRender(hdc);
+	string fileName = "Save/MONSTER";
+	// .monster 랜덤 설정
+	int index = 0;
 
-	// Start Map에 Image Render
-	if (currRow == startPoint && currColumn == startPoint)
+	random_device rd;
+	mt19937 gen(rd());
+	uniform_int_distribution<int> dis(0, 99);
+
+	index = dis(gen) % normalMonsterMaxIndex;
+
+	if (index < 10)
 	{
-		infomationStartImg->Render(hdc, (INT)(WIN_SIZE_X * DEVIDE_HALF), (INT)(WIN_SIZE_Y * DEVIDE_HALF));
+		fileName += "0";
 	}
 
-	// Obstacle Render
-	for (int i = 0; i < obstacleFileInfo[currRow][currColumn].count; ++i)
+	fileName += to_string(index) + "_";
+
+	int count = 0;
+
+	switch (index)
 	{
-		obstacle[currRow][currColumn][i]->Render(hdc);
+	case 3:
+		count = 0;
+		break;
+	case 2:
+		count = 3;
+		break;
+	case 0: case 1:
+		count = 6;
+		break;
 	}
 
-	// NormalMonster Render
-	for (int i = 0; i < normalMonsterFileInfo[currRow][currColumn].count; ++i)
+	if (count < 10)
 	{
-		normalMonster[currRow][currColumn][i]->Render(hdc);
+		fileName += "0";
 	}
 
-	// Door Render
-	door->Render(hdc);
+	fileName += to_string(count) + ".monster";
 
-	// Player Render
-	player->Render(hdc);
+	normalMonsterFileInfo[row][column].index = fileName;
+	normalMonsterFileInfo[row][column].count = count;
+}
 
-	// Minimap Render
-	minimap->Render(hdc);
+void Stage01Scene::NamingObstacleInfo(int row, int column, string loadObstacleFileName, int obstacleIndex)
+{
+	string fileName = "Save/";
+
+	fileName += loadObstacleFileName;
+	// .obstacle 랜덤 설정
+	int index = 0;
+
+	random_device rd;
+	mt19937 gen(rd());
+	uniform_int_distribution<int> dis(0, 99);
+
+	index = dis(gen) % obstacleMaxIndex[obstacleIndex];
+
+	if (index < 10)
+	{
+		fileName += "0";
+	}
+
+	fileName += to_string(index) + "_";
+
+	int count = 0;
+
+	switch (obstacleIndex)
+	{
+	case 0:
+		switch (index)
+		{
+		case 0:
+			count = 1;
+			break;
+		default:
+			break;
+		}
+		break;
+	case 1:
+		switch (index)
+		{
+		case 0:
+			count = 1;
+			break;
+		case 1: case 2:
+			count = 3;
+			break;
+		default:
+			break;
+		}
+		break;
+	case 2:
+		switch (index)
+		{
+		case 16: case 17:
+			count = 0;
+			break;
+		case 12: case 13: case 14:
+			count = 1;
+			break;
+		case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7: case 9:
+			count = 4;
+			break;
+		case 10: case 15:
+			count = 5;
+			break;
+		case 8:
+			count = 20;
+			break;
+		case 11:
+			count = 24;
+			break;
+		default:
+			break;
+		}
+		break;
+	default:
+		break;
+	}
+
+	if (count < 10)
+	{
+		fileName += "0";
+	}
+
+	fileName += to_string(count) + ".obstacle";
+
+	obstacleFileInfo[row][column].index = fileName;
+	obstacleFileInfo[row][column].count = count;
 }
 
 void Stage01Scene::LoadMap(string loadTilemapFileName)
@@ -626,51 +769,6 @@ void Stage01Scene::LoadNormalMonster(int row, int column, string loadNormalMonst
 	storeNormalMonster.clear();
 
 	CloseHandle(hFile);
-}
-
-void Stage01Scene::NamingNormalMonsterInfo(int row, int column)
-{
-	string fileName = "Save/MONSTER";
-	// .monster 랜덤 설정
-	int index = 0;
-
-	random_device rd;
-	mt19937 gen(rd());
-	uniform_int_distribution<int> dis(0, 99);
-
-	index = dis(gen) % normalMonsterMaxIndex;
-
-	if (index < 10)
-	{
-		fileName += "0";
-	}
-
-	fileName += to_string(index) + "_";
-
-	int count = 0;
-
-	switch (index)
-	{
-	case 3:
-		count = 0;
-		break;
-	case 2:
-		count = 3;
-		break;
-	case 0: case 1:
-		count = 6;
-		break;
-	}
-
-	if (count < 10)
-	{
-		fileName += "0";
-	}
-
-	fileName += to_string(count) + ".monster";
-
-	normalMonsterFileInfo[row][column].index = fileName;
-	normalMonsterFileInfo[row][column].count = count;
 }
 
 void Stage01Scene::LoadObstacle(int row, int column, string loadObstacleFileName, int obstacleCount)
@@ -764,94 +862,6 @@ void Stage01Scene::LoadObstacle(int row, int column, string loadObstacleFileName
 	CloseHandle(hFile);
 }
 
-void Stage01Scene::NamingObstacleInfo(int row, int column, string loadObstacleFileName, int obstacleIndex)
-{
-	string fileName = "Save/";
-
-	fileName += loadObstacleFileName;
-	// .obstacle 랜덤 설정
-	int index = 0;
-
-	random_device rd;
-	mt19937 gen(rd());
-	uniform_int_distribution<int> dis(0, 99);
-
-	index = dis(gen) % obstacleMaxIndex[obstacleIndex];
-
-	if (index < 10)
-	{
-		fileName += "0";
-	}
-
-	fileName += to_string(index) + "_";
-
-	int count = 0;
-
-	switch (obstacleIndex)
-	{
-	case 0:
-		switch (index)
-		{
-		case 0:
-			count = 1;
-			break;
-		default:
-			break;
-		}
-		break;
-	case 1:
-		switch (index)
-		{
-		case 0:
-			count = 1;
-			break;
-		case 1: case 2:
-			count = 3;
-			break;
-		default:
-			break;
-		}
-		break;
-	case 2:
-		switch (index)
-		{
-		case 16: case 17:
-			count = 0;
-			break;
-		case 12: case 13: case 14:
-			count = 1;
-			break;
-		case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7: case 9:
-			count = 4;
-			break;
-		case 10: case 15:
-			count = 5;
-			break;
-		case 8:
-			count = 20;
-			break;
-		case 11:
-			count = 24;
-			break;
-		default:
-			break;
-		}
-		break;
-	default:
-		break;
-	}
-
-	if (count < 10)
-	{
-		fileName += "0";
-	}
-
-	fileName += to_string(count) + ".obstacle";
-
-	obstacleFileInfo[row][column].index = fileName;
-	obstacleFileInfo[row][column].count = count;
-}
-
 void Stage01Scene::SelectMapImage()
 {
 	// Stage01Index가 비어있으면 가면 안됨.
@@ -873,14 +883,15 @@ void Stage01Scene::SelectMapImage()
 			if (stageIndex[currRow][currColumn].substr(6, 1) == "E")
 			{
 				sampleTileType = SampleTileTypes::CELLAR;
-				drawingAreaImg = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Tile/Cellar.bmp");		// 문제 발생 => CELLAR00.map Load()시 readByte = 0 이 돼버림.
+				drawingAreaImg = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Tile/Cellar.bmp");
 			}
 		}
 		if (stageIndex[currRow][currColumn].substr(5, 1) == "D")
 		{
 			sampleTileType = SampleTileTypes::DEPTH;
-			drawingAreaImg = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Tile/Depth.bmp");			// 문제 발생 => DEPTH00.map Load()시 readByte = 0 이 돼버림.
+			drawingAreaImg = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Tile/Depth.bmp");
 		}
+
 		// Load
 		LoadMap(stageIndex[currRow][currColumn]);
 	}
