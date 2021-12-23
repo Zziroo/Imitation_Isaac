@@ -17,16 +17,16 @@ using namespace std;
 
 #pragma comment(lib, "winmm.lib")
 
-#define WIN_START_POS_X		0
-#define WIN_START_POS_Y		0
-#define WIN_SIZE_X			1280
-#define WIN_SIZE_Y			800
-#define TILEMAP_SIZE_X		1440
-#define TILEMAP_SIZE_Y		900
+#define WIN_START_POS_X			0
+#define WIN_START_POS_Y			0
+#define WIN_SIZE_X				1280
+#define WIN_SIZE_Y				800
+#define TILEMAP_SIZE_X			1440
+#define TILEMAP_SIZE_Y			900
 
-extern HINSTANCE			g_hInstance;
-extern HWND					g_hWnd;
-extern POINT				g_ptMouse;
+extern HINSTANCE				g_hInstance;
+extern HWND						g_hWnd;
+extern POINT					g_ptMouse;
 
 inline void SetWindowSize(int sizeX, int sizeY)
 {
@@ -53,7 +53,7 @@ inline void SetWindowSize(int sizeX, int sizeY)
 #define SAFE_DELETE(p)	{ if (p) { delete p; p = nullptr; } }
 #define SAFE_RELEASE(p)	{ if (p) { p->Release(); delete p; p = nullptr; } }
 
-#define KEY_MAX_COUNT		256
+#define KEY_MAX_COUNT			256
 
 #include "Input.h"
 #include "ImageManager.h"
@@ -64,16 +64,16 @@ inline void SetWindowSize(int sizeX, int sizeY)
 #define GET_SINGLETON_SCENE	SceneManager::GetSingleton()
 #define GET_SINGLETON_TIME	TimeManager::GetSingleton()
 
-#define MAGENTA				RGB(255, 0, 255)
+#define MAGENTA					RGB(255, 0, 255)
 
 // GameObject
-enum class			ObjectDir { UP, DOWN, LEFT, RIGHT, NONE };	// 이동 방향
+enum class ObjectDir { UP, DOWN, LEFT, RIGHT, NONE };	// 이동 방향
 
-#define ADVANCE_FRAME		1
+#define ADVANCE_FRAME			1
 
-#define DEVIDE_HALF			0.5f
+#define DEVIDE_HALF				0.5f
 
-#define ZERO				0
+#define ZERO					0
 
 // Player
 enum class PlayerStates { IDLE, WALK, ATTACK, HURT, ITEMPICKUP, JUMP, STAT };
@@ -107,6 +107,8 @@ enum class PlayerStates { IDLE, WALK, ATTACK, HURT, ITEMPICKUP, JUMP, STAT };
 #define HEAD_LOOK_LEFT			6
 #define ATTACKING_LEFTSIDE		7
 
+#define HURT_IMAGE				1
+
 // Weapon
 #define WEAPON_MAX_COUNT		100
 
@@ -116,17 +118,17 @@ enum class SampleTileTypes { BASEMENT, CAVE, CELLAR, DEPTH, NONE };
 
 typedef struct tagSampleTile
 {
-	RECT		rc = {};
-	int			frameX = 0;
-	int			frameY = 0;
+	RECT						rc = {};
+	int							frameX = 0;
+	int							frameY = 0;
 } SAMPLE_TILE_INFO;
 
 typedef struct tagTile
 {
-	RECT		rc = {};
-	int			frameX = 0;
-	int			frameY = 0;
-	TileTypes	terrain = TileTypes::WALL;
+	RECT						rc = {};
+	int							frameX = 0;
+	int							frameY = 0;
+	TileTypes					terrain = TileTypes::WALL;
 } TILE_INFO;
 
 #define TILE_SIZE				40
@@ -214,9 +216,14 @@ enum class RoomTypes { BOSS, CURSE, ITEM, NORMAL, PRIVATE, SATAN, START, NONE };
 // DoorEditing
 enum class DoorStates { OPENED, CLOSED, LOCKED, NONE };
 
+#define OPENED_STATE_DOOR 0
+#define CLOSED_STATE_DOOR 1
+#define LOCKED_STATE_DOOR 2
+
 typedef struct tagDoorInfo
 {
-	Image* img = nullptr;
+	Image*						img = nullptr;
+
 	DoorStates					doorState = DoorStates::NONE;
 	ObjectDir					doorDir = ObjectDir::NONE;
 	RoomTypes					roomType = RoomTypes::NONE;

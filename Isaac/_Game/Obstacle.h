@@ -32,8 +32,10 @@ public:
 
 	void					DeginateObstacleShape(float posX, float posY, float size, float adjustSizeLeft = 0.0f, float adjustSizeTop = 0.0f, float adjustSizeRight = 0.0f, float adjustSizeBottom = 0.0f);
 
+	Image*					GetObstacleImage() { return this->obstacleInfo.img; }
 	ObstacleTypes			GetObstacleType() { return this->obstacleInfo.type; }
 	RECT					GetObstacleShape() { return this->shape; }
+	bool					GetObstacleDamaged() { return this->obstacleInfo.doDamage; }
 
 	void					SetObstaclePos(POINTFLOAT pos) { this->pos = pos; }
 	void					SetObstaclePosX(float pos) { this->pos.x = pos; }

@@ -25,6 +25,9 @@ public:
 	virtual void								Render(HDC hdc) override;
 	virtual void								OnDebug(HDC hdc) override;
 
+	void										ApplyDoorInfo(int nextRow, int nextColumn, int row, int column, int direction);
+	void										ChangeImageDoorState();
+	void										ChangeShapeOpenDoor();
 	void										FixBossDoor();
 	void										FixCurseDoor();
 	void										FixItemDoor();

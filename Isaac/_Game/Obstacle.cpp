@@ -30,28 +30,21 @@ void Obstacle::Init()
 		obstacleInfo.type = ObstacleTypes::ITEMSTAND;
 		obstacleInfo.img = GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/ItemStand.bmp");
 		objectSize = 82.0f;
-		DeginateObstacleShape(pos.x, pos.y, objectSize, 0.0f, 0.0f, 0.0f, -9.5f);
+		DeginateObstacleShape(pos.x, pos.y, objectSize, 0.0f, -10.5f, 0.0f, -9.5f);
 		obstacleInfo.isExistItem = true;
 		break;
 	case ObstacleTypes::JAR:
 		obstacleInfo.type = ObstacleTypes::JAR;
 		obstacleInfo.img = GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/Jar.bmp");
 		objectSize = 84.0f;
-		DeginateObstacleShape(pos.x, pos.y, objectSize);
+		DeginateObstacleShape(pos.x, pos.y, objectSize, 0.0f, -5.5f, 0.0f, 0.0f);
 		break;
 	case ObstacleTypes::SLIDER:								// 이미지의 프레임 X값 : 공격 전환(충돌 시 데미지 줌)
 		obstacleInfo.type = ObstacleTypes::SLIDER;
 		obstacleInfo.img = GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/Slider.bmp");
-		if (obstacleInfo.img->GetCurrFrameX() == 0)
-		{
-			objectSize = 60.0f;
-		}
-		if (obstacleInfo.img->GetCurrFrameX() == 1)
-		{
-			objectSize = 90.0f;
-		}
+		objectSize = 60.0f;
 		DeginateObstacleShape(pos.x, pos.y, objectSize, 5.0f, 5.0f, 0.0f, -5.0f);
-		obstacleInfo.doDamage = true;
+		obstacleInfo.doDamage = false;
 		break;
 	case ObstacleTypes::SPIDERWEB:
 		obstacleInfo.type = ObstacleTypes::SPIDERWEB;
@@ -60,7 +53,7 @@ void Obstacle::Init()
 		DeginateObstacleShape(pos.x, pos.y, objectSize);
 		obstacleInfo.isSlowed = true;
 		break;
-	case ObstacleTypes::STONE:								// 이미지의 프레임 X값 : 종류
+	case ObstacleTypes::STONE:
 		obstacleInfo.type = ObstacleTypes::STONE;
 		obstacleInfo.img = GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/Stone.bmp");
 		objectSize = 70.0f;	
@@ -111,6 +104,19 @@ void Obstacle::Update()
 		{
 			obstacleInfo.img->SetCurrFrameX(ZERO);
 			obstacleInfo.elapsedAnimeCount = 0;
+		}
+	}
+
+	// Slider Size 변화
+	if(obstacleInfo.type == ObstacleTypes::SLIDER)
+	{
+		if (obstacleInfo.img->GetCurrFrameX() == 0)
+		{
+			obstacleInfo.doDamage = false;
+		}
+		if (obstacleInfo.img->GetCurrFrameX() == 1)
+		{
+			obstacleInfo.doDamage = true;
 		}
 	}
 

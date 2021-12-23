@@ -10,36 +10,38 @@ class Player : public GameObject
 private:
 	struct PlayerBodyInfo
 	{
-		POINTFLOAT		pos = {
-			(FLOAT)PLAYER_BODY_POS_X,									// Pos.x
-			(FLOAT)PLAYER_BODY_POS_Y									// Pos.Y
+		POINTFLOAT							pos = {
+			(FLOAT)PLAYER_BODY_POS_X,														// Pos.x
+			(FLOAT)PLAYER_BODY_POS_Y														// Pos.Y
 		};
-		float			size = PLAYER_BODYSIZE;
-		RECT			shape = {
-			(LONG)(pos.x - (size * DEVIDE_HALF) - ADJUST_SIZE_14),		// Left
-			(LONG)(pos.y - (size * DEVIDE_HALF)),						// Top
-			(LONG)(pos.x + (size * DEVIDE_HALF) + ADJUST_SIZE_14),		// Right
-			(LONG)(pos.y + (size * DEVIDE_HALF))						// Bottom
+		float								size = PLAYER_BODYSIZE;
+		RECT								shape = {
+			(LONG)(pos.x - (size * DEVIDE_HALF) - ADJUST_SIZE_14),							// Left
+			(LONG)(pos.y - (size * DEVIDE_HALF)),											// Top
+			(LONG)(pos.x + (size * DEVIDE_HALF) + ADJUST_SIZE_14),							// Right
+			(LONG)(pos.y + (size * DEVIDE_HALF))											// Bottom
 		};
-		Image*			image = nullptr;
-		ObjectDir		moveDir = ObjectDir::DOWN;						// 이동 방향
+		Image*								image = nullptr;
+		ObjectDir							moveDir = ObjectDir::DOWN;						// 이동 방향
+
+		int									elapsedAnimeCount = 0;
 	} bodyInfo;
 	struct PlayerHeadInfo
 	{
-		POINTFLOAT		pos = {
-			(FLOAT)PLAYER_HEAD_POS_X,									// Pos.x
-			(FLOAT)PLAYER_HEAD_POS_Y									// Pos.Y
+		POINTFLOAT							pos = {
+			(FLOAT)PLAYER_HEAD_POS_X,														// Pos.x
+			(FLOAT)PLAYER_HEAD_POS_Y														// Pos.Y
 		};
-		float			size = PLAYER_HEADSIZE;
-		RECT			shape = {
-			(LONG)(pos.x - (size * DEVIDE_HALF) - ADJUST_SIZE_05),		// Left
-			(LONG)(pos.y - (size * DEVIDE_HALF)),						// Top
-			(LONG)(pos.x + (size * DEVIDE_HALF) + ADJUST_SIZE_05),		// Right
-			(LONG)(pos.y + (size * DEVIDE_HALF))						// Bottom
+		float								size = PLAYER_HEADSIZE;
+		RECT								shape = {
+			(LONG)(pos.x - (size * DEVIDE_HALF) - ADJUST_SIZE_05),							// Left
+			(LONG)(pos.y - (size * DEVIDE_HALF)),											// Top
+			(LONG)(pos.x + (size * DEVIDE_HALF) + ADJUST_SIZE_05),							// Right
+			(LONG)(pos.y + (size * DEVIDE_HALF))											// Bottom
 		};
-		Image*			image = nullptr;
-		ObjectDir		moveDir = ObjectDir::DOWN;						// 이동 방향
-		int				blinkEye = 0;									// 눈 깜빡임
+		Image*								image = nullptr;
+		ObjectDir							moveDir = ObjectDir::DOWN;						// 이동 방향
+		int									blinkEye = 0;									// 눈 깜빡임
 	} headInfo;
 
 private:
@@ -55,6 +57,7 @@ private:
 
 	array<bool, 4>							enterNextDoor = { false };
 	bool									isFire = false;																				// 무기 발사
+	bool									isinvincible = false;																		// 무적 상태
 
 	char									text[64] = {};
 
@@ -63,6 +66,8 @@ private:
 	int										currRow = 0;
 	int										fireDelay = 0;																				// 무기 발사 지연
 
+	int										hurtDurationTime = 0;
+
 public:
 	virtual void							Init() override;
 	virtual void							Release() override;
@@ -70,22 +75,29 @@ public:
 	virtual void							Render(HDC hdc) override;
 	virtual void							OnDebug(HDC hdc) override;
 
-	void									ApplyAttackFrame(int attackFrame, int usuallyFrame);
+	void									ApplyAnimationAttack(int attackFrame, int usuallyFrame);
 	void									ApplyBodyFrame(ObjectDir moveDir, int bodyFrameY);											// Body 프레임 변화
 	void									ApplyHeadFrame(ObjectDir moveDir, int headFrameX);											// Head 프레임 변화
 	void									ApplyHeadDir(ObjectDir moveDir, int attckFrame);											// Head 방향 변화
 	void									BlinkEye();																					// 눈 깜빡임
 	float									CalculateSlope(RECT rc);																	// 기울기
-	void									ChangeAnimation();																			// 애니메이션 변화
-	void									ChangeAttackFrame();
+	void									ChangeAnimationAttack();																	// 애니메이션 변화(Attack)
+	void									ChangeAnimationWalk();																		// 애니메이션 변화(Walk)
+	void									ChageAnimationHurt();																		// 애니메이션 변화(Hurt)
 	void									ChangeBodyFrame();
 	void									ChangeHeadFrame();
 	void									ChangeHeadDir();
+	void									ChangeImagePlayerState();
 	bool									ClosedEye();																				// 눈이 감긴 상태
-	void									CollideWithDoor(POINTFLOAT bosyPos, RECT bodyShape, POINTFLOAT headPos, RECT headShape);
-	void									CollideWithTilemap(POINTFLOAT bosyPos, RECT bodyShape, POINTFLOAT headPos, RECT headShape);
+	void									CollideWithDoor(POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT headPos, RECT headShape);
+	void									CollideWithTilemap(POINTFLOAT buffPos, POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT headPos, RECT headShape);
+	void									DamagedByDoor(int doorDir, RECT playerShape);
+	void									DamagedBySlider();
+	void									DamagedByThorn();
+	void									DamagedPlayer();
 	void									DevideHeadDir(int pointY, float section, int dir1, int dir2);								// 입력한 위치 바라보기
 	void									FireWeapon(int x, int y);																	// weapon 발사
+	void									Invisibility();
 	void									Move();																						// 움직임
 	void									TakeAction();																				// 입력키
 	void									WeaponDelay();
