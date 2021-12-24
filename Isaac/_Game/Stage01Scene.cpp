@@ -703,25 +703,25 @@ void Stage01Scene::LoadMap(string loadTilemapFileName)
 	case SampleTileTypes::BASEMENT:
 		if (ReadFile(hFile, mainBasementTileInfo, mapLoadFileInfo, &readByte, NULL) == false)
 		{
-			MessageBox(g_hWnd, "Basement 맵 데이터 로드에 실패! !", "에러", MB_OK);
+			MessageBox(_hWnd, "Basement 맵 데이터 로드에 실패! !", "에러", MB_OK);
 		}
 		break;
 	case SampleTileTypes::CAVE:
 		if (ReadFile(hFile, mainCaveTileInfo, mapLoadFileInfo, &readByte, NULL) == false)
 		{
-			MessageBox(g_hWnd, "Basement 맵 데이터 로드에 실패! !", "에러", MB_OK);
+			MessageBox(_hWnd, "Basement 맵 데이터 로드에 실패! !", "에러", MB_OK);
 		}
 		break;
 	case SampleTileTypes::CELLAR:
 		if (ReadFile(hFile, mainCellarTileInfo, mapLoadFileInfo, &readByte, NULL) == false)
 		{
-			MessageBox(g_hWnd, "Basement 맵 데이터 로드에 실패! !", "에러", MB_OK);
+			MessageBox(_hWnd, "Basement 맵 데이터 로드에 실패! !", "에러", MB_OK);
 		}
 		break;
 	case SampleTileTypes::DEPTH:
 		if (ReadFile(hFile, mainDepthTileInfo, mapLoadFileInfo, &readByte, NULL) == false)
 		{
-			MessageBox(g_hWnd, "Basement 맵 데이터 로드에 실패! !", "에러", MB_OK);
+			MessageBox(_hWnd, "Basement 맵 데이터 로드에 실패! !", "에러", MB_OK);
 		}
 		break;
 	case SampleTileTypes::NONE:
@@ -753,7 +753,7 @@ void Stage01Scene::LoadNormalMonster(int row, int column, string loadNormalMonst
 	{
 		if (ReadFile(hFile, &storeNormalMonster[i], sizeof(storeNormalMonsterInfo), &readByte, NULL) == false)
 		{
-			MessageBox(g_hWnd, "Normal Monster 데이터 로드에 실패! !", "에러", MB_OK);
+			MessageBox(_hWnd, "Normal Monster 데이터 로드에 실패! !", "에러", MB_OK);
 		}
 	}
 
@@ -793,7 +793,7 @@ void Stage01Scene::LoadObstacle(int row, int column, string loadObstacleFileName
 		{
 			if (ReadFile(hFile, &storeObstacle[0][i], sizeof(storeObstacleInfo), &readByte, NULL) == false)
 			{
-				MessageBox(g_hWnd, "storeObstacle[0] Obstacle 데이터 로드에 실패! !", "에러", MB_OK);
+				MessageBox(_hWnd, "storeObstacle[0] Obstacle 데이터 로드에 실패! !", "에러", MB_OK);
 			}
 		}
 	}
@@ -804,7 +804,7 @@ void Stage01Scene::LoadObstacle(int row, int column, string loadObstacleFileName
 		{
 			if (ReadFile(hFile, &storeObstacle[1][i], sizeof(storeObstacleInfo), &readByte, NULL) == false)
 			{
-				MessageBox(g_hWnd, "storeObstacle[1] Obstacle 데이터 로드에 실패! !", "에러", MB_OK);
+				MessageBox(_hWnd, "storeObstacle[1] Obstacle 데이터 로드에 실패! !", "에러", MB_OK);
 			}
 		}
 	}
@@ -815,7 +815,7 @@ void Stage01Scene::LoadObstacle(int row, int column, string loadObstacleFileName
 		{
 			if (ReadFile(hFile, &storeObstacle[2][i], sizeof(storeObstacleInfo), &readByte, NULL) == false)
 			{
-				MessageBox(g_hWnd, "storeObstacle[2] Obstacle 데이터 로드에 실패! !", "에러", MB_OK);
+				MessageBox(_hWnd, "storeObstacle[2] Obstacle 데이터 로드에 실패! !", "에러", MB_OK);
 			}
 		}
 	}

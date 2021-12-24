@@ -105,19 +105,19 @@ void DoodleScene::Move()
 {
 	if (Input::GetButton('D'))
 	{
-		pos.x += moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
+		pos.x += moveSpeed * Timer::GetDeltaTime();
 	}
 	if (Input::GetButton('A'))
 	{
-		pos.x -= moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
+		pos.x -= moveSpeed * Timer::GetDeltaTime();
 	}
 	if (Input::GetButton('W'))
 	{
-		pos.y -= moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
+		pos.y -= moveSpeed * Timer::GetDeltaTime();
 	}
 	else if (Input::GetButton('S'))
 	{
-		pos.y += moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
+		pos.y += moveSpeed * Timer::GetDeltaTime();
 	}
 
 	shape.left = (LONG)(pos.x - (size * DEVIDE_HALF));

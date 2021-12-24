@@ -102,7 +102,7 @@ void EnemyToolScene::Update()
 	{
 		button->SetPressLoadButton(false);
 		int loadIndex = saveIndex - 1;
-		Load(loadIndex, storeNormalMonster.size());
+		Load(loadIndex, (INT)storeNormalMonster.size());
 	}
 
 	// LoadNormalMonster
@@ -187,13 +187,13 @@ void EnemyToolScene::Render(HDC hdc)
 	// Normal Monster를 클릭했을 때 이미지만 띄어주기
 	if (clickedSampleNormalMonster)
 	{
-		normalMonsterImg->Render(hdc, g_ptMouse.x, g_ptMouse.y, normalMonsterImg->GetCurrFrameX(), normalMonsterImg->GetCurrFrameY());
+		normalMonsterImg->Render(hdc, _ptMouse.x, _ptMouse.y, normalMonsterImg->GetCurrFrameX(), normalMonsterImg->GetCurrFrameY());
 	}
 
 	// MousePointer
-	wsprintf(text, "Mouse.PosX : %d", g_ptMouse.x);
+	wsprintf(text, "Mouse.PosX : %d", _ptMouse.x);
 	TextOut(hdc, (TILEMAP_SIZE_X - 250), 120, text, (INT)(strlen(text)));
-	wsprintf(text, "Mouse.PosY : %d", g_ptMouse.y);
+	wsprintf(text, "Mouse.PosY : %d", _ptMouse.y);
 	TextOut(hdc, (TILEMAP_SIZE_X - 250), 140, text, (INT)(strlen(text)));
 
 	// Button
@@ -214,7 +214,7 @@ void EnemyToolScene::ClickedNormalMonster()
 			loadNormalMonster.clear();
 		}
 
-		if (PtInRect(&sampleNormalMonsterInfo[0].shape, g_ptMouse))
+		if (PtInRect(&sampleNormalMonsterInfo[0].shape, _ptMouse))
 		{
 			if (Input::GetButtonDown(VK_LBUTTON))
 			{
@@ -222,7 +222,7 @@ void EnemyToolScene::ClickedNormalMonster()
 				normalMonsterImg = GET_SINGLETON_IMAGE->FindImage("Image/Monster/Fly.bmp");
 			}
 		}
-		if (PtInRect(&sampleNormalMonsterInfo[1].shape, g_ptMouse))
+		if (PtInRect(&sampleNormalMonsterInfo[1].shape, _ptMouse))
 		{
 			if (Input::GetButtonDown(VK_LBUTTON))
 			{
@@ -230,7 +230,7 @@ void EnemyToolScene::ClickedNormalMonster()
 				normalMonsterImg = GET_SINGLETON_IMAGE->FindImage("Image/Monster/Attack_Fly.bmp");
 			}
 		}
-		if (PtInRect(&sampleNormalMonsterInfo[2].shape, g_ptMouse))
+		if (PtInRect(&sampleNormalMonsterInfo[2].shape, _ptMouse))
 		{
 			if (Input::GetButtonDown(VK_LBUTTON))
 			{
@@ -248,8 +248,8 @@ void EnemyToolScene::DrawNormalMonster()
 	{
 		if (Input::GetButtonDown(VK_RBUTTON))
 		{
-			long posX = g_ptMouse.x;
-			long posY = g_ptMouse.y;
+			long posX = _ptMouse.x;
+			long posY = _ptMouse.y;
 
 			if (normalMonsterImg == GET_SINGLETON_IMAGE->FindImage("Image/Monster/Fly.bmp"))
 			{
@@ -351,7 +351,7 @@ void EnemyToolScene::Load(int loadIndex, int normalMonsterCount)
 	{
 		if (ReadFile(hFile, &storeNormalMonster[i], sizeof(storeNormalMonsterInfo), &readByte, NULL) == false)
 		{
-			MessageBox(g_hWnd, "Normal Monster 데이터 로드에 실패! !", "에러", MB_OK);
+			MessageBox(_hWnd, "Normal Monster 데이터 로드에 실패! !", "에러", MB_OK);
 		}
 	}
 
@@ -386,7 +386,7 @@ void EnemyToolScene::Save(int saveIndex, int normalMonsterCount)
 	{
 		if (WriteFile(hFile, &storeNormalMonster[i], sizeof(storeNormalMonsterInfo), &writtenByte, NULL) == false)
 		{
-			MessageBox(g_hWnd, "Normal Monster 데이터 저장에 실패! !", "에러", MB_OK);
+			MessageBox(_hWnd, "Normal Monster 데이터 저장에 실패! !", "에러", MB_OK);
 		}
 	}
 

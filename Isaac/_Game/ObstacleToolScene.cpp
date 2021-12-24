@@ -214,13 +214,13 @@ void ObstacleToolScene::Render(HDC hdc)
 	// 장애물들을 클릭했을 때 이미지만 띄어주기
 	if (clickedSampleObstacle)
 	{
-		obstacleImg->Render(hdc, g_ptMouse.x, g_ptMouse.y, obstacleImg->GetCurrFrameX(), obstacleImg->GetCurrFrameY());
+		obstacleImg->Render(hdc, _ptMouse.x, _ptMouse.y, obstacleImg->GetCurrFrameX(), obstacleImg->GetCurrFrameY());
 	}
 
 	// MousePointer
-	wsprintf(text, "Mouse.PosX : %d", g_ptMouse.x);
+	wsprintf(text, "Mouse.PosX : %d", _ptMouse.x);
 	TextOut(hdc, (TILEMAP_SIZE_X - 250), 120, text, (INT)(strlen(text)));
-	wsprintf(text, "Mouse.PosY : %d", g_ptMouse.y);
+	wsprintf(text, "Mouse.PosY : %d", _ptMouse.y);
 	TextOut(hdc, (TILEMAP_SIZE_X - 250), 140, text, (INT)(strlen(text)));
 
 	// Button
@@ -241,7 +241,7 @@ void ObstacleToolScene::ClickedObstacle()
 			loadObstacle.clear();
 		}
 
-		if (PtInRect(&sampleObstacleInfo[0].shape, g_ptMouse))
+		if (PtInRect(&sampleObstacleInfo[0].shape, _ptMouse))
 		{
 			if (Input::GetButtonDown(VK_LBUTTON))
 			{
@@ -249,7 +249,7 @@ void ObstacleToolScene::ClickedObstacle()
 				obstacleImg = GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/ItemStand.bmp");
 			}
 		}
-		if (PtInRect(&sampleObstacleInfo[1].shape, g_ptMouse))
+		if (PtInRect(&sampleObstacleInfo[1].shape, _ptMouse))
 		{
 			if (Input::GetButtonDown(VK_LBUTTON))
 			{
@@ -257,7 +257,7 @@ void ObstacleToolScene::ClickedObstacle()
 				obstacleImg = GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/DDong.bmp");
 			}
 		}
-		if (PtInRect(&sampleObstacleInfo[2].shape, g_ptMouse))
+		if (PtInRect(&sampleObstacleInfo[2].shape, _ptMouse))
 		{
 			if (Input::GetButtonDown(VK_LBUTTON))
 			{
@@ -265,7 +265,7 @@ void ObstacleToolScene::ClickedObstacle()
 				obstacleImg = GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/Brick.bmp");
 			}
 		}
-		if (PtInRect(&sampleObstacleInfo[3].shape, g_ptMouse))
+		if (PtInRect(&sampleObstacleInfo[3].shape, _ptMouse))
 		{
 			if (Input::GetButtonDown(VK_LBUTTON))
 			{
@@ -273,7 +273,7 @@ void ObstacleToolScene::ClickedObstacle()
 				obstacleImg = GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/SpiderWeb.bmp");
 			}
 		}
-		if (PtInRect(&sampleObstacleInfo[4].shape, g_ptMouse))
+		if (PtInRect(&sampleObstacleInfo[4].shape, _ptMouse))
 		{
 			if (Input::GetButtonDown(VK_LBUTTON))
 			{
@@ -281,7 +281,7 @@ void ObstacleToolScene::ClickedObstacle()
 				obstacleImg = GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/Thorn.bmp");
 			}
 		}
-		if (PtInRect(&sampleObstacleInfo[5].shape, g_ptMouse))
+		if (PtInRect(&sampleObstacleInfo[5].shape, _ptMouse))
 		{
 			if (Input::GetButtonDown(VK_LBUTTON))
 			{
@@ -289,7 +289,7 @@ void ObstacleToolScene::ClickedObstacle()
 				obstacleImg = GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/Jar.bmp");
 			}
 		}
-		if (PtInRect(&sampleObstacleInfo[6].shape, g_ptMouse))
+		if (PtInRect(&sampleObstacleInfo[6].shape, _ptMouse))
 		{
 			if (Input::GetButtonDown(VK_LBUTTON))
 			{
@@ -297,7 +297,7 @@ void ObstacleToolScene::ClickedObstacle()
 				obstacleImg = GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/Stone.bmp");
 			}
 		}
-		if (PtInRect(&sampleObstacleInfo[7].shape, g_ptMouse))
+		if (PtInRect(&sampleObstacleInfo[7].shape, _ptMouse))
 		{
 			if (Input::GetButtonDown(VK_LBUTTON))
 			{
@@ -305,7 +305,7 @@ void ObstacleToolScene::ClickedObstacle()
 				obstacleImg = GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/Bonfire.bmp");
 			}
 		}
-		if (PtInRect(&sampleObstacleInfo[8].shape, g_ptMouse))
+		if (PtInRect(&sampleObstacleInfo[8].shape, _ptMouse))
 		{
 			if (Input::GetButtonDown(VK_LBUTTON))
 			{
@@ -323,8 +323,8 @@ void ObstacleToolScene::DrawObstacle()
 	{
 		if (Input::GetButtonDown(VK_RBUTTON))
 		{
-			long posX = g_ptMouse.x;
-			long posY = g_ptMouse.y;
+			long posX = _ptMouse.x;
+			long posY = _ptMouse.y;
 
 			if (obstacleImg == GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/ItemStand.bmp"))
 			{
@@ -484,13 +484,13 @@ void ObstacleToolScene::Load(int roomType, int loadIndex)
 			switch (roomType)
 			{
 			case 0:
-				MessageBox(g_hWnd, "storeObstacle[0] Obstacle 데이터 로드에 실패! !", "에러", MB_OK);
+				MessageBox(_hWnd, "storeObstacle[0] Obstacle 데이터 로드에 실패! !", "에러", MB_OK);
 				break;
 			case 1:
-				MessageBox(g_hWnd, "storeObstacle[1] Obstacle 데이터 로드에 실패! !", "에러", MB_OK);
+				MessageBox(_hWnd, "storeObstacle[1] Obstacle 데이터 로드에 실패! !", "에러", MB_OK);
 				break;
 			case 2:
-				MessageBox(g_hWnd, "storeObstacle[2] Obstacle 데이터 로드에 실패! !", "에러", MB_OK);
+				MessageBox(_hWnd, "storeObstacle[2] Obstacle 데이터 로드에 실패! !", "에러", MB_OK);
 				break;
 			default:
 				break;
@@ -571,13 +571,13 @@ void ObstacleToolScene::Save(int roomType, int saveIndex, int obstacleCount)
 			switch (roomType)
 			{
 			case 0:
-				MessageBox(g_hWnd, "storeObstacle[0] Obstacle 데이터 저장에 실패! !", "에러", MB_OK);
+				MessageBox(_hWnd, "storeObstacle[0] Obstacle 데이터 저장에 실패! !", "에러", MB_OK);
 				break;
 			case 1:
-				MessageBox(g_hWnd, "storeObstacle[1] Obstacle 데이터 저장에 실패! !", "에러", MB_OK);
+				MessageBox(_hWnd, "storeObstacle[1] Obstacle 데이터 저장에 실패! !", "에러", MB_OK);
 				break;
 			case 2:
-				MessageBox(g_hWnd, "storeObstacle[2] Obstacle 데이터 저장에 실패! !", "에러", MB_OK);
+				MessageBox(_hWnd, "storeObstacle[2] Obstacle 데이터 저장에 실패! !", "에러", MB_OK);
 				break;
 			default:
 				break;

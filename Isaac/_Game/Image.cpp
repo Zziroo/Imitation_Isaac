@@ -3,7 +3,7 @@
 
 HRESULT Image::Init(int width, int height)
 {
-	HDC hdc = GetDC(g_hWnd);
+	HDC hdc = GetDC(_hWnd);
 
 	imageInfo = new IMAGE_INFO;
 	imageInfo->width = width;
@@ -14,7 +14,7 @@ HRESULT Image::Init(int width, int height)
 
 	imageInfo->hOldBit = (HBITMAP)SelectObject(imageInfo->hMemDc, imageInfo->hBitmap);
 
-	ReleaseDC(g_hWnd, hdc);
+	ReleaseDC(_hWnd, hdc);
 
 	if (imageInfo->hBitmap == NULL) 
 	{
@@ -26,18 +26,18 @@ HRESULT Image::Init(int width, int height)
 
 HRESULT Image::Init(const char* fileName, int width, int height, bool isTrans, COLORREF transColor)
 {
-	HDC hdc = GetDC(g_hWnd);
+	HDC hdc = GetDC(_hWnd);
 
 	imageInfo = new IMAGE_INFO;
 	imageInfo->width = width;
 	imageInfo->height = height;
 	imageInfo->loadType = ImageLoadType::File;
-	imageInfo->hBitmap = (HBITMAP)LoadImage(g_hInstance, fileName, IMAGE_BITMAP, width, height, LR_LOADFROMFILE);
+	imageInfo->hBitmap = (HBITMAP)LoadImage(_hInst, fileName, IMAGE_BITMAP, width, height, LR_LOADFROMFILE);
 	imageInfo->hMemDc = CreateCompatibleDC(hdc);
 
 	imageInfo->hOldBit = (HBITMAP)SelectObject(imageInfo->hMemDc, imageInfo->hBitmap);
 
-	ReleaseDC(g_hWnd, hdc);
+	ReleaseDC(_hWnd, hdc);
 
 	this->isTransparent = isTrans;
 	this->transColor = transColor;
@@ -52,18 +52,18 @@ HRESULT Image::Init(const char* fileName, int width, int height, bool isTrans, C
 
 HRESULT Image::Init(const char* fileName, int width, int height, int maxFrameX, int maxFrameY, bool isTrans, COLORREF transColor)
 {
-	HDC hdc = GetDC(g_hWnd);
+	HDC hdc = GetDC(_hWnd);
 
 	imageInfo = new IMAGE_INFO;
 	imageInfo->width = width;
 	imageInfo->height = height;
 	imageInfo->loadType = ImageLoadType::File;
-	imageInfo->hBitmap = (HBITMAP)LoadImage(g_hInstance, fileName, IMAGE_BITMAP, width, height, LR_LOADFROMFILE);
+	imageInfo->hBitmap = (HBITMAP)LoadImage(_hInst, fileName, IMAGE_BITMAP, width, height, LR_LOADFROMFILE);
 	imageInfo->hMemDc = CreateCompatibleDC(hdc);
 
 	imageInfo->hOldBit = (HBITMAP)SelectObject(imageInfo->hMemDc, imageInfo->hBitmap);
 
-	ReleaseDC(g_hWnd, hdc);
+	ReleaseDC(_hWnd, hdc);
 
 	this->isTransparent = isTrans;
 	this->transColor = transColor;

@@ -1,24 +1,26 @@
 #pragma once
 
+#include <chrono>
+
 class Timer
 {
-private:
-	bool					isHardware;				// 고성능 타이머를 쓸 수 있는지 여부
-	__int64					periodFrequency;		// 고성능 타이머의 주파수(초당 진동수), 지원하지 않으면 0
-	float					timeScale;				// 1초를 초당 진동수로 나눠서 경과 진동수를 시간단위로 변환
-	__int64					currTime;				// 현재 진동 누적수(현재 시간)
-	__int64					lastTime;				// 이전 진동 누적수(이전 시간)
-	float					deltaTime;				// 경과 시간 (currTime - lastTime) * timeScale
+	using TimePoint = std::chrono::high_resolution_clock::time_point;
 
-	float					fpsTimeElapsed;			// 프레임 경과 시간
-	unsigned long			fpsFrameCount;	
-	unsigned long			fps;					// 초당 프레임 수
-
+	static constexpr INT32 FPS = 60;
+	static constexpr float MS_PER_UPDATE = 1000.0f / static_cast<float>(FPS) - 0.1f;
 public:
-	void					Init();
-	void					Tick();
+	Timer() = delete;
 
-	inline unsigned long	GetFPS() { return fps; }
-	inline float			GetDeltaTime() { return deltaTime; }
+	static void		SetTimeScale(float timeScale);
+	static float	GetTimeScale() noexcept;
+	static float	GetDeltaTime() noexcept;
+
+	static void		Init() noexcept;
+	static bool		CanUpdate() noexcept;
+
+private:
+	static TimePoint	_prevTime;
+	static float		_deltaTime;
+	static float		_timeScale;
 };
 

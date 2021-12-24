@@ -29,16 +29,16 @@ void Tear::Update()
         switch (tearDir)
         {
         case ObjectDir::UP:
-            pos.y -= moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
+            pos.y -= moveSpeed * Timer::GetDeltaTime();
             break;
         case ObjectDir::DOWN:
-            pos.y += moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
+            pos.y += moveSpeed * Timer::GetDeltaTime();
             break;
         case ObjectDir::LEFT:
-            pos.x -= moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
+            pos.x -= moveSpeed * Timer::GetDeltaTime();
             break;
         case ObjectDir::RIGHT:
-            pos.x += moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
+            pos.x += moveSpeed * Timer::GetDeltaTime();
             break;
         default:
             break;

@@ -94,14 +94,11 @@
     <Filter Include="FrameWork\GameObject\Weapon">
       <UniqueIdentifier>{1d8aaec5-5ce9-4faa-9e5f-c76328790c87}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FrameWork\Main">
+      <UniqueIdentifier>{447d020d-36fa-4be1-87bd-7dfd858c2a15}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="MainGame.cpp">
-      <Filter>MainGame</Filter>
-    </ClCompile>
     <ClCompile Include="Image.cpp">
       <Filter>FrameWork\Image</Filter>
     </ClCompile>
@@ -112,9 +109,6 @@
       <Filter>FrameWork\_Singleton</Filter>
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
-      <Filter>FrameWork\_Singleton</Filter>
-    </ClCompile>
-    <ClCompile Include="TimeManager.cpp">
       <Filter>FrameWork\_Singleton</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
@@ -177,13 +171,16 @@
     <ClCompile Include="Weapon.cpp">
       <Filter>FrameWork\GameObject\Weapon</Filter>
     </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>FrameWork\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>FrameWork\Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainConfig.h">
       <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="MainGame.h">
-      <Filter>MainGame</Filter>
     </ClInclude>
     <ClInclude Include="Singleton.h">
       <Filter>FrameWork\_Singleton</Filter>
@@ -198,9 +195,6 @@
       <Filter>FrameWork\_Singleton</Filter>
     </ClInclude>
     <ClInclude Include="SceneManager.h">
-      <Filter>FrameWork\_Singleton</Filter>
-    </ClInclude>
-    <ClInclude Include="TimeManager.h">
       <Filter>FrameWork\_Singleton</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
@@ -262,6 +256,9 @@
     </ClInclude>
     <ClInclude Include="Weapon.h">
       <Filter>FrameWork\GameObject\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>FrameWork\Main</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

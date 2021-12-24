@@ -24,9 +24,9 @@ using namespace std;
 #define TILEMAP_SIZE_X			1440
 #define TILEMAP_SIZE_Y			900
 
-extern HINSTANCE				g_hInstance;
-extern HWND						g_hWnd;
-extern POINT					g_ptMouse;
+extern HINSTANCE				_hInst;
+extern HWND						_hWnd;
+extern POINT					_ptMouse;
 
 inline void SetWindowSize(int sizeX, int sizeY)
 {
@@ -36,7 +36,7 @@ inline void SetWindowSize(int sizeX, int sizeY)
 	rc.left = 0; rc.top = 0;
 	rc.right = sizeX; rc.bottom = sizeY;
 	// 스타일이 포함된 실제 윈도우 크기 계산
-	AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, false);
+	AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
 
 	GetWindowRect(GetDesktopWindow(), &rcDesk);
 
@@ -47,7 +47,7 @@ inline void SetWindowSize(int sizeX, int sizeY)
 	y = (rcDesk.bottom - height) / 2;
 
 	// 윈도우 창을 중앙으로 조정
-	MoveWindow(g_hWnd, x, y, width, height, TRUE);
+	MoveWindow(_hWnd, x, y, width, height, TRUE);
 }
 
 #define SAFE_DELETE(p)	{ if (p) { delete p; p = nullptr; } }
@@ -58,11 +58,10 @@ inline void SetWindowSize(int sizeX, int sizeY)
 #include "Input.h"
 #include "ImageManager.h"
 #include "SceneManager.h"
-#include "TimeManager.h"
+#include "Timer.h"
 
 #define GET_SINGLETON_IMAGE	ImageManager::GetSingleton()
 #define GET_SINGLETON_SCENE	SceneManager::GetSingleton()
-#define GET_SINGLETON_TIME	TimeManager::GetSingleton()
 
 #define MAGENTA					RGB(255, 0, 255)
 

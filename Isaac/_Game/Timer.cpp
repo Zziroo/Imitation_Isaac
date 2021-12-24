@@ -1,58 +1,47 @@
 #include "MainConfig.h"
 #include "Timer.h"
 
-void Timer::Init()
+using namespace std;
+using namespace std::chrono;
+
+high_resolution_clock::time_point Timer::_prevTime = {};
+float Timer::_deltaTime = 0.0f;
+float Timer::_timeScale = 1.0f;
+
+void Timer::SetTimeScale(float timeScale)
 {
-	timeScale = 0.0f;
-	deltaTime = 0.0f;
-
-	isHardware = false;
-
-	periodFrequency = 0;
-	currTime = 0;
-	lastTime = 0;
-
-	fpsFrameCount = 0;
-	fpsTimeElapsed = 0.0f;
-	fps = fpsFrameCount;
-
-	if (QueryPerformanceFrequency((LARGE_INTEGER*)&periodFrequency)) 
-	{
-		isHardware = true;
-		QueryPerformanceCounter((LARGE_INTEGER*)&currTime);
-		timeScale = 1.0f / periodFrequency;
-	}
-	else 
-	{
-		isHardware = false;
-		currTime = timeGetTime();
-		timeScale = 0.001f;
-	}
-
-	lastTime = currTime;
+	_timeScale = timeScale;
 }
 
-void Timer::Tick()
+float Timer::GetTimeScale() noexcept
 {
-	if (isHardware) 
-	{ 
-		QueryPerformanceCounter((LARGE_INTEGER*)&currTime);
-	}
-	else 
-	{ 
-		currTime = timeGetTime();
-	}
+	return _timeScale;
+}
 
-	deltaTime = (currTime - lastTime) * timeScale;
+float Timer::GetDeltaTime() noexcept
+{
+	return _deltaTime * _timeScale;
+}
 
-	fpsFrameCount++;
-	fpsTimeElapsed += deltaTime;
-	if (fpsTimeElapsed >= 1.0f) 
+void Timer::Init() noexcept
+{
+	_prevTime = high_resolution_clock::now();
+}
+
+bool Timer::CanUpdate() noexcept
+{
+	auto current = high_resolution_clock::now();
+
+	duration<float> elapsed = current - _prevTime;
+
+	if (MS_PER_UPDATE * 0.001f > elapsed.count())
 	{
-		fps = fpsFrameCount;
-		fpsFrameCount = 0;
-		fpsTimeElapsed = 0.0f;
+		return false;
 	}
 
-	lastTime = currTime;
+	_deltaTime = elapsed.count();
+
+	_prevTime = current;
+
+	return true;
 }

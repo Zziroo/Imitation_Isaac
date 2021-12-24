@@ -96,9 +96,9 @@ void Player::OnDebug(HDC hdc)
         TextOut(hdc, (INT)((WIN_SIZE_X * DEVIDE_HALF) + 250), (INT)((WIN_SIZE_Y * DEVIDE_HALF) - 20), text, (INT)(strlen(text)));
 
         // MousePointer
-        wsprintf(text, "Mouse.PosX : %d", g_ptMouse.x);
+        wsprintf(text, "Mouse.PosX : %d", _ptMouse.x);
         TextOut(hdc, (INT)((WIN_SIZE_X * DEVIDE_HALF) + 250), (INT)((WIN_SIZE_Y * DEVIDE_HALF) + 20), text, (INT)(strlen(text)));
-        wsprintf(text, "Mouse.PosY : %d", g_ptMouse.y);
+        wsprintf(text, "Mouse.PosY : %d", _ptMouse.y);
         TextOut(hdc, (INT)((WIN_SIZE_X * DEVIDE_HALF) + 250), (INT)((WIN_SIZE_Y * DEVIDE_HALF) + 40), text, (INT)(strlen(text)));
 
         // ±â¿ï±â
@@ -624,16 +624,16 @@ void Player::Move()
     switch (bodyInfo.moveDir)
     {
     case ObjectDir::UP:
-        bodyInfo.pos.y -= moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
+        bodyInfo.pos.y -= moveSpeed * Timer::GetDeltaTime();
         break;
     case ObjectDir::DOWN:
-        bodyInfo.pos.y += moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
+        bodyInfo.pos.y += moveSpeed * Timer::GetDeltaTime();
         break;
     case ObjectDir::LEFT:
-        bodyInfo.pos.x -= moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
+        bodyInfo.pos.x -= moveSpeed * Timer::GetDeltaTime();
         break;
     case ObjectDir::RIGHT:
-        bodyInfo.pos.x += moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
+        bodyInfo.pos.x += moveSpeed * Timer::GetDeltaTime();
         break;
     default:
         break;
@@ -642,16 +642,16 @@ void Player::Move()
     switch (headInfo.moveDir)
     {
     case ObjectDir::UP:
-        headInfo.pos.y -= moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
+        headInfo.pos.y -= moveSpeed * Timer::GetDeltaTime();
         break;
     case ObjectDir::DOWN:
-        headInfo.pos.y += moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
+        headInfo.pos.y += moveSpeed * Timer::GetDeltaTime();
         break;
     case ObjectDir::LEFT:
-        headInfo.pos.x -= moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
+        headInfo.pos.x -= moveSpeed * Timer::GetDeltaTime();
         break;
     case ObjectDir::RIGHT:
-        headInfo.pos.x += moveSpeed * GET_SINGLETON_TIME->GetDeltaTime();
+        headInfo.pos.x += moveSpeed * Timer::GetDeltaTime();
         break;
     default:
         break;
@@ -792,7 +792,7 @@ void Player::TakeAction()
         if (playerState != PlayerStates::HURT)
         {
             playerState = PlayerStates::ATTACK;
-            FireWeapon(g_ptMouse.x, g_ptMouse.y);
+            FireWeapon(_ptMouse.x, _ptMouse.y);
         }
     }
 }

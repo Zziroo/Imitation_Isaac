@@ -640,9 +640,9 @@ void TilemapToolScene::OnDebug(HDC hdc)
 	}
 
 	// MousePointer
-	wsprintf(text, "Mouse.PosX : %d", g_ptMouse.x);
+	wsprintf(text, "Mouse.PosX : %d", _ptMouse.x);
 	TextOut(hdc, (TILEMAP_SIZE_X - 300), 20, text, (INT)(strlen(text)));
-	wsprintf(text, "Mouse.PosY : %d", g_ptMouse.y);
+	wsprintf(text, "Mouse.PosY : %d", _ptMouse.y);
 	TextOut(hdc, (TILEMAP_SIZE_X - 300), 40, text, (INT)(strlen(text)));
 
 	// 선택한 샘플 타일들의 프레임값
@@ -670,7 +670,7 @@ void TilemapToolScene::OnDebug(HDC hdc)
 	{
 		for (int c = 0; c < SAMPLE_TILE_COLUMN; ++c)
 		{
-			if (PtInRect(&(mainBasementTileInfo[r][c].rc), g_ptMouse))
+			if (PtInRect(&(mainBasementTileInfo[r][c].rc), _ptMouse))
 			{
 				if (Input::GetButtonDown('T'))
 				{
@@ -811,7 +811,7 @@ void TilemapToolScene::DrawMultiTile(RECT rc)
 				switch (sampleTileType)
 				{
 				case SampleTileTypes::BASEMENT:
-					if (PtInRect(&(mainBasementTileInfo[r][c].rc), g_ptMouse))
+					if (PtInRect(&(mainBasementTileInfo[r][c].rc), _ptMouse))
 					{
 						int originC = c;
 						int originR = r;
@@ -851,7 +851,7 @@ void TilemapToolScene::DrawMultiTile(RECT rc)
 					}
 					break;
 				case SampleTileTypes::CAVE:
-					if (PtInRect(&(mainCaveTileInfo[r][c].rc), g_ptMouse))
+					if (PtInRect(&(mainCaveTileInfo[r][c].rc), _ptMouse))
 					{
 						int originC = c;
 						int originR = r;
@@ -891,7 +891,7 @@ void TilemapToolScene::DrawMultiTile(RECT rc)
 					}
 					break;
 				case SampleTileTypes::CELLAR:
-					if (PtInRect(&(mainCellarTileInfo[r][c].rc), g_ptMouse))
+					if (PtInRect(&(mainCellarTileInfo[r][c].rc), _ptMouse))
 					{
 						int originC = c;
 						int originR = r;
@@ -931,7 +931,7 @@ void TilemapToolScene::DrawMultiTile(RECT rc)
 					}
 					break;
 				case SampleTileTypes::DEPTH:
-					if (PtInRect(&(mainDepthTileInfo[r][c].rc), g_ptMouse))
+					if (PtInRect(&(mainDepthTileInfo[r][c].rc), _ptMouse))
 					{
 						int originC = c;
 						int originR = r;
@@ -999,7 +999,7 @@ void TilemapToolScene::DrawSingleTile(RECT rc)
 				switch (sampleTileType)
 				{
 				case SampleTileTypes::BASEMENT:
-					if (PtInRect(&(mainBasementTileInfo[r][c].rc), g_ptMouse))
+					if (PtInRect(&(mainBasementTileInfo[r][c].rc), _ptMouse))
 					{
 						if (Input::GetButtonDown(VK_RBUTTON))
 						{
@@ -1009,7 +1009,7 @@ void TilemapToolScene::DrawSingleTile(RECT rc)
 					}
 					break;
 				case SampleTileTypes::CAVE:
-					if (PtInRect(&(mainCaveTileInfo[r][c].rc), g_ptMouse))
+					if (PtInRect(&(mainCaveTileInfo[r][c].rc), _ptMouse))
 					{
 						if (Input::GetButtonDown(VK_RBUTTON))
 						{
@@ -1019,7 +1019,7 @@ void TilemapToolScene::DrawSingleTile(RECT rc)
 					}
 					break;
 				case SampleTileTypes::CELLAR:
-					if (PtInRect(&(mainCellarTileInfo[r][c].rc), g_ptMouse))
+					if (PtInRect(&(mainCellarTileInfo[r][c].rc), _ptMouse))
 					{
 						if (Input::GetButtonDown(VK_RBUTTON))
 						{
@@ -1029,7 +1029,7 @@ void TilemapToolScene::DrawSingleTile(RECT rc)
 					}
 					break;
 				case SampleTileTypes::DEPTH:
-					if (PtInRect(&(mainDepthTileInfo[r][c].rc), g_ptMouse))
+					if (PtInRect(&(mainDepthTileInfo[r][c].rc), _ptMouse))
 					{
 						if (Input::GetButtonDown(VK_RBUTTON))
 						{
@@ -1106,25 +1106,25 @@ void TilemapToolScene::Load(int loadIndex)
 	case SampleTileTypes::BASEMENT:
 		if (ReadFile(hFile, mainBasementTileInfo, mapLoadFileInfo, &readByte, NULL) == false)
 		{
-			MessageBox(g_hWnd, "Basement 맵 데이터 로드에 실패! !", "에러", MB_OK);
+			MessageBox(_hWnd, "Basement 맵 데이터 로드에 실패! !", "에러", MB_OK);
 		}
 		break;
 	case SampleTileTypes::CAVE:
 		if (ReadFile(hFile, mainCaveTileInfo, mapLoadFileInfo, &readByte, NULL) == false)
 		{
-			MessageBox(g_hWnd, "Basement 맵 데이터 로드에 실패! !", "에러", MB_OK);
+			MessageBox(_hWnd, "Basement 맵 데이터 로드에 실패! !", "에러", MB_OK);
 		}
 		break;
 	case SampleTileTypes::CELLAR:
 		if (ReadFile(hFile, mainCellarTileInfo, mapLoadFileInfo, &readByte, NULL) == false)
 		{
-			MessageBox(g_hWnd, "Basement 맵 데이터 로드에 실패! !", "에러", MB_OK);
+			MessageBox(_hWnd, "Basement 맵 데이터 로드에 실패! !", "에러", MB_OK);
 		}
 		break;
 	case SampleTileTypes::DEPTH:
 		if (ReadFile(hFile, mainDepthTileInfo, mapLoadFileInfo, &readByte, NULL) == false)
 		{
-			MessageBox(g_hWnd, "Basement 맵 데이터 로드에 실패! !", "에러", MB_OK);
+			MessageBox(_hWnd, "Basement 맵 데이터 로드에 실패! !", "에러", MB_OK);
 		}
 		break;
 	case SampleTileTypes::NONE:
@@ -1183,25 +1183,25 @@ void TilemapToolScene::Save(int saveIndex)
 	case SampleTileTypes::BASEMENT:
 		if (WriteFile(hFile, mainBasementTileInfo, byteSize, &writtenByte, NULL) == false)
 		{
-			MessageBox(g_hWnd, "Basement 맵 데이터 저장에 실패! !", "에러", MB_OK);
+			MessageBox(_hWnd, "Basement 맵 데이터 저장에 실패! !", "에러", MB_OK);
 		}
 		break;
 	case SampleTileTypes::CAVE:
 		if (WriteFile(hFile, mainCaveTileInfo, byteSize, &writtenByte, NULL) == false)
 		{
-			MessageBox(g_hWnd, "Cave 맵 데이터 저장에 실패! !", "에러", MB_OK);
+			MessageBox(_hWnd, "Cave 맵 데이터 저장에 실패! !", "에러", MB_OK);
 		}
 		break;
 	case SampleTileTypes::CELLAR:
 		if (WriteFile(hFile, mainCellarTileInfo, byteSize, &writtenByte, NULL) == false)
 		{
-			MessageBox(g_hWnd, "Cellar 맵 데이터 저장에 실패! !", "에러", MB_OK);
+			MessageBox(_hWnd, "Cellar 맵 데이터 저장에 실패! !", "에러", MB_OK);
 		}
 		break;
 	case SampleTileTypes::DEPTH:
 		if (WriteFile(hFile, mainDepthTileInfo, byteSize, &writtenByte, NULL) == false)
 		{
-			MessageBox(g_hWnd, "Depth 맵 데이터 저장에 실패! !", "에러", MB_OK);
+			MessageBox(_hWnd, "Depth 맵 데이터 저장에 실패! !", "에러", MB_OK);
 		}
 		break;
 	case SampleTileTypes::NONE:
@@ -1216,14 +1216,14 @@ void TilemapToolScene::Save(int saveIndex)
 void TilemapToolScene::SelectMultiTile(RECT rc)
 {
 	// 샘플 영역의 Point01
-	if (PtInRect(&(rc), g_ptMouse))
+	if (PtInRect(&(rc), _ptMouse))
 	{
 		if (Input::GetButtonDown(VK_LBUTTON))
 		{
-			int posX = g_ptMouse.x - rc.left;
+			int posX = _ptMouse.x - rc.left;
 			int selectedIdX = posX / SAMPLE_TILE_SIZE;
 
-			int posY = g_ptMouse.y - rc.top;
+			int posY = _ptMouse.y - rc.top;
 			int selectedIdY = posY / SAMPLE_TILE_SIZE;
 
 			multiSelectPoint[0] = true;
@@ -1233,14 +1233,14 @@ void TilemapToolScene::SelectMultiTile(RECT rc)
 		}
 	}
 	// 샘플 영역의 Point02
-	if (PtInRect(&(rc), g_ptMouse))
+	if (PtInRect(&(rc), _ptMouse))
 	{
 		if (Input::GetButtonUp(VK_LBUTTON))
 		{
-			int posX = g_ptMouse.x - rc.left;
+			int posX = _ptMouse.x - rc.left;
 			int selectedIdX = posX / SAMPLE_TILE_SIZE;
 
-			int posY = g_ptMouse.y - rc.top;
+			int posY = _ptMouse.y - rc.top;
 			int selectedIdY = posY / SAMPLE_TILE_SIZE;
 
 			multiSelectPoint[1] = true;
@@ -1255,14 +1255,14 @@ void TilemapToolScene::SelectSingleTile(RECT rc)
 {
 	if (ClickedButton())
 	{
-		if (PtInRect(&(rc), g_ptMouse))
+		if (PtInRect(&(rc), _ptMouse))
 		{
 			if (Input::GetButtonDown(VK_RBUTTON))
 			{
-				int posX = g_ptMouse.x - rc.left;
+				int posX = _ptMouse.x - rc.left;
 				int selectedIdX = posX / SAMPLE_TILE_SIZE;
 
-				int posY = g_ptMouse.y - rc.top;
+				int posY = _ptMouse.y - rc.top;
 				int selectedIdY = posY / SAMPLE_TILE_SIZE;
 
 				singleSelectedSampleTile.frameX = sampleTileInfo[selectedIdY + (currShowIndex * TILE_ROW)][selectedIdX].frameX;

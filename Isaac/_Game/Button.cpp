@@ -96,7 +96,7 @@ void Button::Update()
 
 	// 버튼을 눌렀을 때 명령 실행후 원상태로 돌아감.
 	// Close
-	if (PtInRect(&closeBtn.shape, g_ptMouse))
+	if (PtInRect(&closeBtn.shape, _ptMouse))
 	{
 		if (Input::GetButtonDown(VK_LBUTTON))
 		{
@@ -124,7 +124,7 @@ void Button::Update()
 		closeBtn.buttonState = ButtonStates::NONE;
 	}
 	// Exit
-	if (PtInRect(&exitBtn.shape, g_ptMouse))
+	if (PtInRect(&exitBtn.shape, _ptMouse))
 	{
 		if (Input::GetButtonDown(VK_LBUTTON))
 		{
@@ -143,7 +143,7 @@ void Button::Update()
 		exitBtn.buttonState = ButtonStates::NONE;
 	}
 	// Load
-	if (PtInRect(&loadBtn.shape, g_ptMouse))
+	if (PtInRect(&loadBtn.shape, _ptMouse))
 	{
 		if (Input::GetButtonDown(VK_LBUTTON))
 		{ 
@@ -162,7 +162,7 @@ void Button::Update()
 		loadBtn.clicked = false;
 	}
 	// Save
-	if (PtInRect(&saveBtn.shape, g_ptMouse))
+	if (PtInRect(&saveBtn.shape, _ptMouse))
 	{
 		if (Input::GetButtonDown(VK_LBUTTON))
 		{ 
@@ -185,7 +185,7 @@ void Button::Update()
 	// EnemyBtn
 	if (Input::GetButtonDown(VK_LBUTTON))
 	{
-		if (PtInRect(&enemyBtn.shape, g_ptMouse))
+		if (PtInRect(&enemyBtn.shape, _ptMouse))
 		{
 			enemyBtn.clicked = !enemyBtn.clicked;
 			obstacleBtn.buttonState = ButtonStates::NONE;
@@ -199,7 +199,7 @@ void Button::Update()
 	// ObstacleBtn
 	if (Input::GetButtonDown(VK_LBUTTON))
 	{
-		if (PtInRect(&obstacleBtn.shape, g_ptMouse))
+		if (PtInRect(&obstacleBtn.shape, _ptMouse))
 		{
 			obstacleBtn.clicked = !obstacleBtn.clicked;
 			enemyBtn.buttonState = ButtonStates::NONE;
@@ -213,7 +213,7 @@ void Button::Update()
 	// SampleTile
 	if (Input::GetButtonDown(VK_LBUTTON))
 	{	
-		if (PtInRect(&sampleTileBtn.shape, g_ptMouse))
+		if (PtInRect(&sampleTileBtn.shape, _ptMouse))
 		{
 			sampleTileBtn.clicked = !sampleTileBtn.clicked;
 			enemyBtn.buttonState = ButtonStates::NONE;
@@ -228,7 +228,7 @@ void Button::Update()
 	// curseRoomObstacle
 	if (Input::GetButtonDown(VK_LBUTTON))
 	{
-		if (PtInRect(&curseRoomObstacleBtn.shape, g_ptMouse))
+		if (PtInRect(&curseRoomObstacleBtn.shape, _ptMouse))
 		{
 			curseRoomObstacleBtn.clicked = !curseRoomObstacleBtn.clicked;
 			itemRoomObstacleBtn.buttonState = ButtonStates::NONE;
@@ -242,7 +242,7 @@ void Button::Update()
 	// itemRoomObstacle
 	if (Input::GetButtonDown(VK_LBUTTON))
 	{
-		if (PtInRect(&itemRoomObstacleBtn.shape, g_ptMouse))
+		if (PtInRect(&itemRoomObstacleBtn.shape, _ptMouse))
 		{
 			itemRoomObstacleBtn.clicked = !itemRoomObstacleBtn.clicked;
 			curseRoomObstacleBtn.buttonState = ButtonStates::NONE;
@@ -256,7 +256,7 @@ void Button::Update()
 	// normalRoomObstacle
 	if (Input::GetButtonDown(VK_LBUTTON))
 	{
-		if (PtInRect(&normalRoomObstacleBtn.shape, g_ptMouse))
+		if (PtInRect(&normalRoomObstacleBtn.shape, _ptMouse))
 		{
 			normalRoomObstacleBtn.clicked = !normalRoomObstacleBtn.clicked;
 			curseRoomObstacleBtn.buttonState = ButtonStates::NONE;
@@ -272,7 +272,7 @@ void Button::Update()
 	if (sampleTileBtn.clicked)
 	{
 		// BasementTile
-		if (PtInRect(&basementTileBtn.shape, g_ptMouse) && basementTileBtn.buttonState != ButtonStates::DOWN)
+		if (PtInRect(&basementTileBtn.shape, _ptMouse) && basementTileBtn.buttonState != ButtonStates::DOWN)
 		{
 			if (Input::GetButtonDown(VK_LBUTTON))
 			{
@@ -285,7 +285,7 @@ void Button::Update()
 			basementTileBtn.buttonState = ButtonStates::NONE;
 		}
 		// CaveTile
-		if (PtInRect(&caveTileBtn.shape, g_ptMouse) && caveTileBtn.buttonState != ButtonStates::DOWN)
+		if (PtInRect(&caveTileBtn.shape, _ptMouse) && caveTileBtn.buttonState != ButtonStates::DOWN)
 		{
 			if (Input::GetButtonDown(VK_LBUTTON))
 			{
@@ -298,7 +298,7 @@ void Button::Update()
 			caveTileBtn.buttonState = ButtonStates::NONE;
 		}
 		// CellarTile
-		if (PtInRect(&cellarTileBtn.shape, g_ptMouse) && cellarTileBtn.buttonState != ButtonStates::DOWN)
+		if (PtInRect(&cellarTileBtn.shape, _ptMouse) && cellarTileBtn.buttonState != ButtonStates::DOWN)
 		{
 			if (Input::GetButtonDown(VK_LBUTTON))
 			{
@@ -311,7 +311,7 @@ void Button::Update()
 			cellarTileBtn.buttonState = ButtonStates::NONE;
 		}
 		// DepthTile
-		if (PtInRect(&depthTileBtn.shape, g_ptMouse) && depthTileBtn.buttonState != ButtonStates::DOWN)
+		if (PtInRect(&depthTileBtn.shape, _ptMouse) && depthTileBtn.buttonState != ButtonStates::DOWN)
 		{
 			if (Input::GetButtonDown(VK_LBUTTON))
 			{
@@ -577,7 +577,7 @@ void Button::Update()
 	if (sampleTileBtn.clicked)
 	{
 		// Next Button
-		if (PtInRect(&nextBtn.shape, g_ptMouse))
+		if (PtInRect(&nextBtn.shape, _ptMouse))
 		{
 			if (Input::GetButtonDown(VK_LBUTTON))
 			{
@@ -596,7 +596,7 @@ void Button::Update()
 			nextBtn.buttonState = ButtonStates::NONE;
 		}
 		// Prev Button
-		if (PtInRect(&prevBtn.shape, g_ptMouse))
+		if (PtInRect(&prevBtn.shape, _ptMouse))
 		{
 			if (Input::GetButtonDown(VK_LBUTTON))
 			{
