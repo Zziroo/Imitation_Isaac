@@ -260,17 +260,17 @@
     <ClInclude Include="Game.h">
       <Filter>FrameWork\Main</Filter>
     </ClInclude>
-    <ClInclude Include="framework.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>FrameWork\Main</Filter>
     </ClInclude>
-    <ClInclude Include="Global.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Maptool.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>FrameWork\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="framework.h">
+      <Filter>FrameWork\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Global.h">
+      <Filter>FrameWork\Main</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
