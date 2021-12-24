@@ -1,4 +1,4 @@
-#include "MainConfig.h"
+#include "stdafx.h"
 #include "Timer.h"
 
 using namespace std;

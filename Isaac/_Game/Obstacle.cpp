@@ -1,4 +1,4 @@
-#include "MainConfig.h"
+#include "stdafx.h"
 #include "Obstacle.h"
 
 #include "Image.h"

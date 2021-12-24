@@ -1,4 +1,4 @@
-#include "MainConfig.h"
+#include "stdafx.h"
 #include "DoodleScene.h"
 
 #include "Image.h"

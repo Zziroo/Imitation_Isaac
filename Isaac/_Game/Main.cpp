@@ -1,12 +1,8 @@
 // Main.cpp : 애플리케이션에 대한 진입점을 정의합니다.
 //
 
-#include "MainConfig.h"
+#include "stdafx.h"
 #include "Game.h"
-
-#ifdef _DEBUG
-#include <crtdbg.h>
-#endif
 
 #ifdef UNICODE
 #pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console")

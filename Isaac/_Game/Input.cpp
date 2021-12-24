@@ -1,4 +1,4 @@
-#include "MainConfig.h"
+#include "stdafx.h"
 #include "Input.h"
 
 bool Input::currKeyStates[KEY_MAX_COUNT] = { false };

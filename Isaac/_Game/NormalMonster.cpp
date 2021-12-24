@@ -1,4 +1,4 @@
-#include "MainConfig.h"
+#include "stdafx.h"
 #include "NormalMonster.h"
 
 #include "Image.h"

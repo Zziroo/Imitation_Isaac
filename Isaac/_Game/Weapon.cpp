@@ -1,4 +1,4 @@
-#include "MainConfig.h"
+#include "stdafx.h"
 #include "Weapon.h"
 
 void Weapon::Init()

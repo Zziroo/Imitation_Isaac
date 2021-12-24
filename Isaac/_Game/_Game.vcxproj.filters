@@ -177,11 +177,11 @@
     <ClCompile Include="Game.cpp">
       <Filter>FrameWork\Main</Filter>
     </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>FrameWork\Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MainConfig.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Singleton.h">
       <Filter>FrameWork\_Singleton</Filter>
     </ClInclude>
@@ -259,6 +259,18 @@
     </ClInclude>
     <ClInclude Include="Game.h">
       <Filter>FrameWork\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="framework.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>FrameWork\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Global.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Maptool.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

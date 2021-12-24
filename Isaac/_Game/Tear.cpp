@@ -1,4 +1,4 @@
-#include "MainConfig.h"
+#include "stdafx.h"
 #include "Tear.h"
 
 #include "GameObject.h"

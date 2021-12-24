@@ -1,4 +1,4 @@
-#include "MainConfig.h"
+#include "stdafx.h"
 #include "EnemyToolScene.h"
 
 #include "Button.h"

@@ -1,4 +1,4 @@
-#include "MainConfig.h"
+#include "stdafx.h"
 #include "MapEditing.h"
 
 void MapEditing::ArrangeStageIndex(SampleTileTypes sampleType, int loadIndex, int stageNum)

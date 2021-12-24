@@ -40,6 +40,7 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Stage01Scene.cpp" />
+    <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="Tear.cpp" />
     <ClCompile Include="TilemapToolScene.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -51,13 +52,15 @@
     <ClInclude Include="DoodleScene.h" />
     <ClInclude Include="DoorEditing.h" />
     <ClInclude Include="EnemyToolScene.h" />
+    <ClInclude Include="framework.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Global.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="ImageManager.h" />
     <ClInclude Include="Input.h" />
-    <ClInclude Include="MainConfig.h" />
     <ClInclude Include="MapEditing.h" />
+    <ClInclude Include="Maptool.h" />
     <ClInclude Include="Minimap.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="NormalMonster.h" />
@@ -69,6 +72,7 @@
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="Stage01Scene.h" />
+    <ClInclude Include="stdafx.h" />
     <ClInclude Include="Tear.h" />
     <ClInclude Include="TilemapToolScene.h" />
     <ClInclude Include="Timer.h" />

@@ -1,4 +1,4 @@
-#include "MainConfig.h"
+#include "stdafx.h"
 #include "Stage01Scene.h"
 
 #include "DoorEditing.h"
