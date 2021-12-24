@@ -5,13 +5,6 @@ enum class ObjectDir { UP, DOWN, LEFT, RIGHT, NONE };	// 이동 방향
 
 #define ADVANCE_FRAME			1
 
-#define DEVIDE_HALF				0.5f
-
-#define ZERO					0
-
-// Player
-enum class PlayerStates { IDLE, WALK, ATTACK, HURT, ITEMPICKUP, JUMP, STAT };
-
 #define ADJUST_SIZE_05			5
 #define ADJUST_SIZE_09			9
 #define ADJUST_SIZE_10			10
@@ -19,6 +12,13 @@ enum class PlayerStates { IDLE, WALK, ATTACK, HURT, ITEMPICKUP, JUMP, STAT };
 #define ADJUST_SIZE_15			15
 #define ADJUST_SIZE_30			30
 #define ADJUST_SIZE_40			40
+
+#define DEVIDE_HALF				0.5f
+
+#define ZERO					0
+
+// Player
+enum class PlayerStates { IDLE, WALK, ATTACK, HURT, ITEMPICKUP, JUMP, STAT };
 
 #define PLAYER_BODY_POS_X		PLAYER_HEAD_POS_X
 #define PLAYER_BODY_POS_Y		PLAYER_HEAD_POS_Y + 42.5f
@@ -75,20 +75,6 @@ typedef struct tagDoorInfo
 
 // Obstacle
 enum class ObstacleTypes { BONFIRE, BRICK, DDONG, ITEMSTAND, JAR, SLIDER, SPIDERWEB, STONE, THORN, NONE };
-
-// ObstacleTool
-typedef struct storeObstacleInfo
-{
-	ObstacleTypes				sampleType = ObstacleTypes::NONE;
-	POINTFLOAT					pos = {};
-} STORE_OBSTACLE_INFO;
-
-// StageScene
-typedef struct fileInfo
-{
-	string								index;					// roomType마다 파일의 이름을 기억
-	int									count = 0;				// roomType마다 obstacle의 개수를 기억
-} FILE_INFO;
 
 // NormalMonster
 enum class NormalMonsterTypes { FLY, ATTACKFLY, POOTER, NONE };

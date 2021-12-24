@@ -97,6 +97,9 @@
     <Filter Include="FrameWork\Main">
       <UniqueIdentifier>{447d020d-36fa-4be1-87bd-7dfd858c2a15}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FrameWork\Util">
+      <UniqueIdentifier>{6c0d8490-9191-4de7-b1b1-d5739501f168}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Image.cpp">
@@ -263,14 +266,14 @@
     <ClInclude Include="stdafx.h">
       <Filter>FrameWork\Main</Filter>
     </ClInclude>
-    <ClInclude Include="Maptool.h">
-      <Filter>FrameWork\Main</Filter>
-    </ClInclude>
     <ClInclude Include="framework.h">
       <Filter>FrameWork\Main</Filter>
     </ClInclude>
+    <ClInclude Include="Maptool.h">
+      <Filter>FrameWork\Util</Filter>
+    </ClInclude>
     <ClInclude Include="Global.h">
-      <Filter>FrameWork\Main</Filter>
+      <Filter>FrameWork\Util</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

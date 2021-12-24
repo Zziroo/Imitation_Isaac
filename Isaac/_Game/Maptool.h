@@ -98,6 +98,20 @@ inline void SetTerrain(TILE_INFO* rc, int index)
 	}
 }
 
+// ObstacleTool
+typedef struct storeObstacleInfo
+{
+	ObstacleTypes				sampleType = ObstacleTypes::NONE;
+	POINTFLOAT					pos = {};
+} STORE_OBSTACLE_INFO;
+
+// StageScene
+typedef struct fileInfo
+{
+	string								index;					// roomType마다 파일의 이름을 기억
+	int									count = 0;				// roomType마다 obstacle의 개수를 기억
+} FILE_INFO;
+
 // EnemyTool
 typedef struct storeNormalMonsterInfo
 {
