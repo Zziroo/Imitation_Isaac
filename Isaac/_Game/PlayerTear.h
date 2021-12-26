@@ -25,6 +25,8 @@ public:
 
 	void			Fire();
 
+	RECT			GetPlayerTearShape();
+
 	void			SetOwner(Player* owner) { this->owner = owner; }
 
 	virtual ~PlayerTear() noexcept;

@@ -30,13 +30,16 @@ public:
 	virtual void			Render(HDC hdc) override;
 	virtual void			OnDebug(HDC hdc) override;
 
+	void					ChangeObstacleAnimation();
 	void					DeginateObstacleShape(float posX, float posY, float size, float adjustSizeLeft = 0.0f, float adjustSizeTop = 0.0f, float adjustSizeRight = 0.0f, float adjustSizeBottom = 0.0f);
+	void					SwitchDamageToPlayer();
 
-	Image*					GetObstacleImage() { return this->obstacleInfo.img; }
-	ObstacleTypes			GetObstacleType() { return this->obstacleInfo.type; }
-	RECT					GetObstacleShape() { return this->shape; }
 	bool					GetObstacleDamaged() { return this->obstacleInfo.doDamage; }
+	Image*					GetObstacleImage() { return this->obstacleInfo.img; }
+	RECT					GetObstacleShape() { return this->shape; }
+	ObstacleTypes			GetObstacleType() { return this->obstacleInfo.type; }
 
+	void					SetObstacleDamaged(bool doDamage) { this->obstacleInfo.doDamage = doDamage; }
 	void					SetObstaclePos(POINTFLOAT pos) { this->pos = pos; }
 	void					SetObstaclePosX(float pos) { this->pos.x = pos; }
 	void					SetObstaclePosY(float pos) { this->pos.y = pos; }

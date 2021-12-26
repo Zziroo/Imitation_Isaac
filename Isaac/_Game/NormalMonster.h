@@ -33,8 +33,9 @@ public:
 	virtual void			Render(HDC hdc) override;
 	virtual void			OnDebug(HDC hdc) override;
 
-	void					Move();
+	void					AdvanceAnimation(int elapsedCount = 0);
 	void					ChangeAnimation();
+	void					Move();
 	void					DeginateNorMalMonsterShape(float posX, float posY, float size, float adjustSizeLeft = 0.0f, float adjustSizeTop = 0.0f, float adjustSizeRight = 0.0f, float adjustSizeBottom = 0.0f);
 
 	RECT					GetNormalMonsterShape() { return this->monsterInfo.shape; }

@@ -2,6 +2,7 @@
 #include "Obstacle.h"
 
 #include "Image.h"
+#include "PlayerTear.h"
 
 void Obstacle::Init()
 {
@@ -11,7 +12,7 @@ void Obstacle::Init()
 		obstacleInfo.type = ObstacleTypes::BONFIRE;
 		obstacleInfo.img = GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/Bonfire.bmp");
 		objectSize = 68.0f;
-		DeginateObstacleShape(pos.x, pos.y, objectSize, 0.0f, 0.0f, 0.0f, 15.0f);
+		DeginateObstacleShape(pos.x, pos.y, objectSize, 0.0f, -5.0f, 0.0f, -10.0f);
 		obstacleInfo.doDamage = true;
 		break;
 	case ObstacleTypes::BRICK:
@@ -78,47 +79,10 @@ void Obstacle::Release()
 void Obstacle::Update()
 {
 	// 애니메이션 변화
-	// Bonfire
-	if (obstacleInfo.type == ObstacleTypes::BONFIRE)
-	{
-		++obstacleInfo.elapsedAnimeCount;
-		if (obstacleInfo.elapsedAnimeCount > 11)
-		{
-			obstacleInfo.img->SetCurrFrameX(obstacleInfo.img->GetCurrFrameX() + ADVANCE_FRAME);
-			if (obstacleInfo.img->GetCurrFrameX() >= obstacleInfo.img->GetMaxFrameX())
-			{
-				obstacleInfo.img->SetCurrFrameX(ZERO);
-			}
-			obstacleInfo.elapsedAnimeCount = 0;
-		}
-	}
-	// Slider
-	if (obstacleInfo.type == ObstacleTypes::SLIDER)
-	{
-		++obstacleInfo.elapsedAnimeCount;
-		if (obstacleInfo.elapsedAnimeCount > 40)
-		{
-			obstacleInfo.img->SetCurrFrameX(1);
-		}
-		if (obstacleInfo.elapsedAnimeCount > 100)
-		{
-			obstacleInfo.img->SetCurrFrameX(ZERO);
-			obstacleInfo.elapsedAnimeCount = 0;
-		}
-	}
+	ChangeObstacleAnimation();
 
-	// Slider Size 변화
-	if(obstacleInfo.type == ObstacleTypes::SLIDER)
-	{
-		if (obstacleInfo.img->GetCurrFrameX() == 0)
-		{
-			obstacleInfo.doDamage = false;
-		}
-		if (obstacleInfo.img->GetCurrFrameX() == 1)
-		{
-			obstacleInfo.doDamage = true;
-		}
-	}
+	// doDamage 변화
+	SwitchDamageToPlayer();
 
 	// Debug
 	GameObject::Update();
@@ -142,10 +106,69 @@ void Obstacle::OnDebug(HDC hdc)
 #endif
 }
 
+void Obstacle::ChangeObstacleAnimation()
+{
+	// Bonfire
+	if (obstacleInfo.type == ObstacleTypes::BONFIRE)
+	{
+		++obstacleInfo.elapsedAnimeCount;
+		if (obstacleInfo.elapsedAnimeCount > 11)
+		{
+			obstacleInfo.img->SetCurrFrameX(obstacleInfo.img->GetCurrFrameX() + ADVANCE_FRAME);
+			if (obstacleInfo.img->GetCurrFrameX() >= obstacleInfo.img->GetMaxFrameX())
+			{
+				obstacleInfo.img->SetCurrFrameX(ZERO);
+			}
+			obstacleInfo.elapsedAnimeCount = 0;
+		}
+	}
+
+	// Slider
+	if (obstacleInfo.type == ObstacleTypes::SLIDER)
+	{
+		++obstacleInfo.elapsedAnimeCount;
+		if (obstacleInfo.elapsedAnimeCount > 40)
+		{
+			obstacleInfo.img->SetCurrFrameX(1);
+		}
+		if (obstacleInfo.elapsedAnimeCount > 100)
+		{
+			obstacleInfo.img->SetCurrFrameX(ZERO);
+			obstacleInfo.elapsedAnimeCount = 0;
+		}
+	}
+}
+
 void Obstacle::DeginateObstacleShape(float posX, float posY, float size, float adjustSizeLeft, float adjustSizeTop, float adjustSizeRight, float adjustSizeBottom)
 {
 	shape.left = (LONG)(posX - (size * DEVIDE_HALF) - adjustSizeLeft);
 	shape.top = (LONG)(posY - (size * DEVIDE_HALF) - adjustSizeTop);
 	shape.right = (LONG)(posX + (size * DEVIDE_HALF) + adjustSizeRight);
 	shape.bottom = (LONG)(posY + (size * DEVIDE_HALF) + adjustSizeBottom);
+}
+
+void Obstacle::SwitchDamageToPlayer()
+{
+	// Bonfire doDamage 변화
+	if (obstacleInfo.type == ObstacleTypes::BONFIRE)
+	{
+		if (obstacleInfo.img->GetCurrFrameY() == obstacleInfo.img->GetMaxFrameY() - 1)
+		{
+			obstacleInfo.doDamage = false;
+		}
+	}
+
+	// Slider doDamage 변화
+	if (obstacleInfo.type == ObstacleTypes::SLIDER)
+	{
+		if (obstacleInfo.img->GetCurrFrameX() == 0)
+		{
+			obstacleInfo.doDamage = false;
+		}
+		if (obstacleInfo.img->GetCurrFrameX() == 1)
+		{
+			obstacleInfo.doDamage = true;
+		}
+	}
+
 }

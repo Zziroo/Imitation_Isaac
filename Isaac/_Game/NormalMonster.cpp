@@ -77,25 +77,37 @@ void NormalMonster::OnDebug(HDC hdc)
 #endif
 }
 
-void NormalMonster::Move()
+void NormalMonster::AdvanceAnimation(int elapsedCount)
 {
+	++monsterInfo.elapsedAnimeCount;
+	if (monsterInfo.elapsedAnimeCount > elapsedCount)
+	{
+		monsterInfo.img->SetCurrFrameY(monsterInfo.img->GetCurrFrameY() + ADVANCE_FRAME);
+		if (monsterInfo.img->GetCurrFrameY() >= monsterInfo.img->GetMaxFrameY())
+		{
+			monsterInfo.img->SetCurrFrameY(ZERO);
+		}
+		monsterInfo.elapsedAnimeCount = 0;
+	}
 }
 
 void NormalMonster::ChangeAnimation()
 {
-	if (monsterInfo.type != NormalMonsterTypes::NONE)
+	switch (monsterInfo.type)
 	{
-		++monsterInfo.elapsedAnimeCount;
-		if (monsterInfo.elapsedAnimeCount > 11)
-		{
-			monsterInfo.img->SetCurrFrameY(monsterInfo.img->GetCurrFrameY() + ADVANCE_FRAME);
-			if (monsterInfo.img->GetCurrFrameY() >= monsterInfo.img->GetMaxFrameY())
-			{
-				monsterInfo.img->SetCurrFrameY(ZERO);
-			}
-			monsterInfo.elapsedAnimeCount = 0;
-		}
+	case NormalMonsterTypes::ATTACKFLY:
+		AdvanceAnimation(6);
+		break;
+	case NormalMonsterTypes::FLY: case NormalMonsterTypes::POOTER:
+		AdvanceAnimation(11);
+		break;
+	default:
+		break;
 	}
+}
+
+void NormalMonster::Move()
+{
 }
 
 void NormalMonster::DeginateNorMalMonsterShape(float posX, float posY, float size, float adjustSizeLeft, float adjustSizeTop, float adjustSizeRight, float adjustSizeBottom)

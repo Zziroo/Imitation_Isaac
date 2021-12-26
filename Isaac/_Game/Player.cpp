@@ -473,7 +473,7 @@ void Player::DamagedByBonfire(int obstacleIndex, RECT obstacleShape, POINTFLOAT 
 {
     if (obstacle[0][currRow][currColumn][obstacleIndex]->GetObstacleType() == ObstacleTypes::BONFIRE && obstacle[0][currRow][currColumn][obstacleIndex]->GetObstacleDamaged())
     {
-        if (IntersectRect(&colliderRect, &bodyInfo.shape, &obstacleShape))
+        if (IntersectRect(&colliderRect, &bodyInfo.shape, &obstacleShape) || IntersectRect(&colliderRect, &headInfo.shape, &obstacleShape))
         {
             playerState = PlayerStates::HURT;
 
@@ -689,7 +689,7 @@ void Player::Move()
     #pragma endregion
 
     #pragma region NormalMonsterCollider
-    // 厘局拱苞狼 面倒 贸府
+    // Normal Monster客狼 面倒 贸府
     for (size_t i = 0; i < normalMonster[0][currRow][currColumn].size(); ++i)
     {
         RECT normalMonsterShape = normalMonster[0][currRow][currColumn][i]->GetNormalMonsterShape();

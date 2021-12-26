@@ -375,20 +375,10 @@ void Stage01Scene::Update()
 	//player->SetObstacleInfo(&obstacle);				// 업데이트에서 계속 해줘야 하는지??
 	player->Update();
 
-														// 전부 돌면서 업데이트 시켜야 할까??											// 문제 발생! ! => 가끔씩 Bonfire의 업데이트가 되지 않는다.
-														//for (int k = 0; k < obstacleFileInfo[currRow][currColumn].count; ++k)
-														//{
-														//	obstacle[currRow][currColumn][k]->Update();
-	// Obstacle Update									//}
-	for (size_t i = 0; i < obstacle.size(); ++i)
+	// Obstacle Update
+	for (int i = 0; i < obstacle[currRow][currColumn].size(); ++i)
 	{
-		for (size_t j = 0; j < obstacle[i].size(); ++j)
-		{
-			for (int k = 0; k < obstacleFileInfo[i][j].count; ++k)
-			{
-				obstacle[i][j][k]->Update();
-			}
-		}
+		obstacle[currRow][currColumn][i]->Update();
 	}
 
 	// NormalMonster에게 Player의 위치 정보 줌.

@@ -21,10 +21,13 @@ public:
 	virtual void		Render(HDC hdc) override;
 	virtual void		OnDebug(HDC hdc) override;
 
+	void				CollideWithObstacle();
+	void				CollideWithMap();
 	void				Fire(FireMethods method);
 	void				GiveDirectionNormalTear();
 	void				InitializeSize();
 	void				InitializeWeapon();
+	void				OutsideOfMap();
 
 	bool				GetIsFire() { return this->isFire; }
 	ObjectDir			GetMoveDir() { return this->tearDir; }

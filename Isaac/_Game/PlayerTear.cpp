@@ -67,6 +67,14 @@ void PlayerTear::Fire()
 	}
 }
 
+RECT PlayerTear::GetPlayerTearShape()
+{
+	for (size_t i = 0; i < vecTear.size(); ++i)
+	{
+		return vecTear[i]->GetShape();
+	}
+}
+
 PlayerTear::~PlayerTear() noexcept
 {
 	owner = nullptr;

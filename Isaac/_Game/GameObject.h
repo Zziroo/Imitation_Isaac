@@ -2,6 +2,7 @@
 
 class NormalMonster;
 class Obstacle;
+class PlayerTear;
 class GameObject
 {
 protected:
@@ -30,8 +31,10 @@ public:
 	virtual void								Render(HDC hdc);
 	virtual void								OnDebug(HDC hdc);
 
-	inline float								GetMoveSpeed() { return moveSpeed; }
-	inline POINTFLOAT							GetPos() { return pos; }
+	float										GetMoveSpeed() { return this->moveSpeed; }
+	float										GetObjectSize() { return this->objectSize; }
+	POINTFLOAT									GetPos() { return this->pos; }
+	RECT										GetShape() { return this->shape; }
 
 	void										SetCurrCloumn(int column) { this->currColumn = column; }
 	void										SetCurrRow(int row) { this->currRow = row; }
