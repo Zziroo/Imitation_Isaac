@@ -272,6 +272,20 @@ bool Player::ClosedEye()
     return headInfo.image->GetCurrFrameX() == 1 || headInfo.image->GetCurrFrameX() == 3 || headInfo.image->GetCurrFrameX() == 5 || headInfo.image->GetCurrFrameX() == 7;
 }
 
+void Player::CollideWithDDong(int obstacleIndex, RECT obstacleShape, POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT headPos, RECT headShape)
+{
+    if (obstacle[0][currRow][currColumn][obstacleIndex]->GetObstacleType() == ObstacleTypes::DDONG)
+    {
+        if (IntersectRect(&colliderRect, &bodyInfo.shape, &obstacleShape))
+        {
+            bodyInfo.pos = bodyPos;
+            bodyInfo.shape = bodyShape;
+            headInfo.pos = headPos;
+            headInfo.shape = headShape;
+        }
+    }
+}
+
 void Player::CollideWithDoor(POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT headPos, RECT headShape)
 {
 #pragma region DoorStates::OPENED
@@ -437,18 +451,40 @@ void Player::CollideWithObstacle(POINTFLOAT buffPos, POINTFLOAT bodyPos, RECT bo
     for (size_t i = 0; i < obstacle[0][currRow][currColumn].size(); ++i)
     {
         RECT obstacleShape = obstacle[0][currRow][currColumn][i]->GetShape();
+
         // Obstacle이 Bonfire일 때
         DamagedByBonfire((INT)i, obstacleShape, buffPos, bodyPos, bodyShape, headPos, headShape);
+
+        // Obstacle이 DDong일 때
+        CollideWithDDong((INT)i, obstacleShape, bodyPos, bodyShape, headPos, headShape);
+
+        // Obstacle이 Slider일 때
+        CollideWithSlider((INT)i, obstacleShape, bodyPos, bodyShape, headPos, headShape);
+
         // 특정 Obstacle이 아닐 때
-        if (obstacle[0][currRow][currColumn][i]->GetObstacleType() != ObstacleTypes::BONFIRE && obstacle[0][currRow][currColumn][i]->GetObstacleType() != ObstacleTypes::THORN)
+        if (obstacle[0][currRow][currColumn][i]->GetObstacleType() != ObstacleTypes::BONFIRE && obstacle[0][currRow][currColumn][i]->GetObstacleType() != ObstacleTypes::DDONG && obstacle[0][currRow][currColumn][i]->GetObstacleType() != ObstacleTypes::SLIDER && obstacle[0][currRow][currColumn][i]->GetObstacleType() != ObstacleTypes::THORN)
         {
-            if (IntersectRect(&colliderRect, &bodyInfo.shape, &obstacleShape))
+            if (IntersectRect(&colliderRect, &bodyInfo.shape, &obstacleShape) || IntersectRect(&colliderRect, &headInfo.shape, &obstacleShape))
             {
                 bodyInfo.pos = bodyPos;
                 bodyInfo.shape = bodyShape;
                 headInfo.pos = headPos;
                 headInfo.shape = headShape;
             }
+        }
+    }
+}
+
+void Player::CollideWithSlider(int obstacleIndex, RECT obstacleShape, POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT headPos, RECT headShape)
+{
+    if (obstacle[0][currRow][currColumn][obstacleIndex]->GetObstacleType() == ObstacleTypes::SLIDER)
+    {
+        if (IntersectRect(&colliderRect, &bodyInfo.shape, &obstacleShape))
+        {
+            bodyInfo.pos = bodyPos;
+            bodyInfo.shape = bodyShape;
+            headInfo.pos = headPos;
+            headInfo.shape = headShape;
         }
     }
 }

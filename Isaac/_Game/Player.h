@@ -83,8 +83,10 @@ public:
 	void									ChangeHeadDir();
 	void									ChangeImagePlayerState();
 	bool									ClosedEye();																				// 눈이 감긴 상태
+	void									CollideWithDDong(int obstacleIndex, RECT obstacleShape, POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT headPos, RECT headShape);
 	void									CollideWithDoor(POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT headPos, RECT headShape);
 	void									CollideWithObstacle(POINTFLOAT buffPos, POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT headPos, RECT headShape);
+	void									CollideWithSlider(int obstacleIndex, RECT obstacleShape, POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT headPos, RECT headShape);
 	void									CollideWithTilemap(POINTFLOAT buffPos, POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT headPos, RECT headShape);
 	void									DamagedByBonfire(int obstacleIndex, RECT obstacleShape, POINTFLOAT buffPos, POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT headPos, RECT headShape);
 	void									DamagedByDoor();

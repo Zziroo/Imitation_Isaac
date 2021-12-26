@@ -19,26 +19,26 @@ void Obstacle::Init()
 		obstacleInfo.type = ObstacleTypes::BRICK;
 		obstacleInfo.img = GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/Brick.bmp");
 		objectSize = 80.0f;
-		DeginateObstacleShape(pos.x, pos.y, objectSize);
+		DeginateObstacleShape(pos.x, pos.y, objectSize, -10.0f, 0.0f, -10.0f, -50.0f);
 		break;
 	case ObstacleTypes::DDONG:								// 이미지의 프레임 X값 : 애니메이션
 		obstacleInfo.type = ObstacleTypes::DDONG;
 		obstacleInfo.img = GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/DDong.bmp");
 		objectSize = 70.0f;
-		DeginateObstacleShape(pos.x, pos.y, objectSize);
+		DeginateObstacleShape(pos.x, pos.y, objectSize, -10.0f, 0.0f, -10.0f, 0.0f);
 		break;
 	case ObstacleTypes::ITEMSTAND:
 		obstacleInfo.type = ObstacleTypes::ITEMSTAND;
 		obstacleInfo.img = GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/ItemStand.bmp");
 		objectSize = 82.0f;
-		DeginateObstacleShape(pos.x, pos.y, objectSize, 0.0f, -10.5f, 0.0f, -9.5f);
+		DeginateObstacleShape(pos.x, pos.y, objectSize, -10.0f, -10.5f, -10.0f, -45.5f);
 		obstacleInfo.isExistItem = true;
 		break;
 	case ObstacleTypes::JAR:
 		obstacleInfo.type = ObstacleTypes::JAR;
 		obstacleInfo.img = GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/Jar.bmp");
 		objectSize = 84.0f;
-		DeginateObstacleShape(pos.x, pos.y, objectSize, 0.0f, -5.5f, 0.0f, 0.0f);
+		DeginateObstacleShape(pos.x, pos.y, objectSize, -10.0f, -5.5f, -10.0f, -10.0f);
 		break;
 	case ObstacleTypes::SLIDER:								// 이미지의 프레임 X값 : 공격 전환(충돌 시 데미지 줌)
 		obstacleInfo.type = ObstacleTypes::SLIDER;
@@ -58,7 +58,7 @@ void Obstacle::Init()
 		obstacleInfo.type = ObstacleTypes::STONE;
 		obstacleInfo.img = GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/Stone.bmp");
 		objectSize = 70.0f;	
-		DeginateObstacleShape(pos.x, pos.y, objectSize);
+		DeginateObstacleShape(pos.x, pos.y, objectSize, -10.0f, 0.0f, -10.0f, -50.0f);
 		break;
 	case ObstacleTypes::THORN:
 		obstacleInfo.type = ObstacleTypes::THORN;
