@@ -37,6 +37,7 @@ public:
 	void										SetCurrRow(int row) { this->currRow = row; }
 	void										SetMoveSpeed(float moveSpeed) { this->moveSpeed = moveSpeed; }
 	void										SetNormalMonsterInfo(vector<vector<vector<NormalMonster*>>>* normalMonster) { this->normalMonster = normalMonster; }
+	void										SetObjectSize(float size) { this->objectSize = size; }
 	void										SetObstacleInfo(vector<vector<vector<Obstacle*>>>* obstacle) { this->obstacle = obstacle; }
 	void										SetPos(POINTFLOAT pos) { this->pos = pos; }
 	void										SetTileInfo(TILE_INFO* tile) { this->tile = tile; }

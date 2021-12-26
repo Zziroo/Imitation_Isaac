@@ -293,6 +293,7 @@ HRESULT Stage01Scene::Init()
 
 	// PlayerTear
 	playerTear = new PlayerTear;
+	playerTear->SetObstacleInfo(&obstacle);
 	playerTear->SetTileInfo(colliderTileInfo);
 	playerTear->Init();
 
@@ -310,8 +311,8 @@ HRESULT Stage01Scene::Init()
 	minimap = new Minimap;
 	minimap->SetRoomInfo(&roomInfo);
 	minimap->SetStageSize(stageSize);
-	minimap->SetStartPointRow(currRow);
 	minimap->SetStartPointColumn(currColumn);
+	minimap->SetStartPointRow(currRow);
 	minimap->Init();
 
 	return S_OK;
@@ -363,6 +364,8 @@ void Stage01Scene::Update()
 
 	// PlayerTear
 	playerTear->SetOwner(player);
+	playerTear->SetCurrCloumn(currColumn);
+	playerTear->SetCurrRow(currRow);
 	playerTear->Update();
 
 	// Player Update
@@ -447,11 +450,11 @@ void Stage01Scene::Render(HDC hdc)
 	// Door Render
 	door->Render(hdc);
 
-	// Player Render
-	player->Render(hdc);
-
 	// Tear
 	playerTear->Render(hdc);
+
+	// Player Render
+	player->Render(hdc);
 
 	// Minimap Render
 	minimap->Render(hdc);

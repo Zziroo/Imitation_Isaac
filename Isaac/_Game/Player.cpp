@@ -247,20 +247,20 @@ void Player::ChangeImagePlayerState()
     switch (playerState)
     {
     case PlayerStates::IDLE:    case PlayerStates::WALK:    case PlayerStates::ATTACK:
-        bodyInfo.image = GET_SINGLETON_IMAGE->FindImage("Image/Character/Body.bmp");
-        headInfo.image = GET_SINGLETON_IMAGE->FindImage("Image/Character/Head.bmp");
+        bodyInfo.image = GET_SINGLETON_IMAGE->FindImage("Image/Player/Body.bmp");
+        headInfo.image = GET_SINGLETON_IMAGE->FindImage("Image/Player/Head.bmp");
         break;
     case PlayerStates::HURT:
-        otherStateImg = GET_SINGLETON_IMAGE->FindImage("Image/Character/Hurt.bmp");
+        otherStateImg = GET_SINGLETON_IMAGE->FindImage("Image/Player/Hurt.bmp");
         break;
     case PlayerStates::ITEMPICKUP:
-        otherStateImg = GET_SINGLETON_IMAGE->FindImage("Image/Character/ItemPickUp.bmp");
+        otherStateImg = GET_SINGLETON_IMAGE->FindImage("Image/Player/ItemPickUp.bmp");
         break;
     case PlayerStates::JUMP:
-        otherStateImg = GET_SINGLETON_IMAGE->FindImage("Image/Character/Jump.bmp");
+        otherStateImg = GET_SINGLETON_IMAGE->FindImage("Image/Player/Jump.bmp");
         break;
     case PlayerStates::STAT:
-        otherStateImg = GET_SINGLETON_IMAGE->FindImage("Image/Character/Stat.bmp");
+        otherStateImg = GET_SINGLETON_IMAGE->FindImage("Image/Player/Stat.bmp");
         break;
     default:
         break;

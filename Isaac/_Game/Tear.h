@@ -23,6 +23,7 @@ public:
 
 	void				Fire(FireMethods method);
 	void				GiveDirectionNormalTear();
+	void				InitializeSize();
 	void				InitializeWeapon();
 
 	bool				GetIsFire() { return this->isFire; }

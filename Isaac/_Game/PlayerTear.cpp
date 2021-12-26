@@ -7,13 +7,16 @@
 
 void PlayerTear::Init()
 {
-	tearImg = GET_SINGLETON_IMAGE->FindImage("Image/Character/Weapon_Tear.bmp");
+	tearImg = GET_SINGLETON_IMAGE->FindImage("Image/Weapon/Tear.bmp");
+
+	objectSize = 30.0f;
 
 	vecTear.resize(maxTearCount);
 	for (size_t i = 0; i < vecTear.size(); ++i)
 	{
 		vecTear[i] = new Tear;
 		vecTear[i]->SetTearImage(tearImg);
+		vecTear[i]->SetObstacleInfo(obstacle);
 		vecTear[i]->SetTileInfo(tile);
 		vecTear[i]->Init();
 	}
@@ -54,7 +57,10 @@ void PlayerTear::Fire()
 		{
 			continue;
 		}
+		vecTear[i]->SetCurrCloumn(currColumn);
+		vecTear[i]->SetCurrRow(currRow);
 		vecTear[i]->SetPos(owner->GetPlayerHeadPos());
+		vecTear[i]->SetObjectSize(objectSize);
 		vecTear[i]->SetMoveDir(owner->GetPlayerHeadMoveDir());
 		vecTear[i]->SetIsFire(true);
 		break;

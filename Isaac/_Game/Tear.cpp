@@ -2,15 +2,11 @@
 #include "Tear.h"
 
 #include "Image.h"
+#include "Obstacle.h"
 
 void Tear::Init()
 {
-    objectSize = 30.0f;
     moveSpeed = 750.0f;
-    shape.left = (LONG)(pos.x - (objectSize * DEVIDE_HALF));
-    shape.top = (LONG)(pos.y - (objectSize * DEVIDE_HALF));
-    shape.right = (LONG)(pos.x + (objectSize * DEVIDE_HALF));
-    shape.bottom = (LONG)(pos.y + (objectSize * DEVIDE_HALF));
 }
 
 void Tear::Release()
@@ -19,6 +15,9 @@ void Tear::Release()
 
 void Tear::Update()
 {
+    // Size 초기화
+    InitializeSize();
+
     // 무기 초기화
     InitializeWeapon();
 
@@ -90,10 +89,18 @@ void Tear::GiveDirectionNormalTear()
     }
 }
 
+void Tear::InitializeSize()
+{
+    if (isFire == false)
+    {
+        objectSize = 0.0f;
+    }
+}
+
 void Tear::InitializeWeapon()
 {
     // 화면을 벗어나면 무기 초기화
-    if (shape.left > WIN_SIZE_X || shape.right < 0 || shape.top > WIN_SIZE_Y || shape.bottom < 0)
+    if (shape.left > WIN_SIZE_X || shape.top > WIN_SIZE_Y || shape.right < 0 || shape.bottom < 0)
     {
         isFire = false;
     }
@@ -106,6 +113,15 @@ void Tear::InitializeWeapon()
             {
                 isFire = false;
             }
+        }
+    }
+    // 장애물와 충돌 하면 초기화
+    for (size_t i = 0; i < obstacle[0][currRow][currColumn].size(); ++i)
+    {
+        RECT obstacleShape = obstacle[0][currRow][currColumn][i]->GetObstacleShape();
+        if (IntersectRect(&colliderRect, &shape, &obstacleShape))
+        {
+            isFire = false;
         }
     }
 }

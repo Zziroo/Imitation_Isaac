@@ -10,10 +10,10 @@ class Tear;
 class PlayerTear : public GameObject
 {
 private:
-	vector<Tear*>	vecTear;
-
 	Image*			tearImg = nullptr;
 	Player*			owner = nullptr;
+
+	vector<Tear*>	vecTear;
 
 	int				maxTearCount = MAX_COUNT;
 

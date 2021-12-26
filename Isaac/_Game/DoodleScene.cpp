@@ -42,7 +42,7 @@ HRESULT DoodleScene::Init()
 		normalMonster[i]->Init();
 	}
 
-	samplePlayerImg = GET_SINGLETON_IMAGE->FindImage("Image/Character/ItemPickUp.bmp");
+	samplePlayerImg = GET_SINGLETON_IMAGE->FindImage("Image/Player/ItemPickUp.bmp");
 
 	return S_OK;
 }

@@ -15,15 +15,15 @@ void ImageManager::Init()
 	GET_SINGLETON_IMAGE->AddImage("Image/BackGround/SampleImage.bmp", 1280, 800, 1, 1, true, MAGENTA);
 	#pragma endregion
 	#pragma region Isaac
-	GET_SINGLETON_IMAGE->AddImage("Image/Character/Body.bmp", 540, 99, 10, 3, true, MAGENTA);
-	GET_SINGLETON_IMAGE->AddImage("Image/Character/Head.bmp", 720, 75, 8, 1, true, MAGENTA);
-	GET_SINGLETON_IMAGE->AddImage("Image/Character/Hurt.bmp", 324, 99, 3, 1, true, MAGENTA);
-	GET_SINGLETON_IMAGE->AddImage("Image/Character/ItemPickUp.bmp", 74, 99, 1, 1, true, MAGENTA);
-	GET_SINGLETON_IMAGE->AddImage("Image/Character/Jump.bmp", 360, 99, 4, 1, true, MAGENTA);
-	GET_SINGLETON_IMAGE->AddImage("Image/Character/Stat.bmp", 204, 198, 2, 2, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Player/Body.bmp", 540, 99, 10, 3, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Player/Head.bmp", 720, 75, 8, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Player/Hurt.bmp", 324, 99, 3, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Player/ItemPickUp.bmp", 74, 99, 1, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Player/Jump.bmp", 360, 99, 4, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Player/Stat.bmp", 204, 198, 2, 2, true, MAGENTA);
 	#pragma endregion
 	#pragma region Weapon(Tear)
-	GET_SINGLETON_IMAGE->AddImage("Image/Character/Weapon_Tear.bmp", 30, 30, 1, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Weapon/Tear.bmp", 30, 30, 1, 1, true, MAGENTA);
 	#pragma endregion
 	#pragma region Tilemap/UI
 	GET_SINGLETON_IMAGE->AddImage("Image/Tilemap/UI/Close.bmp", 40, 40, 1, 1, true, MAGENTA);
