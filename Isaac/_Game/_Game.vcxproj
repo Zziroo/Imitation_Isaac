@@ -36,6 +36,7 @@
     <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="ObstacleToolScene.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerTear.cpp" />
     <ClCompile Include="RoomEditing.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
@@ -70,6 +71,7 @@
     <ClInclude Include="Obstacle.h" />
     <ClInclude Include="ObstacleToolScene.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerTear.h" />
     <ClInclude Include="RoomEditing.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />

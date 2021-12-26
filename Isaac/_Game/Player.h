@@ -3,6 +3,7 @@
 #include "GameObject.h"
 
 class Image;
+class PlayerTear;
 class Player : public GameObject
 {
 private:
@@ -44,6 +45,7 @@ private:
 
 private:
 	Image*									otherStateImg = nullptr;
+	PlayerTear*								playerTear = nullptr;
 
 	vector<vector<array<DOOR_INFO, 4>>>*	doorInfo = nullptr;																			// 문의 정보
 
@@ -115,6 +117,7 @@ public:
 	void									SetPlayerHeadPos(POINTFLOAT pos) { this->headInfo.pos = pos; }
 	void									SetPlayerHeadShape(RECT rc) { this->headInfo.shape = rc; }
 	void									SetPlayerHeadMoveDir(ObjectDir moveDir) { this->headInfo.moveDir = moveDir; }
+	void									SetPlayerTear(PlayerTear* tear) { this->playerTear = tear; }
 	void									SetStageSize(int stageSize) { this->stageSize = stageSize; }
 
 	virtual ~Player() = default;

@@ -1,15 +1,10 @@
 #include "stdafx.h"
 #include "Tear.h"
 
-#include "GameObject.h"
 #include "Image.h"
 
 void Tear::Init()
 {
-    tear = GET_SINGLETON_IMAGE->FindImage("Image/Character/Weapon_Tear.bmp");
-
-    pos.x = WIN_SIZE_X * DEVIDE_HALF;
-    pos.y = (WIN_SIZE_Y * DEVIDE_HALF) - 150;
     objectSize = 30.0f;
     moveSpeed = 750.0f;
     shape.left = (LONG)(pos.x - (objectSize * DEVIDE_HALF));
@@ -24,41 +19,17 @@ void Tear::Release()
 
 void Tear::Update()
 {
-    if (isFire)
-    {
-        switch (tearDir)
-        {
-        case ObjectDir::UP:
-            pos.y -= moveSpeed * Timer::GetDeltaTime();
-            break;
-        case ObjectDir::DOWN:
-            pos.y += moveSpeed * Timer::GetDeltaTime();
-            break;
-        case ObjectDir::LEFT:
-            pos.x -= moveSpeed * Timer::GetDeltaTime();
-            break;
-        case ObjectDir::RIGHT:
-            pos.x += moveSpeed * Timer::GetDeltaTime();
-            break;
-        default:
-            break;
-        }
-    }
-    shape.left = (LONG)(pos.x - (objectSize * DEVIDE_HALF));
-    shape.top = (LONG)(pos.y - (objectSize * DEVIDE_HALF));
-    shape.right = (LONG)(pos.x + (objectSize * DEVIDE_HALF));
-    shape.bottom = (LONG)(pos.y + (objectSize * DEVIDE_HALF));
-
-    InitializeWeapon();     // 무기 초기화
+    // 무기 초기화
+    InitializeWeapon();
 
     Weapon::Update();
 }
 
 void Tear::Render(HDC hdc)
 {
-    if (isFire)
+    if (isFire && tearImg != nullptr)
     {
-        tear->Render(hdc, (INT)(pos.x), (INT)(pos.y), tear->GetCurrFrameX(), tear->GetCurrFrameY());
+        tearImg->Render(hdc, (INT)pos.x, (INT)pos.y);
     }
 
     Weapon::Render(hdc);
@@ -72,9 +43,51 @@ void Tear::OnDebug(HDC hdc)
     }
 }
 
-void Tear::Init(GameObject* owner)
+void Tear::Fire(FireMethods method)
 {
+    if (isFire)
+    {
+        switch (method)
+        {        
+        case FireMethods::GUIEDED:
+            break;
+        case FireMethods::NORMAL:
+            GiveDirectionNormalTear();
+            break;
+        case FireMethods::ROTATE:
+            break;
+        case FireMethods::SPRINKLE:
+            break;
+        default:
+            break;
+        }
+    }
 
+    shape.left = (LONG)(pos.x - (objectSize * DEVIDE_HALF));
+    shape.top = (LONG)(pos.y - (objectSize * DEVIDE_HALF));
+    shape.right = (LONG)(pos.x + (objectSize * DEVIDE_HALF));
+    shape.bottom = (LONG)(pos.y + (objectSize * DEVIDE_HALF));
+}
+
+void Tear::GiveDirectionNormalTear()
+{
+    switch (tearDir)
+    {
+    case ObjectDir::UP:
+        pos.y -= moveSpeed * Timer::GetDeltaTime();
+        break;
+    case ObjectDir::DOWN:
+        pos.y += moveSpeed * Timer::GetDeltaTime();
+        break;
+    case ObjectDir::LEFT:
+        pos.x -= moveSpeed * Timer::GetDeltaTime();
+        break;
+    case ObjectDir::RIGHT:
+        pos.x += moveSpeed * Timer::GetDeltaTime();
+        break;
+    default:
+        break;
+    }
 }
 
 void Tear::InitializeWeapon()
@@ -83,5 +96,16 @@ void Tear::InitializeWeapon()
     if (shape.left > WIN_SIZE_X || shape.right < 0 || shape.top > WIN_SIZE_Y || shape.bottom < 0)
     {
         isFire = false;
+    }
+    // 벽 또는 문 타일과 충돌 하면 초기화
+    for (int i = 0; i < (TILE_ROW * TILE_COLUMN); ++i)
+    {
+        if (tile[i].terrain == TileTypes::WALL || tile[i].terrain == TileTypes::DOOR)
+        {
+            if (IntersectRect(&colliderRect, &shape, &tile[i].rc))
+            {
+                isFire = false;
+            }
+        }
     }
 }

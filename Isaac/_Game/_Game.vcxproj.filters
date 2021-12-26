@@ -183,6 +183,9 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>FrameWork\Main</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerTear.cpp">
+      <Filter>MainGame\GameObject\Weapon</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Singleton.h">
@@ -274,6 +277,9 @@
     </ClInclude>
     <ClInclude Include="Global.h">
       <Filter>FrameWork\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerTear.h">
+      <Filter>MainGame\GameObject\Weapon</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

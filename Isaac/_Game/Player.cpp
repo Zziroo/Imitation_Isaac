@@ -4,6 +4,7 @@
 #include "Image.h"
 #include "NormalMonster.h"
 #include "Obstacle.h"
+#include "PlayerTear.h"
 
 void Player::Init()
 {
@@ -594,6 +595,7 @@ void Player::FireWeapon(int x, int y)
     }
 
     isFireTear = true;
+    playerTear->Fire();
 }
 
 void Player::Invisibility()

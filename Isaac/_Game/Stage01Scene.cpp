@@ -7,6 +7,7 @@
 #include "NormalMonster.h"
 #include "Obstacle.h"
 #include "Player.h"
+#include "PlayerTear.h"
 
 using namespace std;
 
@@ -246,8 +247,6 @@ HRESULT Stage01Scene::Init()
 		}
 	}
 
-	// Player
-	player = new Player;
 	switch (sampleTileType)
 	{
 	case SampleTileTypes::BASEMENT:
@@ -291,11 +290,20 @@ HRESULT Stage01Scene::Init()
 	default:
 		break;
 	}
-	player->SetTileInfo(colliderTileInfo);
+
+	// PlayerTear
+	playerTear = new PlayerTear;
+	playerTear->SetTileInfo(colliderTileInfo);
+	playerTear->Init();
+
+	// Player
+	player = new Player;
 	player->SetDoorInfo(&doorInfo);
 	player->SetNormalMonsterInfo(&normalMonster);
 	player->SetObstacleInfo(&obstacle);
+	player->SetPlayerTear(playerTear);
 	player->SetStageSize(stageSize);
+	player->SetTileInfo(colliderTileInfo);
 	player->Init();
 
 	// Minimap
@@ -314,6 +322,7 @@ void Stage01Scene::Release()
 	SAFE_RELEASE(door);
 	SAFE_RELEASE(minimap);
 	SAFE_RELEASE(player);
+	SAFE_RELEASE(playerTear);
 
 	for (size_t i = 0; i < obstacle.size(); ++i)
 	{
@@ -351,6 +360,10 @@ void Stage01Scene::Update()
 			}
 		}
 	}
+
+	// PlayerTear
+	playerTear->SetOwner(player);
+	playerTear->Update();
 
 	// Player Update
 	player->SetCurrCloumn(currColumn);
@@ -436,6 +449,9 @@ void Stage01Scene::Render(HDC hdc)
 
 	// Player Render
 	player->Render(hdc);
+
+	// Tear
+	playerTear->Render(hdc);
 
 	// Minimap Render
 	minimap->Render(hdc);

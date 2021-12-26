@@ -2,13 +2,13 @@
 
 #include "Weapon.h"
 
-class GameObject;
+enum class FireMethods { GUIEDED, NORMAL, ROTATE, SPRINKLE, NONE };
+
 class Image;
 class Tear : public Weapon
 {
 private:
-	GameObject*			owner = nullptr;
-	Image*				tear = nullptr;
+	Image*				tearImg = nullptr;
 
 	ObjectDir			tearDir = ObjectDir::NONE;		// 무기의 방향
 
@@ -21,7 +21,8 @@ public:
 	virtual void		Render(HDC hdc) override;
 	virtual void		OnDebug(HDC hdc) override;
 
-	void				Init(GameObject* owner);
+	void				Fire(FireMethods method);
+	void				GiveDirectionNormalTear();
 	void				InitializeWeapon();
 
 	bool				GetIsFire() { return this->isFire; }
@@ -29,7 +30,7 @@ public:
 
 	void				SetIsFire(bool isFire) { this->isFire = isFire; }
 	void				SetMoveDir(ObjectDir tearDir) { this->tearDir = tearDir; }
-	void				SetOwner(GameObject* owner) { this->owner = owner; }
+	void				SetTearImage(Image* img) { this->tearImg = img; }
 
 	virtual ~Tear() = default;
 };
