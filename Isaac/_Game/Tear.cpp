@@ -104,8 +104,10 @@ void Tear::InitializeWeapon()
     {
         isFire = false;
     }
+
     // 벽 또는 문 타일과 충돌 하면 초기화
-    for (int i = 0; i < (TILE_ROW * TILE_COLUMN); ++i)
+    // 상
+    for (int i = 0; i < TILE_COLUMN; ++i)
     {
         if (tile[i].terrain == TileTypes::WALL || tile[i].terrain == TileTypes::DOOR)
         {
@@ -115,6 +117,18 @@ void Tear::InitializeWeapon()
             }
         }
     }
+    // 나머지 방향의 벽 또는 문 타일
+    for (int i = 94; i < (TILE_ROW * TILE_COLUMN); ++i)
+    {
+        if (tile[i].terrain == TileTypes::WALL || tile[i].terrain == TileTypes::DOOR)
+        {
+            if (IntersectRect(&colliderRect, &shape, &tile[i].rc))
+            {
+                isFire = false;
+            }
+        }
+    }
+
     // 장애물와 충돌 하면 초기화
     for (size_t i = 0; i < obstacle[0][currRow][currColumn].size(); ++i)
     {
