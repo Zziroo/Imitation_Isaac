@@ -23,9 +23,9 @@ public:
 	virtual void	Update() override;
 	virtual void	Render(HDC hdc) override;
 
+	void			CollideWithNormalMonster();
+	void			CollideWithObstacle();
 	void			Fire();
-
-	RECT			GetPlayerTearShape();
 
 	void			SetOwner(Player* owner) { this->owner = owner; }
 

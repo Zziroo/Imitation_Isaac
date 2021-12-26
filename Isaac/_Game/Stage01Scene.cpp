@@ -293,6 +293,7 @@ HRESULT Stage01Scene::Init()
 
 	// PlayerTear
 	playerTear = new PlayerTear;
+	playerTear->SetNormalMonsterInfo(&normalMonster);
 	playerTear->SetObstacleInfo(&obstacle);
 	playerTear->SetTileInfo(colliderTileInfo);
 	playerTear->Init();
@@ -375,14 +376,14 @@ void Stage01Scene::Update()
 	//player->SetObstacleInfo(&obstacle);				// 업데이트에서 계속 해줘야 하는지??
 	player->Update();
 
-	// Obstacle Update
+	// Obstacle Update									// 문제 발생! ! => 장애물이 가끔씩 멈춰 있는지 모르겠습니다.
 	for (int i = 0; i < obstacle[currRow][currColumn].size(); ++i)
 	{
 		obstacle[currRow][currColumn][i]->Update();
 	}
 
 	// NormalMonster에게 Player의 위치 정보 줌.
-	for (int i = 0; i < normalMonsterFileInfo[currRow][currColumn].count; ++i)
+	for (size_t i = 0; i < normalMonster[currRow][currColumn].size(); ++i)
 	{
 		normalMonster[currRow][currColumn][i]->SetTargetPos(player->GetPlayerBodyPos());
 	}
@@ -412,6 +413,9 @@ void Stage01Scene::Update()
 	minimap->SetCurrCloumn(currColumn);
 	minimap->SetCurrRow(currRow);
 	minimap->Update();
+
+	// PlayerTear와 NormalMonster충돌
+	playerTear->CollideWithNormalMonster();
 }
 
 void Stage01Scene::Render(HDC hdc)
@@ -432,7 +436,7 @@ void Stage01Scene::Render(HDC hdc)
 	}
 
 	// NormalMonster Render
-	for (int i = 0; i < normalMonsterFileInfo[currRow][currColumn].count; ++i)
+	for (size_t i = 0; i < normalMonster[currRow][currColumn].size(); ++i)
 	{
 		normalMonster[currRow][currColumn][i]->Render(hdc);
 	}

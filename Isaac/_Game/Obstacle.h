@@ -36,7 +36,6 @@ public:
 
 	bool					GetObstacleDamaged() { return this->obstacleInfo.doDamage; }
 	Image*					GetObstacleImage() { return this->obstacleInfo.img; }
-	RECT					GetObstacleShape() { return this->shape; }
 	ObstacleTypes			GetObstacleType() { return this->obstacleInfo.type; }
 
 	void					SetObstacleDamaged(bool doDamage) { this->obstacleInfo.doDamage = doDamage; }

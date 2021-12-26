@@ -21,7 +21,6 @@ public:
 	virtual void		Render(HDC hdc) override;
 	virtual void		OnDebug(HDC hdc) override;
 
-	void				CollideWithObstacle();
 	void				CollideWithMap();
 	void				Fire(FireMethods method);
 	void				GiveDirectionNormalTear();

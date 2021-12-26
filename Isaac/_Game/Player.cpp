@@ -436,7 +436,7 @@ void Player::CollideWithObstacle(POINTFLOAT buffPos, POINTFLOAT bodyPos, RECT bo
     // Obstacle과의 충돌 처리
     for (size_t i = 0; i < obstacle[0][currRow][currColumn].size(); ++i)
     {
-        RECT obstacleShape = obstacle[0][currRow][currColumn][i]->GetObstacleShape();
+        RECT obstacleShape = obstacle[0][currRow][currColumn][i]->GetShape();
         // Obstacle이 Bonfire일 때
         DamagedByBonfire((INT)i, obstacleShape, buffPos, bodyPos, bodyShape, headPos, headShape);
         // 특정 Obstacle이 아닐 때
@@ -524,10 +524,10 @@ void Player::DamagedBySlider()
     for (size_t i = 0; i < obstacle[0][currRow][currColumn].size(); ++i)
     {
         RECT obstacleShape = {
-            obstacle[0][currRow][currColumn][i]->GetObstacleShape().left - ADJUST_SIZE_10,
-            obstacle[0][currRow][currColumn][i]->GetObstacleShape().top - ADJUST_SIZE_10,
-            obstacle[0][currRow][currColumn][i]->GetObstacleShape().right + ADJUST_SIZE_10,
-            obstacle[0][currRow][currColumn][i]->GetObstacleShape().bottom + ADJUST_SIZE_10
+            obstacle[0][currRow][currColumn][i]->GetShape().left - ADJUST_SIZE_10,
+            obstacle[0][currRow][currColumn][i]->GetShape().top - ADJUST_SIZE_10,
+            obstacle[0][currRow][currColumn][i]->GetShape().right + ADJUST_SIZE_10,
+            obstacle[0][currRow][currColumn][i]->GetShape().bottom + ADJUST_SIZE_10
         };
 
         if (isinvincible == false && obstacle[0][currRow][currColumn][i]->GetObstacleType() == ObstacleTypes::SLIDER && obstacle[0][currRow][currColumn][i]->GetObstacleDamaged())
@@ -544,7 +544,7 @@ void Player::DamagedByThorn()
 {
     for (size_t i = 0; i < obstacle[0][currRow][currColumn].size(); ++i)
     {
-        RECT obstacleShape = obstacle[0][currRow][currColumn][i]->GetObstacleShape();
+        RECT obstacleShape = obstacle[0][currRow][currColumn][i]->GetShape();
         if (isinvincible == false && obstacle[0][currRow][currColumn][i]->GetObstacleType() == ObstacleTypes::THORN)
         {
             if (IntersectRect(&colliderRect, &bodyInfo.shape, &obstacleShape))
