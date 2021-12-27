@@ -42,7 +42,7 @@ void RoomEditing::DeclareRoomName(int row, int column)
 	}
 }
 
-void RoomEditing::DeginateBossRoom()
+void RoomEditing::DesignateBossRoom()
 {
 	// Stage01을 순회하면서 "Save/BASEMENT01.map"인 Tilemap을 Boss Room으로 지정
 	for (size_t i = 0; i < stageIndex.size(); ++i)
@@ -58,7 +58,7 @@ void RoomEditing::DeginateBossRoom()
 	}
 }
 
-void RoomEditing::DeginateItemRoom(int row, int column)
+void RoomEditing::DesignateItemRoom(int row, int column)
 {
 	const int randRow = row;
 	const int randColumn = column;
@@ -126,7 +126,7 @@ void RoomEditing::GenerateRandomItemRoom()
 	mt19937 gen(rd());
 	uniform_int_distribution<int> dis(0, 99);
 
-	DeginateItemRoom(dis(gen) % _stageSize, dis(gen) % _stageSize);
+	DesignateItemRoom(dis(gen) % _stageSize, dis(gen) % _stageSize);
 }
 
 void RoomEditing::NamingRoom(int row, int column)
@@ -214,14 +214,14 @@ void RoomEditing::Init(int stageNum)
 	// 각 Tilemap들을 경유하며 RoomType으로 Naming
 	NamingRoom(_startPoint, _startPoint);
 	// BASEMENT01.map인 Tilemap을 BOSS ROOM으로 지정
-	DeginateBossRoom();
+	DesignateBossRoom();
 	// ItemRoom 지정
 	// 1. 램덤수 생성
 	random_device rd;
 	mt19937 gen(rd());
 	uniform_int_distribution<int> dis(0, 99);
 	// 2. 함수를 통해 ItemRoom 지정
-	DeginateItemRoom(dis(gen) % _stageSize, dis(gen) % _stageSize);
+	DesignateItemRoom(dis(gen) % _stageSize, dis(gen) % _stageSize);
 #ifdef _DEBUG RoomInfo
 	cout << "RoomInfo\n";
 	for (size_t i = 0; i < roomInfo.size(); ++i)

@@ -3,8 +3,6 @@
 // GameObject
 enum class ObjectDir { UP, DOWN, LEFT, RIGHT, NONE };	// 이동 방향
 
-#define ADVANCE_FRAME			1
-
 #define ADJUST_SIZE_05			5
 #define ADJUST_SIZE_09			9
 #define ADJUST_SIZE_10			10
@@ -12,6 +10,10 @@ enum class ObjectDir { UP, DOWN, LEFT, RIGHT, NONE };	// 이동 방향
 #define ADJUST_SIZE_15			15
 #define ADJUST_SIZE_30			30
 #define ADJUST_SIZE_40			40
+
+#define ADVANCE_FRAME			1
+
+#define BLINK_IMAGE_FRAME		1
 
 #define DEVIDE_HALF				0.5f
 

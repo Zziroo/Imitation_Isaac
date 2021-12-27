@@ -31,7 +31,7 @@ public:
 	virtual void			OnDebug(HDC hdc) override;
 
 	void					ChangeObstacleAnimation();
-	void					DeginateObstacleShape(float posX, float posY, float size, float adjustSizeLeft = 0.0f, float adjustSizeTop = 0.0f, float adjustSizeRight = 0.0f, float adjustSizeBottom = 0.0f);
+	void					DesignateObstacleShape(float posX, float posY, float size, float adjustSizeLeft = 0.0f, float adjustSizeTop = 0.0f, float adjustSizeRight = 0.0f, float adjustSizeBottom = 0.0f);
 	void					SwitchDamageToPlayer();
 
 	bool					GetObstacleDamaged() { return this->obstacleInfo.doDamage; }

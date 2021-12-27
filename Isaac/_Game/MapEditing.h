@@ -24,8 +24,8 @@ public:
 	void							CountLinkedMap(int row, int column);
 	void							CreateStage();
 	void							CreateStageSize();
-	void							DeginateBossMap(int row, int column);
-	void							DeginateMap(int row, int column, size_t index);
+	void							DesignateBossMap(int row, int column);
+	void							DesignateMap(int row, int column, size_t index);
 	void							Init(int stageNum = 0);
 
 	vector<vector<string>>			GetStage() { return this->stage; }

@@ -22,8 +22,8 @@ public:
 	virtual void						Release() override;
 
 	void								DeclareRoomName(int row, int column);
-	void								DeginateBossRoom();
-	void								DeginateItemRoom(int row, int column);
+	void								DesignateBossRoom();
+	void								DesignateItemRoom(int row, int column);
 	void								GenerateRandomItemRoom();
 	void								NamingRoom(int row, int column);
 	void								Init(int stageNum = 0);

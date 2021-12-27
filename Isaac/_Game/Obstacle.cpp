@@ -12,59 +12,59 @@ void Obstacle::Init()
 		obstacleInfo.type = ObstacleTypes::BONFIRE;
 		obstacleInfo.img = GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/Bonfire.bmp");
 		objectSize = 68.0f;
-		DeginateObstacleShape(pos.x, pos.y, objectSize, 0.0f, -5.0f, 0.0f, -10.0f);
+		DesignateObstacleShape(pos.x, pos.y, objectSize, 0.0f, -5.0f, 0.0f, -10.0f);
 		obstacleInfo.doDamage = true;
 		break;
 	case ObstacleTypes::BRICK:
 		obstacleInfo.type = ObstacleTypes::BRICK;
 		obstacleInfo.img = GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/Brick.bmp");
 		objectSize = 80.0f;
-		DeginateObstacleShape(pos.x, pos.y, objectSize, -10.0f, 0.0f, -10.0f, -50.0f);
+		DesignateObstacleShape(pos.x, pos.y, objectSize, -10.0f, 0.0f, -10.0f, -50.0f);
 		break;
 	case ObstacleTypes::DDONG:								// 이미지의 프레임 X값 : 애니메이션
 		obstacleInfo.type = ObstacleTypes::DDONG;
 		obstacleInfo.img = GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/DDong.bmp");
 		objectSize = 70.0f;
-		DeginateObstacleShape(pos.x, pos.y, objectSize, -10.0f, 0.0f, -10.0f, 0.0f);
+		DesignateObstacleShape(pos.x, pos.y, objectSize, -10.0f, 0.0f, -10.0f, 0.0f);
 		break;
 	case ObstacleTypes::ITEMSTAND:
 		obstacleInfo.type = ObstacleTypes::ITEMSTAND;
 		obstacleInfo.img = GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/ItemStand.bmp");
 		objectSize = 82.0f;
-		DeginateObstacleShape(pos.x, pos.y, objectSize, -10.0f, -10.5f, -10.0f, -45.5f);
+		DesignateObstacleShape(pos.x, pos.y, objectSize, -10.0f, -10.5f, -10.0f, -45.5f);
 		obstacleInfo.isExistItem = true;
 		break;
 	case ObstacleTypes::JAR:
 		obstacleInfo.type = ObstacleTypes::JAR;
 		obstacleInfo.img = GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/Jar.bmp");
 		objectSize = 84.0f;
-		DeginateObstacleShape(pos.x, pos.y, objectSize, -10.0f, -5.5f, -10.0f, -10.0f);
+		DesignateObstacleShape(pos.x, pos.y, objectSize, -10.0f, -5.5f, -10.0f, -10.0f);
 		break;
 	case ObstacleTypes::SLIDER:								// 이미지의 프레임 X값 : 공격 전환(충돌 시 데미지 줌)
 		obstacleInfo.type = ObstacleTypes::SLIDER;
 		obstacleInfo.img = GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/Slider.bmp");
 		objectSize = 60.0f;
-		DeginateObstacleShape(pos.x, pos.y, objectSize, 5.0f, 5.0f, 0.0f, -5.0f);
+		DesignateObstacleShape(pos.x, pos.y, objectSize, 5.0f, 5.0f, 0.0f, -5.0f);
 		obstacleInfo.doDamage = false;
 		break;
 	case ObstacleTypes::SPIDERWEB:
 		obstacleInfo.type = ObstacleTypes::SPIDERWEB;
 		obstacleInfo.img = GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/SpiderWeb.bmp");
 		objectSize = 75.0f;
-		DeginateObstacleShape(pos.x, pos.y, objectSize);
+		DesignateObstacleShape(pos.x, pos.y, objectSize);
 		obstacleInfo.isSlowed = true;
 		break;
 	case ObstacleTypes::STONE:
 		obstacleInfo.type = ObstacleTypes::STONE;
 		obstacleInfo.img = GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/Stone.bmp");
 		objectSize = 70.0f;	
-		DeginateObstacleShape(pos.x, pos.y, objectSize, -10.0f, 0.0f, -10.0f, -50.0f);
+		DesignateObstacleShape(pos.x, pos.y, objectSize, -10.0f, 0.0f, -10.0f, -50.0f);
 		break;
 	case ObstacleTypes::THORN:
 		obstacleInfo.type = ObstacleTypes::THORN;
 		obstacleInfo.img = GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/Thorn.bmp");
 		objectSize = 80.0f;
-		DeginateObstacleShape(pos.x, pos.y, objectSize);
+		DesignateObstacleShape(pos.x, pos.y, objectSize);
 		obstacleInfo.doDamage = true;
 		break;
 	default:
@@ -115,7 +115,7 @@ void Obstacle::ChangeObstacleAnimation()
 		if (obstacleInfo.elapsedAnimeCount > 11)
 		{
 			obstacleInfo.img->SetCurrFrameX(obstacleInfo.img->GetCurrFrameX() + ADVANCE_FRAME);
-			if (obstacleInfo.img->GetCurrFrameX() >= obstacleInfo.img->GetMaxFrameX())
+			if (obstacleInfo.img->GetCurrFrameX() > obstacleInfo.img->GetMaxFrameX())
 			{
 				obstacleInfo.img->SetCurrFrameX(ZERO);
 			}
@@ -139,7 +139,7 @@ void Obstacle::ChangeObstacleAnimation()
 	}
 }
 
-void Obstacle::DeginateObstacleShape(float posX, float posY, float size, float adjustSizeLeft, float adjustSizeTop, float adjustSizeRight, float adjustSizeBottom)
+void Obstacle::DesignateObstacleShape(float posX, float posY, float size, float adjustSizeLeft, float adjustSizeTop, float adjustSizeRight, float adjustSizeBottom)
 {
 	shape.left = (LONG)(posX - (size * DEVIDE_HALF) - adjustSizeLeft);
 	shape.top = (LONG)(posY - (size * DEVIDE_HALF) - adjustSizeTop);
@@ -152,7 +152,7 @@ void Obstacle::SwitchDamageToPlayer()
 	// Bonfire doDamage 변화
 	if (obstacleInfo.type == ObstacleTypes::BONFIRE)
 	{
-		if (obstacleInfo.img->GetCurrFrameY() == obstacleInfo.img->GetMaxFrameY() - 1)
+		if (obstacleInfo.img->GetCurrFrameY() == obstacleInfo.img->GetMaxFrameY())
 		{
 			obstacleInfo.doDamage = false;
 		}

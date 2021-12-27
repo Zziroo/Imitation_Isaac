@@ -140,12 +140,12 @@ void MapEditing::CreateStage()
 	uniform_int_distribution<int> dis(0, 99);
 
 	// 보스맵을 Start맵과 겹치지 않게 설정
-	DeginateBossMap(dis(gen) % stageSize, dis(gen) % stageSize);
+	DesignateBossMap(dis(gen) % stageSize, dis(gen) % stageSize);
 
 	// 나머지 방들을 삽입(시작 지점, 보스 지점 제외)
 	for (size_t i = 1; i < (ThinOutMapInfo.size() - 1); ++i)
 	{
-		DeginateMap(dis(gen) % stageSize, dis(gen) % stageSize, i);
+		DesignateMap(dis(gen) % stageSize, dis(gen) % stageSize, i);
 	}
 
 	// 한 Stage안에 맵들이 연결돼어있는지 확인하기 위한 변수
@@ -330,7 +330,7 @@ void MapEditing::CreateStageSize()
 	}
 }
 
-void MapEditing::DeginateBossMap(int row, int column)
+void MapEditing::DesignateBossMap(int row, int column)
 {
 	int randRow = row;
 	int randColumn = column;
@@ -344,14 +344,14 @@ void MapEditing::DeginateBossMap(int row, int column)
 		mt19937 gen(rd());
 		uniform_int_distribution<int> dis(0, 99);
 
-		DeginateBossMap(dis(gen) % stageSize, dis(gen) % stageSize);
+		DesignateBossMap(dis(gen) % stageSize, dis(gen) % stageSize);
 		return;
 	}
 	// BossMap 설정
 	stage[randRow][randColumn] = ThinOutMapInfo.back();
 }
 
-void MapEditing::DeginateMap(int row, int column, size_t index)
+void MapEditing::DesignateMap(int row, int column, size_t index)
 {
 	int randRow = row;
 	int randColumn = column;
@@ -368,7 +368,7 @@ void MapEditing::DeginateMap(int row, int column, size_t index)
 	randRow = dis(gen) % stageSize;
 	randColumn = dis(gen) % stageSize;
 
-	DeginateMap(randRow, randColumn, index);
+	DesignateMap(randRow, randColumn, index);
 }
 
 void MapEditing::Init(int stageNum)

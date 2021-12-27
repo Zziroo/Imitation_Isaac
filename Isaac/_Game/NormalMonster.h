@@ -36,8 +36,11 @@ public:
 	void					AdvanceAnimation(int elapsedCount = 0);
 	void					ChangeAnimation();
 	void					Move();
-	void					DeginateNorMalMonsterShape(float posX, float posY, float size, float adjustSizeLeft = 0.0f, float adjustSizeTop = 0.0f, float adjustSizeRight = 0.0f, float adjustSizeBottom = 0.0f);
+	void					DesignateNorMalMonsterShape(float posX, float posY, float size, float adjustSizeLeft = 0.0f, float adjustSizeTop = 0.0f, float adjustSizeRight = 0.0f, float adjustSizeBottom = 0.0f);
 
+	POINTFLOAT				GetNormalMonsterPos() { return this->monsterInfo.pos; }
+	float					GetNormalMonsterPosX() { return this->monsterInfo.pos.x; }
+	float					GetNormalMonsterPosY() { return this->monsterInfo.pos.y; }
 	RECT					GetNormalMonsterShape() { return this->monsterInfo.shape; }
 	NormalMonsterTypes		GetNormalMonsterType() { return this->monsterInfo.type; }
 
