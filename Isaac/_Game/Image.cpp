@@ -68,8 +68,8 @@ HRESULT Image::Init(const char* fileName, int width, int height, int maxFrameX, 
 	this->isTransparent = isTrans;
 	this->transColor = transColor;
 
-	imageInfo->maxFrameX = maxFrameX;
-	imageInfo->maxFrameY = maxFrameY;
+	imageInfo->maxFrameX = maxFrameX - 1;
+	imageInfo->maxFrameY = maxFrameY - 1;
 	imageInfo->currFrameX = 0;
 	imageInfo->currFrameY = 0;
 	imageInfo->frameWidth = width / maxFrameX;

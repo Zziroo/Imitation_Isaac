@@ -97,12 +97,12 @@ void PlayerTear::CollideWithObstacle()
 				if (obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObstacleType() == ObstacleTypes::BONFIRE)
 				{
 					obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObstacleImage()->SetCurrFrameY(obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObstacleImage()->GetCurrFrameY() + ADVANCE_FRAME);
-					if (obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObstacleImage()->GetCurrFrameY() >= obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObstacleImage()->GetMaxFrameY() - 1)
+					if (obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObstacleImage()->GetCurrFrameY() >= obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObstacleImage()->GetMaxFrameY())
 					{
-						obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObstacleImage()->SetCurrFrameY(obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObstacleImage()->GetMaxFrameY() - 1);
+						obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObstacleImage()->SetCurrFrameY(obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObstacleImage()->GetMaxFrameY());
 						obstacle[0][currRow][currColumn][collideObstacleIndex]->SetObstacleDamaged(false);
 						obstacle[0][currRow][currColumn][collideObstacleIndex]->SetObjectSize(0.0f);
-						obstacle[0][currRow][currColumn][collideObstacleIndex]->DeginateObstacleShape(obstacle[0][currRow][currColumn][collideObstacleIndex]->GetPos().x, obstacle[0][currRow][currColumn][collideObstacleIndex]->GetPos().y, obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObjectSize());
+						obstacle[0][currRow][currColumn][collideObstacleIndex]->DesignateObstacleShape(obstacle[0][currRow][currColumn][collideObstacleIndex]->GetPos().x, obstacle[0][currRow][currColumn][collideObstacleIndex]->GetPos().y, obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObjectSize());
 					}
 					break;
 				}
@@ -110,11 +110,11 @@ void PlayerTear::CollideWithObstacle()
 				if (obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObstacleType() == ObstacleTypes::DDONG)
 				{
 					obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObstacleImage()->SetCurrFrameX(obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObstacleImage()->GetCurrFrameX() + ADVANCE_FRAME);
-					if (obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObstacleImage()->GetCurrFrameX() >= obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObstacleImage()->GetMaxFrameX() - 1)
+					if (obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObstacleImage()->GetCurrFrameX() >= obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObstacleImage()->GetMaxFrameX())
 					{
-						obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObstacleImage()->SetCurrFrameX(obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObstacleImage()->GetMaxFrameX() - 1);
+						obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObstacleImage()->SetCurrFrameX(obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObstacleImage()->GetMaxFrameX());
 						obstacle[0][currRow][currColumn][collideObstacleIndex]->SetObjectSize(0.0f);
-						obstacle[0][currRow][currColumn][collideObstacleIndex]->DeginateObstacleShape(obstacle[0][currRow][currColumn][collideObstacleIndex]->GetPos().x, obstacle[0][currRow][currColumn][collideObstacleIndex]->GetPos().y, obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObjectSize());
+						obstacle[0][currRow][currColumn][collideObstacleIndex]->DesignateObstacleShape(obstacle[0][currRow][currColumn][collideObstacleIndex]->GetPos().x, obstacle[0][currRow][currColumn][collideObstacleIndex]->GetPos().y, obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObjectSize());
 					}
 					break;
 				}

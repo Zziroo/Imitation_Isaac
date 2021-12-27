@@ -183,7 +183,7 @@ void Player::ChangeAnimationHurt()
 
             if (elapsedAnimeCount > 10)
             {
-                otherStateImg->SetCurrFrameX(otherStateImg->GetMaxFrameX());
+                otherStateImg->SetCurrFrameX(otherStateImg->GetMaxFrameX() + BLINK_IMAGE_FRAME);
                 ++hurtDurationTime;
                 elapsedAnimeCount = 0;
             }
