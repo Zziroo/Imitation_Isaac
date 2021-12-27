@@ -2,6 +2,7 @@
 
 #include "Scene.h"
 
+class AStar;
 class DoorEditing;
 class Iamge;
 class Minimap;
@@ -36,6 +37,7 @@ private:
 	vector<vector<string>>						stageIndex;											// .map 파일의 파일명
 
 	vector<vector<array<DOOR_INFO, 4>>>			doorInfo;											// 문의 정보
+	vector<vector<vector<AStar*>>>				aStar;
 	vector<vector<vector<NormalMonster*>>>		normalMonster;										// NormalMonster
 	vector<vector<vector<Obstacle*>>>			obstacle;											// Obstacle
 

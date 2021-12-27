@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Stage01Scene.h"
 
+#include "AStar.h"
 #include "DoorEditing.h"
 #include "Image.h"
 #include "Minimap.h"
@@ -247,6 +248,21 @@ HRESULT Stage01Scene::Init()
 		}
 	}
 
+	// AStar
+	aStar.resize(stageSize);
+	for (size_t i = 0; i < aStar.size(); ++i)
+	{
+		aStar[i].resize(stageSize);
+		for (size_t j = 0; j < aStar[i].size(); ++j)
+		{
+			aStar[i][j].resize(normalMonsterFileInfo[i][j].count);
+			for (size_t k = 0; k < aStar[i][j].size(); ++k)
+			{
+				aStar[i][j][k] = new AStar;
+			}
+		}
+	}
+
 	switch (sampleTileType)
 	{
 	case SampleTileTypes::BASEMENT:
@@ -326,13 +342,13 @@ void Stage01Scene::Release()
 	SAFE_RELEASE(player);
 	SAFE_RELEASE(playerTear);
 
-	for (size_t i = 0; i < obstacle.size(); ++i)
+	for (size_t i = 0; i < aStar.size(); ++i)
 	{
-		for (size_t j = 0; j < obstacle[i].size(); ++j)
+		for (size_t j = 0; j < aStar[i].size(); ++j)
 		{
-			for (size_t k = 0; k < obstacle[i][j].size(); ++k)
+			for (size_t k = 0; k < aStar[i][j].size(); ++k)
 			{
-				SAFE_RELEASE(obstacle[i][j][k]);
+				SAFE_RELEASE(aStar[i][j][k]);
 			}
 		}
 	}
@@ -344,6 +360,17 @@ void Stage01Scene::Release()
 			for (size_t k = 0; k < normalMonster[i][j].size(); ++k)
 			{
 				SAFE_RELEASE(normalMonster[i][j][k]);
+			}
+		}
+	}
+
+	for (size_t i = 0; i < obstacle.size(); ++i)
+	{
+		for (size_t j = 0; j < obstacle[i].size(); ++j)
+		{
+			for (size_t k = 0; k < obstacle[i][j].size(); ++k)
+			{
+				SAFE_RELEASE(obstacle[i][j][k]);
 			}
 		}
 	}
@@ -376,16 +403,40 @@ void Stage01Scene::Update()
 	//player->SetObstacleInfo(&obstacle);				// 업데이트에서 계속 해줘야 하는지??
 	player->Update();
 
+	// Map Update
+	MoveToNextMap();
+
+	// AStar TargetPos 설정
+	for (size_t i = 0; i < aStar[currRow][currColumn].size(); ++i)
+	{
+		aStar[currRow][currColumn][i]->SetTargetPosX((INT)player->GetPos().x);
+		aStar[currRow][currColumn][i]->SetTargetPosY((INT)player->GetPos().y);
+	}
+
 	// Obstacle Update									// 문제 발생! ! => 장애물이 가끔씩 멈춰 있는지 모르겠습니다.
-	for (int i = 0; i < obstacle[currRow][currColumn].size(); ++i)
+	for (size_t i = 0; i < obstacle[currRow][currColumn].size(); ++i)
 	{
 		obstacle[currRow][currColumn][i]->Update();
 	}
-
-	// NormalMonster에게 Player의 위치 정보 줌.
+	
 	for (size_t i = 0; i < normalMonster[currRow][currColumn].size(); ++i)
 	{
+		// NormalMonster에게 Player의 위치 정보 줌.
 		normalMonster[currRow][currColumn][i]->SetTargetPos(player->GetPlayerBodyPos());
+
+		// AStar StarPos 설정
+		aStar[currRow][currColumn][i]->SetStartPosX((INT)normalMonster[currRow][currColumn][i]->GetNormalMonsterPosX());
+		aStar[currRow][currColumn][i]->SetStartPosY((INT)normalMonster[currRow][currColumn][i]->GetNormalMonsterPosY());
+	}
+
+	// AStar Update
+	if (normalMonster[currRow][currColumn].empty() == false)
+	{
+		for (size_t i = 0; i < aStar[currRow][currColumn].size(); ++i)
+		{
+			aStar[currRow][currColumn][i]->Init();
+			aStar[currRow][currColumn][i]->Update();
+		}
 	}
 
 	// NormalMonster Update								// 문제 발생! ! => 가끔씩 Monster의 업데이트가 되지 않는다.
@@ -399,9 +450,6 @@ void Stage01Scene::Update()
 			}
 		}
 	}
-
-	// Map Update
-	MoveToNextMap();
 
 	// DoorEditing Update
 	door->SetCurrCloumn(currColumn);

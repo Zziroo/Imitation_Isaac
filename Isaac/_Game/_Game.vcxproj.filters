@@ -100,6 +100,9 @@
     <Filter Include="FrameWork\Util">
       <UniqueIdentifier>{6c0d8490-9191-4de7-b1b1-d5739501f168}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\GameObject\MovePattern">
+      <UniqueIdentifier>{6e74061f-e33d-442b-8ad9-28ed7dc1edfb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Image.cpp">
@@ -185,6 +188,9 @@
     </ClCompile>
     <ClCompile Include="PlayerTear.cpp">
       <Filter>MainGame\GameObject\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="AStar.cpp">
+      <Filter>MainGame\GameObject\MovePattern</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -280,6 +286,9 @@
     </ClInclude>
     <ClInclude Include="PlayerTear.h">
       <Filter>MainGame\GameObject\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="AStar.h">
+      <Filter>MainGame\GameObject\MovePattern</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
