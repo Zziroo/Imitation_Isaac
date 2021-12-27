@@ -3,7 +3,8 @@
 
 #include <queue>
 
-#define INF 1e9
+#define INF				1e9
+#define IMPASSABLE_ROAD 1e3
 
 void AStar::Init()
 {
@@ -19,7 +20,10 @@ void AStar::Update()
 	GiveStartPos();
 	GiveTargetPos();
 
-	DoAstar(start, target);
+	if (LocatedInside(target))
+	{
+		DoAstar(start, target);
+	}
 }
 
 void AStar::Render(HDC hdc)
@@ -40,7 +44,7 @@ void AStar::ComposeMap()
 		map[r].resize(TILE_COLUMN);
 		for (int c = 0; c < TILE_COLUMN; ++c)
 		{
-			map[r][c] = 2;
+			map[r][c] = IMPASSABLE_ROAD;
 		}
 	}
 
@@ -76,10 +80,13 @@ void AStar::DoAstar(Pos start, Pos end)
 	int dy[] = { 0, 1, 1, 1, 0, -1, -1, -1 };
 	float dg[] = { 10.0f, diagonalWeight, 10.0f, diagonalWeight, 10.0f, diagonalWeight, 10.0f, diagonalWeight };
 
-	while (false == pq.empty())
+	int pathIndex = 0;
+
+	while (pq.empty() == false)
 	{
 		int w = -pq.top().first;
 		Pos pos = pq.top().second;
+		++pathIndex;
 		pq.pop();
 
 		if (f[pos.Y][pos.X] < w)
@@ -123,28 +130,41 @@ void AStar::DoAstar(Pos start, Pos end)
 	Pos curr = end;
 	while (curr != start)
 	{
-		map[curr.Y][curr.X] = 4;
+		map[curr.Y][curr.X] = pathIndex;
+		--pathIndex;
 		curr = path[curr.Y][curr.X];
 	}
 }
 
 void AStar::GiveStartPos()
 {
-	start.X = startPos.x / TILE_SIZE;
-	start.Y = startPos.y / TILE_SIZE;
+	start.X = (INT)(startPos.x / TILE_SIZE);
+	start.Y = (INT)(startPos.y / TILE_SIZE);
 
 	map[start.Y][start.X] = 1;
 }
 
 void AStar::GiveTargetPos()
 {
-	target.X = targetPos.x / TILE_SIZE;
-	target.Y = targetPos.y / TILE_SIZE;
+	target.X = (INT)(targetPos.x / TILE_SIZE);
+	target.Y = (INT)(targetPos.y / TILE_SIZE);
 
 	map[target.Y][target.X] = 3;
 }
 
 float AStar::Heuristic(Pos a, Pos b)
 {
-	return abs(a.X - b.X) + abs(a.Y - b.Y);
+	return abs((FLOAT)(a.X - b.X)) + abs((FLOAT)(a.Y - b.Y));
+}
+
+bool AStar::LocatedInside(Pos target)
+{
+	if (2 < target.X || target.X < 29 || 2 < target.Y || target.Y < 17)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }

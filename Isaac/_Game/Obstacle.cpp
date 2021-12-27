@@ -19,7 +19,7 @@ void Obstacle::Init()
 		obstacleInfo.type = ObstacleTypes::BRICK;
 		obstacleInfo.img = GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/Brick.bmp");
 		objectSize = 80.0f;
-		DesignateObstacleShape(pos.x, pos.y, objectSize, -10.0f, 0.0f, -10.0f, -50.0f);
+		DesignateObstacleShape(pos.x, pos.y, objectSize, -10.0f, 0.0f, -10.0f, -35.0f);
 		break;
 	case ObstacleTypes::DDONG:								// 이미지의 프레임 X값 : 애니메이션
 		obstacleInfo.type = ObstacleTypes::DDONG;
@@ -58,7 +58,7 @@ void Obstacle::Init()
 		obstacleInfo.type = ObstacleTypes::STONE;
 		obstacleInfo.img = GET_SINGLETON_IMAGE->FindImage("Image/Obstacle/Stone.bmp");
 		objectSize = 70.0f;	
-		DesignateObstacleShape(pos.x, pos.y, objectSize, -10.0f, 0.0f, -10.0f, -50.0f);
+		DesignateObstacleShape(pos.x, pos.y, objectSize, -10.0f, 0.0f, -10.0f, -35.0f);
 		break;
 	case ObstacleTypes::THORN:
 		obstacleInfo.type = ObstacleTypes::THORN;

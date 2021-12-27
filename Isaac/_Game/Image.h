@@ -80,5 +80,7 @@ public:
 
 	inline int		GetWidth() { return imageInfo->width; }
 	inline int		GetHeight() { return imageInfo->height; }
+
+	~Image();
 };
 

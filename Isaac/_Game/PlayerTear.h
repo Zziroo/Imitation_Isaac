@@ -5,13 +5,11 @@
 #define MAX_COUNT 50
 
 class Image;
-class Player;
 class Tear;
 class PlayerTear : public GameObject
 {
 private:
 	Image*			tearImg = nullptr;
-	Player*			owner = nullptr;
 
 	vector<Tear*>	vecTear;
 
@@ -27,7 +25,6 @@ public:
 	void			CollideWithObstacle();
 	void			Fire();
 
-	void			SetOwner(Player* owner) { this->owner = owner; }
 
 	virtual ~PlayerTear() noexcept;
 };

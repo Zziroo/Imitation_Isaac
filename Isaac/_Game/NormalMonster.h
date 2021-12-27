@@ -2,6 +2,7 @@
 
 #include "Monster.h"
 
+class AStar;
 class Image;
 class NormalMonster : public Monster
 {
@@ -22,9 +23,13 @@ private:
 	} NORMAL_MONSTER_INFO;
 
 private:
+	AStar*					aStar = nullptr;
+
 	NORMAL_MONSTER_INFO		monsterInfo;
 
 	POINTFLOAT				targetPos = {};
+
+	int						startPoint = 2;
 
 public:
 	virtual void			Init() override;
@@ -35,8 +40,8 @@ public:
 
 	void					AdvanceAnimation(int elapsedCount = 0);
 	void					ChangeAnimation();
-	void					Move();
 	void					DesignateNorMalMonsterShape(float posX, float posY, float size, float adjustSizeLeft = 0.0f, float adjustSizeTop = 0.0f, float adjustSizeRight = 0.0f, float adjustSizeBottom = 0.0f);
+	void					Move();
 
 	POINTFLOAT				GetNormalMonsterPos() { return this->monsterInfo.pos; }
 	float					GetNormalMonsterPosX() { return this->monsterInfo.pos.x; }
@@ -44,6 +49,8 @@ public:
 	RECT					GetNormalMonsterShape() { return this->monsterInfo.shape; }
 	NormalMonsterTypes		GetNormalMonsterType() { return this->monsterInfo.type; }
 
+	void					SetNormalMonsterAStar(AStar* aStar) { this->aStar = aStar; }
+	void					SetNormalMonsterState(MonsterStates state) { this->monsterInfo.state = state; }
 	void					SetNormalMonsterPos(POINTFLOAT pos) { this->monsterInfo.pos = pos; }
 	void					SetNormalMonsterPosX(float pos) { this->monsterInfo.pos.x = pos; }
 	void					SetNormalMonsterPosY(float pos) { this->monsterInfo.pos.y = pos; }

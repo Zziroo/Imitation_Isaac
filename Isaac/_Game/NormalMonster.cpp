@@ -1,7 +1,9 @@
 #include "stdafx.h"
 #include "NormalMonster.h"
 
+#include "AStar.h"
 #include "Image.h"
+#include "Player.h"
 
 void NormalMonster::Init()
 {
@@ -41,7 +43,11 @@ void NormalMonster::Update()
 {
 	ChangeAnimation();
 
-	Move();
+	if (monsterInfo.state == MonsterStates::MOVE)
+	{
+		startPoint = 2;
+		Move();
+	}
 
 	// Debug
 	Monster::Update();
@@ -94,14 +100,51 @@ void NormalMonster::ChangeAnimation()
 	}
 }
 
-void NormalMonster::Move()
-{
-}
-
 void NormalMonster::DesignateNorMalMonsterShape(float posX, float posY, float size, float adjustSizeLeft, float adjustSizeTop, float adjustSizeRight, float adjustSizeBottom)
 {
 	monsterInfo.shape.left = (LONG)(posX - (size * DEVIDE_HALF) - adjustSizeLeft);
 	monsterInfo.shape.top = (LONG)(posY - (size * DEVIDE_HALF) - adjustSizeTop);
 	monsterInfo.shape.right = (LONG)(posX + (size * DEVIDE_HALF) + adjustSizeRight);
 	monsterInfo.shape.bottom = (LONG)(posY + (size * DEVIDE_HALF) + adjustSizeBottom);
+}
+
+void NormalMonster::Move()
+{
+	POINTFLOAT	buffPos = monsterInfo.pos;
+	RECT		buffShape = monsterInfo.shape;
+
+	if (monsterInfo.type != NormalMonsterTypes::NONE)
+	{
+		for (int i = 0; i < TILE_ROW; ++i)
+		{
+			for (int j = 0; j < TILE_COLUMN; ++j)
+			{
+				if (aStar->GetAStarMap()[i][j] == 2)
+				{
+					monsterInfo.pos.x = (FLOAT)(j * TILE_SIZE);
+					monsterInfo.pos.y = (FLOAT)(i * TILE_SIZE);
+				}
+			}
+		}
+	}
+
+	switch (monsterInfo.type)
+	{
+	case NormalMonsterTypes::ATTACKFLY: case NormalMonsterTypes::FLY:
+		DesignateNorMalMonsterShape(monsterInfo.pos.x, monsterInfo.pos.y, monsterInfo.objectSize);
+		break;
+	case NormalMonsterTypes::POOTER:
+		DesignateNorMalMonsterShape(monsterInfo.pos.x, monsterInfo.pos.y, monsterInfo.objectSize, -3.0f, 1.0f, -3.0f, 1.0f);
+		break;
+	default:
+		break;
+	}
+
+	RECT playerBodyShape = player->GetPlayerBodyShape();
+	RECT playerHeadShape = player->GetPlayerHeadShape();
+	if (IntersectRect(&colliderRect, &playerBodyShape, &monsterInfo.shape) || IntersectRect(&colliderRect, &playerHeadShape, &monsterInfo.shape))
+	{
+		monsterInfo.pos = buffPos;
+		monsterInfo.shape = buffShape;
+	}
 }

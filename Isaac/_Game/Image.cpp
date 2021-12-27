@@ -247,3 +247,16 @@ void Image::TransparentRender(HDC hdc, int destX, int destY, int frameX, int fra
 			SRCCOPY);
 	}
 }
+
+Image::~Image()
+{
+	if (imageInfo)
+	{
+		SelectObject(imageInfo->hMemDc, imageInfo->hOldBit);
+		DeleteObject(imageInfo->hBitmap);
+		DeleteDC(imageInfo->hMemDc);
+
+		delete imageInfo;
+		imageInfo = nullptr;
+	}
+}

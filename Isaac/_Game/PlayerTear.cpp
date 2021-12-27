@@ -59,9 +59,11 @@ void PlayerTear::CollideWithNormalMonster()
 	RECT normalMonsterShape = {};
 	RECT playerTearShape = {};
 	int collideNormalMonsterIndex = 0;
+	int eraseIndex = -1;
 
 	for (auto iter = normalMonster[0][currRow][currColumn].begin(); iter != normalMonster[0][currRow][currColumn].end(); ++iter)
 	{
+		++eraseIndex;
 		normalMonsterShape = (*iter)->GetNormalMonsterShape();
 		for (int j = 0; j < vecTear.size(); ++j)
 		{
@@ -69,7 +71,8 @@ void PlayerTear::CollideWithNormalMonster()
 			if (IntersectRect(&colliderRect, &playerTearShape, &normalMonsterShape))
 			{
 				vecTear[j]->SetIsFire(false);
-				normalMonster[0][currRow][currColumn].erase(iter);
+				SAFE_RELEASE((*iter));
+				normalMonster[0][currRow][currColumn].erase(iter);			// 문제 발생! ! => iter를 erase 하는데 메모리 누수 남.
 				return;
 			}
 		}
@@ -133,9 +136,9 @@ void PlayerTear::Fire()
 		}
 		vecTear[i]->SetCurrCloumn(currColumn);
 		vecTear[i]->SetCurrRow(currRow);
-		vecTear[i]->SetPos(owner->GetPlayerHeadPos());
+		vecTear[i]->SetPos(player->GetPlayerHeadPos());
 		vecTear[i]->SetObjectSize(objectSize);
-		vecTear[i]->SetMoveDir(owner->GetPlayerHeadMoveDir());
+		vecTear[i]->SetMoveDir(player->GetPlayerHeadMoveDir());
 		vecTear[i]->SetIsFire(true);
 		break;
 	}
@@ -143,7 +146,7 @@ void PlayerTear::Fire()
 
 PlayerTear::~PlayerTear() noexcept
 {
-	owner = nullptr;
+	player = nullptr;
 
 	for (size_t i = 0; i < vecTear.size(); ++i)
 	{

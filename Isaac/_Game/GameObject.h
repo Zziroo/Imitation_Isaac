@@ -2,10 +2,12 @@
 
 class NormalMonster;
 class Obstacle;
+class Player;
 class PlayerTear;
 class GameObject
 {
 protected:
+	Player*										player = nullptr;
 	TILE_INFO*									tile = nullptr;								// 타일의 정보
 
 	vector<vector<vector<NormalMonster*>>>*		normalMonster = nullptr;					// Normal Monster 정보
@@ -42,6 +44,7 @@ public:
 	void										SetNormalMonsterInfo(vector<vector<vector<NormalMonster*>>>* normalMonster) { this->normalMonster = normalMonster; }
 	void										SetObjectSize(float size) { this->objectSize = size; }
 	void										SetObstacleInfo(vector<vector<vector<Obstacle*>>>* obstacle) { this->obstacle = obstacle; }
+	void										SetPlayer(Player* player) { this->player = player; }
 	void										SetPos(POINTFLOAT pos) { this->pos = pos; }
 	void										SetTileInfo(TILE_INFO* tile) { this->tile = tile; }
 
