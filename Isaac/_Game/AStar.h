@@ -1,23 +1,13 @@
 #pragma once
 
-#include <cmath>
 #include "GameObject.h"
 
 class AStar : public GameObject
 {
 private:
-	struct Pos
-	{
-		int					X = 0;
-		int					Y = 0;
-
-		bool operator<(const Pos& other) const { return (X < other.X) && (Y < other.Y); }
-		bool operator==(const Pos& other) const { return X == other.X && Y == other.Y; }
-		bool operator!=(const Pos& other) const { return !(*this == other); }
-	};
-
-private:
 	vector<vector<int>>		map;
+
+	stack<Pos>				pathWay;
 
 	Pos						start;
 	Pos						target;
@@ -25,7 +15,9 @@ private:
 	POINTFLOAT				startPos = {};
 	POINTFLOAT				targetPos = {};
 
-	float					diagonalWeight = (FLOAT)sqrt(200);
+	bool					isLocatedInside = false;
+
+	float					diagonalWeight = (FLOAT)sqrt(200) + 0.001f;
 	float					findDelay = 0.0f;
 
 public:
@@ -40,9 +32,11 @@ public:
 	void					GiveStartPos();
 	void					GiveTargetPos();
 	float					Heuristic(Pos a, Pos b);
-	bool					LocatedInside(Pos target);
 
 	vector<vector<int>>		GetAStarMap() { return this->map; }
+	bool					LocatedInside() { return this->isLocatedInside; }
+	stack<Pos>				GetPathWay() { return this->pathWay; }
+	Pos						GetTargetPos() { return this->target; }
 
 	void					SetStartPosX(float posX) { this->startPos.x = posX; }
 	void					SetStartPosY(float posY) { this->startPos.y = posY; }

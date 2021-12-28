@@ -429,9 +429,6 @@ void Stage01Scene::Update()
 	
 	for (size_t i = 0; i < normalMonster[currRow][currColumn].size(); ++i)
 	{
-		// NormalMonster에게 Player의 위치 정보 줌.
-		normalMonster[currRow][currColumn][i]->SetTargetPos(player->GetPlayerBodyPos());
-
 		// AStar StarPos 설정
 		aStar[currRow][currColumn][i]->SetStartPosX((FLOAT)normalMonster[currRow][currColumn][i]->GetNormalMonsterPosX());
 		aStar[currRow][currColumn][i]->SetStartPosY((FLOAT)normalMonster[currRow][currColumn][i]->GetNormalMonsterPosY());
@@ -451,6 +448,7 @@ void Stage01Scene::Update()
 	for (size_t i = 0; i < normalMonster[currRow][currColumn].size(); ++i)
 	{
 		normalMonster[currRow][currColumn][i]->SetNormalMonsterAStar(aStar[currRow][currColumn][i]);
+		normalMonster[currRow][currColumn][i]->SetNormalMonsterPathWay(aStar[currRow][currColumn][i]->GetPathWay());
 		normalMonster[currRow][currColumn][i]->SetNormalMonsterState(MonsterStates::MOVE);
 		normalMonster[currRow][currColumn][i]->SetPlayer(player);
 		normalMonster[currRow][currColumn][i]->Update();

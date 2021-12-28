@@ -25,11 +25,11 @@ private:
 private:
 	AStar*					aStar = nullptr;
 
+	stack<Pos>				pathWay;
+
 	NORMAL_MONSTER_INFO		monsterInfo;
 
 	POINTFLOAT				targetPos = {};
-
-	int						startPoint = 2;
 
 public:
 	virtual void			Init() override;
@@ -39,6 +39,7 @@ public:
 	virtual void			OnDebug(HDC hdc) override;
 
 	void					AdvanceAnimation(int elapsedCount = 0);
+	void					ApproachTargetPoint();
 	void					ChangeAnimation();
 	void					DesignateNorMalMonsterShape(float posX, float posY, float size, float adjustSizeLeft = 0.0f, float adjustSizeTop = 0.0f, float adjustSizeRight = 0.0f, float adjustSizeBottom = 0.0f);
 	void					Move();
@@ -51,11 +52,11 @@ public:
 
 	void					SetNormalMonsterAStar(AStar* aStar) { this->aStar = aStar; }
 	void					SetNormalMonsterState(MonsterStates state) { this->monsterInfo.state = state; }
+	void					SetNormalMonsterPathWay(stack<Pos> way) { this->pathWay = way; }
 	void					SetNormalMonsterPos(POINTFLOAT pos) { this->monsterInfo.pos = pos; }
 	void					SetNormalMonsterPosX(float pos) { this->monsterInfo.pos.x = pos; }
 	void					SetNormalMonsterPosY(float pos) { this->monsterInfo.pos.y = pos; }
 	void					SetNormalMonsterType(NormalMonsterTypes type) { this->monsterInfo.type = type; }
-	void					SetTargetPos(POINTFLOAT pos) { this->targetPos = pos; }
 
 	virtual ~NormalMonster() = default;
 };

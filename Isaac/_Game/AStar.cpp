@@ -1,11 +1,6 @@
 #include "stdafx.h"
 #include "AStar.h"
 
-#include <queue>
-
-#define INF				1e9
-#define IMPASSABLE_ROAD 1e3
-
 void AStar::Init()
 {
 	ComposeMap();
@@ -20,7 +15,16 @@ void AStar::Update()
 	GiveStartPos();
 	GiveTargetPos();
 
-	if (LocatedInside(target))
+	if (2 < target.X || target.X < 29 || 2 < target.Y || target.Y < 17)
+	{
+		isLocatedInside = true;
+	}
+	else
+	{
+		isLocatedInside = false;
+	}
+
+	if (isLocatedInside)
 	{
 		DoAstar(start, target);
 	}
@@ -62,6 +66,15 @@ void AStar::ComposeMap()
 
 void AStar::DoAstar(Pos start, Pos end)
 {
+	// pathWay의 Size != 0 일시 초기화
+	if (pathWay.empty() == false)
+	{
+		for (size_t i = 0; i < pathWay.size();)
+		{
+			pathWay.pop();
+		}
+	}
+
 	vector<vector<int>> f;
 	for (int i = 0; i < TILE_ROW; ++i)
 	{
@@ -130,6 +143,7 @@ void AStar::DoAstar(Pos start, Pos end)
 	Pos curr = end;
 	while (curr != start)
 	{
+		pathWay.push(curr);
 		map[curr.Y][curr.X] = pathIndex;
 		--pathIndex;
 		curr = path[curr.Y][curr.X];
@@ -155,16 +169,4 @@ void AStar::GiveTargetPos()
 float AStar::Heuristic(Pos a, Pos b)
 {
 	return abs((FLOAT)(a.X - b.X)) + abs((FLOAT)(a.Y - b.Y));
-}
-
-bool AStar::LocatedInside(Pos target)
-{
-	if (2 < target.X || target.X < 29 || 2 < target.Y || target.Y < 17)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
 }

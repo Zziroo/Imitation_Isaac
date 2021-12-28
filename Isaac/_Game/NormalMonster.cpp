@@ -11,7 +11,7 @@ void NormalMonster::Init()
 	{
 	case NormalMonsterTypes::ATTACKFLY:
 		monsterInfo.img = GET_SINGLETON_IMAGE->FindImage("Image/Monster/Attack_Fly.bmp");
-		monsterInfo.moveSpeed = 200.0f;
+		monsterInfo.moveSpeed = 20.0f;
 		monsterInfo.type = NormalMonsterTypes::ATTACKFLY;
 		monsterInfo.objectSize = 20.0f;
 		DesignateNorMalMonsterShape(monsterInfo.pos.x, monsterInfo.pos.y, monsterInfo.objectSize);
@@ -19,14 +19,14 @@ void NormalMonster::Init()
 	case NormalMonsterTypes::FLY:
 		monsterInfo.img = GET_SINGLETON_IMAGE->FindImage("Image/Monster/Fly.bmp");
 		monsterInfo.type = NormalMonsterTypes::FLY;
-		monsterInfo.moveSpeed = 100.0f;
+		monsterInfo.moveSpeed = 10.0f;
 		monsterInfo.objectSize = 20.0f;
 		DesignateNorMalMonsterShape(monsterInfo.pos.x, monsterInfo.pos.y, monsterInfo.objectSize);
 		break;
 	case NormalMonsterTypes::POOTER:
 		monsterInfo.img = GET_SINGLETON_IMAGE->FindImage("Image/Monster/Pooter_Idle.bmp");
 		monsterInfo.type = NormalMonsterTypes::POOTER;
-		monsterInfo.moveSpeed = 100.0f;
+		monsterInfo.moveSpeed = 10.0f;
 		monsterInfo.objectSize = 26.0f;
 		DesignateNorMalMonsterShape(monsterInfo.pos.x, monsterInfo.pos.y, monsterInfo.objectSize, -3.0f, 1.0f, -3.0f, 1.0f);
 		break;
@@ -43,9 +43,8 @@ void NormalMonster::Update()
 {
 	ChangeAnimation();
 
-	if (monsterInfo.state == MonsterStates::MOVE)
+	if (monsterInfo.state == MonsterStates::MOVE && aStar->LocatedInside())
 	{
-		startPoint = 2;
 		Move();
 	}
 
@@ -85,6 +84,55 @@ void NormalMonster::AdvanceAnimation(int elapsedCount)
 	}
 }
 
+void NormalMonster::ApproachTargetPoint()
+{
+	// 기저 조건
+	if (pathWay.empty())
+	{
+		return;
+	}
+
+	POINTFLOAT targetSpotPos = {
+		(FLOAT)(pathWay.top().X * TILE_SIZE),
+		(FLOAT)(pathWay.top().Y * TILE_SIZE)
+	};
+
+	// 다가갈 위치의 X좌표와 NormalMonster의 pos.x위치의 차이로 NormalMonster pos.x 이동
+	if (targetSpotPos.x >= monsterInfo.pos.x)
+	{
+		monsterInfo.pos.x += monsterInfo.moveSpeed * Timer::GetDeltaTime();
+	}
+	else
+	{
+		monsterInfo.pos.x -= monsterInfo.moveSpeed * Timer::GetDeltaTime();
+	}
+
+	// 다가갈 위치의 Y좌표와 NormalMonster의 pos.y위치의 차이로 NormalMonster pos.y 이동
+	if (targetSpotPos.y >= monsterInfo.pos.y)
+	{
+		monsterInfo.pos.y += monsterInfo.moveSpeed * Timer::GetDeltaTime();
+	}
+	else
+	{
+		monsterInfo.pos.y -= monsterInfo.moveSpeed * Timer::GetDeltaTime();
+	}
+
+	switch (monsterInfo.type)
+	{
+	case NormalMonsterTypes::ATTACKFLY: case NormalMonsterTypes::FLY:
+		DesignateNorMalMonsterShape(monsterInfo.pos.x, monsterInfo.pos.y, monsterInfo.objectSize);
+		break;
+	case NormalMonsterTypes::POOTER:
+		DesignateNorMalMonsterShape(monsterInfo.pos.x, monsterInfo.pos.y, monsterInfo.objectSize, -3.0f, 1.0f, -3.0f, 1.0f);
+		break;
+	default:
+		break;
+	}
+
+	pathWay.pop();
+	ApproachTargetPoint();
+}
+
 void NormalMonster::ChangeAnimation()
 {
 	switch (monsterInfo.type)
@@ -113,32 +161,7 @@ void NormalMonster::Move()
 	POINTFLOAT	buffPos = monsterInfo.pos;
 	RECT		buffShape = monsterInfo.shape;
 
-	if (monsterInfo.type != NormalMonsterTypes::NONE)
-	{
-		for (int i = 0; i < TILE_ROW; ++i)
-		{
-			for (int j = 0; j < TILE_COLUMN; ++j)
-			{
-				if (aStar->GetAStarMap()[i][j] == 2)
-				{
-					monsterInfo.pos.x = (FLOAT)(j * TILE_SIZE);
-					monsterInfo.pos.y = (FLOAT)(i * TILE_SIZE);
-				}
-			}
-		}
-	}
-
-	switch (monsterInfo.type)
-	{
-	case NormalMonsterTypes::ATTACKFLY: case NormalMonsterTypes::FLY:
-		DesignateNorMalMonsterShape(monsterInfo.pos.x, monsterInfo.pos.y, monsterInfo.objectSize);
-		break;
-	case NormalMonsterTypes::POOTER:
-		DesignateNorMalMonsterShape(monsterInfo.pos.x, monsterInfo.pos.y, monsterInfo.objectSize, -3.0f, 1.0f, -3.0f, 1.0f);
-		break;
-	default:
-		break;
-	}
+	ApproachTargetPoint();
 
 	RECT playerBodyShape = player->GetPlayerBodyShape();
 	RECT playerHeadShape = player->GetPlayerHeadShape();

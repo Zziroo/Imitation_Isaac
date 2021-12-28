@@ -72,7 +72,7 @@ void PlayerTear::CollideWithNormalMonster()
 			{
 				vecTear[j]->SetIsFire(false);
 				SAFE_RELEASE((*iter));
-				normalMonster[0][currRow][currColumn].erase(iter);			// 문제 발생! ! => iter를 erase 하는데 메모리 누수 남.
+				normalMonster[0][currRow][currColumn].erase(iter);
 				return;
 			}
 		}

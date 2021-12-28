@@ -2,8 +2,6 @@
 
 #include "GameObject.h"
 
-#define MAX_COUNT 50
-
 class Image;
 class Tear;
 class PlayerTear : public GameObject
