@@ -46,6 +46,9 @@ enum class PlayerStates { IDLE, WALK, ATTACK, HURT, ITEMPICKUP, JUMP, STAT };
 
 #define HURT_IMAGE				1
 
+// PlayerTear
+#define MAX_COUNT				50
+
 // RoomEditing
 enum class RoomTypes { BOSS, CURSE, ITEM, NORMAL, PRIVATE, SATAN, START, NONE };
 
@@ -80,3 +83,17 @@ enum class ObstacleTypes { BONFIRE, BRICK, DDONG, ITEMSTAND, JAR, SLIDER, SPIDER
 
 // NormalMonster
 enum class NormalMonsterTypes { FLY, ATTACKFLY, POOTER, NONE };
+
+// AStar
+struct Pos
+{
+	int					X = 0;
+	int					Y = 0;
+
+	bool operator<(const Pos& other) const { return (X < other.X) && (Y < other.Y); }
+	bool operator==(const Pos& other) const { return X == other.X && Y == other.Y; }
+	bool operator!=(const Pos& other) const { return !(*this == other); }
+};
+
+#define INF						1e9
+#define IMPASSABLE_ROAD			1e3

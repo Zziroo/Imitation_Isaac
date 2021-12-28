@@ -12,12 +12,16 @@
 #include <array>
 #include <bitset>
 #include <chrono>
+#include <cmath>
 #include <iostream>
 #include <list>
 #include <map>
+#include <queue>
 #include <random>
+#include <stack>
 #include <stdio.h>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "Singleton.h"
