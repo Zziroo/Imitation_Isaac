@@ -34,7 +34,7 @@ void AStar::OnDebug(HDC hdc)
 
 void AStar::CheckInsideTargetPos()
 {
-	if ((2 < target.X && target.X < 29) && (2 < target.Y && target.Y < 17))
+	if ((2 < target.X && target.X < 29) && (1 < target.Y && target.Y < 17))
 	{
 		isLocatedInside = true;
 	}
