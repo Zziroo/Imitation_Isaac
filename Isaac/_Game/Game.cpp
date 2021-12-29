@@ -61,7 +61,7 @@ bool Game::Init(HINSTANCE hInst)
 	backBuffer = new Image;
 
 #ifdef MAPTOOL
-	GET_SINGLETON_SCENE->ChangeScene("EnemyTool");			// TilemapTool / EnemyTool / ObstacleTool
+	GET_SINGLETON_SCENE->ChangeScene("TilemapTool");		// TilemapTool / EnemyTool / ObstacleTool
 	maxSizeX = TILEMAP_SIZE_X;
 	maxSizeY = TILEMAP_SIZE_Y;
 #else

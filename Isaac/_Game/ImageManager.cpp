@@ -114,7 +114,7 @@ void ImageManager::Init()
 	#pragma region Monster
 	GET_SINGLETON_IMAGE->AddImage("Image/Monster/Attack_Fly.bmp", 63, 192, 1, 4, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Monster/Fly.bmp", 63, 96, 1, 2, true, MAGENTA);
-	GET_SINGLETON_IMAGE->AddImage("Image/Monster/NormalMonster.bmp", 288, 96, 3, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Monster/NormalMonster.bmp", 192, 64, 3, 1, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Monster/Pooter_Attack.bmp", 192, 384, 2, 4, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Monster/Pooter_Dead.bmp", 192, 768, 2, 8, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Monster/Pooter_Idle.bmp", 192, 384, 2, 4, true, MAGENTA);
