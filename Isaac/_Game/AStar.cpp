@@ -15,14 +15,8 @@ void AStar::Update()
 	GiveStartPos();
 	GiveTargetPos();
 
-	if ((2 < target.X && target.X < 29) && (2 < target.Y && target.Y < 17))
-	{
-		isLocatedInside = true;
-	}
-	else
-	{
-		isLocatedInside = false;
-	}
+	// '타겟의 위치가 해당 맵의 움직일 수 있는 곳에 있다'를 확인
+	CheckInsideTargetPos();
 
 	if (isLocatedInside)
 	{
@@ -36,6 +30,18 @@ void AStar::Render(HDC hdc)
 
 void AStar::OnDebug(HDC hdc)
 {
+}
+
+void AStar::CheckInsideTargetPos()
+{
+	if ((2 < target.X && target.X < 29) && (2 < target.Y && target.Y < 17))
+	{
+		isLocatedInside = true;
+	}
+	else
+	{
+		isLocatedInside = false;
+	}
 }
 
 void AStar::ComposeMap()
