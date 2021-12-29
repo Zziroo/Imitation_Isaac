@@ -30,6 +30,7 @@ HRESULT Stage01Scene::Init()
 		drawingAreaImg = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Tile/Cave.bmp");
 		break;
 	}
+
 	// StartPoint Infomation Image
 	infomationStartImg = GET_SINGLETON_IMAGE->FindImage("Image/Tilemap/Tile/Info.bmp");
 
@@ -618,7 +619,7 @@ void Stage01Scene::MoveToNextMap()
 
 void Stage01Scene::NamingNormalMonsterInfo(int row, int column)
 {
-	string fileName = "Save/MONSTER";
+	char fileName[MAX_PATH];
 	// .monster ·£´ý ¼³Á¤
 	int index = 0;
 
@@ -628,44 +629,17 @@ void Stage01Scene::NamingNormalMonsterInfo(int row, int column)
 
 	index = dis(gen) % normalMonsterMaxIndex;
 
-	if (index < 10)
-	{
-		fileName += "0";
-	}
+	int counts[4] = { 6, 6, 3, 0 };
 
-	fileName += to_string(index) + "_";
-
-	int count = 0;
-
-	switch (index)
-	{
-	case 3:
-		count = 0;
-		break;
-	case 2:
-		count = 3;
-		break;
-	case 0: case 1:
-		count = 6;
-		break;
-	}
-
-	if (count < 10)
-	{
-		fileName += "0";
-	}
-
-	fileName += to_string(count) + ".monster";
+	sprintf_s(fileName, "Save/Monster%02d_%02d.monster", index, counts[index]);
 
 	normalMonsterFileInfo[row][column].index = fileName;
-	normalMonsterFileInfo[row][column].count = count;
+	normalMonsterFileInfo[row][column].count = counts[index];
 }
 
-void Stage01Scene::NamingObstacleInfo(int row, int column, string loadObstacleFileName, int obstacleIndex)
+void Stage01Scene::NamingObstacleInfo(int row, int column, const char* loadObstacleFileName, int obstacleIndex)
 {
-	string fileName = "Save/";
-
-	fileName += loadObstacleFileName;
+	char fileName[MAX_PATH];
 	// .obstacle ·£´ý ¼³Á¤
 	int index = 0;
 
@@ -675,78 +649,19 @@ void Stage01Scene::NamingObstacleInfo(int row, int column, string loadObstacleFi
 
 	index = dis(gen) % obstacleMaxIndex[obstacleIndex];
 
-	if (index < 10)
-	{
-		fileName += "0";
-	}
+	vector<int> counts[3];
+	
+	counts[0].resize(1);
+	counts[0] = { 1 };
+	counts[1].resize(3);
+	counts[1] = { 1, 3, 3 };
+	counts[2].resize(17);
+	counts[2] = { 4, 4, 4, 4, 4, 4, 4, 4, 20, 4, 5, 24, 1, 1, 1, 5, 0, 0 };
 
-	fileName += to_string(index) + "_";
-
-	int count = 0;
-
-	switch (obstacleIndex)
-	{
-	case 0:
-		switch (index)
-		{
-		case 0:
-			count = 1;
-			break;
-		default:
-			break;
-		}
-		break;
-	case 1:
-		switch (index)
-		{
-		case 0:
-			count = 1;
-			break;
-		case 1: case 2:
-			count = 3;
-			break;
-		default:
-			break;
-		}
-		break;
-	case 2:
-		switch (index)
-		{
-		case 16: case 17:
-			count = 0;
-			break;
-		case 12: case 13: case 14:
-			count = 1;
-			break;
-		case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7: case 9:
-			count = 4;
-			break;
-		case 10: case 15:
-			count = 5;
-			break;
-		case 8:
-			count = 20;
-			break;
-		case 11:
-			count = 24;
-			break;
-		default:
-			break;
-		}
-		break;
-	default:
-		break;
-	}
-
-	if (count < 10)
-	{
-		fileName += "0";
-	}
-
-	fileName += to_string(count) + ".obstacle";
+	sprintf_s(fileName, "Save/%s%02d_%02d.obstacle", loadObstacleFileName, index, counts[obstacleIndex][index]);
 
 	obstacleFileInfo[row][column].index = fileName;
-	obstacleFileInfo[row][column].count = count;
+	obstacleFileInfo[row][column].count = counts[obstacleIndex][index];
 }
 
 void Stage01Scene::LoadMap(string loadTilemapFileName)

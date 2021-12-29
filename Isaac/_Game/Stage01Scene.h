@@ -59,7 +59,7 @@ public:
 
 	void										MoveToNextMap();
 	void										NamingNormalMonsterInfo(int row, int column);
-	void										NamingObstacleInfo(int row, int column, string loadObstacleFileName, int obstacleIndex);
+	void										NamingObstacleInfo(int row, int column, const char* loadObstacleFileName, int obstacleIndex);
 	void										LoadMap(string loadTilemapFileName);
 	void										LoadNormalMonster(int row, int column, string loadNormalMonsterFileName, int normalMonsterCount);
 	void										LoadObstacle(int row, int column, string loadObstacleFileName, int obstacleCount);
