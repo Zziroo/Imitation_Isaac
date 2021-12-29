@@ -474,6 +474,9 @@ void Stage01Scene::Render(HDC hdc)
 	// Map Render
 	TileRender(hdc);
 
+	// Door Render
+	door->Render(hdc);
+
 	// Start Map¿¡ Image Render
 	if (currRow == startPoint && currColumn == startPoint)
 	{
@@ -491,9 +494,6 @@ void Stage01Scene::Render(HDC hdc)
 	{
 		normalMonster[currRow][currColumn][i]->Render(hdc);
 	}
-
-	// Door Render
-	door->Render(hdc);
 
 	// Tear
 	playerTear->Render(hdc);
