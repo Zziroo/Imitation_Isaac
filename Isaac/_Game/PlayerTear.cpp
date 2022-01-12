@@ -82,9 +82,9 @@ void PlayerTear::CollideWithNormalMonster()
 void PlayerTear::CollideWithObstacle()
 {
 	// 장애물와 충돌 하면 초기화												// 문제 발생! ! => 왜 모든 이미지가 변하는지 모르겠습니다.
-	RECT obstacleShape = {};
-	RECT playerTearShape = {};
-	int collideObstacleIndex = 0;
+	RECT	obstacleShape = {};
+	RECT	playerTearShape = {};
+	int		collideObstacleIndex = 0;
 
 	for (size_t i = 0; i < obstacle[0][currRow][currColumn].size(); ++i)
 	{
@@ -99,10 +99,10 @@ void PlayerTear::CollideWithObstacle()
 				// Obstacle이 Bonfire일 때
 				if (obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObstacleType() == ObstacleTypes::BONFIRE)
 				{
-					obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObstacleImage()->SetCurrFrameY(obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObstacleImage()->GetCurrFrameY() + ADVANCE_FRAME);
-					if (obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObstacleImage()->GetCurrFrameY() >= obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObstacleImage()->GetMaxFrameY())
+					obstacleImg[0][currRow][currColumn][collideObstacleIndex]->SetCurrFrameY(obstacleImg[0][currRow][currColumn][collideObstacleIndex]->GetCurrFrameY() + ADVANCE_FRAME);
+					if (obstacleImg[0][currRow][currColumn][collideObstacleIndex]->GetCurrFrameY() >= obstacleImg[0][currRow][currColumn][collideObstacleIndex]->GetMaxFrameY())
 					{
-						obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObstacleImage()->SetCurrFrameY(obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObstacleImage()->GetMaxFrameY());
+						obstacleImg[0][currRow][currColumn][collideObstacleIndex]->SetCurrFrameY(obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObstacleImage()->GetMaxFrameY());
 						obstacle[0][currRow][currColumn][collideObstacleIndex]->SetObstacleDamaged(false);
 						obstacle[0][currRow][currColumn][collideObstacleIndex]->SetObjectSize(0.0f);
 						obstacle[0][currRow][currColumn][collideObstacleIndex]->DesignateObstacleShape(obstacle[0][currRow][currColumn][collideObstacleIndex]->GetPos().x, obstacle[0][currRow][currColumn][collideObstacleIndex]->GetPos().y, obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObjectSize());
@@ -112,16 +112,27 @@ void PlayerTear::CollideWithObstacle()
 				// Obstacle이 DDong일 때
 				if (obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObstacleType() == ObstacleTypes::DDONG)
 				{
-					obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObstacleImage()->SetCurrFrameX(obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObstacleImage()->GetCurrFrameX() + ADVANCE_FRAME);
-					if (obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObstacleImage()->GetCurrFrameX() >= obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObstacleImage()->GetMaxFrameX())
+					obstacleImg[0][currRow][currColumn][collideObstacleIndex]->SetCurrFrameX(obstacleImg[0][currRow][currColumn][collideObstacleIndex]->GetCurrFrameX() + ADVANCE_FRAME);
+					if (obstacleImg[0][currRow][currColumn][collideObstacleIndex]->GetCurrFrameX() >= obstacleImg[0][currRow][currColumn][collideObstacleIndex]->GetMaxFrameX())
 					{
-						obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObstacleImage()->SetCurrFrameX(obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObstacleImage()->GetMaxFrameX());
+						obstacleImg[0][currRow][currColumn][collideObstacleIndex]->SetCurrFrameX(obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObstacleImage()->GetMaxFrameX());
 						obstacle[0][currRow][currColumn][collideObstacleIndex]->SetObjectSize(0.0f);
 						obstacle[0][currRow][currColumn][collideObstacleIndex]->DesignateObstacleShape(obstacle[0][currRow][currColumn][collideObstacleIndex]->GetPos().x, obstacle[0][currRow][currColumn][collideObstacleIndex]->GetPos().y, obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObjectSize());
 					}
 					break;
 				}
 			}
+		}
+	}
+}
+
+void PlayerTear::ExtinctWeapon()
+{
+	for (size_t i = 0; i < vecTear.size(); ++i)
+	{
+		if (vecTear[i]->GetIsFire())
+		{
+			vecTear[i]->SetIsFire(false);
 		}
 	}
 }

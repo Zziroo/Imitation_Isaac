@@ -293,6 +293,7 @@ void Player::CollideWithDoor(POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT head
     // 위쪽 문이 몸통 부분과 겹치고
     if (IntersectRect(&colliderRect, &bodyInfo.shape, &doorInfo[0][currRow][currColumn][UPPER_DOOR].shape))
     {
+        playerTear->ExtinctWeapon();
         // 위쪽 문이 열려있으면
         if (doorInfo[0][currRow][currColumn][UPPER_DOOR].doorState == DoorStates::OPENED && doorInfo[0][currRow][currColumn][UPPER_DOOR].img != nullptr)
         {
@@ -318,6 +319,7 @@ void Player::CollideWithDoor(POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT head
     // 아래쪽 문이 몸통 부분과 겹치고
     if (IntersectRect(&colliderRect, &headInfo.shape, &doorInfo[0][currRow][currColumn][LOWER_DOOR].shape))
     {
+        playerTear->ExtinctWeapon();
         // 아래쪽 문이 열려있으면
         if (doorInfo[0][currRow][currColumn][LOWER_DOOR].doorState == DoorStates::OPENED && doorInfo[0][currRow][currColumn][LOWER_DOOR].img != nullptr)
         {
@@ -343,6 +345,7 @@ void Player::CollideWithDoor(POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT head
     // 왼쪽 문이 머리 부분 또는 몸통 부분과 겹치고
     if (IntersectRect(&colliderRect, &bodyInfo.shape, &doorInfo[0][currRow][currColumn][LEFT_DOOR].shape))
     {
+        playerTear->ExtinctWeapon();
         // 왼쪽 문이 열려있으면
         if (doorInfo[0][currRow][currColumn][LEFT_DOOR].doorState == DoorStates::OPENED && doorInfo[0][currRow][currColumn][LEFT_DOOR].img != nullptr)
         {
@@ -368,6 +371,7 @@ void Player::CollideWithDoor(POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT head
     // 오른쪽 문이 머리 부분 또는 몸통 부분과 겹치고
     if (IntersectRect(&colliderRect, &bodyInfo.shape, &doorInfo[0][currRow][currColumn][RIGHT_DOOR].shape))
     {
+        playerTear->ExtinctWeapon();
         // 오른쪽 문이 열려있으면
         if (doorInfo[0][currRow][currColumn][RIGHT_DOOR].doorState == DoorStates::OPENED && doorInfo[0][currRow][currColumn][RIGHT_DOOR].img != nullptr)
         {

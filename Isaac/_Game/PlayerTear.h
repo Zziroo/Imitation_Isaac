@@ -21,8 +21,8 @@ public:
 
 	void			CollideWithNormalMonster();
 	void			CollideWithObstacle();
+	void			ExtinctWeapon();
 	void			Fire();
-
 
 	virtual ~PlayerTear() noexcept;
 };
