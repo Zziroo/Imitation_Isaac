@@ -4,6 +4,16 @@
 #include "Image.h"
 #include "PlayerTear.h"
 
+void Obstacle::setNextFrameHelper(int& frame, int maxFrame)
+{
+	++frame;
+
+	if (frame > maxFrame)
+	{
+		frame = maxFrame;
+	}
+}
+
 void Obstacle::Init()
 {
 	switch (obstacleInfo.type)
@@ -90,7 +100,7 @@ void Obstacle::Update()
 
 void Obstacle::Render(HDC hdc)
 {
-	obstacleInfo.img->Render(hdc, (INT)pos.x, (INT)pos.y, obstacleInfo.img->GetCurrFrameX(), obstacleInfo.img->GetCurrFrameY());
+	obstacleInfo.img->Render(hdc, (INT)pos.x, (INT)pos.y, frameX, frameY);
 
 	// Debug
 	GameObject::Render(hdc);
@@ -139,6 +149,11 @@ void Obstacle::ChangeObstacleAnimation()
 	}
 }
 
+void Obstacle::DesignateObstacleShape(POINTFLOAT pos, float adjustSizeLeft, float adjustSizeTop, float adjustSizeRight, float adjustSizeBottom)
+{
+	DesignateObstacleShape(pos.x, pos.y, objectSize, adjustSizeLeft, adjustSizeTop, adjustSizeRight, adjustSizeBottom);
+}
+
 void Obstacle::DesignateObstacleShape(float posX, float posY, float size, float adjustSizeLeft, float adjustSizeTop, float adjustSizeRight, float adjustSizeBottom)
 {
 	shape.left = (LONG)(posX - (size * DEVIDE_HALF) - adjustSizeLeft);
@@ -171,4 +186,24 @@ void Obstacle::SwitchDamageToPlayer()
 		}
 	}
 
+}
+
+void Obstacle::SetNextFrameX()
+{
+	setNextFrameHelper(frameX, obstacleInfo.img->GetMaxFrameX());
+}
+
+void Obstacle::SetNextFrameY()
+{
+	setNextFrameHelper(frameY, obstacleInfo.img->GetMaxFrameY());
+}
+
+bool Obstacle::IsMaxFrameX() const
+{
+	return frameX == obstacleInfo.img->GetMaxFrameX();
+}
+
+bool Obstacle::IsMaxFrameY() const
+{
+	return frameY == obstacleInfo.img->GetMaxFrameY();
 }

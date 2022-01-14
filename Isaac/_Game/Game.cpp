@@ -145,8 +145,6 @@ void Game::update()
 	Input::Update();
 
 	GET_SINGLETON_SCENE->Update();
-
-	InvalidateRect(_hWnd, NULL, false);
 }
 
 void Game::render()

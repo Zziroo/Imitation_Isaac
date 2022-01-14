@@ -81,45 +81,45 @@ void PlayerTear::CollideWithNormalMonster()
 
 void PlayerTear::CollideWithObstacle()
 {
-	// 장애물와 충돌 하면 초기화												// 문제 발생! ! => 왜 모든 이미지가 변하는지 모르겠습니다.
-	RECT	obstacleShape = {};
-	RECT	playerTearShape = {};
-	int		collideObstacleIndex = 0;
-
 	for (size_t i = 0; i < obstacle[0][currRow][currColumn].size(); ++i)
 	{
-		obstacleShape = obstacle[0][currRow][currColumn][i]->GetShape();
+		Obstacle* currentObstacle = obstacle[0][currRow][currColumn][i];
+
 		for (int j = 0; j < vecTear.size(); ++j)
 		{
-			playerTearShape = vecTear[j]->GetShape();
-			if (IntersectRect(&colliderRect, &playerTearShape, &obstacleShape) && obstacle[0][currRow][currColumn][i]->GetObstacleType() != ObstacleTypes::THORN)
+			RECT obstacleShape = currentObstacle->GetShape();
+			RECT playerTearShape = vecTear[j]->GetShape();
+
+			if (IntersectRect(&colliderRect, &playerTearShape, &obstacleShape) &&
+				currentObstacle->GetObstacleType() != ObstacleTypes::THORN)
 			{
-				collideObstacleIndex = (INT)i;
 				vecTear[j]->SetIsFire(false);
-				// Obstacle이 Bonfire일 때
-				if (obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObstacleType() == ObstacleTypes::BONFIRE)
+				vecTear[j]->SetObjectSize(0.0f);
+
+				if (ObstacleTypes::BONFIRE == currentObstacle->GetObstacleType())
 				{
-					obstacleImg[0][currRow][currColumn][collideObstacleIndex]->SetCurrFrameY(obstacleImg[0][currRow][currColumn][collideObstacleIndex]->GetCurrFrameY() + ADVANCE_FRAME);
-					if (obstacleImg[0][currRow][currColumn][collideObstacleIndex]->GetCurrFrameY() >= obstacleImg[0][currRow][currColumn][collideObstacleIndex]->GetMaxFrameY())
+					currentObstacle->SetNextFrameY();
+
+					if (currentObstacle->IsMaxFrameY())
 					{
-						obstacleImg[0][currRow][currColumn][collideObstacleIndex]->SetCurrFrameY(obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObstacleImage()->GetMaxFrameY());
-						obstacle[0][currRow][currColumn][collideObstacleIndex]->SetObstacleDamaged(false);
-						obstacle[0][currRow][currColumn][collideObstacleIndex]->SetObjectSize(0.0f);
-						obstacle[0][currRow][currColumn][collideObstacleIndex]->DesignateObstacleShape(obstacle[0][currRow][currColumn][collideObstacleIndex]->GetPos().x, obstacle[0][currRow][currColumn][collideObstacleIndex]->GetPos().y, obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObjectSize());
+						currentObstacle->SetObstacleDamaged(false);
+						currentObstacle->SetObjectSize(0.0f);
+						currentObstacle->DesignateObstacleShape(currentObstacle->GetPos());
 					}
-					break;
+
+					return;
 				}
-				// Obstacle이 DDong일 때
-				if (obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObstacleType() == ObstacleTypes::DDONG)
+				else if (ObstacleTypes::DDONG == currentObstacle->GetObstacleType())
 				{
-					obstacleImg[0][currRow][currColumn][collideObstacleIndex]->SetCurrFrameX(obstacleImg[0][currRow][currColumn][collideObstacleIndex]->GetCurrFrameX() + ADVANCE_FRAME);
-					if (obstacleImg[0][currRow][currColumn][collideObstacleIndex]->GetCurrFrameX() >= obstacleImg[0][currRow][currColumn][collideObstacleIndex]->GetMaxFrameX())
+					currentObstacle->SetNextFrameX();
+
+					if (currentObstacle->IsMaxFrameX())
 					{
-						obstacleImg[0][currRow][currColumn][collideObstacleIndex]->SetCurrFrameX(obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObstacleImage()->GetMaxFrameX());
-						obstacle[0][currRow][currColumn][collideObstacleIndex]->SetObjectSize(0.0f);
-						obstacle[0][currRow][currColumn][collideObstacleIndex]->DesignateObstacleShape(obstacle[0][currRow][currColumn][collideObstacleIndex]->GetPos().x, obstacle[0][currRow][currColumn][collideObstacleIndex]->GetPos().y, obstacle[0][currRow][currColumn][collideObstacleIndex]->GetObjectSize());
+						currentObstacle->SetObjectSize(0.0f);
+						currentObstacle->DesignateObstacleShape(currentObstacle->GetPos());
 					}
-					break;
+
+					return;
 				}
 			}
 		}
