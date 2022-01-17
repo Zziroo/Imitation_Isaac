@@ -54,7 +54,7 @@ void NormalMonster::Update()
 
 void NormalMonster::Render(HDC hdc)
 {
-	monsterInfo.img->Render(hdc, (INT)monsterInfo.pos.x, (INT)monsterInfo.pos.y, monsterInfo.img->GetCurrFrameX(), monsterInfo.img->GetCurrFrameY());
+	monsterInfo.img->Render(hdc, (INT)monsterInfo.pos.x, (INT)monsterInfo.pos.y, frameX, frameY);
 
 	// Debug
 	Monster::Render(hdc);
@@ -75,10 +75,10 @@ void NormalMonster::AdvanceAnimation(int elapsedCount)
 	++monsterInfo.elapsedAnimeCount;
 	if (monsterInfo.elapsedAnimeCount > elapsedCount)
 	{
-		monsterInfo.img->SetCurrFrameY(monsterInfo.img->GetCurrFrameY() + ADVANCE_FRAME);
-		if (monsterInfo.img->GetCurrFrameY() > monsterInfo.img->GetMaxFrameY())
+		++frameY;
+		if (IsMaxFrameY())
 		{
-			monsterInfo.img->SetCurrFrameY(ZERO);
+			frameY = 0;
 		}
 		monsterInfo.elapsedAnimeCount = 0;
 	}
@@ -137,11 +137,11 @@ void NormalMonster::ChangeAnimation()
 {
 	switch (monsterInfo.type)
 	{
-	case NormalMonsterTypes::ATTACKFLY:
-		AdvanceAnimation(6);
+	case NormalMonsterTypes::ATTACKFLY:	
+		AdvanceAnimation(3);
 		break;
 	case NormalMonsterTypes::FLY: case NormalMonsterTypes::POOTER:
-		AdvanceAnimation(11);
+		AdvanceAnimation(5);
 		break;
 	default:
 		break;
@@ -170,4 +170,9 @@ void NormalMonster::Move()
 		monsterInfo.pos = buffPos;
 		monsterInfo.shape = buffShape;
 	}
+}
+
+bool NormalMonster::IsMaxFrameY() const
+{
+	return frameY == monsterInfo.img->GetMaxFrameY() + 1;
 }

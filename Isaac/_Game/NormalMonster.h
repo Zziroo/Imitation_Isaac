@@ -31,6 +31,9 @@ private:
 
 	POINTFLOAT				targetPos = {};
 
+	int						frameX = 0;
+	int						frameY = 0;
+
 public:
 	virtual void			Init() override;
 	virtual void			Release() override;
@@ -43,6 +46,8 @@ public:
 	void					ChangeAnimation();
 	void					DesignateNorMalMonsterShape(float posX, float posY, float size, float adjustSizeLeft = 0.0f, float adjustSizeTop = 0.0f, float adjustSizeRight = 0.0f, float adjustSizeBottom = 0.0f);
 	void					Move();
+
+	bool					IsMaxFrameY() const;
 
 	POINTFLOAT				GetNormalMonsterPos() { return this->monsterInfo.pos; }
 	float					GetNormalMonsterPosX() { return this->monsterInfo.pos.x; }
