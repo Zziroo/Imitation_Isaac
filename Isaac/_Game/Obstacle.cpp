@@ -124,10 +124,10 @@ void Obstacle::ChangeObstacleAnimation()
 		++obstacleInfo.elapsedAnimeCount;
 		if (obstacleInfo.elapsedAnimeCount > 11)
 		{
-			obstacleInfo.img->SetCurrFrameX(obstacleInfo.img->GetCurrFrameX() + ADVANCE_FRAME);
-			if (obstacleInfo.img->GetCurrFrameX() > obstacleInfo.img->GetMaxFrameX())
+			++frameX;
+			if (IsMaxFrameX())
 			{
-				obstacleInfo.img->SetCurrFrameX(ZERO);
+				frameX = 0;
 			}
 			obstacleInfo.elapsedAnimeCount = 0;
 		}
@@ -139,11 +139,11 @@ void Obstacle::ChangeObstacleAnimation()
 		++obstacleInfo.elapsedAnimeCount;
 		if (obstacleInfo.elapsedAnimeCount > 40)
 		{
-			obstacleInfo.img->SetCurrFrameX(1);
+			frameX = 1;
 		}
 		if (obstacleInfo.elapsedAnimeCount > 100)
 		{
-			obstacleInfo.img->SetCurrFrameX(ZERO);
+			frameX = 0;
 			obstacleInfo.elapsedAnimeCount = 0;
 		}
 	}

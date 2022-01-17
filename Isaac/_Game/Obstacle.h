@@ -20,10 +20,9 @@ private:
 
 private:
 	OBSTACLE_INFO			obstacleInfo;
+
 	int						frameX = 0;
 	int						frameY = 0;
-
-	float					resistSpeed = 0.0f;
 
 private:
 	void					setNextFrameHelper(int& frame, int maxFrame);

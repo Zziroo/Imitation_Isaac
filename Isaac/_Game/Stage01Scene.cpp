@@ -422,7 +422,7 @@ void Stage01Scene::Update()
 		aStar[currRow][currColumn][i]->SetTargetPosY((FLOAT)player->GetPos().y);
 	}
 
-	// Obstacle Update									// 문제 발생! ! => 장애물이 가끔씩 멈춰 있는지 모르겠습니다.
+	// Obstacle Update
 	for (size_t i = 0; i < obstacle[currRow][currColumn].size(); ++i)
 	{
 		obstacle[currRow][currColumn][i]->Update();
@@ -445,7 +445,7 @@ void Stage01Scene::Update()
 		}
 	}
 
-	// NormalMonster Update								// 문제 발생! ! => 가끔씩 Monster의 업데이트가 되지 않는다.
+	// NormalMonster Update
 	for (size_t i = 0; i < normalMonster[currRow][currColumn].size(); ++i)
 	{
 		normalMonster[currRow][currColumn][i]->SetNormalMonsterAStar(aStar[currRow][currColumn][i]);
