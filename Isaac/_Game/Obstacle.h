@@ -26,6 +26,7 @@ private:
 
 private:
 	void					setNextFrameHelper(int& frame, int maxFrame);
+
 public:
 	virtual void			Init() override;
 	virtual void			Release() override;

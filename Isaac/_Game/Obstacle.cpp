@@ -176,11 +176,11 @@ void Obstacle::SwitchDamageToPlayer()
 	// Slider doDamage º¯È­
 	if (obstacleInfo.type == ObstacleTypes::SLIDER)
 	{
-		if (obstacleInfo.img->GetCurrFrameX() == 0)
+		if (frameX == 0)
 		{
 			obstacleInfo.doDamage = false;
 		}
-		if (obstacleInfo.img->GetCurrFrameX() == 1)
+		if (frameX == 1)
 		{
 			obstacleInfo.doDamage = true;
 		}
