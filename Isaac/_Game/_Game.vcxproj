@@ -38,6 +38,7 @@
     <ClCompile Include="ObstacleToolScene.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerTear.cpp" />
+    <ClCompile Include="PlayerUI.cpp" />
     <ClCompile Include="RoomEditing.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
@@ -50,6 +51,7 @@
     <ClCompile Include="TilemapToolScene.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="TitleScene.cpp" />
+    <ClCompile Include="UI.cpp" />
     <ClCompile Include="Weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -74,6 +76,7 @@
     <ClInclude Include="ObstacleToolScene.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerTear.h" />
+    <ClInclude Include="PlayerUI.h" />
     <ClInclude Include="RoomEditing.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
@@ -84,6 +87,7 @@
     <ClInclude Include="TilemapToolScene.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="TitleScene.h" />
+    <ClInclude Include="UI.h" />
     <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

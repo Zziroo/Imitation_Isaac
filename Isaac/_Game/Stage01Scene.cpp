@@ -8,6 +8,7 @@
 #include "NormalMonster.h"
 #include "Obstacle.h"
 #include "Player.h"
+#include "PlayerUI.h"
 #include "PlayerTear.h"
 
 using namespace std;
@@ -317,6 +318,11 @@ HRESULT Stage01Scene::Init()
 	player->SetTileInfo(colliderTileInfo);
 	player->Init();
 
+	// PlayerUI
+	playerUI = new PlayerUI;
+	playerUI->SetPlayerHP(player->GetPlayerHP());
+	playerUI->Init();
+
 	// Minimap
 	minimap = new Minimap;
 	minimap->SetRoomInfo(&roomInfo);
@@ -333,6 +339,7 @@ void Stage01Scene::Release()
 	SAFE_RELEASE(door);
 	SAFE_RELEASE(minimap);
 	SAFE_RELEASE(player);
+	SAFE_RELEASE(playerUI);
 	SAFE_RELEASE(playerTear);
 
 	for (size_t i = 0; i < aStar.size(); ++i)
@@ -393,6 +400,10 @@ void Stage01Scene::Update()
 	player->SetCurrCloumn(currColumn);
 	player->SetCurrRow(currRow);
 	player->Update();
+
+	// PlayerUI Update
+	playerUI->SetPlayerHP(player->GetPlayerHP());
+	playerUI->Update();
 
 	// Map Update
 	MoveToNextMap();
@@ -468,6 +479,12 @@ void Stage01Scene::Update()
 
 	// PlayerTear와 NormalMonster충돌
 	playerTear->CollideWithNormalMonster();
+
+	if (player->GetIsGameOver())
+	{
+		GET_SINGLETON_SCENE->ChangeScene("Title");
+		return;
+	}
 }
 
 void Stage01Scene::Render(HDC hdc)
@@ -477,6 +494,9 @@ void Stage01Scene::Render(HDC hdc)
 
 	// Door Render
 	door->Render(hdc);
+
+	// PlayerUI Render
+	playerUI->Render(hdc);
 
 	// Start Map에 Image Render
 	if (currRow == startPoint && currColumn == startPoint)

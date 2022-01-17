@@ -20,7 +20,7 @@ enum class ObjectDir { UP, DOWN, LEFT, RIGHT, NONE };	// 이동 방향
 #define ZERO					0
 
 // Player
-enum class PlayerStates { IDLE, WALK, ATTACK, HURT, ITEMPICKUP, JUMP, STAT };
+enum class PlayerStates { IDLE, WALK, ATTACK, DEAD, HURT, ITEMPICKUP, JUMP, STAT };
 
 #define PLAYER_BODY_POS_X		PLAYER_HEAD_POS_X
 #define PLAYER_BODY_POS_Y		PLAYER_HEAD_POS_Y + 42.5f

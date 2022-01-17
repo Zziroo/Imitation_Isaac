@@ -103,6 +103,12 @@
     <Filter Include="MainGame\GameObject\MovePattern">
       <UniqueIdentifier>{6e74061f-e33d-442b-8ad9-28ed7dc1edfb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\GameObject\UI">
+      <UniqueIdentifier>{f12b9b07-839e-4bc1-8237-64530bf074bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\GameObject\UI">
+      <UniqueIdentifier>{5f0a67ff-d5e8-4604-85bd-b5d30653fe37}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Image.cpp">
@@ -191,6 +197,12 @@
     </ClCompile>
     <ClCompile Include="AStar.cpp">
       <Filter>MainGame\GameObject\MovePattern</Filter>
+    </ClCompile>
+    <ClCompile Include="UI.cpp">
+      <Filter>FrameWork\GameObject\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerUI.cpp">
+      <Filter>MainGame\GameObject\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -289,6 +301,12 @@
     </ClInclude>
     <ClInclude Include="AStar.h">
       <Filter>MainGame\GameObject\MovePattern</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.h">
+      <Filter>FrameWork\GameObject\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerUI.h">
+      <Filter>MainGame\GameObject\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

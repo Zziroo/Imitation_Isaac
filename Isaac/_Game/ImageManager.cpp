@@ -119,6 +119,11 @@ void ImageManager::Init()
 	GET_SINGLETON_IMAGE->AddImage("Image/Monster/Pooter_Dead.bmp", 192, 768, 2, 8, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Monster/Pooter_Idle.bmp", 192, 384, 2, 4, true, MAGENTA);
 	#pragma endregion
+	#pragma region UI
+	GET_SINGLETON_IMAGE->AddImage("Image/UI/Boss_HP.bmp", 388, 54, 1, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/UI/Player_HP.bmp", 117, 36, 3, 1, true, MAGENTA);
+	#pragma endregion
+
 }
 
 void ImageManager::Release()

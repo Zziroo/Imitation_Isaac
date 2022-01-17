@@ -24,6 +24,8 @@ void Player::Update()
 {
 #ifdef _DEBUG
     GameObject::Update();
+    cout << "PlayerHP : " << playerHP << "\n";
+    cout << "elapsedAnimeCount : " << elapsedAnimeCount << "\n";
 #endif
 
     TakeAction();
@@ -40,6 +42,9 @@ void Player::Update()
     // 무적 상태
     Invisibility();
 
+    // 죽음
+    Dead();
+
     // 장전 delay
     WeaponDelay();
 }
@@ -53,7 +58,7 @@ void Player::Render(HDC hdc)
         bodyInfo.image->Render(hdc, (INT)(bodyInfo.pos.x), (INT)(bodyInfo.pos.y), bodyInfo.image->GetCurrFrameX(), bodyInfo.image->GetCurrFrameY());
         headInfo.image->Render(hdc, (INT)(headInfo.pos.x), (INT)(headInfo.pos.y), headInfo.image->GetCurrFrameX(), headInfo.image->GetCurrFrameY());
         break;
-    case PlayerStates::HURT:
+    case PlayerStates::HURT: case PlayerStates::DEAD:
         otherStateImg->Render(hdc, (INT)(pos.x), (INT)(pos.y), otherStateImg->GetCurrFrameX(), otherStateImg->GetCurrFrameY());
         break;
     case PlayerStates::ITEMPICKUP:
@@ -172,6 +177,25 @@ void Player::ChangeAnimationAttack()
     ApplyAnimationAttack(ATTACKING_RIGHTSIDE, HEAD_LOOK_RIGHT);
 }
 
+void Player::ChangeAnimationDead()
+{
+    ++elapsedAnimeCount;
+    if (elapsedAnimeCount > 20)
+    {
+        otherStateImg->SetCurrFrameX(otherStateImg->GetCurrFrameX() + ADVANCE_FRAME);
+        if(otherStateImg->GetCurrFrameX() >= otherStateImg->GetMaxFrameX())
+        {
+            otherStateImg->SetCurrFrameX(otherStateImg->GetMaxFrameX());
+            ++gameOverCount;
+            if (gameOverCount > 5)
+            {
+                isGameOver = true;
+            }
+        }
+        elapsedAnimeCount = ZERO;
+    }
+}
+
 void Player::ChangeAnimationHurt()
 {
     if (otherStateImg != nullptr)
@@ -185,12 +209,13 @@ void Player::ChangeAnimationHurt()
             {
                 otherStateImg->SetCurrFrameX(otherStateImg->GetMaxFrameX() + BLINK_IMAGE_FRAME);
                 ++hurtDurationTime;
-                elapsedAnimeCount = 0;
+                elapsedAnimeCount = ZERO;
             }
             if (hurtDurationTime > 5)
             {
+                otherStateImg->SetCurrFrameX(ZERO);
                 playerState = PlayerStates::IDLE;
-                hurtDurationTime = 0;
+                hurtDurationTime = ZERO;
             }
         }
     }
@@ -250,7 +275,7 @@ void Player::ChangeImagePlayerState()
         bodyInfo.image = GET_SINGLETON_IMAGE->FindImage("Image/Player/Body.bmp");
         headInfo.image = GET_SINGLETON_IMAGE->FindImage("Image/Player/Head.bmp");
         break;
-    case PlayerStates::HURT:
+    case PlayerStates::HURT: case PlayerStates::DEAD:
         otherStateImg = GET_SINGLETON_IMAGE->FindImage("Image/Player/Hurt.bmp");
         break;
     case PlayerStates::ITEMPICKUP:
@@ -515,7 +540,19 @@ void Player::DamagedByBonfire(int obstacleIndex, RECT obstacleShape, POINTFLOAT 
     {
         if (IntersectRect(&colliderRect, &bodyInfo.shape, &obstacleShape) || IntersectRect(&colliderRect, &headInfo.shape, &obstacleShape))
         {
-            playerState = PlayerStates::HURT;
+            if (playerState != PlayerStates::HURT)
+            {
+                --playerHP;
+            }
+
+            if (playerHP <= 0)
+            {
+                playerState = PlayerStates::DEAD;
+            }
+            else
+            {
+                playerState = PlayerStates::HURT;
+            }
 
             pos.x = buffPos.x;
             pos.y = buffPos.y;
@@ -533,28 +570,76 @@ void Player::DamagedByDoor()
     {
         if (IntersectRect(&colliderRect, &headInfo.shape, &doorInfo[0][currRow][currColumn][UPPER_DOOR].shape))
         {
-            playerState = PlayerStates::HURT;
+            if (playerState != PlayerStates::HURT)
+            {
+                playerHP -= 2;
+            }
+
+            if (playerHP <= 0)
+            {
+                playerState = PlayerStates::DEAD;
+            }
+            else
+            {
+                playerState = PlayerStates::HURT;
+            }
         }
     }
     if (isinvincible == false && doorInfo[0][currRow][currColumn][LOWER_DOOR].img == GET_SINGLETON_IMAGE->FindImage("Image/Door/Curse_Room_Door.bmp"))
     {
         if (IntersectRect(&colliderRect, &bodyInfo.shape, &doorInfo[0][currRow][currColumn][LOWER_DOOR].shape))
         {
-            playerState = PlayerStates::HURT;
+            if (playerState != PlayerStates::HURT)
+            {
+                playerHP -= 2;
+            }
+
+            if (playerHP <= 0)
+            {
+                playerState = PlayerStates::DEAD;
+            }
+            else
+            {
+                playerState = PlayerStates::HURT;
+            }
         }
     }
     if (isinvincible == false && doorInfo[0][currRow][currColumn][LEFT_DOOR].img == GET_SINGLETON_IMAGE->FindImage("Image/Door/Curse_Room_Door.bmp"))
     {
         if (IntersectRect(&colliderRect, &headInfo.shape, &doorInfo[0][currRow][currColumn][LEFT_DOOR].shape))
         {
-            playerState = PlayerStates::HURT;
+            if (playerState != PlayerStates::HURT)
+            {
+                playerHP -= 2;
+            }
+
+            if (playerHP <= 0)
+            {
+                playerState = PlayerStates::DEAD;
+            }
+            else
+            {
+                playerState = PlayerStates::HURT;
+            }
         }
     }
     if (isinvincible == false && doorInfo[0][currRow][currColumn][RIGHT_DOOR].img == GET_SINGLETON_IMAGE->FindImage("Image/Door/Curse_Room_Door.bmp"))
     {
         if (IntersectRect(&colliderRect, &headInfo.shape, &doorInfo[0][currRow][currColumn][RIGHT_DOOR].shape))
         {
-            playerState = PlayerStates::HURT;
+            if (playerState != PlayerStates::HURT)
+            {
+                playerHP -= 2;
+            }
+
+            if (playerHP <= 0)
+            {
+                playerState = PlayerStates::DEAD;
+            }
+            else
+            {
+                playerState = PlayerStates::HURT;
+            }
         }
     }
 }
@@ -574,7 +659,11 @@ void Player::DamagedBySlider()
         {
             if (IntersectRect(&colliderRect, &bodyInfo.shape, &obstacleShape))
             {
-                playerState = PlayerStates::HURT;                                       // 수정 필요! ! => 플레이어 부들 거림.
+                if (playerState != PlayerStates::HURT)
+                {
+                    playerHP -= 2;
+                }
+                playerState = PlayerStates::HURT;
             }
         }
     }
@@ -589,7 +678,19 @@ void Player::DamagedByThorn()
         {
             if (IntersectRect(&colliderRect, &bodyInfo.shape, &obstacleShape))
             {
-                playerState = PlayerStates::HURT;
+                if (playerState != PlayerStates::HURT)
+                {
+                    --playerHP;
+                }
+
+                if (playerHP <= 0)
+                {
+                    playerState = PlayerStates::DEAD;
+                }
+                else
+                {
+                    playerState = PlayerStates::HURT;
+                }
             }
         }
     }
@@ -601,6 +702,14 @@ void Player::DamagedPlayer()
 
     DamagedBySlider();
     DamagedByThorn();
+}
+
+void Player::Dead()
+{
+    if (playerState == PlayerStates::DEAD)
+    {
+        ChangeAnimationDead();
+    }
 }
 
 void Player::DevideHeadDir(int pointY, float section, int dir1, int dir2)
@@ -737,7 +846,19 @@ void Player::Move()
         {
             if (isinvincible == false && (IntersectRect(&colliderRect, &bodyInfo.shape, &normalMonsterShape) || IntersectRect(&colliderRect, &headInfo.shape, &normalMonsterShape)))
             {
-                playerState = PlayerStates::HURT;
+                if (playerState != PlayerStates::HURT)
+                {
+                    --playerHP;
+                }
+
+                if (playerHP <= 0)
+                {
+                    playerState = PlayerStates::DEAD;
+                }
+                else
+                {
+                    playerState = PlayerStates::HURT;
+                }
 
                 pos.x = buffPos.x;
                 pos.y = buffPos.y;

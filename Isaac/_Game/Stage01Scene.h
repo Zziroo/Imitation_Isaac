@@ -9,6 +9,7 @@ class Minimap;
 class NormalMonster;
 class Obstacle;
 class Player;
+class PlayerUI;
 class PlayerTear;
 class Stage01Scene : public Scene
 {
@@ -18,6 +19,7 @@ private:
 	Image*										infomationStartImg = nullptr;
 	Minimap*									minimap = nullptr;
 	Player*										player = nullptr;
+	PlayerUI*									playerUI = nullptr;
 	PlayerTear*									playerTear = nullptr;
 
 	SampleTileTypes								sampleTileType = SampleTileTypes::NONE;

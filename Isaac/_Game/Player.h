@@ -53,14 +53,16 @@ private:
 
 	array<bool, 4>							enterNextDoor = { false };
 	bool									isFireTear = false;																			// 무기 발사
+	bool									isGameOver = false;
 	bool									isinvincible = false;																		// 무적 상태
 
 	char									text[64] = {};
 
-	int										stageSize = 0;																				// Stage Size
 	int										fireDelay = 0;																				// 무기 발사 지연
-
+	int										gameOverCount = 0;
 	int										hurtDurationTime = 0;																		// 피해를 입었을 때 지속 시간(무적 상태)
+	int										playerHP = 10;
+	int										stageSize = 0;																				// Stage Size
 
 public:
 	virtual void							Init() override;
@@ -76,6 +78,7 @@ public:
 	void									BlinkEye();																					// 눈 깜빡임
 	float									CalculateSlope(RECT rc);																	// 기울기
 	void									ChangeAnimationAttack();																	// 애니메이션 변화(Attack)
+	void									ChangeAnimationDead();
 	void									ChangeAnimationHurt();																		// 애니메이션 변화(Hurt)
 	void									ChangeAnimationWalk();																		// 애니메이션 변화(Walk)
 	void									ChangeBodyFrame();
@@ -93,6 +96,7 @@ public:
 	void									DamagedBySlider();
 	void									DamagedByThorn();
 	void									DamagedPlayer();
+	void									Dead();
 	void									DevideHeadDir(int pointY, float section, int dir1, int dir2);								// 입력한 위치 바라보기
 	void									FireWeapon(int x, int y);																	// weapon 발사
 	void									Invisibility();																				// 무적 상태
@@ -102,11 +106,13 @@ public:
 
 	array<bool, 4>							GetEnterNextDoor() { return this->enterNextDoor; }
 	bool									GetIsFire() { return this->isFireTear; }
+	bool									GetIsGameOver() { return this->isGameOver; }
 	POINTFLOAT								GetPlayerBodyPos() { return this->bodyInfo.pos; }
 	RECT									GetPlayerBodyShape() { return this->bodyInfo.shape; }
 	POINTFLOAT								GetPlayerHeadPos() { return this->headInfo.pos; }
 	RECT									GetPlayerHeadShape() { return this->headInfo.shape; }
 	ObjectDir								GetPlayerHeadMoveDir() { return this->headInfo.moveDir; }
+	int										GetPlayerHP() { return this->playerHP; }
 
 	void									SetEnterNextUpDoor(bool enterNextDoor) { this->enterNextDoor[0] = enterNextDoor; }
 	void									SetEnterNextDownDoor(bool enterNextDoor) { this->enterNextDoor[1] = enterNextDoor; }
@@ -119,6 +125,7 @@ public:
 	void									SetPlayerHeadPos(POINTFLOAT pos) { this->headInfo.pos = pos; }
 	void									SetPlayerHeadShape(RECT rc) { this->headInfo.shape = rc; }
 	void									SetPlayerHeadMoveDir(ObjectDir moveDir) { this->headInfo.moveDir = moveDir; }
+	void									SetPlayerHP(int HP) { this->playerHP = HP; }
 	void									SetPlayerTear(PlayerTear* tear) { this->playerTear = tear; }
 	void									SetStageSize(int stageSize) { this->stageSize = stageSize; }
 
