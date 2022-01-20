@@ -884,6 +884,12 @@ void Player::Move()
 
 void Player::TakeAction()
 {
+    // DEAD 상태일 때 활동 X
+    if (playerState == PlayerStates::DEAD)
+    {
+        return;
+    }
+
     // 이동키 땠을 때
     if (Input::GetButtonUp('W') || Input::GetButtonUp('S') || Input::GetButtonUp('D') || Input::GetButtonUp('A'))
     {
