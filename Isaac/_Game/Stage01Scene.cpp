@@ -352,6 +352,7 @@ void Stage01Scene::Release()
 			}
 		}
 	}
+	aStar.clear();
 
 	for (size_t i = 0; i < normalMonster.size(); ++i)
 	{
@@ -363,6 +364,7 @@ void Stage01Scene::Release()
 			}
 		}
 	}
+	normalMonster.clear();
 
 	for (size_t i = 0; i < obstacle.size(); ++i)
 	{
@@ -374,6 +376,7 @@ void Stage01Scene::Release()
 			}
 		}
 	}
+	obstacle.clear();
 }
 
 void Stage01Scene::Update()
