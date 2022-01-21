@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AStar.cpp" />
+    <ClCompile Include="BossMonster.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="DoodleScene.cpp" />
     <ClCompile Include="DoorEditing.cpp" />
@@ -56,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AStar.h" />
+    <ClInclude Include="BossMonster.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="DoodleScene.h" />
     <ClInclude Include="DoorEditing.h" />

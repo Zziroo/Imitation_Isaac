@@ -84,6 +84,9 @@ enum class ObstacleTypes { BONFIRE, BRICK, DDONG, ITEMSTAND, JAR, SLIDER, SPIDER
 // NormalMonster
 enum class NormalMonsterTypes { FLY, ATTACKFLY, POOTER, NONE };
 
+// Boss Monster
+enum class BossMonsterTypes { DUKE, NONE };
+
 // AStar
 struct Pos
 {

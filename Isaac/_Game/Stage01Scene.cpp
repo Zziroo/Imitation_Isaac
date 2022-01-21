@@ -2,6 +2,7 @@
 #include "Stage01Scene.h"
 
 #include "AStar.h"
+#include "BossMonster.h"
 #include "DoorEditing.h"
 #include "Image.h"
 #include "Minimap.h"
@@ -318,6 +319,10 @@ HRESULT Stage01Scene::Init()
 	player->SetTileInfo(colliderTileInfo);
 	player->Init();
 
+	//BossMonster
+	bossMonster = new BossMonster;
+	bossMonster->Init();
+
 	// PlayerUI
 	playerUI = new PlayerUI;
 	playerUI->SetPlayerHP(player->GetPlayerHP());
@@ -336,6 +341,7 @@ HRESULT Stage01Scene::Init()
 
 void Stage01Scene::Release()
 {
+	SAFE_RELEASE(bossMonster);
 	SAFE_RELEASE(door);
 	SAFE_RELEASE(minimap);
 	SAFE_RELEASE(player);
@@ -469,6 +475,9 @@ void Stage01Scene::Update()
 		normalMonster[currRow][currColumn][i]->Update();
 	}
 
+	// BossMonster Update
+	bossMonster->Update();
+
 	// DoorEditing Update
 	door->SetCurrCloumn(currColumn);
 	door->SetCurrRow(currRow);
@@ -518,6 +527,9 @@ void Stage01Scene::Render(HDC hdc)
 	{
 		normalMonster[currRow][currColumn][i]->Render(hdc);
 	}
+
+	// BossMonster Render
+	bossMonster->Render(hdc);
 
 	// Tear
 	playerTear->Render(hdc);
@@ -642,9 +654,9 @@ void Stage01Scene::MoveToNextMap()
 
 void Stage01Scene::NamingNormalMonsterInfo(int row, int column)
 {
-	char fileName[MAX_PATH];
 	// .monster ·£´ý ¼³Á¤
-	int index = 0;
+	char	fileName[MAX_PATH];
+	int		index = 0;
 
 	random_device rd;
 	mt19937 gen(rd());
@@ -662,9 +674,9 @@ void Stage01Scene::NamingNormalMonsterInfo(int row, int column)
 
 void Stage01Scene::NamingObstacleInfo(int row, int column, const char* loadObstacleFileName, int obstacleIndex)
 {
-	char fileName[MAX_PATH];
 	// .obstacle ·£´ý ¼³Á¤
-	int index = 0;
+	char	fileName[MAX_PATH];
+	int		index = 0;
 
 	random_device rd;
 	mt19937 gen(rd());
