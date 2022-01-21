@@ -36,10 +36,12 @@ void Tear::Render(HDC hdc)
 
 void Tear::OnDebug(HDC hdc)
 {
+#ifdef _DEBUG
     if (debugMode)
     {
         Ellipse(hdc, shape.left, shape.top, shape.right, shape.bottom);
     }
+#endif
 }
 
 void Tear::CollideWithMap()
