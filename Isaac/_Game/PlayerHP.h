@@ -3,7 +3,7 @@
 #include "UI.h"
 
 class Image;
-class PlayerUI : public UI
+class PlayerHP : public UI
 {
 private:
 	struct PlayerHPInfo
@@ -34,6 +34,6 @@ public:
 
 	void					SetPlayerHP(int HP) { this->playerHP = HP; }
 
-	virtual ~PlayerUI() = default;
+	virtual ~PlayerHP() = default;
 };
 

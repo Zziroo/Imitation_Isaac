@@ -1,9 +1,9 @@
 #include "stdafx.h"
-#include "PlayerUI.h"
+#include "PlayerHP.h"
 
 #include "Image.h"
 
-void PlayerUI::Init()
+void PlayerHP::Init()
 {
     if (playerHP % 2)
     {
@@ -21,11 +21,11 @@ void PlayerUI::Init()
     }
 }
 
-void PlayerUI::Release()
+void PlayerHP::Release()
 {
 }
 
-void PlayerUI::Update()
+void PlayerHP::Update()
 {
 #ifdef _DEBUG
     UI::Update();
@@ -34,7 +34,7 @@ void PlayerUI::Update()
     Hurt();
 }
 
-void PlayerUI::Render(HDC hdc)
+void PlayerHP::Render(HDC hdc)
 {
     for (size_t i = 0; i < playerHPInfo.size(); ++i)
     {
@@ -45,11 +45,11 @@ void PlayerUI::Render(HDC hdc)
     UI::Render(hdc);
 }
 
-void PlayerUI::OnDebug(HDC hdc)
+void PlayerHP::OnDebug(HDC hdc)
 {
 }
 
-void PlayerUI::Hurt()
+void PlayerHP::Hurt()
 {
     if (playerHP == 10)
     {
