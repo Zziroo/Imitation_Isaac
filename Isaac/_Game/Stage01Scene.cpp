@@ -252,10 +252,10 @@ HRESULT Stage01Scene::Init()
 	}
 
 	// AStar
-	aStar.resize(stageSize);
-	for (size_t i = 0; i < aStar.size(); ++i)
+	normalMonsterAStar.resize(stageSize);
+	for (size_t i = 0; i < normalMonsterAStar.size(); ++i)
 	{
-		aStar[i].resize(stageSize);
+		normalMonsterAStar[i].resize(stageSize);
 	}
 
 	switch (sampleTileType)
@@ -309,8 +309,17 @@ HRESULT Stage01Scene::Init()
 	playerTear->SetTileInfo(colliderTileInfo);
 	playerTear->Init();
 
+	//BossMonster
+	bossMonster = new BossMonster;
+	bossMonster->Init();
+
+	// BossMonsterAStar
+	bossMonsterAStar = new AStar;
+	bossMonsterAStar->Init();
+
 	// Player
 	player = new Player;
+	player->SetBossMonster(bossMonster);
 	player->SetDoorInfo(&doorInfo);
 	player->SetNormalMonsterInfo(&normalMonster);
 	player->SetObstacleInfo(&obstacle);
@@ -318,10 +327,6 @@ HRESULT Stage01Scene::Init()
 	player->SetStageSize(stageSize);
 	player->SetTileInfo(colliderTileInfo);
 	player->Init();
-
-	//BossMonster
-	bossMonster = new BossMonster;
-	bossMonster->Init();
 
 	// PlayerUI
 	playerUI = new PlayerUI;
@@ -342,23 +347,24 @@ HRESULT Stage01Scene::Init()
 void Stage01Scene::Release()
 {
 	SAFE_RELEASE(bossMonster);
+	SAFE_RELEASE(bossMonsterAStar);
 	SAFE_RELEASE(door);
 	SAFE_RELEASE(minimap);
 	SAFE_RELEASE(player);
 	SAFE_RELEASE(playerUI);
 	SAFE_RELEASE(playerTear);
 
-	for (size_t i = 0; i < aStar.size(); ++i)
+	for (size_t i = 0; i < normalMonsterAStar.size(); ++i)
 	{
-		for (size_t j = 0; j < aStar[i].size(); ++j)
+		for (size_t j = 0; j < normalMonsterAStar[i].size(); ++j)
 		{
-			for (size_t k = 0; k < aStar[i][j].size(); ++k)
+			for (size_t k = 0; k < normalMonsterAStar[i][j].size(); ++k)
 			{
-				SAFE_RELEASE(aStar[i][j][k]);
+				SAFE_RELEASE(normalMonsterAStar[i][j][k]);
 			}
 		}
 	}
-	aStar.clear();
+	normalMonsterAStar.clear();
 
 	for (size_t i = 0; i < normalMonster.size(); ++i)
 	{
@@ -418,29 +424,33 @@ void Stage01Scene::Update()
 	MoveToNextMap();
 
 	// 만약 AStar size != 0 이라면 삭제
-	if (aStar[currRow][currColumn].empty() == false)
+	if (normalMonsterAStar[currRow][currColumn].empty() == false)
 	{
-		for (size_t i = 0; i < aStar[currRow][currColumn].size(); ++i)
+		for (size_t i = 0; i < normalMonsterAStar[currRow][currColumn].size(); ++i)
 		{
-			SAFE_RELEASE(aStar[currRow][currColumn][i]);
+			SAFE_RELEASE(normalMonsterAStar[currRow][currColumn][i]);
 		}
 
-		aStar[currRow][currColumn].clear();
+		normalMonsterAStar[currRow][currColumn].clear();
 	}
 
 	// NormalMonster count 만큼 생성
-	aStar[currRow][currColumn].resize(normalMonster[currRow][currColumn].size());
-	for (size_t i = 0; i < aStar[currRow][currColumn].size(); ++i)
+	normalMonsterAStar[currRow][currColumn].resize(normalMonster[currRow][currColumn].size());
+	for (size_t i = 0; i < normalMonsterAStar[currRow][currColumn].size(); ++i)
 	{
-		aStar[currRow][currColumn][i] = new AStar;
+		normalMonsterAStar[currRow][currColumn][i] = new AStar;
 	}
 
-	// AStar TargetPos 설정
-	for (size_t i = 0; i < aStar[currRow][currColumn].size(); ++i)
+	// NormalMonsterAStar TargetPos 설정
+	for (size_t i = 0; i < normalMonsterAStar[currRow][currColumn].size(); ++i)
 	{
-		aStar[currRow][currColumn][i]->SetTargetPosX((FLOAT)player->GetPos().x);
-		aStar[currRow][currColumn][i]->SetTargetPosY((FLOAT)player->GetPos().y);
+		normalMonsterAStar[currRow][currColumn][i]->SetTargetPosX((FLOAT)player->GetPos().x);
+		normalMonsterAStar[currRow][currColumn][i]->SetTargetPosY((FLOAT)player->GetPos().y);
 	}
+
+	// BossMonsterAStar TargetPos 설정
+	bossMonsterAStar->SetTargetPosX((FLOAT)player->GetPos().x);
+	bossMonsterAStar->SetTargetPosY((FLOAT)player->GetPos().y);
 
 	// Obstacle Update
 	for (size_t i = 0; i < obstacle[currRow][currColumn].size(); ++i)
@@ -450,32 +460,42 @@ void Stage01Scene::Update()
 	
 	for (size_t i = 0; i < normalMonster[currRow][currColumn].size(); ++i)
 	{
-		// AStar StarPos 설정
-		aStar[currRow][currColumn][i]->SetStartPosX((FLOAT)normalMonster[currRow][currColumn][i]->GetNormalMonsterPosX());
-		aStar[currRow][currColumn][i]->SetStartPosY((FLOAT)normalMonster[currRow][currColumn][i]->GetNormalMonsterPosY());
+		// NormalMonsterAStar StartPos 설정
+		normalMonsterAStar[currRow][currColumn][i]->SetStartPosX((FLOAT)normalMonster[currRow][currColumn][i]->GetNormalMonsterPosX());
+		normalMonsterAStar[currRow][currColumn][i]->SetStartPosY((FLOAT)normalMonster[currRow][currColumn][i]->GetNormalMonsterPosY());
 	}
 
-	// AStar Update
+	// BossMonsterAStar StartPos 설정
+	bossMonsterAStar->SetStartPosX((FLOAT)bossMonster->GetPos().x);
+	bossMonsterAStar->SetStartPosY((FLOAT)bossMonster->GetPos().y);
+
+	// NormalMonsterAStar Update
 	if (normalMonster[currRow][currColumn].empty() == false)
 	{
-		for (size_t i = 0; i < aStar[currRow][currColumn].size(); ++i)
+		for (size_t i = 0; i < normalMonsterAStar[currRow][currColumn].size(); ++i)
 		{
-			aStar[currRow][currColumn][i]->Init();
-			aStar[currRow][currColumn][i]->Update();
+			normalMonsterAStar[currRow][currColumn][i]->Init();
+			normalMonsterAStar[currRow][currColumn][i]->Update();
 		}
 	}
+
+	// BossMonsterAStar Update
+	//bossMonsterAStar->Update();
 
 	// NormalMonster Update
 	for (size_t i = 0; i < normalMonster[currRow][currColumn].size(); ++i)
 	{
-		normalMonster[currRow][currColumn][i]->SetNormalMonsterAStar(aStar[currRow][currColumn][i]);
-		normalMonster[currRow][currColumn][i]->SetNormalMonsterPathWay(aStar[currRow][currColumn][i]->GetPathWay());
+		normalMonster[currRow][currColumn][i]->SetNormalMonsterAStar(normalMonsterAStar[currRow][currColumn][i]);
+		normalMonster[currRow][currColumn][i]->SetNormalMonsterPathWay(normalMonsterAStar[currRow][currColumn][i]->GetPathWay());
 		normalMonster[currRow][currColumn][i]->SetNormalMonsterState(MonsterStates::MOVE);
 		normalMonster[currRow][currColumn][i]->SetPlayer(player);
 		normalMonster[currRow][currColumn][i]->Update();
 	}
 
 	// BossMonster Update
+	bossMonster->SetBossMonsterAStar(bossMonsterAStar);
+	bossMonster->SetBossMonsterPathWay(bossMonsterAStar->GetPathWay());
+	//bossMonster->SetBossmonsterState(MonsterStates::MOVE);
 	bossMonster->Update();
 
 	// DoorEditing Update

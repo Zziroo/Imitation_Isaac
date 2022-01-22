@@ -16,6 +16,7 @@ class Stage01Scene : public Scene
 {
 private:
 	BossMonster*								bossMonster = nullptr;
+	AStar*										bossMonsterAStar = nullptr;
 	DoorEditing*								door = nullptr;
 	Image*										drawingAreaImg = nullptr;
 	Image*										infomationStartImg = nullptr;
@@ -40,9 +41,9 @@ private:
 	vector<vector<STORE_OBSTACLE_INFO>>			storeObstacle;										// Obstacle의 정보들을 저장하는 이중 벡터
 	vector<vector<string>>						stageIndex;											// .map 파일의 파일명
 
-	vector<vector<vector<AStar*>>>				aStar;
 	vector<vector<array<DOOR_INFO, 4>>>			doorInfo;											// 문의 정보
 	vector<vector<vector<NormalMonster*>>>		normalMonster;										// NormalMonster
+	vector<vector<vector<AStar*>>>				normalMonsterAStar;
 	vector<vector<vector<Obstacle*>>>			obstacle;											// Obstacle
 
 	int											currColumn = 0;										// 진행하려는 행

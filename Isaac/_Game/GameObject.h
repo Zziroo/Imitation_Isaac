@@ -1,5 +1,6 @@
 #pragma once
 
+class BossMonster;
 class NormalMonster;
 class Obstacle;
 class Player;
@@ -7,6 +8,7 @@ class PlayerTear;
 class GameObject
 {
 protected:
+	BossMonster*								bossMonster = nullptr;
 	Player*										player = nullptr;
 	TILE_INFO*									tile = nullptr;								// 타일의 정보
 
@@ -38,6 +40,7 @@ public:
 	POINTFLOAT									GetPos() { return this->pos; }
 	RECT										GetShape() { return this->shape; }
 
+	void										SetBossMonster(BossMonster* bossMonster) { this->bossMonster = bossMonster; }
 	void										SetCurrCloumn(int column) { this->currColumn = column; }
 	void										SetCurrRow(int row) { this->currRow = row; }
 	void										SetMoveSpeed(float moveSpeed) { this->moveSpeed = moveSpeed; }
