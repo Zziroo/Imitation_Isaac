@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="AStar.cpp" />
     <ClCompile Include="BossMonster.cpp" />
+    <ClCompile Include="BossMonsterHP.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="DoodleScene.cpp" />
     <ClCompile Include="DoorEditing.cpp" />
@@ -39,7 +40,7 @@
     <ClCompile Include="ObstacleToolScene.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerTear.cpp" />
-    <ClCompile Include="PlayerUI.cpp" />
+    <ClCompile Include="PlayerHP.cpp" />
     <ClCompile Include="RoomEditing.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
@@ -58,6 +59,7 @@
   <ItemGroup>
     <ClInclude Include="AStar.h" />
     <ClInclude Include="BossMonster.h" />
+    <ClInclude Include="BossMonsterHP.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="DoodleScene.h" />
     <ClInclude Include="DoorEditing.h" />
@@ -78,7 +80,7 @@
     <ClInclude Include="ObstacleToolScene.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerTear.h" />
-    <ClInclude Include="PlayerUI.h" />
+    <ClInclude Include="PlayerHP.h" />
     <ClInclude Include="RoomEditing.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />

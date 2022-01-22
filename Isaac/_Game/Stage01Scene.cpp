@@ -3,13 +3,14 @@
 
 #include "AStar.h"
 #include "BossMonster.h"
+#include "BossMonsterHP.h"
 #include "DoorEditing.h"
 #include "Image.h"
 #include "Minimap.h"
 #include "NormalMonster.h"
 #include "Obstacle.h"
 #include "Player.h"
-#include "PlayerUI.h"
+#include "PlayerHP.h"
 #include "PlayerTear.h"
 
 using namespace std;
@@ -317,6 +318,10 @@ HRESULT Stage01Scene::Init()
 	bossMonsterAStar = new AStar;
 	bossMonsterAStar->Init();
 
+	// BossMonsterHP
+	bossMonsterHP = new BossMonsterHP;
+	bossMonsterHP->Init();
+
 	// Player
 	player = new Player;
 	player->SetBossMonster(bossMonster);
@@ -329,9 +334,9 @@ HRESULT Stage01Scene::Init()
 	player->Init();
 
 	// PlayerUI
-	playerUI = new PlayerUI;
-	playerUI->SetPlayerHP(player->GetPlayerHP());
-	playerUI->Init();
+	playerHP = new PlayerHP;
+	playerHP->SetPlayerHP(player->GetPlayerHP());
+	playerHP->Init();
 
 	// Minimap
 	minimap = new Minimap;
@@ -348,10 +353,11 @@ void Stage01Scene::Release()
 {
 	SAFE_RELEASE(bossMonster);
 	SAFE_RELEASE(bossMonsterAStar);
+	SAFE_RELEASE(bossMonsterHP);
 	SAFE_RELEASE(door);
 	SAFE_RELEASE(minimap);
 	SAFE_RELEASE(player);
-	SAFE_RELEASE(playerUI);
+	SAFE_RELEASE(playerHP);
 	SAFE_RELEASE(playerTear);
 
 	for (size_t i = 0; i < normalMonsterAStar.size(); ++i)
@@ -417,8 +423,8 @@ void Stage01Scene::Update()
 	player->Update();
 
 	// PlayerUI Update
-	playerUI->SetPlayerHP(player->GetPlayerHP());
-	playerUI->Update();
+	playerHP->SetPlayerHP(player->GetPlayerHP());
+	playerHP->Update();
 
 	// Map Update
 	MoveToNextMap();
@@ -528,7 +534,10 @@ void Stage01Scene::Render(HDC hdc)
 	door->Render(hdc);
 
 	// PlayerUI Render
-	playerUI->Render(hdc);
+	playerHP->Render(hdc);
+
+	// BossMonsterHP Render
+	bossMonsterHP->Render(hdc);
 
 	// Start Map¿¡ Image Render
 	if (currRow == startPoint && currColumn == startPoint)

@@ -201,11 +201,14 @@
     <ClCompile Include="UI.cpp">
       <Filter>FrameWork\GameObject\UI</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerUI.cpp">
+    <ClCompile Include="PlayerHP.cpp">
       <Filter>MainGame\GameObject\UI</Filter>
     </ClCompile>
     <ClCompile Include="BossMonster.cpp">
       <Filter>MainGame\GameObject\Enemy\Boss Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="BossMonsterHP.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -308,11 +311,14 @@
     <ClInclude Include="UI.h">
       <Filter>FrameWork\GameObject\UI</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerUI.h">
+    <ClInclude Include="PlayerHP.h">
       <Filter>MainGame\GameObject\UI</Filter>
     </ClInclude>
     <ClInclude Include="BossMonster.h">
       <Filter>MainGame\GameObject\Enemy\Boss Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="BossMonsterHP.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

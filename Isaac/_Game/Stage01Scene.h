@@ -4,25 +4,27 @@
 
 class AStar;
 class BossMonster;
+class BossMonsterHP;
 class DoorEditing;
 class Iamge;
 class Minimap;
 class NormalMonster;
 class Obstacle;
 class Player;
-class PlayerUI;
+class PlayerHP;
 class PlayerTear;
 class Stage01Scene : public Scene
 {
 private:
 	BossMonster*								bossMonster = nullptr;
 	AStar*										bossMonsterAStar = nullptr;
+	BossMonsterHP*								bossMonsterHP = nullptr;
 	DoorEditing*								door = nullptr;
 	Image*										drawingAreaImg = nullptr;
 	Image*										infomationStartImg = nullptr;
 	Minimap*									minimap = nullptr;
 	Player*										player = nullptr;
-	PlayerUI*									playerUI = nullptr;
+	PlayerHP*									playerHP = nullptr;
 	PlayerTear*									playerTear = nullptr;
 
 	SampleTileTypes								sampleTileType = SampleTileTypes::NONE;
