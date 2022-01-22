@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Player.h"
 
+#include "BossMonster.h"
 #include "Image.h"
 #include "NormalMonster.h"
 #include "Obstacle.h"
@@ -24,8 +25,8 @@ void Player::Update()
 {
 #ifdef _DEBUG
     GameObject::Update();
-    cout << "PlayerHP : " << playerHP << "\n";
-    cout << "elapsedAnimeCount : " << elapsedAnimeCount << "\n";
+    //cout << "PlayerHP : " << playerHP << "\n";
+    //cout << "elapsedAnimeCount : " << elapsedAnimeCount << "\n";
 #endif
 
     TakeAction();
@@ -180,7 +181,7 @@ void Player::ChangeAnimationAttack()
 void Player::ChangeAnimationDead()
 {
     ++elapsedAnimeCount;
-    if (elapsedAnimeCount > 20)
+    if (elapsedAnimeCount > 15)
     {
         otherStateImg->SetCurrFrameX(otherStateImg->GetCurrFrameX() + ADVANCE_FRAME);
         if(otherStateImg->GetCurrFrameX() >= otherStateImg->GetMaxFrameX())
@@ -295,6 +296,34 @@ void Player::ChangeImagePlayerState()
 bool Player::ClosedEye()
 {
     return headInfo.image->GetCurrFrameX() == 1 || headInfo.image->GetCurrFrameX() == 3 || headInfo.image->GetCurrFrameX() == 5 || headInfo.image->GetCurrFrameX() == 7;
+}
+
+void Player::CollideWithBossMonster(POINTFLOAT buffPos, POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT headPos, RECT headShape)
+{
+    RECT bossMonsterShape = bossMonster->GetBossMonsterShape();
+    if (isInvincible == false && (IntersectRect(&colliderRect, &bodyInfo.shape, &bossMonsterShape)) || (IntersectRect(&colliderRect, &headInfo.shape, &bossMonsterShape)))
+    {
+        if (playerState != PlayerStates::HURT)
+        {
+            --playerHP;
+        }
+
+        if (playerHP <= 0)
+        {
+            playerState = PlayerStates::DEAD;
+        }
+        else
+        {
+            playerState = PlayerStates::HURT;
+        }
+
+        pos.x = buffPos.x;
+        pos.y = buffPos.y;
+        bodyInfo.pos = bodyPos;
+        bodyInfo.shape = bodyShape;
+        headInfo.pos = headPos;
+        headInfo.shape = headShape;
+    }
 }
 
 void Player::CollideWithDDong(int obstacleIndex, RECT obstacleShape, POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT headPos, RECT headShape)
@@ -474,6 +503,50 @@ void Player::CollideWithDoor(POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT head
 #pragma endregion
 }
 
+void Player::CollideWithNormalMonster(POINTFLOAT buffPos, POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT headPos, RECT headShape)
+{
+    for (size_t i = 0; i < normalMonster[0][currRow][currColumn].size(); ++i)
+    {
+        RECT normalMonsterShape = normalMonster[0][currRow][currColumn][i]->GetNormalMonsterShape();
+        if (normalMonster[0][currRow][currColumn][i]->GetNormalMonsterType() != NormalMonsterTypes::FLY)
+        {
+            if (isInvincible == false && (IntersectRect(&colliderRect, &bodyInfo.shape, &normalMonsterShape) || IntersectRect(&colliderRect, &headInfo.shape, &normalMonsterShape)))
+            {
+                if (playerState != PlayerStates::HURT)
+                {
+                    --playerHP;
+                }
+
+                if (playerHP <= 0)
+                {
+                    playerState = PlayerStates::DEAD;
+                }
+                else
+                {
+                    playerState = PlayerStates::HURT;
+                }
+
+                pos.x = buffPos.x;
+                pos.y = buffPos.y;
+                bodyInfo.pos = bodyPos;
+                bodyInfo.shape = bodyShape;
+                headInfo.pos = headPos;
+                headInfo.shape = headShape;
+            }
+        }
+
+        if (IntersectRect(&colliderRect, &bodyInfo.shape, &normalMonsterShape) || IntersectRect(&colliderRect, &headInfo.shape, &normalMonsterShape))
+        {
+            pos.x = buffPos.x;
+            pos.y = buffPos.y;
+            bodyInfo.pos = bodyPos;
+            bodyInfo.shape = bodyShape;
+            headInfo.pos = headPos;
+            headInfo.shape = headShape;
+        }
+    }
+}
+
 void Player::CollideWithObstacle(POINTFLOAT buffPos, POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT headPos, RECT headShape)
 {
     // Obstacle苞狼 面倒 贸府
@@ -566,7 +639,7 @@ void Player::DamagedByBonfire(int obstacleIndex, RECT obstacleShape, POINTFLOAT 
 
 void Player::DamagedByDoor()
 {
-    if (isinvincible == false && doorInfo[0][currRow][currColumn][UPPER_DOOR].img == GET_SINGLETON_IMAGE->FindImage("Image/Door/Curse_Room_Door.bmp"))
+    if (isInvincible == false && doorInfo[0][currRow][currColumn][UPPER_DOOR].img == GET_SINGLETON_IMAGE->FindImage("Image/Door/Curse_Room_Door.bmp"))
     {
         if (IntersectRect(&colliderRect, &headInfo.shape, &doorInfo[0][currRow][currColumn][UPPER_DOOR].shape))
         {
@@ -585,7 +658,7 @@ void Player::DamagedByDoor()
             }
         }
     }
-    if (isinvincible == false && doorInfo[0][currRow][currColumn][LOWER_DOOR].img == GET_SINGLETON_IMAGE->FindImage("Image/Door/Curse_Room_Door.bmp"))
+    if (isInvincible == false && doorInfo[0][currRow][currColumn][LOWER_DOOR].img == GET_SINGLETON_IMAGE->FindImage("Image/Door/Curse_Room_Door.bmp"))
     {
         if (IntersectRect(&colliderRect, &bodyInfo.shape, &doorInfo[0][currRow][currColumn][LOWER_DOOR].shape))
         {
@@ -604,7 +677,7 @@ void Player::DamagedByDoor()
             }
         }
     }
-    if (isinvincible == false && doorInfo[0][currRow][currColumn][LEFT_DOOR].img == GET_SINGLETON_IMAGE->FindImage("Image/Door/Curse_Room_Door.bmp"))
+    if (isInvincible == false && doorInfo[0][currRow][currColumn][LEFT_DOOR].img == GET_SINGLETON_IMAGE->FindImage("Image/Door/Curse_Room_Door.bmp"))
     {
         if (IntersectRect(&colliderRect, &headInfo.shape, &doorInfo[0][currRow][currColumn][LEFT_DOOR].shape))
         {
@@ -623,7 +696,7 @@ void Player::DamagedByDoor()
             }
         }
     }
-    if (isinvincible == false && doorInfo[0][currRow][currColumn][RIGHT_DOOR].img == GET_SINGLETON_IMAGE->FindImage("Image/Door/Curse_Room_Door.bmp"))
+    if (isInvincible == false && doorInfo[0][currRow][currColumn][RIGHT_DOOR].img == GET_SINGLETON_IMAGE->FindImage("Image/Door/Curse_Room_Door.bmp"))
     {
         if (IntersectRect(&colliderRect, &headInfo.shape, &doorInfo[0][currRow][currColumn][RIGHT_DOOR].shape))
         {
@@ -655,7 +728,7 @@ void Player::DamagedBySlider()
             obstacle[0][currRow][currColumn][i]->GetShape().bottom + ADJUST_SIZE_10
         };
 
-        if (isinvincible == false && obstacle[0][currRow][currColumn][i]->GetObstacleType() == ObstacleTypes::SLIDER && obstacle[0][currRow][currColumn][i]->GetObstacleDamaged())
+        if (isInvincible == false && obstacle[0][currRow][currColumn][i]->GetObstacleType() == ObstacleTypes::SLIDER && obstacle[0][currRow][currColumn][i]->GetObstacleDamaged())
         {
             if (IntersectRect(&colliderRect, &bodyInfo.shape, &obstacleShape))
             {
@@ -674,7 +747,7 @@ void Player::DamagedByThorn()
     for (size_t i = 0; i < obstacle[0][currRow][currColumn].size(); ++i)
     {
         RECT obstacleShape = obstacle[0][currRow][currColumn][i]->GetShape();
-        if (isinvincible == false && obstacle[0][currRow][currColumn][i]->GetObstacleType() == ObstacleTypes::THORN)
+        if (isInvincible == false && obstacle[0][currRow][currColumn][i]->GetObstacleType() == ObstacleTypes::THORN)
         {
             if (IntersectRect(&colliderRect, &bodyInfo.shape, &obstacleShape))
             {
@@ -751,11 +824,11 @@ void Player::Invisibility()
 {
     if (hurtDurationTime != 0)
     {
-        isinvincible = true;
+        isInvincible = true;
     }
     else
     {
-        isinvincible = false;
+        isInvincible = false;
     }
 }
 
@@ -839,46 +912,11 @@ void Player::Move()
 
     #pragma region NormalMonsterCollider
     // Normal Monster客狼 面倒 贸府
-    for (size_t i = 0; i < normalMonster[0][currRow][currColumn].size(); ++i)
-    {
-        RECT normalMonsterShape = normalMonster[0][currRow][currColumn][i]->GetNormalMonsterShape();
-        if (normalMonster[0][currRow][currColumn][i]->GetNormalMonsterType() != NormalMonsterTypes::FLY)
-        {
-            if (isinvincible == false && (IntersectRect(&colliderRect, &bodyInfo.shape, &normalMonsterShape) || IntersectRect(&colliderRect, &headInfo.shape, &normalMonsterShape)))
-            {
-                if (playerState != PlayerStates::HURT)
-                {
-                    --playerHP;
-                }
+    CollideWithNormalMonster(buffPos, buffBodyPos, buffBodyShape, buffHeadPos, buffHeadShape);
+    #pragma endregion
 
-                if (playerHP <= 0)
-                {
-                    playerState = PlayerStates::DEAD;
-                }
-                else
-                {
-                    playerState = PlayerStates::HURT;
-                }
-
-                pos.x = buffPos.x;
-                pos.y = buffPos.y;
-                bodyInfo.pos = buffBodyPos;
-                bodyInfo.shape = buffBodyShape;
-                headInfo.pos = buffHeadPos;
-                headInfo.shape = buffHeadShape;
-            }
-        }
-
-        if (IntersectRect(&colliderRect, &bodyInfo.shape, &normalMonsterShape) || IntersectRect(&colliderRect, &headInfo.shape, &normalMonsterShape))
-        {
-            pos.x = buffPos.x;
-            pos.y = buffPos.y;
-            bodyInfo.pos = buffBodyPos;
-            bodyInfo.shape = buffBodyShape;
-            headInfo.pos = buffHeadPos;
-            headInfo.shape = buffHeadShape;
-        }
-    }
+    #pragma region BossMonsterCollider
+    CollideWithBossMonster(buffPos, buffBodyPos, buffBodyShape, buffHeadPos, buffHeadShape);
     #pragma endregion
 }
 

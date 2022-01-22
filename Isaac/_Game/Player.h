@@ -54,7 +54,7 @@ private:
 	array<bool, 4>							enterNextDoor = { false };
 	bool									isFireTear = false;																			// 무기 발사
 	bool									isGameOver = false;
-	bool									isinvincible = false;																		// 무적 상태
+	bool									isInvincible = false;																		// 무적 상태
 
 	char									text[64] = {};
 
@@ -86,8 +86,10 @@ public:
 	void									ChangeHeadDir();
 	void									ChangeImagePlayerState();
 	bool									ClosedEye();																				// 눈이 감긴 상태
+	void									CollideWithBossMonster(POINTFLOAT buffPos, POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT headPos, RECT headShape);
 	void									CollideWithDDong(int obstacleIndex, RECT obstacleShape, POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT headPos, RECT headShape);
 	void									CollideWithDoor(POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT headPos, RECT headShape);
+	void									CollideWithNormalMonster(POINTFLOAT buffPos, POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT headPos, RECT headShape);
 	void									CollideWithObstacle(POINTFLOAT buffPos, POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT headPos, RECT headShape);
 	void									CollideWithSlider(int obstacleIndex, RECT obstacleShape, POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT headPos, RECT headShape);
 	void									CollideWithTilemap(POINTFLOAT buffPos, POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT headPos, RECT headShape);

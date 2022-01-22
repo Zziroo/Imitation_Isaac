@@ -56,11 +56,11 @@ public:
 	NormalMonsterTypes		GetNormalMonsterType() { return this->monsterInfo.type; }
 
 	void					SetNormalMonsterAStar(AStar* aStar) { this->aStar = aStar; }
-	void					SetNormalMonsterState(MonsterStates state) { this->monsterInfo.state = state; }
 	void					SetNormalMonsterPathWay(stack<Pos> way) { this->pathWay = way; }
 	void					SetNormalMonsterPos(POINTFLOAT pos) { this->monsterInfo.pos = pos; }
 	void					SetNormalMonsterPosX(float pos) { this->monsterInfo.pos.x = pos; }
 	void					SetNormalMonsterPosY(float pos) { this->monsterInfo.pos.y = pos; }
+	void					SetNormalMonsterState(MonsterStates state) { this->monsterInfo.state = state; }
 	void					SetNormalMonsterType(NormalMonsterTypes type) { this->monsterInfo.type = type; }
 
 	virtual ~NormalMonster() = default;
