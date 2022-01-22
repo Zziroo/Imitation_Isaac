@@ -24,6 +24,8 @@ protected:
 	float										objectSize = 0.0f;							// 크기
 	float										moveSpeed = 0.0f;							// 속도
 
+	int											bossColumn = 0;
+	int											bossRow = 0;
 	int											currColumn = 0;								// 현재 맵의 column
 	int											currRow = 0;								// 현재 맵의 row
 	int											elapsedAnimeCount = 0;						// 애니메이션 지연
@@ -39,8 +41,10 @@ public:
 	float										GetObjectSize() { return this->objectSize; }
 	POINTFLOAT									GetPos() { return this->pos; }
 	RECT										GetShape() { return this->shape; }
-
+	
+	void										SetBossColumn(int column) { this->bossColumn = column; }
 	void										SetBossMonster(BossMonster* bossMonster) { this->bossMonster = bossMonster; }
+	void										SetBossRow(int row) { this->bossRow = row; }
 	void										SetCurrCloumn(int column) { this->currColumn = column; }
 	void										SetCurrRow(int row) { this->currRow = row; }
 	void										SetMoveSpeed(float moveSpeed) { this->moveSpeed = moveSpeed; }

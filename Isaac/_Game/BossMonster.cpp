@@ -13,8 +13,7 @@ void BossMonster::Init()
 	{
 	case BossMonsterTypes::DUKE:
 		monsterInfo.img = GET_SINGLETON_IMAGE->FindImage("Image/Monster/Duke.bmp");
-		//pos = { WIN_SIZE_X * DEVIDE_HALF, WIN_SIZE_Y * DEVIDE_HALF };
-		pos = { 960, WIN_SIZE_Y * DEVIDE_HALF };
+		pos = { WIN_SIZE_X * DEVIDE_HALF, WIN_SIZE_Y * DEVIDE_HALF };
 		objectSize = 176.0f;
 		moveSpeed = 20.0f;
 		DesignateBossMonsterShape(pos.x, pos.y, objectSize, 0.0f, -10.0f, 0.0f, -15.0f);

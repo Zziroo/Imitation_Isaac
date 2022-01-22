@@ -173,6 +173,38 @@ void Image::Render(HDC hdc, int destX, int destY, int frameX, int frameY)
 	}
 }
 
+void Image::DamagedBossMonsterHP(HDC hdc, int destX, int destY, float HP)
+{
+	if (isTransparent)
+	{
+		GdiTransparentBlt(
+			hdc,
+			destX - (imageInfo->width / 2),
+			destY - (imageInfo->height / 2),
+			imageInfo->width - ((imageInfo->width * (100 - HP)) / 100),
+			imageInfo->height,
+
+			imageInfo->hMemDc,
+			0, 0,
+			imageInfo->width,
+			imageInfo->height,
+			transColor);
+	}
+	else
+	{
+		BitBlt(
+			hdc,
+			destX - (imageInfo->width / 2),
+			destY - (imageInfo->height / 2),
+			imageInfo->width - ((imageInfo->width * (100 - HP)) / 100),
+			imageInfo->height,
+			imageInfo->hMemDc,
+			0,
+			0,
+			SRCCOPY);
+	}
+}
+
 void Image::EnlargeSampleTile(HDC hdc, int destX, int destY, int frameX, int frameY, float scale)
 {
 	if (isTransparent)

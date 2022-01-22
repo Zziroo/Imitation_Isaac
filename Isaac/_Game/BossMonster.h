@@ -37,7 +37,7 @@ public:
 	
 	void					DesignateBossMonsterShape(float posX, float posY, float size, float adjustSizeLeft = 0.0f, float adjustSizeTop = 0.0f, float adjustSizeRight = 0.0f, float adjustSizeBottom = 0.0f);
 
-	RECT GetBossMonsterShape() { return this->shape; }
+	RECT					GetBossMonsterShape() { return this->shape; }
 	MonsterStates			GetBossMonsterState() { return this->monsterInfo.state; }
 
 	void					SetBossMonsterAStar(AStar* aStar) { this->aStar = aStar; }

@@ -25,8 +25,6 @@ void Player::Update()
 {
 #ifdef _DEBUG
     GameObject::Update();
-    //cout << "PlayerHP : " << playerHP << "\n";
-    //cout << "elapsedAnimeCount : " << elapsedAnimeCount << "\n";
 #endif
 
     TakeAction();
@@ -301,7 +299,7 @@ bool Player::ClosedEye()
 void Player::CollideWithBossMonster(POINTFLOAT buffPos, POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT headPos, RECT headShape)
 {
     RECT bossMonsterShape = bossMonster->GetBossMonsterShape();
-    if (isInvincible == false && (IntersectRect(&colliderRect, &bodyInfo.shape, &bossMonsterShape)) || (IntersectRect(&colliderRect, &headInfo.shape, &bossMonsterShape)))
+    if (isInvincible == false && bossMonster->GetBossMonsterState() != MonsterStates::DEAD && ((IntersectRect(&colliderRect, &bodyInfo.shape, &bossMonsterShape)) || (IntersectRect(&colliderRect, &headInfo.shape, &bossMonsterShape))))
     {
         if (playerState != PlayerStates::HURT)
         {
@@ -916,7 +914,10 @@ void Player::Move()
     #pragma endregion
 
     #pragma region BossMonsterCollider
-    CollideWithBossMonster(buffPos, buffBodyPos, buffBodyShape, buffHeadPos, buffHeadShape);
+    if (currColumn == bossColumn && currRow == bossRow)
+    {
+        CollideWithBossMonster(buffPos, buffBodyPos, buffBodyShape, buffHeadPos, buffHeadShape);
+    }
     #pragma endregion
 }
 

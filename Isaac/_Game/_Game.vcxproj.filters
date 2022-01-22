@@ -208,7 +208,7 @@
       <Filter>MainGame\GameObject\Enemy\Boss Monster</Filter>
     </ClCompile>
     <ClCompile Include="BossMonsterHP.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>MainGame\GameObject\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -318,7 +318,7 @@
       <Filter>MainGame\GameObject\Enemy\Boss Monster</Filter>
     </ClInclude>
     <ClInclude Include="BossMonsterHP.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>MainGame\GameObject\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

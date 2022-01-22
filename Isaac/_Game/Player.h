@@ -58,6 +58,8 @@ private:
 
 	char									text[64] = {};
 
+	float									attackValue = 10.0f;
+
 	int										fireDelay = 0;																				// 무기 발사 지연
 	int										gameOverCount = 0;
 	int										hurtDurationTime = 0;																		// 피해를 입었을 때 지속 시간(무적 상태)
@@ -109,6 +111,7 @@ public:
 	array<bool, 4>							GetEnterNextDoor() { return this->enterNextDoor; }
 	bool									GetIsFire() { return this->isFireTear; }
 	bool									GetIsGameOver() { return this->isGameOver; }
+	float									GetPlayerAttackValue() { return this->attackValue; }
 	POINTFLOAT								GetPlayerBodyPos() { return this->bodyInfo.pos; }
 	RECT									GetPlayerBodyShape() { return this->bodyInfo.shape; }
 	POINTFLOAT								GetPlayerHeadPos() { return this->headInfo.pos; }

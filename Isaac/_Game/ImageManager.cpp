@@ -123,7 +123,8 @@ void ImageManager::Init()
 	GET_SINGLETON_IMAGE->AddImage("Image/Monster/Duke.bmp", 444, 408, 2, 2, true, MAGENTA);
 	#pragma endregion
 	#pragma region UI
-	GET_SINGLETON_IMAGE->AddImage("Image/UI/Boss_HP.bmp", 388, 54, 1, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/UI/Boss_HP.bmp", 325, 24, 1, 1, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/UI/Boss_HP_BackGround.bmp", 388, 54, 1, 1, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/UI/Player_HP.bmp", 117, 36, 3, 1, true, MAGENTA);
 	#pragma endregion
 

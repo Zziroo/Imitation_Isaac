@@ -48,6 +48,8 @@ private:
 	vector<vector<vector<AStar*>>>				normalMonsterAStar;
 	vector<vector<vector<Obstacle*>>>			obstacle;											// Obstacle
 
+	int											bossColumn = 0;
+	int											bossRow = 0;
 	int											currColumn = 0;										// 진행하려는 행
 	int											currRow = 0;										// 진행하려는 열
 	int											normalMonsterMaxIndex = 4;							// .monster 파일의 Max값

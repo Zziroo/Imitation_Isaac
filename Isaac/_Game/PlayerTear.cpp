@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "PlayerTear.h"
 
+#include "BossMonster.h"
 #include "Image.h"
 #include "NormalMonster.h"
 #include "Obstacle.h"
@@ -50,6 +51,24 @@ void PlayerTear::Render(HDC hdc)
 	for (size_t i = 0; i < vecTear.size(); ++i)
 	{
 		vecTear[i]->Render(hdc);
+	}
+}
+
+void PlayerTear::CollideWithBossMonster()
+{
+	RECT bossMonsterShape = bossMonster->GetShape();
+	RECT playerTearShape = {};
+
+	for (int i = 0; i < vecTear.size(); ++i)
+	{
+		playerTearShape = vecTear[i]->GetShape();
+		if (IntersectRect(&colliderRect, &playerTearShape, &bossMonsterShape) && bossMonster->GetBossMonsterState() != MonsterStates::DEAD)
+		{
+			vecTear[i]->SetIsFire(false);
+			vecTear[i]->SetObjectSize(0.0f);
+
+			attackBossMonster = true;
+		}
 	}
 }
 

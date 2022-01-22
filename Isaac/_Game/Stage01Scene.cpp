@@ -69,6 +69,12 @@ HRESULT Stage01Scene::Init()
 		for (size_t j = 0; j < roomInfo[i].size(); ++j)
 		{
 			roomInfo[i][j] = door->GetRoomType()[i][j];
+
+			if (roomInfo[i][j] == RoomTypes::BOSS)
+			{
+				bossRow = i;
+				bossColumn = j;
+			}
 		}
 	}
 
@@ -303,13 +309,6 @@ HRESULT Stage01Scene::Init()
 		break;
 	}
 
-	// PlayerTear
-	playerTear = new PlayerTear;
-	playerTear->SetNormalMonsterInfo(&normalMonster);
-	playerTear->SetObstacleInfo(&obstacle);
-	playerTear->SetTileInfo(colliderTileInfo);
-	playerTear->Init();
-
 	//BossMonster
 	bossMonster = new BossMonster;
 	bossMonster->Init();
@@ -322,9 +321,21 @@ HRESULT Stage01Scene::Init()
 	bossMonsterHP = new BossMonsterHP;
 	bossMonsterHP->Init();
 
+	// PlayerTear
+	playerTear = new PlayerTear;
+	playerTear->SetBossMonster(bossMonster);
+	playerTear->SetNormalMonsterInfo(&normalMonster);
+	playerTear->SetObstacleInfo(&obstacle);
+	playerTear->SetTileInfo(colliderTileInfo);
+	playerTear->Init();
+
 	// Player
 	player = new Player;
+	player->SetBossColumn(bossColumn);
 	player->SetBossMonster(bossMonster);
+	player->SetBossRow(bossRow);
+	player->SetCurrCloumn(currColumn);
+	player->SetCurrRow(currRow);
 	player->SetDoorInfo(&doorInfo);
 	player->SetNormalMonsterInfo(&normalMonster);
 	player->SetObstacleInfo(&obstacle);
@@ -417,6 +428,11 @@ void Stage01Scene::Update()
 	playerTear->SetCurrRow(currRow);
 	playerTear->Update();
 
+	if (currColumn == bossColumn && currRow == bossRow)
+	{
+		playerTear->CollideWithBossMonster();
+	}
+
 	// Player Update
 	player->SetCurrCloumn(currColumn);
 	player->SetCurrRow(currRow);
@@ -454,9 +470,12 @@ void Stage01Scene::Update()
 		normalMonsterAStar[currRow][currColumn][i]->SetTargetPosY((FLOAT)player->GetPos().y);
 	}
 
-	// BossMonsterAStar TargetPos 설정
-	bossMonsterAStar->SetTargetPosX((FLOAT)player->GetPos().x);
-	bossMonsterAStar->SetTargetPosY((FLOAT)player->GetPos().y);
+	if (currColumn == bossColumn && currRow == bossRow)
+	{
+		// BossMonsterAStar TargetPos 설정
+		bossMonsterAStar->SetTargetPosX((FLOAT)player->GetPos().x);
+		bossMonsterAStar->SetTargetPosY((FLOAT)player->GetPos().y);
+	}
 
 	// Obstacle Update
 	for (size_t i = 0; i < obstacle[currRow][currColumn].size(); ++i)
@@ -471,9 +490,12 @@ void Stage01Scene::Update()
 		normalMonsterAStar[currRow][currColumn][i]->SetStartPosY((FLOAT)normalMonster[currRow][currColumn][i]->GetNormalMonsterPosY());
 	}
 
-	// BossMonsterAStar StartPos 설정
-	bossMonsterAStar->SetStartPosX((FLOAT)bossMonster->GetPos().x);
-	bossMonsterAStar->SetStartPosY((FLOAT)bossMonster->GetPos().y);
+	if (currColumn == bossColumn && currRow == bossRow)
+	{
+		// BossMonsterAStar StartPos 설정
+		bossMonsterAStar->SetStartPosX((FLOAT)bossMonster->GetPos().x);
+		bossMonsterAStar->SetStartPosY((FLOAT)bossMonster->GetPos().y);
+	}
 
 	// NormalMonsterAStar Update
 	if (normalMonster[currRow][currColumn].empty() == false)
@@ -485,8 +507,11 @@ void Stage01Scene::Update()
 		}
 	}
 
-	// BossMonsterAStar Update
-	//bossMonsterAStar->Update();
+	if (currColumn == bossColumn && currRow == bossRow)
+	{
+		// BossMonsterAStar Update
+		//bossMonsterAStar->Update();
+	}
 
 	// NormalMonster Update
 	for (size_t i = 0; i < normalMonster[currRow][currColumn].size(); ++i)
@@ -498,11 +523,27 @@ void Stage01Scene::Update()
 		normalMonster[currRow][currColumn][i]->Update();
 	}
 
-	// BossMonster Update
-	bossMonster->SetBossMonsterAStar(bossMonsterAStar);
-	bossMonster->SetBossMonsterPathWay(bossMonsterAStar->GetPathWay());
-	//bossMonster->SetBossmonsterState(MonsterStates::MOVE);
-	bossMonster->Update();
+	if (currColumn == bossColumn && currRow == bossRow)
+	{
+		// BossMonster Update
+		bossMonster->SetBossMonsterAStar(bossMonsterAStar);
+		bossMonster->SetBossMonsterPathWay(bossMonsterAStar->GetPathWay());
+		//bossMonster->SetBossmonsterState(MonsterStates::MOVE);
+		bossMonster->Update();
+	}
+
+	// BossMonsterHP Update
+	if ((currColumn == bossColumn && currRow == bossRow) && playerTear->GetAttackedBossMonster())
+	{
+		bossMonsterHP->SetPlayerAttackValue(player->GetPlayerAttackValue());
+		bossMonsterHP->Update();
+		playerTear->SetAttackedBossMonster(false);
+	}
+
+	if (bossMonsterHP->GetIsGameClear())
+	{
+		bossMonster->SetBossmonsterState(MonsterStates::DEAD);
+	}
 
 	// DoorEditing Update
 	door->SetCurrCloumn(currColumn);
@@ -536,8 +577,11 @@ void Stage01Scene::Render(HDC hdc)
 	// PlayerUI Render
 	playerHP->Render(hdc);
 
-	// BossMonsterHP Render
-	bossMonsterHP->Render(hdc);
+	if ((currColumn == bossColumn && currRow == bossRow) && bossMonsterHP->GetIsGameClear() == false)
+	{
+		// BossMonsterHP Render
+		bossMonsterHP->Render(hdc);
+	}
 
 	// Start Map에 Image Render
 	if (currRow == startPoint && currColumn == startPoint)
@@ -557,8 +601,11 @@ void Stage01Scene::Render(HDC hdc)
 		normalMonster[currRow][currColumn][i]->Render(hdc);
 	}
 
-	// BossMonster Render
-	bossMonster->Render(hdc);
+	if ((currColumn == bossColumn && currRow == bossRow) && bossMonsterHP->GetIsGameClear() == false)
+	{
+		// BossMonster Render
+		bossMonster->Render(hdc);
+	}
 
 	// Tear
 	playerTear->Render(hdc);
