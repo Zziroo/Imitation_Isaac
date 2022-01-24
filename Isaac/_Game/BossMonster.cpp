@@ -71,7 +71,7 @@ void BossMonster::Update()
 
 void BossMonster::Render(HDC hdc)
 {
-	monsterInfo.img->Render(hdc, pos.x, pos.y, monsterInfo.img->GetCurrFrameX(), monsterInfo.img->GetCurrFrameY());
+	monsterInfo.img->Render(hdc, (INT)pos.x, (INT)pos.y, monsterInfo.img->GetCurrFrameX(), monsterInfo.img->GetCurrFrameY());
 
 	// Debug
 	Monster::Render(hdc);
@@ -150,11 +150,11 @@ void BossMonster::ChangeBossMonsterState()
 
 		if (changeStateVariable == 2)
 		{
-			monsterInfo.state = MonsterStates::IDLE;
+			monsterInfo.state = MonsterStates::MOVE;
 		}
 		else
 		{
-			monsterInfo.state = MonsterStates::MOVE;
+			monsterInfo.state = MonsterStates::IDLE;
 		}
 
 		elapsedChangeMonsterState = 0.0f;
@@ -227,7 +227,7 @@ void BossMonster::DesignateMonsterSpawnPosition()
 {
 	for (int i = 0; i < 8; ++i)
 	{
-		float angle = (45.0f * i) * (PI / 180.0f);
+		float angle = (FLOAT)((45.0f * i) * (PI / 180.0f));
 		float size = (objectSize * DEVIDE_HALF) + 25.0f;
 
 		normalMonsterSpawnPos[i].x = pos.x + cos(angle) * size;

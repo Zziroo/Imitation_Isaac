@@ -34,7 +34,7 @@ void NextStageDoor::Update()
 
 void NextStageDoor::Render(HDC hdc)
 {
-	img->Render(hdc, pos.x, pos.y, img->GetCurrFrameX(), img->GetCurrFrameY());
+	img->Render(hdc, (INT)pos.x, (INT)pos.y, img->GetCurrFrameX(), img->GetCurrFrameY());
 
 	// Debug
 	GameObject::Render(hdc);

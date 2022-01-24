@@ -602,7 +602,7 @@ void Stage01Scene::Update()
 	}
 
 	// BossMonster°¡ Á×¾úÀ» ¶§
-	if (bossMonsterHP->GetIsGameClear())
+	if (bossMonsterHP->GetIsGameClear() && normalMonster[bossRow][bossColumn].empty())
 	{
 		bossMonster->SetIsAlive(false);
 
@@ -656,10 +656,13 @@ void Stage01Scene::Render(HDC hdc)
 		}
 		else
 		{
-			// NextStageDoor Render
-			nextStageDoor->Render(hdc);
+			if (normalMonster[bossRow][bossColumn].empty())
+			{
+				// NextStageDoor Render
+				nextStageDoor->Render(hdc);
 
-			openNextStageDoor = true;
+				openNextStageDoor = true;
+			}
 		}
 	}
 
