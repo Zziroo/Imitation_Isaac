@@ -1,6 +1,7 @@
 #pragma once
 
 class BossMonster;
+class BossMonsterHP;
 class NormalMonster;
 class Obstacle;
 class Player;
@@ -9,6 +10,7 @@ class GameObject
 {
 protected:
 	BossMonster*								bossMonster = nullptr;
+	BossMonsterHP*								bossMonsterHP = nullptr;
 	Player*										player = nullptr;
 	TILE_INFO*									tile = nullptr;								// 타일의 정보
 
@@ -44,6 +46,7 @@ public:
 	
 	void										SetBossColumn(int column) { this->bossColumn = column; }
 	void										SetBossMonster(BossMonster* bossMonster) { this->bossMonster = bossMonster; }
+	void										SetBossMonsterHP(BossMonsterHP* bossMonsterHP) { this->bossMonsterHP = bossMonsterHP; }
 	void										SetBossRow(int row) { this->bossRow = row; }
 	void										SetCurrCloumn(int column) { this->currColumn = column; }
 	void										SetCurrRow(int row) { this->currRow = row; }

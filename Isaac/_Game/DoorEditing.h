@@ -26,12 +26,12 @@ public:
 	void										ApplyDoorInfo(int nextRow, int nextColumn, int row, int column, int direction);
 	void										ChangeImageDoorState();
 	void										ChangeShapeOpenDoor();
-	void										FixBossDoor();
-	void										FixCurseDoor();
-	void										FixItemDoor();
-	void										FixPrivateDoor();
-	void										FixSatanDoor();
-	void										FixStartDoor();
+	void										FixBossRoomDoor();
+	void										FixCurseRoomDoor();
+	void										FixItemRoomDoor();
+	void										FixPrivateRoomDoor();
+	void										FixSatanRoomDoor();
+	void										FixStartRoomDoor();
 	void										Init(int stageNum = 0);
 	void										OpenTheDoor();								// Map에 Monster가 없으면 OpenState
 	void										StoreRoomType(int row, int column);

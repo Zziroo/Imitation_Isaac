@@ -13,6 +13,8 @@ private:
 		BossMonsterTypes	type = BossMonsterTypes::NONE;
 		MonsterStates		state = MonsterStates::IDLE;
 		ObjectDir			moveDir = ObjectDir::NONE;
+
+		bool				isAlive = true;
 	} BOSS_MONSTER_INFO;
 
 private:
@@ -50,10 +52,12 @@ public:
 
 	RECT					GetBossMonsterShape() { return this->shape; }
 	MonsterStates			GetBossMonsterState() { return this->monsterInfo.state; }
+	bool					GetIsAlive() { return this->monsterInfo.isAlive; }
 
 	void					SetBossMonsterAStar(AStar* aStar) { this->aStar = aStar; }
 	void					SetBossMonsterPathWay(stack<Pos> way) { this->pathWay = way; }
 	void					SetBossmonsterState(MonsterStates state) { this->monsterInfo.state = state; }
+	void					SetIsAlive(bool isAlive) { this->monsterInfo.isAlive = isAlive; }
 
 	virtual ~BossMonster() = default;
 };

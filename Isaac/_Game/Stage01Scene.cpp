@@ -545,9 +545,12 @@ void Stage01Scene::Update()
 	}
 
 	// DoorEditing Update
+	door->SetBossColumn(bossColumn);
+	door->SetBossRow(bossRow);	
 	door->SetCurrCloumn(currColumn);
 	door->SetCurrRow(currRow);
 	door->SetNormalMonsterInfo(&normalMonster);
+	door->SetBossMonster(bossMonster);
 	door->Update();
 
 	// Minimap Update
@@ -558,6 +561,14 @@ void Stage01Scene::Update()
 	// PlayerTear와 NormalMonster충돌
 	playerTear->CollideWithNormalMonster();
 
+
+	// BossMonster가 죽었을 때
+	if (bossMonsterHP->GetIsGameClear())
+	{
+		bossMonster->SetIsAlive(false);
+	}
+
+	// Player가 죽었을 때
 	if (player->GetIsGameOver())
 	{
 		GET_SINGLETON_SCENE->ChangeScene("Title");

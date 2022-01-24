@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "DoorEditing.h"
 
+#include "BossMonster.h"
 #include "Image.h"
 #include "RoomEditing.h"
 
@@ -298,7 +299,7 @@ void DoorEditing::ChangeShapeOpenDoor()
 	}
 }
 
-void DoorEditing::FixBossDoor()
+void DoorEditing::FixBossRoomDoor()
 {
 	for (size_t i = 0; i < roomInfo.size(); ++i)
 	{
@@ -314,22 +315,26 @@ void DoorEditing::FixBossDoor()
 				if (topRow >= OUT_OF_STAGE && roomInfo[topRow][j] != RoomTypes::NONE)
 				{
 					door[i][j][UPPER_DOOR].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Boss_Room_Door.bmp");
+					door[i][j][UPPER_DOOR].doorState = DoorStates::CLOSED;
 					door[i][j][UPPER_DOOR].roomType = RoomTypes::BOSS;
 				}
 				if (bottomRow < stageSize && roomInfo[bottomRow][j] != RoomTypes::NONE)
 				{
 					door[i][j][LOWER_DOOR].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Boss_Room_Door.bmp");
+					door[i][j][LOWER_DOOR].doorState = DoorStates::CLOSED;
 					door[i][j][LOWER_DOOR].roomType = RoomTypes::BOSS;
 				}
 				if (leftColumn >= OUT_OF_STAGE && roomInfo[i][leftColumn] != RoomTypes::NONE)
 				{
 					door[i][j][LEFT_DOOR].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Boss_Room_Door.bmp");
+					door[i][j][LEFT_DOOR].doorState = DoorStates::CLOSED;
 					door[i][j][LEFT_DOOR].roomType = RoomTypes::BOSS;
 
 				}
 				if (rightColumn < stageSize && roomInfo[i][rightColumn] != RoomTypes::NONE)
 				{
 					door[i][j][RIGHT_DOOR].img = GET_SINGLETON_IMAGE->FindImage("Image/Door/Boss_Room_Door.bmp");
+					door[i][j][RIGHT_DOOR].doorState = DoorStates::CLOSED;
 					door[i][j][RIGHT_DOOR].roomType = RoomTypes::BOSS;
 				}
 			}
@@ -337,7 +342,7 @@ void DoorEditing::FixBossDoor()
 	}
 }
 
-void DoorEditing::FixCurseDoor()
+void DoorEditing::FixCurseRoomDoor()
 {
 	for (size_t i = 0; i < roomInfo.size(); ++i)
 	{
@@ -379,7 +384,7 @@ void DoorEditing::FixCurseDoor()
 	}
 }
 
-void DoorEditing::FixItemDoor()
+void DoorEditing::FixItemRoomDoor()
 {
 	for (size_t i = 0; i < roomInfo.size(); ++i)
 	{
@@ -421,7 +426,7 @@ void DoorEditing::FixItemDoor()
 	}
 }
 
-void DoorEditing::FixPrivateDoor()
+void DoorEditing::FixPrivateRoomDoor()
 {
 	for (size_t i = 0; i < roomInfo.size(); ++i)
 	{
@@ -455,7 +460,7 @@ void DoorEditing::FixPrivateDoor()
 	}
 }
 
-void DoorEditing::FixSatanDoor()
+void DoorEditing::FixSatanRoomDoor()
 {
 	for (size_t i = 0; i < roomInfo.size(); ++i)
 	{
@@ -497,7 +502,7 @@ void DoorEditing::FixSatanDoor()
 	}
 }
 
-void DoorEditing::FixStartDoor()
+void DoorEditing::FixStartRoomDoor()
 {
 	int topRow = (INT)(currRow - 1);
 	int bottomRow = (INT)(currRow + 1);
@@ -639,13 +644,13 @@ void DoorEditing::Init(int stageNum)
 	currRow = startPoint;
 
 	// 특정 방들은 자기 방에 맞는 이미지를 가지게 함
-	FixBossDoor();									// BossRoom
-	FixCurseDoor();									// CurseRoom
-	FixItemDoor();									// ItemRoom
-	FixSatanDoor();									// SatanRoom
+	FixBossRoomDoor();
+	FixCurseRoomDoor();
+	FixItemRoomDoor();
+	FixSatanRoomDoor();
 	// 특정 방들은 안의 모든 문이 열려있다.
-	FixPrivateDoor();
-	FixStartDoor();
+	FixPrivateRoomDoor();
+	FixStartRoomDoor();
 
 	// DoorState에 따른 이미지 프레임 초기화
 	for (size_t i = 0; i < door.size(); ++i)
@@ -676,27 +681,56 @@ void DoorEditing::Init(int stageNum)
 
 void DoorEditing::OpenTheDoor()
 {
-	if (normalMonster[0][currRow][currColumn].empty())
+	if (currColumn == bossColumn && currRow == bossRow)
 	{
-		// 상
-		if (door[currRow][currColumn][UPPER_DOOR].img != nullptr)
+		if (false == bossMonster->GetIsAlive())
 		{
-			door[currRow][currColumn][UPPER_DOOR].doorState = DoorStates::OPENED;
+			// 상
+			if (door[currRow][currColumn][UPPER_DOOR].img != nullptr)
+			{
+				door[currRow][currColumn][UPPER_DOOR].doorState = DoorStates::OPENED;
+			}
+			// 하
+			if (door[currRow][currColumn][LOWER_DOOR].img != nullptr)
+			{
+				door[currRow][currColumn][LOWER_DOOR].doorState = DoorStates::OPENED;
+			}
+			// 좌
+			if (door[currRow][currColumn][LEFT_DOOR].img != nullptr)
+			{
+				door[currRow][currColumn][LEFT_DOOR].doorState = DoorStates::OPENED;
+			}
+			// 우
+			if (door[currRow][currColumn][RIGHT_DOOR].img != nullptr)
+			{
+				door[currRow][currColumn][RIGHT_DOOR].doorState = DoorStates::OPENED;
+			}
 		}
-		// 하
-		if (door[currRow][currColumn][LOWER_DOOR].img != nullptr)
+	}
+	else
+	{
+		if (normalMonster[0][currRow][currColumn].empty())
 		{
-			door[currRow][currColumn][LOWER_DOOR].doorState = DoorStates::OPENED;
-		}
-		// 좌
-		if (door[currRow][currColumn][LEFT_DOOR].img != nullptr)
-		{
-			door[currRow][currColumn][LEFT_DOOR].doorState = DoorStates::OPENED;
-		}
-		// 우
-		if (door[currRow][currColumn][RIGHT_DOOR].img != nullptr)
-		{
-			door[currRow][currColumn][RIGHT_DOOR].doorState = DoorStates::OPENED;
+			// 상
+			if (door[currRow][currColumn][UPPER_DOOR].img != nullptr)
+			{
+				door[currRow][currColumn][UPPER_DOOR].doorState = DoorStates::OPENED;
+			}
+			// 하
+			if (door[currRow][currColumn][LOWER_DOOR].img != nullptr)
+			{
+				door[currRow][currColumn][LOWER_DOOR].doorState = DoorStates::OPENED;
+			}
+			// 좌
+			if (door[currRow][currColumn][LEFT_DOOR].img != nullptr)
+			{
+				door[currRow][currColumn][LEFT_DOOR].doorState = DoorStates::OPENED;
+			}
+			// 우
+			if (door[currRow][currColumn][RIGHT_DOOR].img != nullptr)
+			{
+				door[currRow][currColumn][RIGHT_DOOR].doorState = DoorStates::OPENED;
+			}
 		}
 	}
 }
