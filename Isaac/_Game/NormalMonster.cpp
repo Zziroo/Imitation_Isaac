@@ -43,7 +43,7 @@ void NormalMonster::Update()
 {
 	ChangeAnimation();
 
-	if (monsterInfo.state == MonsterStates::MOVE && aStar->LocatedInside())
+	if (monsterInfo.state == MonsterStates::MOVE && aStar->GetLocatedInside())
 	{
 		Move();
 	}
@@ -129,7 +129,11 @@ void NormalMonster::ApproachTargetPoint()
 		break;
 	}
 
-	pathWay.pop();
+	//if (monsterInfo.pos.x == targetSpotPos.x && monsterInfo.pos.y == targetSpotPos.y)
+	//{
+		pathWay.pop();
+	//}
+
 	ApproachTargetPoint();
 }
 

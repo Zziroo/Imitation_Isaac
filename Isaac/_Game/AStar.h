@@ -35,7 +35,7 @@ public:
 	float					Heuristic(Pos a, Pos b);
 
 	vector<vector<int>>		GetAStarMap() { return this->map; }
-	bool					LocatedInside() { return this->isLocatedInside; }
+	bool					GetLocatedInside() { return this->isLocatedInside; }
 	stack<Pos>				GetPathWay() { return this->pathWay; }
 	Pos						GetTargetPos() { return this->target; }
 

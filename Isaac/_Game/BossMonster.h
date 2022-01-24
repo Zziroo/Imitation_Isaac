@@ -28,6 +28,11 @@ private:
 	RECT					spawnShape[8] = {};
 #endif
 
+	bool					isSpawnNormalMonster = false;
+
+	float					elapsedChangeMonsterState = 0.0f;
+	float					elapsedCreatenormalMonsterAnimation = 0.0f;
+
 public:
 	virtual void			Init() override;
 	virtual void			Release() override;
@@ -35,7 +40,13 @@ public:
 	virtual void			Render(HDC hdc) override;
 	virtual void			OnDebug(HDC hdc) override;
 	
+	void					ApproachTargetPoint();
+	void					ChangeBossMonsterState();
 	void					DesignateBossMonsterShape(float posX, float posY, float size, float adjustSizeLeft = 0.0f, float adjustSizeTop = 0.0f, float adjustSizeRight = 0.0f, float adjustSizeBottom = 0.0f);
+	void					DesignateMonsterSpawnPosition();
+	void					InitializeBossMonsterAnimation();
+	void					ProgressNormalMonsterSpawnAnimation();
+	void					Move();
 
 	RECT					GetBossMonsterShape() { return this->shape; }
 	MonsterStates			GetBossMonsterState() { return this->monsterInfo.state; }

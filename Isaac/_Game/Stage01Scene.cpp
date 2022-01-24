@@ -313,10 +313,6 @@ HRESULT Stage01Scene::Init()
 	bossMonster = new BossMonster;
 	bossMonster->Init();
 
-	// BossMonsterAStar
-	bossMonsterAStar = new AStar;
-	bossMonsterAStar->Init();
-
 	// BossMonsterHP
 	bossMonsterHP = new BossMonsterHP;
 	bossMonsterHP->Init();
@@ -456,12 +452,17 @@ void Stage01Scene::Update()
 		normalMonsterAStar[currRow][currColumn].clear();
 	}
 
+	SAFE_RELEASE(bossMonsterAStar);
+
 	// NormalMonster count 만큼 생성
 	normalMonsterAStar[currRow][currColumn].resize(normalMonster[currRow][currColumn].size());
 	for (size_t i = 0; i < normalMonsterAStar[currRow][currColumn].size(); ++i)
 	{
 		normalMonsterAStar[currRow][currColumn][i] = new AStar;
 	}
+
+	// BossMonsterAStar
+	bossMonsterAStar = new AStar;
 
 	// NormalMonsterAStar TargetPos 설정
 	for (size_t i = 0; i < normalMonsterAStar[currRow][currColumn].size(); ++i)
@@ -507,12 +508,6 @@ void Stage01Scene::Update()
 		}
 	}
 
-	if (currColumn == bossColumn && currRow == bossRow)
-	{
-		// BossMonsterAStar Update
-		//bossMonsterAStar->Update();
-	}
-
 	// NormalMonster Update
 	for (size_t i = 0; i < normalMonster[currRow][currColumn].size(); ++i)
 	{
@@ -525,10 +520,14 @@ void Stage01Scene::Update()
 
 	if (currColumn == bossColumn && currRow == bossRow)
 	{
+		// BossMonsterAStar Update
+		bossMonsterAStar->Init();
+		bossMonsterAStar->Update();
+
 		// BossMonster Update
 		bossMonster->SetBossMonsterAStar(bossMonsterAStar);
 		bossMonster->SetBossMonsterPathWay(bossMonsterAStar->GetPathWay());
-		//bossMonster->SetBossmonsterState(MonsterStates::MOVE);
+		bossMonster->SetPlayer(player);
 		bossMonster->Update();
 	}
 
