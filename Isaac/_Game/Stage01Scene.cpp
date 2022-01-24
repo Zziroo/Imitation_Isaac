@@ -594,11 +594,14 @@ void Stage01Scene::Update()
 	// PlayerTear와 NormalMonster충돌
 	playerTear->CollideWithNormalMonster();
 
-	if (playerTear->GetAttackedNormalMonster())
+	if ((currColumn == bossColumn && currRow == bossRow) && false == normalMonster[bossRow][bossColumn].empty())
 	{
-		--addNormalMonsterIndex[0];
-		--addNormalMonsterIndex[1];
-		playerTear->SetAttackedNormalMonster(false);
+		if (playerTear->GetAttackedNormalMonster())
+		{
+			--addNormalMonsterIndex[0];
+			--addNormalMonsterIndex[1];
+			playerTear->SetAttackedNormalMonster(false);
+		}
 	}
 
 	// BossMonster가 죽었을 때
