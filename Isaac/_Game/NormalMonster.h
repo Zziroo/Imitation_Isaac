@@ -49,6 +49,7 @@ public:
 
 	bool					IsMaxFrameY() const;
 
+	Image*					GetNormalMonsterImage() { return this->monsterInfo.img; }
 	POINTFLOAT				GetNormalMonsterPos() { return this->monsterInfo.pos; }
 	float					GetNormalMonsterPosX() { return this->monsterInfo.pos.x; }
 	float					GetNormalMonsterPosY() { return this->monsterInfo.pos.y; }

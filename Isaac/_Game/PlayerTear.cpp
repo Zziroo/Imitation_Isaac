@@ -82,18 +82,26 @@ void PlayerTear::CollideWithNormalMonster()
 
 	for (auto iter = normalMonster[0][currRow][currColumn].begin(); iter != normalMonster[0][currRow][currColumn].end(); ++iter)
 	{
-		++eraseIndex;
-		normalMonsterShape = (*iter)->GetNormalMonsterShape();
-		for (int j = 0; j < vecTear.size(); ++j)
+		if ((*iter)->GetNormalMonsterImage() == nullptr)
 		{
-			playerTearShape = vecTear[j]->GetShape();
-			if (IntersectRect(&colliderRect, &playerTearShape, &normalMonsterShape))
+			normalMonster[0][currRow][currColumn].erase(iter);
+			return;
+		}
+		else
+		{
+			++eraseIndex;
+			normalMonsterShape = (*iter)->GetNormalMonsterShape();
+			for (int j = 0; j < vecTear.size(); ++j)
 			{
-				vecTear[j]->SetIsFire(false);
-				SAFE_RELEASE((*iter));
-				normalMonster[0][currRow][currColumn].erase(iter);
-				attackNormalMonster = true;
-				return;
+				playerTearShape = vecTear[j]->GetShape();
+				if (IntersectRect(&colliderRect, &playerTearShape, &normalMonsterShape))
+				{
+					vecTear[j]->SetIsFire(false);
+					SAFE_RELEASE((*iter));
+					normalMonster[0][currRow][currColumn].erase(iter);
+					attackNormalMonster = true;
+					return;
+				}
 			}
 		}
 	}
