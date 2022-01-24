@@ -17,7 +17,7 @@ void BossMonster::Init()
 		monsterInfo.img = GET_SINGLETON_IMAGE->FindImage("Image/Monster/Duke.bmp");
 		pos = { WIN_SIZE_X * DEVIDE_HALF, WIN_SIZE_Y * DEVIDE_HALF };
 		objectSize = 176.0f;
-		moveSpeed = 20.0f;
+		moveSpeed = 5.0f;
 		DesignateBossMonsterShape(pos.x, pos.y, objectSize, 0.0f, -10.0f, 0.0f, -15.0f);
 		break;
 	default:
@@ -211,11 +211,8 @@ void BossMonster::DesignateNormalMonsterTypeInfo()
 		case 0:
 			normalMonsterInfo[i].type = NormalMonsterTypes::ATTACKFLY;
 			break;
-		case 1:
+		case 1: case 2:
 			normalMonsterInfo[i].type = NormalMonsterTypes::FLY;
-			break;
-		case 2:
-			normalMonsterInfo[i].type = NormalMonsterTypes::POOTER;
 			break;
 		default:
 			break;
