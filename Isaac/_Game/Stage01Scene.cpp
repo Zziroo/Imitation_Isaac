@@ -573,15 +573,6 @@ void Stage01Scene::Render(HDC hdc)
 	// Door Render
 	door->Render(hdc);
 
-	// PlayerUI Render
-	playerHP->Render(hdc);
-
-	if ((currColumn == bossColumn && currRow == bossRow) && bossMonsterHP->GetIsGameClear() == false)
-	{
-		// BossMonsterHP Render
-		bossMonsterHP->Render(hdc);
-	}
-
 	// Start Map¿¡ Image Render
 	if (currRow == startPoint && currColumn == startPoint)
 	{
@@ -611,6 +602,15 @@ void Stage01Scene::Render(HDC hdc)
 
 	// Player Render
 	player->Render(hdc);
+
+	// PlayerUI Render
+	playerHP->Render(hdc);
+
+	if ((currColumn == bossColumn && currRow == bossRow) && bossMonsterHP->GetIsGameClear() == false)
+	{
+		// BossMonsterHP Render
+		bossMonsterHP->Render(hdc);
+	}
 
 	// Minimap Render
 	minimap->Render(hdc);
