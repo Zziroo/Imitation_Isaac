@@ -33,6 +33,8 @@ void BossMonster::Release()
 
 void BossMonster::Update()
 {
+	cout << "elapsedCreatenormalMonsterAnimation : " << elapsedCreatenormalMonsterAnimation << "\n";
+
 	if (monsterInfo.state == MonsterStates::IDLE)
 	{
 		ChangeBossMonsterState();
@@ -41,11 +43,23 @@ void BossMonster::Update()
 		{
 			ProgressNormalMonsterSpawnAnimation();
 		}
+		else
+		{
+			elapsedCreatenormalMonsterAnimation += Timer::GetDeltaTime();
+			if (elapsedCreatenormalMonsterAnimation >= 1.0f)
+			{
+				InitializeBossMonsterAnimation();
+
+				elapsedCreatenormalMonsterAnimation = 0.0f;
+			}
+		}
 	}
 
 	if (monsterInfo.state == MonsterStates::MOVE && aStar->GetLocatedInside())
 	{
 		Move();
+
+		elapsedCreatenormalMonsterAnimation = 0.0f;
 	}
 
 	// Debug
@@ -152,6 +166,63 @@ void BossMonster::DesignateBossMonsterShape(float posX, float posY, float size, 
 	shape.bottom = (LONG)(posY + (size * DEVIDE_HALF) + adjustSizeBottom);
 }
 
+void BossMonster::DesignateNormalMonsterInfo()
+{
+	isSpawnNormalMonster = true;
+
+	random_device rd;
+	mt19937 gen(rd());
+	uniform_int_distribution<int> dis(0, 99);
+
+	int index = dis(gen) % 8 + 1;
+
+	normalMonsterInfo.resize(index);
+
+	DesignateNormalMonsterSpawnPositionInfo();
+	DesignateNormalMonsterTypeInfo();
+}
+
+void BossMonster::DesignateNormalMonsterSpawnPositionInfo()
+{
+	for (size_t i = 0; i < normalMonsterInfo.size(); ++i)
+	{
+		random_device rd;
+		mt19937 gen(rd());
+		uniform_int_distribution<int> dis(0, 99);
+
+		int index = dis(gen) % 8;
+
+		normalMonsterInfo[i].pos = normalMonsterSpawnPos[i];
+	}
+}
+
+void BossMonster::DesignateNormalMonsterTypeInfo()
+{
+	for (size_t i = 0; i < normalMonsterInfo.size(); ++i)
+	{
+		random_device rd;
+		mt19937 gen(rd());
+		uniform_int_distribution<int> dis(0, 99);
+
+		int index = dis(gen) % 3;
+
+		switch (index)
+		{
+		case 0:
+			normalMonsterInfo[i].type = NormalMonsterTypes::ATTACKFLY;
+			break;
+		case 1:
+			normalMonsterInfo[i].type = NormalMonsterTypes::FLY;
+			break;
+		case 2:
+			normalMonsterInfo[i].type = NormalMonsterTypes::POOTER;
+			break;
+		default:
+			break;
+		}
+	}
+}
+
 void BossMonster::DesignateMonsterSpawnPosition()
 {
 	for (int i = 0; i < 8; ++i)
@@ -182,23 +253,9 @@ void BossMonster::InitializeBossMonsterAnimation()
 	monsterInfo.img->SetCurrFrameY(ZERO);
 }
 
-void BossMonster::ProgressNormalMonsterSpawnAnimation()
+void BossMonster::InitializeNormalMonsterInfo()
 {
-	monsterInfo.img->SetCurrFrameY(1);
-
-	elapsedCreatenormalMonsterAnimation += Timer::GetDeltaTime();
-	if (elapsedCreatenormalMonsterAnimation >= 0.25f)
-	{
-		monsterInfo.img->SetCurrFrameX(1);
-	}
-	if (elapsedCreatenormalMonsterAnimation >= 1.0f)
-	{
-		isSpawnNormalMonster = true;
-
-		InitializeBossMonsterAnimation();
-
-		elapsedCreatenormalMonsterAnimation = 0.0f;
-	}
+	normalMonsterInfo.clear();
 }
 
 void BossMonster::Move()
@@ -214,5 +271,19 @@ void BossMonster::Move()
 	{
 		pos = buffPos;
 		shape = buffShape;
+	}
+}
+
+void BossMonster::ProgressNormalMonsterSpawnAnimation()
+{
+	monsterInfo.img->SetCurrFrameY(1);
+
+	elapsedCreatenormalMonsterAnimation += Timer::GetDeltaTime();
+	if (elapsedCreatenormalMonsterAnimation >= 0.25f)
+	{
+		monsterInfo.img->SetCurrFrameX(1);
+
+		// NormalMonster 정보 생성
+		DesignateNormalMonsterInfo();
 	}
 }

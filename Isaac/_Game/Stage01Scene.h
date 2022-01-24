@@ -60,6 +60,7 @@ private:
 	int											stageSize = 0;										// 한 Stage당 크기
 	int											startPoint = 0;										// 시작 지점
 
+	int											addNormalMonsterIndex[2] = { 0 };
 public:
 	virtual HRESULT								Init() override;
 	virtual void								Release() override;

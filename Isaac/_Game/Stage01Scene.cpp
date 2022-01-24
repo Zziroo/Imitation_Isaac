@@ -72,8 +72,8 @@ HRESULT Stage01Scene::Init()
 
 			if (roomInfo[i][j] == RoomTypes::BOSS)
 			{
-				bossRow = i;
-				bossColumn = j;
+				bossRow = (INT)i;
+				bossColumn = (INT)j;
 			}
 		}
 	}
@@ -529,6 +529,25 @@ void Stage01Scene::Update()
 		bossMonster->SetBossMonsterPathWay(bossMonsterAStar->GetPathWay());
 		bossMonster->SetPlayer(player);
 		bossMonster->Update();
+
+		// BossRoom에서 normalMonster 추가 생성
+		if (false == bossMonster->GetInitializeNormalMonsterInfo().empty())
+		{
+			addNormalMonsterIndex[1] += (INT)bossMonster->GetInitializeNormalMonsterInfo().size();
+
+			normalMonster[bossRow][bossColumn].resize(addNormalMonsterIndex[1]);
+			for (size_t i = addNormalMonsterIndex[0]; i < normalMonster[bossRow][bossColumn].size(); ++i)
+			{
+				normalMonster[bossRow][bossColumn][i] = new NormalMonster;
+				normalMonster[bossRow][bossColumn][i]->SetNormalMonsterPos(bossMonster->GetInitializeNormalMonsterInfo()[i - addNormalMonsterIndex[0]].pos);
+				normalMonster[bossRow][bossColumn][i]->SetNormalMonsterType(bossMonster->GetInitializeNormalMonsterInfo()[i - addNormalMonsterIndex[0]].type);
+				normalMonster[bossRow][bossColumn][i]->Init();
+			}
+
+			addNormalMonsterIndex[0] = addNormalMonsterIndex[1];
+
+			bossMonster->InitializeNormalMonsterInfo();
+		}
 	}
 
 	// BossMonsterHP Update
@@ -560,6 +579,13 @@ void Stage01Scene::Update()
 
 	// PlayerTear와 NormalMonster충돌
 	playerTear->CollideWithNormalMonster();
+
+	if (playerTear->GetAttackedNormalMonster())
+	{
+		--addNormalMonsterIndex[0];
+		--addNormalMonsterIndex[1];
+		playerTear->SetAttackedNormalMonster(false);
+	}
 
 
 	// BossMonster가 죽었을 때

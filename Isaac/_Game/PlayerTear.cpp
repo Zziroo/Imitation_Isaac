@@ -92,6 +92,7 @@ void PlayerTear::CollideWithNormalMonster()
 				vecTear[j]->SetIsFire(false);
 				SAFE_RELEASE((*iter));
 				normalMonster[0][currRow][currColumn].erase(iter);
+				attackNormalMonster = true;
 				return;
 			}
 		}
