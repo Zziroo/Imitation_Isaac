@@ -35,6 +35,7 @@
     <ClCompile Include="MapEditing.cpp" />
     <ClCompile Include="Minimap.cpp" />
     <ClCompile Include="Monster.cpp" />
+    <ClCompile Include="NextStageDoor.cpp" />
     <ClCompile Include="NormalMonster.cpp" />
     <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="ObstacleToolScene.cpp" />
@@ -75,6 +76,7 @@
     <ClInclude Include="Maptool.h" />
     <ClInclude Include="Minimap.h" />
     <ClInclude Include="Monster.h" />
+    <ClInclude Include="NextStageDoor.h" />
     <ClInclude Include="NormalMonster.h" />
     <ClInclude Include="Obstacle.h" />
     <ClInclude Include="ObstacleToolScene.h" />

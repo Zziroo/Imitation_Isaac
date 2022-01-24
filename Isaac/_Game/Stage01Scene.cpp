@@ -7,6 +7,7 @@
 #include "DoorEditing.h"
 #include "Image.h"
 #include "Minimap.h"
+#include "NextStageDoor.h"
 #include "NormalMonster.h"
 #include "Obstacle.h"
 #include "Player.h"
@@ -40,6 +41,10 @@ HRESULT Stage01Scene::Init()
 	// Door
 	door = new DoorEditing;
 	door->Init(stageNum);
+
+	// NextStageDoor
+	nextStageDoor = new NextStageDoor;
+	nextStageDoor->Init();
 
 	// Stage01의 Size를 받기
 	stageSize = door->GetStageSize();
@@ -333,6 +338,7 @@ HRESULT Stage01Scene::Init()
 	player->SetCurrCloumn(currColumn);
 	player->SetCurrRow(currRow);
 	player->SetDoorInfo(&doorInfo);
+	player->SetNextStageDoor(nextStageDoor);
 	player->SetNormalMonsterInfo(&normalMonster);
 	player->SetObstacleInfo(&obstacle);
 	player->SetPlayerTear(playerTear);
@@ -363,6 +369,7 @@ void Stage01Scene::Release()
 	SAFE_RELEASE(bossMonsterHP);
 	SAFE_RELEASE(door);
 	SAFE_RELEASE(minimap);
+	SAFE_RELEASE(nextStageDoor);
 	SAFE_RELEASE(player);
 	SAFE_RELEASE(playerHP);
 	SAFE_RELEASE(playerTear);
@@ -433,6 +440,13 @@ void Stage01Scene::Update()
 	player->SetCurrCloumn(currColumn);
 	player->SetCurrRow(currRow);
 	player->Update();
+
+	// Stage 클리어
+	if ((currColumn == bossColumn && currRow == bossRow) && player->GetIsGameClear())
+	{
+		GET_SINGLETON_SCENE->ChangeScene("Title");
+		return;
+	}
 
 	// PlayerUI Update
 	playerHP->SetPlayerHP(player->GetPlayerHP());
@@ -587,11 +601,16 @@ void Stage01Scene::Update()
 		playerTear->SetAttackedNormalMonster(false);
 	}
 
-
 	// BossMonster가 죽었을 때
 	if (bossMonsterHP->GetIsGameClear())
 	{
 		bossMonster->SetIsAlive(false);
+
+		if (openNextStageDoor)
+		{
+			nextStageDoor->Update();
+			nextStageDoor->SetOpenNextStageDoor(true);
+		}
 	}
 
 	// Player가 죽었을 때
@@ -628,10 +647,20 @@ void Stage01Scene::Render(HDC hdc)
 		normalMonster[currRow][currColumn][i]->Render(hdc);
 	}
 
-	if ((currColumn == bossColumn && currRow == bossRow) && bossMonsterHP->GetIsGameClear() == false)
+	if ((currColumn == bossColumn && currRow == bossRow))
 	{
-		// BossMonster Render
-		bossMonster->Render(hdc);
+		if (false == bossMonsterHP->GetIsGameClear())
+		{
+			// BossMonster Render
+			bossMonster->Render(hdc);
+		}
+		else
+		{
+			// NextStageDoor Render
+			nextStageDoor->Render(hdc);
+
+			openNextStageDoor = true;
+		}
 	}
 
 	// Tear

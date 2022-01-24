@@ -109,6 +109,9 @@
     <Filter Include="FrameWork\GameObject\UI">
       <UniqueIdentifier>{5f0a67ff-d5e8-4604-85bd-b5d30653fe37}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\GameObject\NextStageDoor">
+      <UniqueIdentifier>{7a5e0211-b3d0-4686-9caf-5f0c4d906f9d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Image.cpp">
@@ -209,6 +212,9 @@
     </ClCompile>
     <ClCompile Include="BossMonsterHP.cpp">
       <Filter>MainGame\GameObject\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="NextStageDoor.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -319,6 +325,9 @@
     </ClInclude>
     <ClInclude Include="BossMonsterHP.h">
       <Filter>MainGame\GameObject\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="NextStageDoor.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

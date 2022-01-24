@@ -83,6 +83,7 @@ void ImageManager::Init()
 	GET_SINGLETON_IMAGE->AddImage("Image/Door/Boss_Room_Door.bmp", 640, 320, 4, 2, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Door/Curse_Room_Door.bmp", 640, 160, 4, 1, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Door/Item_Room_Door.bmp", 640, 480, 4, 3, true, MAGENTA);
+	GET_SINGLETON_IMAGE->AddImage("Image/Door/Next_Stage_Door.bmp", 192, 96, 2, 1, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Door/Normal_Room_Door.bmp", 640, 480, 4, 3, true, MAGENTA);
 	GET_SINGLETON_IMAGE->AddImage("Image/Door/Satan_Room_Door.bmp", 640, 160, 4, 1, true, MAGENTA);
 	#pragma endregion

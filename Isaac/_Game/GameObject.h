@@ -2,6 +2,7 @@
 
 class BossMonster;
 class BossMonsterHP;
+class NextStageDoor;
 class NormalMonster;
 class Obstacle;
 class Player;
@@ -11,6 +12,7 @@ class GameObject
 protected:
 	BossMonster*								bossMonster = nullptr;
 	BossMonsterHP*								bossMonsterHP = nullptr;
+	NextStageDoor*								nextStageDoor = nullptr;
 	Player*										player = nullptr;
 	TILE_INFO*									tile = nullptr;								// 타일의 정보
 
@@ -51,6 +53,7 @@ public:
 	void										SetCurrCloumn(int column) { this->currColumn = column; }
 	void										SetCurrRow(int row) { this->currRow = row; }
 	void										SetMoveSpeed(float moveSpeed) { this->moveSpeed = moveSpeed; }
+	void										SetNextStageDoor(NextStageDoor* door) { this->nextStageDoor = door; }
 	void										SetNormalMonsterInfo(vector<vector<vector<NormalMonster*>>>* normalMonster) { this->normalMonster = normalMonster; }
 	void										SetObjectSize(float size) { this->objectSize = size; }
 	void										SetObstacleInfo(vector<vector<vector<Obstacle*>>>* obstacle) { this->obstacle = obstacle; }

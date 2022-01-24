@@ -53,6 +53,7 @@ private:
 
 	array<bool, 4>							enterNextDoor = { false };
 	bool									isFireTear = false;																			// 무기 발사
+	bool									isGameClear = false;
 	bool									isGameOver = false;
 	bool									isInvincible = false;																		// 무적 상태
 
@@ -82,6 +83,7 @@ public:
 	void									ChangeAnimationAttack();																	// 애니메이션 변화(Attack)
 	void									ChangeAnimationDead();
 	void									ChangeAnimationHurt();																		// 애니메이션 변화(Hurt)
+	void									ChangeAnimationJunp();
 	void									ChangeAnimationWalk();																		// 애니메이션 변화(Walk)
 	void									ChangeBodyFrame();
 	void									ChangeHeadFrame();
@@ -91,6 +93,7 @@ public:
 	void									CollideWithBossMonster(POINTFLOAT buffPos, POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT headPos, RECT headShape);
 	void									CollideWithDDong(int obstacleIndex, RECT obstacleShape, POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT headPos, RECT headShape);
 	void									CollideWithDoor(POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT headPos, RECT headShape);
+	void									CollideWithNextStageDoor();
 	void									CollideWithNormalMonster(POINTFLOAT buffPos, POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT headPos, RECT headShape);
 	void									CollideWithObstacle(POINTFLOAT buffPos, POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT headPos, RECT headShape);
 	void									CollideWithSlider(int obstacleIndex, RECT obstacleShape, POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT headPos, RECT headShape);
@@ -110,6 +113,7 @@ public:
 
 	array<bool, 4>							GetEnterNextDoor() { return this->enterNextDoor; }
 	bool									GetIsFire() { return this->isFireTear; }
+	bool									GetIsGameClear() { return this->isGameClear; }
 	bool									GetIsGameOver() { return this->isGameOver; }
 	float									GetPlayerAttackValue() { return this->attackValue; }
 	POINTFLOAT								GetPlayerBodyPos() { return this->bodyInfo.pos; }

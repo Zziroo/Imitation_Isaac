@@ -8,6 +8,7 @@ class BossMonsterHP;
 class DoorEditing;
 class Iamge;
 class Minimap;
+class NextStageDoor;
 class NormalMonster;
 class Obstacle;
 class Player;
@@ -23,6 +24,7 @@ private:
 	Image*										drawingAreaImg = nullptr;
 	Image*										infomationStartImg = nullptr;
 	Minimap*									minimap = nullptr;
+	NextStageDoor*								nextStageDoor = nullptr;
 	Player*										player = nullptr;
 	PlayerHP*									playerHP = nullptr;
 	PlayerTear*									playerTear = nullptr;
@@ -48,6 +50,9 @@ private:
 	vector<vector<vector<AStar*>>>				normalMonsterAStar;
 	vector<vector<vector<Obstacle*>>>			obstacle;											// Obstacle
 
+	bool										openNextStageDoor = false;
+
+	int											addNormalMonsterIndex[2] = { 0 };
 	int											bossColumn = 0;
 	int											bossRow = 0;
 	int											currColumn = 0;										// 진행하려는 행
@@ -60,7 +65,6 @@ private:
 	int											stageSize = 0;										// 한 Stage당 크기
 	int											startPoint = 0;										// 시작 지점
 
-	int											addNormalMonsterIndex[2] = { 0 };
 public:
 	virtual HRESULT								Init() override;
 	virtual void								Release() override;

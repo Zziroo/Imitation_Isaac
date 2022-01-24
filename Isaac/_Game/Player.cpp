@@ -3,6 +3,7 @@
 
 #include "BossMonster.h"
 #include "Image.h"
+#include "NextStageDoor.h"
 #include "NormalMonster.h"
 #include "Obstacle.h"
 #include "PlayerTear.h"
@@ -46,6 +47,11 @@ void Player::Update()
 
     // ÀåÀü delay
     WeaponDelay();
+
+    // NextStage
+    CollideWithNextStageDoor();
+
+    ChangeAnimationJunp();
 }
 
 void Player::Render(HDC hdc)
@@ -215,6 +221,29 @@ void Player::ChangeAnimationHurt()
                 otherStateImg->SetCurrFrameX(ZERO);
                 playerState = PlayerStates::IDLE;
                 hurtDurationTime = ZERO;
+            }
+        }
+    }
+}
+
+void Player::ChangeAnimationJunp()
+{
+    if (otherStateImg != nullptr)
+    {
+        if (playerState == PlayerStates::JUMP)
+        {
+            ++elapsedAnimeCount;
+            if (elapsedAnimeCount > 10)
+            {
+                otherStateImg->SetCurrFrameX(otherStateImg->GetCurrFrameX() + ADVANCE_FRAME);
+
+                if (otherStateImg->GetCurrFrameX() >= otherStateImg->GetMaxFrameX())
+                {
+                    otherStateImg->SetCurrFrameX(otherStateImg->GetMaxFrameX() + ADVANCE_FRAME);
+                    isGameClear = true;
+                }
+                
+                elapsedAnimeCount = ZERO;
             }
         }
     }
@@ -499,6 +528,23 @@ void Player::CollideWithDoor(POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT head
         }
     }
 #pragma endregion
+}
+
+void Player::CollideWithNextStageDoor()
+{
+    RECT nextStageDoorShape = nextStageDoor->GetShape();
+
+    if ((currColumn == bossColumn && currRow == bossRow) && nextStageDoor->GetOpenNextStageDoor())
+    {
+        if (IntersectRect(&colliderRect, &bodyInfo.shape, &nextStageDoorShape) || IntersectRect(&colliderRect, &bodyInfo.shape, &nextStageDoorShape))
+        {
+            pos = nextStageDoor->GetPos();
+
+            playerState = PlayerStates::JUMP;
+
+            ChangeImagePlayerState();
+        }
+    }
 }
 
 void Player::CollideWithNormalMonster(POINTFLOAT buffPos, POINTFLOAT bodyPos, RECT bodyShape, POINTFLOAT headPos, RECT headShape)
