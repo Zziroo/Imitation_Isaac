@@ -33,12 +33,8 @@ void BossMonster::Release()
 
 void BossMonster::Update()
 {
-	cout << "elapsedCreatenormalMonsterAnimation : " << elapsedCreatenormalMonsterAnimation << "\n";
-
 	if (monsterInfo.state == MonsterStates::IDLE)
 	{
-		ChangeBossMonsterState();
-
 		if (false == isSpawnNormalMonster)
 		{
 			ProgressNormalMonsterSpawnAnimation();
@@ -50,14 +46,21 @@ void BossMonster::Update()
 			{
 				InitializeBossMonsterAnimation();
 
+				monsterInfo.state = MonsterStates::MOVE;
+
 				elapsedCreatenormalMonsterAnimation = 0.0f;
 			}
 		}
 	}
 
-	if (monsterInfo.state == MonsterStates::MOVE && aStar->GetLocatedInside())
+	if (monsterInfo.state == MonsterStates::MOVE)
 	{
-		Move();
+		if (aStar->GetLocatedInside())
+		{
+			Move();
+		}
+
+		ChangeBossMonsterState();
 
 		elapsedCreatenormalMonsterAnimation = 0.0f;
 	}
